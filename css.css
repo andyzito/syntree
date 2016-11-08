@@ -1,0 +1,39 @@
+* {
+	margin:0;
+	padding:0;
+}
+
+#workspace_container {
+	left:10px;
+	top:10px;
+	position:absolute;
+}
+
+#workspace {
+	border: 1px solid black;
+}
+
+#workspace, #background {
+	width: 1000px;
+	height: 600px;
+}
+
+#background {
+	fill:white;
+}
+
+#editor {
+	position:absolute;
+	display:none;
+	font-size:14px;
+	font-family:sans-serif;
+}
+
+line {
+	stroke:black;
+}
+
+text {
+	font-size:14px;
+	font-family:sans-serif;
+}
