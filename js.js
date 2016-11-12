@@ -2,50 +2,154 @@ $(document).ready(function() {
     var noderef = {};
 
     // IDs
-    var allIds = [];
-    genId = function() {
-        var num = Math.floor(Math.random()*100);
-        if (num in allIds) {
-            genId();
-        }
-        return num;
-    }
+    // var allIds = [];
 
     // Selected node
     var selected = false;
 
     //Editor
-    var editor = $("#editor");
-    editor.offset({left:0,top:0});
-    editor.hide();
+    // var editor = $("#editor");
+    // editor.offset({left:0,top:0});
+    // editor.hide();
 
     // Workspace
-    var workspace = $("#workspace");
+    // var workspace = $("#workspace");
 
     //Snap
     var snap = Snap("#workspace");
 
     // Row height
     var rowHeight = 100;
+
+	function Tree(x,y) {
+		this.nodes = {};
+		this.allIds = [];
+		
+		this.genId = function() {
+			var num = Math.floor(Math.random()*100);
+			if (num in this.allIds) {
+				genId();
+			} else {
+				this.allIds.push(num);
+				return num;
+			}
+		}
+
+		this.eventNodeClick = function(clickedNode) {
+			if (this.selected != null) {
+				this.selected.deselect();
+			}
+			console.log(clickedNode);
+			this.selected = this.nodes[$(clickedNode).attr('id')];
+			this.selected.select();
+		}
+		
+		this.eventEnter = function() {
+			if (this.selected != null) {
+				if (this.selected.editing) {
+					this.selected.save();
+				} else {
+					this.selected.edit();
+				}
+			}
+		}
+		
+		this.eventDown = function() {
+			if (this.selected != null) {
+				this.makeChildOf(this.selected);
+			}
+		}
+		
+		this.eventRight = function() {
+			if (this.selected != null) {
+				this.makeChildOf(this.selected.parent);
+			}
+		}
+		
+		this.makeChildOf = function(parentNode) {
+			var pos = parentNode.textPosition();
+            var size = parentNode.size();
+            var newchild = new Node(this.genId(),pos.x,pos.y + rowHeight,"");
+			this.nodes[newchild.id] = newchild;
+            newchild.parent = parentNode;
+            parentNode.children.push(newchild);
+			this.selected.deselect();
+			this.selected = newchild;
+            newchild.select();
+			newchild.edit();
+		}
+		
+        this.getChildrenOf = function(node,inclusive) {
+            var result = {};
+            var len = node.children.length;
+			var i = 0;
+
+            while (i < node.children.length) {
+                console.log(i);
+
+                var thisChild = node.children[i];
+
+                result[thisChild.text()] = this.getChildrenOf(thisChild);
+				
+				i = i + 1;
+            }
+
+            if (inclusive) {
+                var t = node.text();
+                result = {t : result};
+            }
+
+            return result;
+        }
+
+		this.root = new Node(this.genId(),x,y,"A long piece of text");
+		this.nodes[this.root.id] = this.root;
+		this.selected = this.root;
+		this.root.select();
+	}
 	
 	function Workspace() {
 		this.svg = $("#workspace");
 		this.background = snap.rect(0,0,this.svg.width(),this.svg.height());
-		this.background.attr({fill:'blue'});
+		this.background.attr({fill:'white',id:'background'});
+		this.tree = new Tree(this.svg.width()/2,20);
+		
+		var tree = this.tree;
+		
+		$(document).on('click', '.node-label', function(){
+			tree.eventNodeClick(this);
+        });
+		
+		$(document).on('keydown', function(e) {
+			if (e.keyCode === 13) {
+				tree.eventEnter();
+			} else if (e.keyCode === 40) {
+				tree.eventDown();
+			} else if (e.keyCode === 39) {
+				tree.eventRight();
+			}
+		})
 	}
 
-    function Node(x,y,t) {
+    function Node(id,x,y,t) {
         // ID
-        this.id = genId();
-        noderef[this.id] = this;
-
+        this.id = id;
+		
         // Textbox
-        var textbox = snap.text(x,y,[t,]);
-        textbox.attr({'id':this.id});
-        this.textbox = $("#" + this.id);
+        var label = snap.text(x,y,[t,]);
+        label.attr({'id':this.id,'class':'node-label'});
+        this.label = $("#" + this.id);
+		
+		// Editor
+		var editorid = "editor-" + this.id;
+		$("#workspace_container").append('<input id="' + editorid + '" class="editor"></input>');
+		this.editor = $("#" + editorid);
+		// this.editor.offset({left:0,top:0});
+		this.editor.hide();
 
+		
         // Highlight
-        this.highlight = snap.rect(this.textbox.attr('x'),this.textbox.attr('y'),0,0);
+        this.highlight = snap.rect(this.label.attr('x'),this.label.attr('y'),0,0);
         this.highlight.attr({
             fill: "rgba(255,0,0,0.5)",
         });
@@ -56,6 +160,7 @@ $(document).ready(function() {
         // States
         this.editing = false;
         this.selected = false;
+		this.real = false;
 
         // Relationships
         this.parent = null;
@@ -65,8 +170,8 @@ $(document).ready(function() {
         this.size = function(w,h) {
             if (typeof w == 'undefined' && typeof h == 'undefined') {
                 return {
-                    w: this.textbox.get()[0].getComputedTextLength(),
-                    h: this.textbox.height(),
+                    w: this.label.get()[0].getComputedTextLength(),
+                    h: this.label.height(),
                 }
             }
         }
@@ -74,15 +179,15 @@ $(document).ready(function() {
         this.textPosition = function(x,y) {
             if (typeof x == 'undefined' && typeof y == 'undefined') {
                 return {
-                    x: Number(this.textbox.attr('x')),
-                    y: Number(this.textbox.attr('y')),
+                    x: Number(this.label.attr('x')),
+                    y: Number(this.label.attr('y')),
                 }
             }
             if (typeof x != 'undefined') {
-                this.textbox.attr('x',x);
+                this.label.attr('x',x);
             }
             if (typeof y != 'undefined') {
-                this.textbox.attr('y',y);
+                this.label.attr('y',y);
             }
         }
 
@@ -90,23 +195,23 @@ $(document).ready(function() {
             var size = this.size();
             if (typeof x == 'undefined' && typeof y == 'undefined') {
                 return {
-                    x: Number(this.textbox.attr('x')) + (size.w / 2),
-                    y: Number(this.textbox.attr('y')) - (size.h / 2),
+                    x: Number(this.label.attr('x')) + (size.w / 2),
+                    y: Number(this.label.attr('y')) - (size.h / 2),
                 }
             }
             if (typeof x != 'undefined') {
-                this.textbox.attr('x',x);
+                this.label.attr('x',x);
             }
             if (typeof y != 'undefined') {
-                this.textbox.attr('y',y);
+                this.label.attr('y',y);
             }
         }
 
         this.text = function(t) {
             if (typeof t != 'undefined') {
-                this.textbox.text(t);
+                this.label.text(t);
             } else {
-                return this.textbox.text();
+                return this.label.text();
             }
         }
 
@@ -144,10 +249,6 @@ $(document).ready(function() {
 
         // State changing functions
         this.select = function() {
-            if (selected != false) {
-                selected.deselect();
-            }
-            selected = this;
             this.selected = true;
             this.updateAppearance();
         }
@@ -156,27 +257,23 @@ $(document).ready(function() {
             if (this.editing) {
                 this.cancel();
             }
-            selected = false;
             this.selected = false;
             this.updateAppearance();
         }
 
         this.edit = function(e) {
-            if (!this.selected) {
-                this.select();
-            }
             this.editing = true;
             var pos = this.textPosition();
             var size = this.size();
-            editor.css('left', pos.x);
-            editor.css('top', pos.y-size.h);
-            editor.val(this.textbox.text());
+            this.editor.css('left', pos.x);
+            this.editor.css('top', pos.y-size.h);
+            this.editor.val(this.label.text());
             if (this.text() != "") {
-                editor.width(size.w);
-                editor.height(size.h);
+                this.editor.width(size.w);
+                this.editor.height(size.h);
             }
-            editor.show();
-            editor.focus();
+            this.editor.show();
+            this.editor.focus();
         }
 
         this.save = function(e) {
@@ -184,89 +281,26 @@ $(document).ready(function() {
                 this.real = true;
             }
             this.editing = false;
-            selected.text(editor.val())
-            editor.hide();
+            this.text(this.editor.val())
+            this.editor.hide();
             this.updateAppearance();
         }
 
         this.cancel = function() {
             this.editing = false;
-            editor.hide();
+            this.editor.hide();
             this.updateAppearance();
         }
-
-        this.makeChild = function() {
-            var pos = this.textPosition();
-            var size = this.size();
-            var newchild = new Node(pos.x,pos.y + rowHeight,"");
-            newchild.parent = this;
-            this.children.push(newchild);
-            newchild.edit();
-        }
-
-        this.getChildren = function(inclusive) {
-            var result = {};
-            var len = this.children.length;
-			var i = 0;
-
-            while (i < this.children.length) {
-                console.log(i);
-
-                var thisChild = this.children[i];
-
-                result[thisChild.id] = thisChild.getChildren();
-				
-				i = i + 1;
-            }
-
-            // if (inclusive) {
-                // var thisid = this.id;
-                // result = {thisid : result};
-            // }
-
-            return result;
-        }
-
-        // Events
-        this.textbox.on({
-            click: this.select.bind(this),
-            keydown: (function(e) {
-                if (e.keyCode===13) {
-                    if (this.editing) {
-                        this.save().bind(this);
-                    } else {
-                        this.edit().bind(this);
-                    }
-                }
-            }).bind(this),
-        });
     }
 
-    var root = new Node(workspace.width()/2,20,"A long piece of text");
-    root.select();
-
-    $(document).on('keydown', function(e) {
-        if (e.keyCode === 13) {
-            if (selected != false) {
-                if (selected.editing) {
-                    selected.save();
-                } else {
-                    selected.edit();
-                }
-            }
-        } else if (e.keyCode === 40) {
-            selected.makeChild();
-        } else if (e.keyCode === 39) {
-            selected.parent.makeChild();
-        }
-    });
-
+	var W = new Workspace();
 
     $("#background").on('click', function(e) {
-        console.log(root.getChildren());
-        var mouseX = e.pageX - $(this).offset().left;
-        var mouseY = e.pageY - $(this).offset().top;
-        var newnode = new Node(mouseX,mouseY,"");
-        newnode.edit();
+		// alert('clicked!');
+        console.log(W.tree.getChildrenOf(W.tree.root,true));
+        // var mouseX = e.pageX - $(this).offset().left;
+        // var mouseY = e.pageY - $(this).offset().top;
+        // var newnode = new Node(mouseX,mouseY,"");
+        // newnode.edit();
     });
 });

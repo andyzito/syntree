@@ -19,7 +19,7 @@
 }
 
 
-#editor {
+.editor {
 	position:absolute;
 	display:none;
 	font-size:14px;
