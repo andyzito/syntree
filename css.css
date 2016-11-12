@@ -13,14 +13,11 @@
 	border: 1px solid black;
 }
 
-#workspace, #background {
+#workspace {
 	width: 1000px;
 	height: 600px;
 }
 
-#background {
-	fill:white;
-}
 
 #editor {
 	position:absolute;

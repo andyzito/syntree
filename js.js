@@ -1,6 +1,5 @@
 $(document).ready(function() {
     var noderef = {};
-    var real = false;
 
     // IDs
     var allIds = [];
@@ -28,6 +27,12 @@ $(document).ready(function() {
 
     // Row height
     var rowHeight = 100;
+	
+	function Workspace() {
+		this.svg = $("#workspace");
+		this.background = snap.rect(0,0,this.svg.width(),this.svg.height());
+		this.background.attr({fill:'blue'});
+	}
 
     function Node(x,y,t) {
         // ID
