@@ -5,7 +5,7 @@ $(document).ready(function() {
     // var allIds = [];
 
     // Selected node
-    var selected = false;
+    // var selected = false;
 
     //Editor
     // var editor = $("#editor");
@@ -19,16 +19,42 @@ $(document).ready(function() {
     var snap = Snap("#workspace");
 
     // Row height
-    var rowHeight = 100;
+    // var rowHeight = 100;
+	
+	function Branch(parent,child) {
+		this.startpoint = parent.anchorPosition();
+		this.endpoint = child.anchorPosition();
+
+		this.line = snap.line(this.startpoint.x,this.startpoint.y,this.endpoint.x,this.endpoint.y);
+
+		child.parentBranch = this;
+		parent.childBranches.push(this);
+		
+		this.parent = parent
+		this.child = child;
+
+		this.updateAppearance = function() {
+			this.startpoint = this.parent.anchorPosition();
+			this.endpoint = this.child.anchorPosition();
+			
+			this.line.attr({
+				x1: this.startpoint.x,
+				y1: this.startpoint.y,
+				x2: this.endpoint.x,
+				y2: this.endpoint.y,
+			})
+		}
+	}
 
 	function Tree(x,y) {
 		this.nodes = {};
 		this.allIds = [];
+		this.rowHeight = 100;
 		
 		this.genId = function() {
 			var num = Math.floor(Math.random()*100);
 			if (num in this.allIds) {
-				genId();
+				this.genId();
 			} else {
 				this.allIds.push(num);
 				return num;
@@ -67,14 +93,36 @@ $(document).ready(function() {
 		}
 		
 		this.makeChildOf = function(parentNode) {
-			var pos = parentNode.textPosition();
+			var pos = parentNode.anchorPosition();
             var size = parentNode.size();
-            var newchild = new Node(this.genId(),pos.x,pos.y + rowHeight,"");
+			
+			siblings = parentNode.children;
+			if (siblings.length > 0) {
+				var leftBound = pos.x - (this.rowHeight * Math.tan(45 * (Math.PI / 180)));
+				var rightBound = pos.x + (this.rowHeight * Math.tan(45 * (Math.PI / 180)));
+				var spread = rightBound - leftBound;
+				var interval = spread/siblings.length;
+				// snap.line(leftBound,pos.y+this.rowHeight,rightBound,pos.y+this.rowHeight);
+				// var newx = siblings[0].anchorPosition().x;
+				var i = 0;
+				while (i < siblings.length) {
+					siblings[i].anchorPosition(x=leftBound+(interval*i));
+					i = i+1;
+				}
+				// siblings[0].anchorPosition(x=leftBound);
+				var newchild = new Node(this.genId(),rightBound,pos.y + this.rowHeight,"");
+			} else {
+				var newchild = new Node(this.genId(),pos.x,pos.y + this.rowHeight,"");
+			}
+			
 			this.nodes[newchild.id] = newchild;
             newchild.parent = parentNode;
             parentNode.children.push(newchild);
 			this.selected.deselect();
 			this.selected = newchild;
+			
+			var branch = new Branch(parentNode,newchild);
+			
             newchild.select();
 			newchild.edit();
 		}
@@ -147,6 +195,8 @@ $(document).ready(function() {
 		// this.editor.offset({left:0,top:0});
 		this.editor.hide();
 
+		this.parentBranch = null;
+		this.childBranches = [];
 		
         // Highlight
         this.highlight = snap.rect(this.label.attr('x'),this.label.attr('y'),0,0);
@@ -156,6 +206,8 @@ $(document).ready(function() {
 
         // Anchor point
         this.anchorMark = snap.circle(0,0,0);
+		this.x = x;
+		this.y = y;
 
         // States
         this.editing = false;
@@ -195,16 +247,17 @@ $(document).ready(function() {
             var size = this.size();
             if (typeof x == 'undefined' && typeof y == 'undefined') {
                 return {
-                    x: Number(this.label.attr('x')) + (size.w / 2),
-                    y: Number(this.label.attr('y')) - (size.h / 2),
+					x: this.x,
+					y: this.y,
                 }
             }
             if (typeof x != 'undefined') {
-                this.label.attr('x',x);
+                this.x = x;
             }
             if (typeof y != 'undefined') {
-                this.label.attr('y',y);
+                this.y = y;
             }
+			this.updateAppearance();
         }
 
         this.text = function(t) {
@@ -216,9 +269,9 @@ $(document).ready(function() {
         }
 
         this.updateAppearance = function() {
-            var tpos = this.textPosition();
-            var apos = this.anchorPosition();
             var size = this.size();
+			this.textPosition(this.x-(size.w/2),this.y+(size.h/2));
+            var tpos = this.textPosition();
             this.highlight.attr({
                 x: tpos.x - 5,
                 y: tpos.y - size.h - 5,
@@ -226,8 +279,8 @@ $(document).ready(function() {
                 height: size.h + 10
                 });
             this.anchorMark.attr({
-                cx: apos.x,
-                cy: apos.y,
+                cx: this.x,
+                cy: this.y,
                 r:3
             })
             if (this.selected) {
@@ -245,6 +298,12 @@ $(document).ready(function() {
                     fill:"none"
                 })
             }
+			if (this.parentBranch != null) {
+				this.parentBranch.updateAppearance();
+			}
+			for (i=0;i<this.childBranches.length;i++) {
+				this.childBranches[i].updateAppearance();
+			}
         }
 
         // State changing functions
