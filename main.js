@@ -1,3 +1,5 @@
+H = new History();
+
 $(document).ready(function() {
     //Snap
 	snap = Snap("#workspace");

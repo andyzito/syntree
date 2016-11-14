@@ -14,6 +14,7 @@ function Tree(x,y) {
 	}
 	
 	this.selectNode = function(node) {
+		var action = new Action('select',node);
 		if (this.selected != null) {
 			this.selected.deselect();
 		}
@@ -64,6 +65,16 @@ function Tree(x,y) {
 	this.eventDown = function() {
 		if (this.selected != null) {
 			if (this.selected.children.length > 0) {
+				var possibleSelects = this.selected.children;
+				var selectHistory = H.getByType('select');
+				
+				for (i=selectHistory.length-1; i>=0; i--) {
+					if (possibleSelects.indexOf(selectHistory[i].node) >= 0) {
+						console.log(selectHistory[i].node);
+						this.selectNode(selectHistory[i].node);
+						return;
+					}
+				}
 				this.selectNode(this.selected.children[0]);
 			} else {
 				this.makeChildOf(this.selected);
