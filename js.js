@@ -1,47 +1,28 @@
 $(document).ready(function() {
-    var noderef = {};
-
-    // IDs
-    // var allIds = [];
-
-    // Selected node
-    // var selected = false;
-
-    //Editor
-    // var editor = $("#editor");
-    // editor.offset({left:0,top:0});
-    // editor.hide();
-
-    // Workspace
-    // var workspace = $("#workspace");
-
     //Snap
     var snap = Snap("#workspace");
-
-    // Row height
-    // var rowHeight = 100;
 	
 	function Branch(parent,child) {
-		this.startpoint = parent.anchorPosition();
-		this.endpoint = child.anchorPosition();
+		this.startPoint = parent.anchorPosition();
+		this.endPoint = child.anchorPosition();
 
-		this.line = snap.line(this.startpoint.x,this.startpoint.y,this.endpoint.x,this.endpoint.y);
+		this.line = snap.line(this.startPoint.x,this.startPoint.y,this.endPoint.x,this.endPoint.y);
 
 		child.parentBranch = this;
 		parent.childBranches.push(this);
 		
-		this.parent = parent
+		this.parent = parent;
 		this.child = child;
 
 		this.updateAppearance = function() {
-			this.startpoint = this.parent.anchorPosition();
-			this.endpoint = this.child.anchorPosition();
+			this.startPoint = this.parent.anchorPosition();
+			this.endPoint = this.child.anchorPosition();
 			
 			this.line.attr({
-				x1: this.startpoint.x,
-				y1: this.startpoint.y,
-				x2: this.endpoint.x,
-				y2: this.endpoint.y,
+				x1: this.startPoint.x,
+				y1: this.startPoint.y,
+				x2: this.endPoint.x,
+				y2: this.endPoint.y,
 			})
 		}
 	}
@@ -60,71 +41,123 @@ $(document).ready(function() {
 				return num;
 			}
 		}
-
-		this.eventNodeClick = function(clickedNode) {
+		
+		this.selectNode = function(node) {
 			if (this.selected != null) {
 				this.selected.deselect();
 			}
-			console.log(clickedNode);
-			this.selected = this.nodes[$(clickedNode).attr('id')];
+			this.selected = node;
 			this.selected.select();
+		}
+		
+		this.editNode = function(node) {
+			if (!node.selected) {
+				this.selectNode(node);
+			}
+			node.edit();
+		}
+
+		this.eventNodeClick = function(clickedNode) {
+			var node = this.nodes[$(clickedNode).attr('id')];
+			this.selectNode(node);
 		}
 		
 		this.eventEnter = function() {
 			if (this.selected != null) {
-				if (this.selected.editing) {
-					this.selected.save();
+				this.selected.editToggle();
+			}
+		}
+		
+		this.eventLeft = function() {
+			if (this.selected != null) {
+				if (this.selected.parent.children.length > 1) {
+					var siblings = this.selected.parent.children;
+					var selectedIndex = siblings.indexOf(this.selected);
+					if (selectedIndex > 0) {
+						this.selectNode(siblings[selectedIndex-1]);
+					} else {
+						this.makeChildOf(this.selected.parent,true);
+					}
 				} else {
-					this.selected.edit();
+					this.makeChildOf(this.selected.parent)
 				}
+			}
+		}
+		
+		this.eventUp = function() {
+			if (this.selected.parent != null) {
+				this.selectNode(this.selected.parent);
 			}
 		}
 		
 		this.eventDown = function() {
 			if (this.selected != null) {
-				this.makeChildOf(this.selected);
+				if (this.selected.children.length > 0) {
+					this.selectNode(this.selected.children[0]);
+				} else {
+					this.makeChildOf(this.selected);
+				}
 			}
 		}
-		
+
 		this.eventRight = function() {
 			if (this.selected != null) {
-				this.makeChildOf(this.selected.parent);
+				if (this.selected.parent.children.length > 1) {
+					var siblings = this.selected.parent.children;
+					var selectedIndex = siblings.indexOf(this.selected);
+					console.log(selectedIndex);
+					if (selectedIndex < siblings.length-1) {
+						this.selectNode(this.selected.parent.children[selectedIndex+1]);
+					} else {
+						this.makeChildOf(this.selected.parent);
+					}
+				} else {
+					this.makeChildOf(this.selected.parent);
+				}
 			}
 		}
-		
-		this.makeChildOf = function(parentNode) {
+
+		this.makeNode = function(x,y,t) {
+			var newNode = new Node(this.genId(),x,y,t);
+			this.nodes[newNode.id] = newNode;
+			return newNode;
+		}
+
+		this.makeChildOf = function(parentNode,left) {
 			var pos = parentNode.anchorPosition();
             var size = parentNode.size();
-			
-			siblings = parentNode.children;
-			if (siblings.length > 0) {
+
+			var newChild = this.makeNode(pos.x,pos.y+this.rowHeight,"");
+
+            newChild.parent = parentNode;
+
+			if (typeof left != 'undefined') {
+				parentNode.children.unshift(newChild);
+			} else {
+				parentNode.children.push(newChild);
+			}
+
+
+			var siblings = parentNode.children;
+			if (siblings.length > 1) {
 				var leftBound = pos.x - (this.rowHeight * Math.tan(45 * (Math.PI / 180)));
 				var rightBound = pos.x + (this.rowHeight * Math.tan(45 * (Math.PI / 180)));
 				var spread = rightBound - leftBound;
-				var interval = spread/siblings.length;
-				// snap.line(leftBound,pos.y+this.rowHeight,rightBound,pos.y+this.rowHeight);
-				// var newx = siblings[0].anchorPosition().x;
+				var interval = spread/(siblings.length-1);
 				var i = 0;
 				while (i < siblings.length) {
 					siblings[i].anchorPosition(x=leftBound+(interval*i));
 					i = i+1;
 				}
-				// siblings[0].anchorPosition(x=leftBound);
-				var newchild = new Node(this.genId(),rightBound,pos.y + this.rowHeight,"");
-			} else {
-				var newchild = new Node(this.genId(),pos.x,pos.y + this.rowHeight,"");
+				// var newChild = this.makeNode(rightBound,pos.y + this.rowHeight,"");
+			} /* else {
+				var newChild = this.makeNode(pos.x,pos.y + this.rowHeight,"");
 			}
+ */			
 			
-			this.nodes[newchild.id] = newchild;
-            newchild.parent = parentNode;
-            parentNode.children.push(newchild);
-			this.selected.deselect();
-			this.selected = newchild;
+			var branch = new Branch(parentNode,newChild);
 			
-			var branch = new Branch(parentNode,newchild);
-			
-            newchild.select();
-			newchild.edit();
+			this.editNode(newChild);
 		}
 		
         this.getChildrenOf = function(node,inclusive) {
@@ -133,27 +166,23 @@ $(document).ready(function() {
 			var i = 0;
 
             while (i < node.children.length) {
-                console.log(i);
-
                 var thisChild = node.children[i];
-
                 result[thisChild.text()] = this.getChildrenOf(thisChild);
-				
 				i = i + 1;
             }
 
             if (inclusive) {
                 var t = node.text();
-                result = {t : result};
+                temp = {};
+				temp[t] = result;
+				result = temp;
             }
 
             return result;
         }
 
-		this.root = new Node(this.genId(),x,y,"A long piece of text");
-		this.nodes[this.root.id] = this.root;
-		this.selected = this.root;
-		this.root.select();
+		this.root = this.makeNode(x,y,"A long piece of text");
+		this.selectNode(this.root);
 	}
 	
 	function Workspace() {
@@ -171,10 +200,14 @@ $(document).ready(function() {
 		$(document).on('keydown', function(e) {
 			if (e.keyCode === 13) {
 				tree.eventEnter();
-			} else if (e.keyCode === 40) {
-				tree.eventDown();
+			} else if (e.keyCode === 37) {
+				tree.eventLeft();
+			} else if (e.keyCode === 38) {
+				tree.eventUp();
 			} else if (e.keyCode === 39) {
 				tree.eventRight();
+			} else if (e.keyCode === 40) {
+				tree.eventDown();
 			}
 		})
 	}
@@ -350,6 +383,14 @@ $(document).ready(function() {
             this.editor.hide();
             this.updateAppearance();
         }
+		
+		this.editToggle = function() {
+			if (this.editing) {
+				this.save();
+			} else {
+				this.edit();
+			}
+		}
     }
 
 	var W = new Workspace();
