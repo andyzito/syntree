@@ -13,12 +13,6 @@
 	border: 1px solid black;
 }
 
-#workspace {
-	width: 1000px;
-	height: 600px;
-}
-
-
 .editor {
 	position:absolute;
 	display:none;

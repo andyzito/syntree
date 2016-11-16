@@ -4,8 +4,8 @@ function Node(id,x,y,t) {
 	
 	// Textbox
 	var label = snap.text(x,y,[t,]);
-	label.attr({'id':this.id,'class':'node-label'});
-	this.label = $("#" + this.id);
+	label.attr({'id':"label-"+this.id,'class':'node-label'});
+	this.label = $("#label-" + this.id);
 	
 	// Editor
 	var editorid = "editor-" + this.id;
@@ -62,21 +62,16 @@ function Node(id,x,y,t) {
 		}
 	}
 
-	this.anchorPosition = function(x,y) {
-		var size = this.size();
-		if (typeof x == 'undefined' && typeof y == 'undefined') {
-			return {
-				x: this.x,
-				y: this.y,
-			}
+	this.position = function() {
+		return {
+			x: this.x,
+			y: this.y,
 		}
-		if (typeof x != 'undefined') {
-			this.x = x;
-		}
-		if (typeof y != 'undefined') {
-			this.y = y;
-		}
-		this.updateAppearance();
+	}
+	
+	this.move = function(x,s) {
+		this.x = x;
+		this.updateAppearance(s);
 	}
 
 	this.text = function(t) {
@@ -87,9 +82,32 @@ function Node(id,x,y,t) {
 		}
 	}
 
-	this.updateAppearance = function() {
+	this.updateAppearance = function(seconds) {
+		if (typeof seconds == 'undefined') {
+			var seconds = 0;
+		}
 		var size = this.size();
-		this.textPosition(this.x-(size.w/2),this.y+(size.h/2));
+		
+		// Animation?
+		if (seconds != 0) {
+			var svgLabel = Snap("#" + this.label.attr('id'))
+			
+			svgLabel.animate({
+				x: this.x-(size.w/2),
+				y: this.y+(size.h/2)
+			},seconds);
+			// var tpos = this.textPosition();
+			// this.highlight.animate({
+				// x: tpos.x - 5,
+				// y: tpos.y - size.h - 5
+			// },seconds);
+			// this.anchorMark.animate({
+				// cx: this.x,
+				// cy: this.y
+			// },seconds)
+		}
+		
+		this.textPosition(this.x-(size.w/2), this.y+(size.h/2))
 		var tpos = this.textPosition();
 		this.highlight.attr({
 			x: tpos.x - 5,
@@ -117,11 +135,13 @@ function Node(id,x,y,t) {
 				fill:"none"
 			})
 		}
+		
+		// Branches
 		if (this.parentBranch != null) {
-			this.parentBranch.updateAppearance();
+			this.parentBranch.updateAppearance(seconds);
 		}
 		for (i=0;i<this.childBranches.length;i++) {
-			this.childBranches[i].updateAppearance();
+			this.childBranches[i].updateAppearance(seconds);
 		}
 	}
 

@@ -7,7 +7,9 @@ $(document).ready(function() {
 	var W = new Workspace();
 
     $("#background").on('click', function(e) {
-        console.log(W.tree.getChildrenOf(W.tree.root,true));
+		var wholetree = W.tree.getChildrenOf(W.tree.root,true);
+		// console.log(wholetree)
+        console.log(W.tree.getNodesByOffset(wholetree,1));
         // var mouseX = e.pageX - $(this).offset().left;
         // var mouseY = e.pageY - $(this).offset().top;
         // var newnode = new Node(mouseX,mouseY,"");
