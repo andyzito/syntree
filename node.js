@@ -2,51 +2,52 @@ function Node(id,x,y,t) {
 	// ID
 	this.id = id;
 	
+	// Position
+	this.x = x;
+	this.y = y;
+	
 	// Textbox
 	var label = snap.text(x,y,[t,]);
 	label.attr({'id':"label-"+this.id,'class':'node-label'});
 	this.label = $("#label-" + this.id);
-	
+
 	// Editor
 	var editorid = "editor-" + this.id;
 	$("#workspace_container").append('<input id="' + editorid + '" class="editor"></input>');
 	this.editor = $("#" + editorid);
 	this.editor.hide();
-
-	// Branches
-	this.parentBranch = null;
-	this.childBranches = [];
 	
 	// Highlight
 	this.highlight = snap.rect(this.label.attr('x'),this.label.attr('y'),0,0);
 	this.highlight.attr({
 		fill: "rgba(255,0,0,0.5)",
 	});
-
-	// Anchor point
+	
+	// Anchor mark
 	this.anchorMark = snap.circle(0,0,0);
-	this.x = x;
-	this.y = y;
-
-	// States
-	this.editing = false;
-	this.selected = false;
-	this.real = false;
+	
 
 	// Relationships
 	this.parent = null;
 	this.children = [];
 
-	// Visual property functions
-	this.size = function(w,h) {
-		if (typeof w == 'undefined' && typeof h == 'undefined') {
-			return {
-				w: this.label.get()[0].getComputedTextLength(),
-				h: this.label.height(),
-			}
-		}
-	}
+	// Branches
+	this.parentBranch = null;
+	this.childBranches = [];
+		
+	// States
+	this.editing = false;
+	this.selected = false;
+	this.real = false;
 
+	// Property retrieval:
+	this.position = function() {
+		return {
+			x: this.x,
+			y: this.y,
+		}
+	}	
+	
 	this.textPosition = function(x,y) {
 		if (typeof x == 'undefined' && typeof y == 'undefined') {
 			return {
@@ -60,18 +61,15 @@ function Node(id,x,y,t) {
 		if (typeof y != 'undefined') {
 			this.label.attr('y',y);
 		}
-	}
-
-	this.position = function() {
-		return {
-			x: this.x,
-			y: this.y,
-		}
-	}
+	}	
 	
-	this.move = function(x,s) {
-		this.x = x;
-		this.updateAppearance(s);
+	this.size = function(w,h) {
+		if (typeof w == 'undefined' && typeof h == 'undefined') {
+			return {
+				w: this.label.get()[0].getComputedTextLength(),
+				h: this.label.height(),
+			}
+		}
 	}
 
 	this.text = function(t) {
@@ -79,6 +77,70 @@ function Node(id,x,y,t) {
 			this.label.text(t);
 		} else {
 			return this.label.text();
+		}
+	}
+
+	// State change:
+
+	this.select = function() {
+		this.selected = true;
+		this.updateAppearance();
+	}
+
+	this.deselect = function() {
+		if (this.editing) {
+			this.cancel();
+		}
+		this.selected = false;
+		this.updateAppearance();
+	}
+
+	this.edit = function(e) {
+		this.editing = true;
+		var pos = this.textPosition();
+		var size = this.size();
+		this.editor.css('left', pos.x);
+		this.editor.css('top', pos.y-size.h);
+		this.editor.val(this.label.text());
+		if (this.text() != "") {
+			this.editor.width(size.w);
+			this.editor.height(size.h);
+		}
+		this.editor.show();
+		this.editor.focus();
+	}
+	
+	this.editToggle = function() {
+		if (this.editing) {
+			this.save();
+		} else {
+			this.edit();
+		}
+	}
+
+	this.save = function(e) {
+		if (!this.real) {
+			this.real = true;
+		}
+		this.editing = false;
+		this.text(this.editor.val())
+		this.editor.hide();
+		this.updateAppearance();
+	}
+
+	this.cancel = function() {
+		this.editing = false;
+		this.editor.hide();
+		this.updateAppearance();
+	}
+	
+	this.move = function(deltaX,s) {
+		this.x = this.x + deltaX;
+		this.updateAppearance(s);
+		var i = 0;
+		while (i < this.children.length) {
+			this.children[i].move(deltaX,s);
+			i++;
 		}
 	}
 
@@ -145,56 +207,4 @@ function Node(id,x,y,t) {
 		}
 	}
 
-	// State changing functions
-	this.select = function() {
-		this.selected = true;
-		this.updateAppearance();
-	}
-
-	this.deselect = function() {
-		if (this.editing) {
-			this.cancel();
-		}
-		this.selected = false;
-		this.updateAppearance();
-	}
-
-	this.edit = function(e) {
-		this.editing = true;
-		var pos = this.textPosition();
-		var size = this.size();
-		this.editor.css('left', pos.x);
-		this.editor.css('top', pos.y-size.h);
-		this.editor.val(this.label.text());
-		if (this.text() != "") {
-			this.editor.width(size.w);
-			this.editor.height(size.h);
-		}
-		this.editor.show();
-		this.editor.focus();
-	}
-
-	this.save = function(e) {
-		if (!this.real) {
-			this.real = true;
-		}
-		this.editing = false;
-		this.text(this.editor.val())
-		this.editor.hide();
-		this.updateAppearance();
-	}
-
-	this.cancel = function() {
-		this.editing = false;
-		this.editor.hide();
-		this.updateAppearance();
-	}
-	
-	this.editToggle = function() {
-		if (this.editing) {
-			this.save();
-		} else {
-			this.edit();
-		}
-	}
 }
