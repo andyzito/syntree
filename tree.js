@@ -1,25 +1,18 @@
 function Tree(x,y) {
 	this.nodes = {};
 	this.selected = null;
-	this.allIds = [];
-	this.rowHeight = 100;
-	this.root = this.makeNode(x,y,"A long piece of text");
-	this.selectNode(this.root);
+	this.idRef = 0;
+	this.rowHeight = 70;
 	
 	this.genId = function() {
-		var num = Math.floor(Math.random()*1000);
-		if (this.allIds.indexOf(num) >= 0) {
-			this.genId();
-		} else {
-			this.allIds.push(num);
-			return num;
-		}
+		this.idRef++;
+		return this.idRef;
 	}
 	
 	// Events :
 	
 	this.eventNodeClick = function(clickedNode) {
-		var node = this.nodes[$(clickedNode).attr('id')];
+		var node = this.nodes[$(clickedNode).attr('id').split('-')[1]];
 		this.selectNode(node);
 	}
 	
@@ -75,7 +68,6 @@ function Tree(x,y) {
 				
 				for (i=selectHistory.length-1; i>=0; i--) {
 					if (possibleSelects.indexOf(selectHistory[i].node) >= 0) {
-						console.log(selectHistory[i].node);
 						this.selectNode(selectHistory[i].node);
 						return;
 					}
@@ -104,7 +96,6 @@ function Tree(x,y) {
 		}
 		node.edit();
 	}
-
 
 	this.makeNode = function(x,y,t) {
 		var newNode = new Node(this.genId(),x,y,t);
@@ -198,79 +189,51 @@ function Tree(x,y) {
 	}
 	
 	this.reposition = function() {		
-		// Iterate through offsets (rows), bottom to top
 		var row = 0;
-		while (true) {
-			console.log("Row is " + row);
-			var nodes = this.getNodesByOffset(this.root,row);
-			// console.log(nodes);
-			if (nodes.length === 0) {
-				break;
-			}
-
-			var n = 0;
-			var group = [nodes[0]];
-			while (n < nodes.length-1) {
-				var leftNode = group[group.length-1];
-				var rightNode = nodes[n+1];
-				var space = this.spaceBetween(leftNode,rightNode);
-				console.log(space);
-				
-				if (space < 0) {
-					var diff = 20 - space;
-					var m = Math.abs(diff/2);
-					// var m = Math.abs(space/2);
-					this.move(group,(-1* m),0);
-					rightNode.move(m,0);
+		var off = 1;
+		
+		while (off < 3) {
+			while (true) {
+				var nodes = this.getNodesByOffset(this.root,row);
+				if (nodes.length == 0) {
+					break;
 				}
-				group.push(rightNode);
-				n++;
-			}
-			
-			// Create bounds for this row
-			// var n = 0;
-			// var bounds = [];
-			// while (n < nodes.length) {
-				// var thisNode = this.nodes[nodes[n]];
-				// var pos = thisNode.position();
-				// var size = thisNode.size();
-				// bounds.push([thisNode.id,pos.x,pos.x+size.w]);
-				// n++;
-			// }
-			
-			// Iterate through bounds
-			// var iii = 0;
-			// while (iii < bounds.length-1) {
-				// var leftNode = this.nodes[bounds[iii][0]];
-				// var rightNode = this.nodes[bounds[iii+1][0]];
-				// var leftPos = leftNode.position();
-				// var leftSize = leftNode.size();
-				// var rightPos = rightNode.position();
-				// var rightSize = rightNode.size();
 
-				// var leftLeft = leftPos.x;
-				// var leftRight = leftPos.x + leftSize.w;
-				// var rightLeft = rightPos.x;
-				// var rightLeft = rightPos.x + rightSize.w;
-				
-				// console.log(leftRight, " x ", rightLeft);
-				
-				// if (leftRight > rightLeft) {
-					// if (leftNode.parent == rightNode.parent) {
-						// leftNode.move(-10,0);
-						// rightNode.move(10,0);
-					// } else {
-						// var leftParent = leftNode.parent;
-						// var rightParent = rightNode.parent;
-						// leftParent.move(-10,0);
-						// rightParent.move(10,0);
-					// }
-				// }
-				// iii++;
-			// }
-			
-			row++;
-		}	
+				var n = 0;
+				while (n < nodes.length-1) {
+					var leftNode = nodes[n];
+					var rightNode = nodes[n+1];
+					
+					var leftChildren = this.getNodesByOffset(leftNode,off);
+					var rightChildren = this.getNodesByOffset(rightNode,off);
+					if (leftChildren.length === 0 || rightChildren.length === 0) {
+						n++;
+						continue;
+					}
+					
+					var leftBound = leftChildren[leftChildren.length-1].textPosition().x + leftChildren[leftChildren.length-1].size().w;
+					var rightBound = rightChildren[0].textPosition().x;
+					
+					var space = rightBound - leftBound;
+					
+					if (space < 50) {
+						var diff = 50 - space;
+						var m = diff/2;
+						if (leftNode.parent != rightNode.parent) {
+							var ancestors = this.getNearestParentSiblings(leftNode,rightNode);
+							ancestors[0].move(-m,0);
+							ancestors[1].move(m,0);
+						} else {
+							leftNode.move(-m,0);
+							rightNode.move(m,0);
+						}
+					}
+					n++;
+				}
+				row++;
+			}
+			off++;
+		}
 	}
 
 	// Util:
@@ -292,8 +255,8 @@ function Tree(x,y) {
 	}
 	
 	this.spaceBetween = function(leftNode,rightNode) {
-		var leftPos = leftNode.position();
-		var rightPos = rightNode.position();
+		var leftPos = leftNode.textPosition();
+		var rightPos = rightNode.textPosition();
 		var leftSize = leftNode.size();
 		
 		var leftNodeRightBound = leftPos.x + leftSize.w;
@@ -301,4 +264,16 @@ function Tree(x,y) {
 		
 		return rightNodeLeftBound - leftNodeRightBound;
 	}
+	
+	this.getNearestParentSiblings = function(leftNode,rightNode) {
+		if (leftNode.parent == rightNode.parent) {
+			return [leftNode, rightNode];
+		} else {
+			return this.getNearestParentSiblings(leftNode.parent, rightNode.parent);
+		}
+	}
+	
+	this.root = this.makeNode(x,y,"A long piece of text");
+	this.selectNode(this.root);
+
 }

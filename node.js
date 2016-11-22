@@ -122,10 +122,12 @@ function Node(id,x,y,t) {
 		if (!this.real) {
 			this.real = true;
 		}
-		this.editing = false;
-		this.text(this.editor.val())
-		this.editor.hide();
-		this.updateAppearance();
+		if (this.editing) {
+			this.editing = false;
+			this.text(this.editor.val())
+			this.editor.hide();
+			this.updateAppearance();
+		}
 	}
 
 	this.cancel = function() {
@@ -134,13 +136,18 @@ function Node(id,x,y,t) {
 		this.updateAppearance();
 	}
 	
-	this.move = function(deltaX,s) {
+	this.move = function(deltaX,s,propagate) {
+		if (typeof propagate == 'undefined') {
+			propagate = true;
+		}
 		this.x = this.x + deltaX;
 		this.updateAppearance(s);
-		var i = 0;
-		while (i < this.children.length) {
-			this.children[i].move(deltaX,s);
-			i++;
+		if (propagate) {
+			var i = 0;
+			while (i < this.children.length) {
+				this.children[i].move(deltaX,s);
+				i++;
+			}
 		}
 	}
 
