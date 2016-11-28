@@ -108,7 +108,7 @@ function Tree(x,y) {
 			text = "";
 		}
 		var pos = parentNode.position();
-		var size = parentNode.size();
+		var size = parentNode.labelSize();
 
 		var newChild = this.makeNode(pos.x,pos.y+this.rowHeight,text);
 
@@ -128,7 +128,8 @@ function Tree(x,y) {
 			var interval = spread/(siblings.length-1);
 			var i = 0;
 			while (i < siblings.length) {
-				siblings[i].move(leftBound+(interval*i) - siblings[i].position().x,50);
+				siblings[i].position(leftBound+(interval*i));
+				siblings[i].updateAppearance(1000);
 				i = i+1;
 			}
 		}
@@ -191,6 +192,7 @@ function Tree(x,y) {
 	this.reposition = function() {		
 		var row = 0;
 		var off = 1;
+		var done = true;
 		
 		while (off < 3) {
 			while (true) {
@@ -210,13 +212,14 @@ function Tree(x,y) {
 						n++;
 						continue;
 					}
-					
-					var leftBound = leftChildren[leftChildren.length-1].textPosition().x + leftChildren[leftChildren.length-1].size().w;
-					var rightBound = rightChildren[0].textPosition().x;
-					
+
+					var leftBound = leftChildren[leftChildren.length-1].labelPosition().x + leftChildren[leftChildren.length-1].labelSize().w;
+					var rightBound = rightChildren[0].labelPosition().x;
+
 					var space = rightBound - leftBound;
-					
+
 					if (space < 50) {
+						done = false;
 						var diff = 50 - space;
 						var m = diff/2;
 						if (leftNode.parent != rightNode.parent) {
@@ -233,6 +236,9 @@ function Tree(x,y) {
 				row++;
 			}
 			off++;
+		}
+		if (!done) {
+			this.reposition();
 		}
 	}
 
@@ -255,9 +261,9 @@ function Tree(x,y) {
 	}
 	
 	this.spaceBetween = function(leftNode,rightNode) {
-		var leftPos = leftNode.textPosition();
-		var rightPos = rightNode.textPosition();
-		var leftSize = leftNode.size();
+		var leftPos = leftNode.labelPosition();
+		var rightPos = rightNode.labelPosition();
+		var leftSize = leftNode.labelSize();
 		
 		var leftNodeRightBound = leftPos.x + leftSize.w;
 		var rightNodeLeftBound = rightPos.x;

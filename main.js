@@ -7,36 +7,36 @@ $(document).ready(function() {
 	var W = new Workspace();
 	var T = W.tree;
 	
-	var DP = T.makeChildOf(T.root,false,"NP");
-	var D = T.makeChildOf(DP,false,"D");
-	var The = T.makeChildOf(D,false,"The");
+	// var DP = T.makeChildOf(T.root,false,"NP");
+	// var D = T.makeChildOf(DP,false,"D");
+	// var The = T.makeChildOf(D,false,"The");
 	
-	var AP = T.makeChildOf(DP,false,"AP");
-	var A = T.makeChildOf(AP, false, "A");
-	T.makeChildOf(A,false,"purple");
-	var AP = T.makeChildOf(AP,false,"AP");
-	var A = T.makeChildOf(AP,false,"A");
-	T.makeChildOf(A,false,"space");
+	// var AP = T.makeChildOf(DP,false,"AP");
+	// var A = T.makeChildOf(AP, false, "A");
+	// T.makeChildOf(A,false,"purple");
+	// var AP = T.makeChildOf(AP,false,"AP");
+	// var A = T.makeChildOf(AP,false,"A");
+	// T.makeChildOf(A,false,"space");
 	
-	var NP = T.makeChildOf(AP,false,"NP");
-	var N = T.makeChildOf(NP,false,"N");
-	var cat = T.makeChildOf(N,false,"cat");
+	// var NP = T.makeChildOf(AP,false,"NP");
+	// var N = T.makeChildOf(NP,false,"N");
+	// var cat = T.makeChildOf(N,false,"cat");
 	
-	var VP = T.makeChildOf(T.root,false,"VP");
-	var V = T.makeChildOf(VP,false,"V");
-	var is = T.makeChildOf(V,false,"is");
-	var PP = T.makeChildOf(VP,false,"PP");
-	var P = T.makeChildOf(PP,false,"P");
-	var p = T.makeChildOf(P,false,"on top of");
-	var DP = T.makeChildOf(PP,false,"DP");
-	var D = T.makeChildOf(DP,false,"D");
-	var the = T.makeChildOf(D,false,"the");
-	var AP = T.makeChildOf(DP,false,"AP");
-	var A = T.makeChildOf(AP,false,"A");
-	var blue = T.makeChildOf(A,false,"blue");
-	var NP = T.makeChildOf(AP,false,"NP");
-	var N = T.makeChildOf(NP,false,"N");
-	var fire = T.makeChildOf(N,false,"fireman");
+	// var VP = T.makeChildOf(T.root,false,"VP");
+	// var V = T.makeChildOf(VP,false,"V");
+	// var is = T.makeChildOf(V,false,"is");
+	// var PP = T.makeChildOf(VP,false,"PP");
+	// var P = T.makeChildOf(PP,false,"P");
+	// var p = T.makeChildOf(P,false,"on top of");
+	// var DP = T.makeChildOf(PP,false,"DP");
+	// var D = T.makeChildOf(DP,false,"D");
+	// var the = T.makeChildOf(D,false,"the");
+	// var AP = T.makeChildOf(DP,false,"AP");
+	// var A = T.makeChildOf(AP,false,"A");
+	// var blue = T.makeChildOf(A,false,"blue");
+	// var NP = T.makeChildOf(AP,false,"NP");
+	// var N = T.makeChildOf(NP,false,"N");
+	// var fire = T.makeChildOf(N,false,"fireman");
 	
 	// var A = T.makeChildOf(T.root,false,text="A");
 	// var Z = T.makeChildOf(A,false,text="Z");

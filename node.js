@@ -41,14 +41,20 @@ function Node(id,x,y,t) {
 	this.real = false;
 
 	// Property retrieval:
-	this.position = function() {
+	this.position = function(x,y) {
+		if (typeof x != 'undefined') {
+			this.x = x;
+		}
+		if (typeof y != 'undefined') {
+			this.y = y;
+		}
 		return {
 			x: this.x,
 			y: this.y,
 		}
 	}	
 	
-	this.textPosition = function(x,y) {
+	this.labelPosition = function(x,y) {
 		if (typeof x == 'undefined' && typeof y == 'undefined') {
 			return {
 				x: Number(this.label.attr('x')),
@@ -63,16 +69,14 @@ function Node(id,x,y,t) {
 		}
 	}	
 	
-	this.size = function(w,h) {
-		if (typeof w == 'undefined' && typeof h == 'undefined') {
-			return {
-				w: this.label.get()[0].getComputedTextLength(),
-				h: this.label.height(),
-			}
+	this.labelSize = function() {
+		return {
+			w: this.label.get()[0].getComputedTextLength(),
+			h: this.label.height(),
 		}
 	}
 
-	this.text = function(t) {
+	this.labelContent = function(t) {
 		if (typeof t != 'undefined') {
 			this.label.text(t);
 		} else {
@@ -97,12 +101,12 @@ function Node(id,x,y,t) {
 
 	this.edit = function(e) {
 		this.editing = true;
-		var pos = this.textPosition();
-		var size = this.size();
+		var pos = this.labelPosition();
+		var size = this.labelSize();
 		this.editor.css('left', pos.x);
 		this.editor.css('top', pos.y-size.h);
 		this.editor.val(this.label.text());
-		if (this.text() != "") {
+		if (this.labelContent() != "") {
 			this.editor.width(size.w);
 			this.editor.height(size.h);
 		}
@@ -124,7 +128,7 @@ function Node(id,x,y,t) {
 		}
 		if (this.editing) {
 			this.editing = false;
-			this.text(this.editor.val())
+			this.labelContent(this.editor.val())
 			this.editor.hide();
 			this.updateAppearance();
 		}
@@ -155,7 +159,7 @@ function Node(id,x,y,t) {
 		if (typeof seconds == 'undefined') {
 			var seconds = 0;
 		}
-		var size = this.size();
+		var size = this.labelSize();
 		
 		// Animation?
 		if (seconds != 0) {
@@ -165,7 +169,7 @@ function Node(id,x,y,t) {
 				x: this.x-(size.w/2),
 				y: this.y+(size.h/2)
 			},seconds);
-			// var tpos = this.textPosition();
+			// var tpos = this.labelPosition();
 			// this.highlight.animate({
 				// x: tpos.x - 5,
 				// y: tpos.y - size.h - 5
@@ -176,8 +180,8 @@ function Node(id,x,y,t) {
 			// },seconds)
 		}
 		
-		this.textPosition(this.x-(size.w/2), this.y+(size.h/2))
-		var tpos = this.textPosition();
+		this.labelPosition(this.x-(size.w/2), this.y+(size.h/2))
+		var tpos = this.labelPosition();
 		this.highlight.attr({
 			x: tpos.x - 5,
 			y: tpos.y - size.h - 5,
