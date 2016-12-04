@@ -10,7 +10,7 @@ function Branch(parent,child) {
 	this.parent = parent;
 	this.child = child;
 
-	this.updateAppearance = function(seconds) {
+	this.updateGraphic = function(seconds) {
 		if (typeof seconds == 'undefined') {
 			var seconds = 0;
 		}

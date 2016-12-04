@@ -1,108 +1,128 @@
-function Tree(x,y) {
-	this.nodes = {};
-	this.selected = null;
-	this.idRef = 0;
+function Tree(P,root,x,y) {
+	this.P = P;
+	this.W = P.W;
+
+	if (typeof root === 'undefined' || root === null) {
+		this.root = this.P.makeNode(x,y,"A long piece of text");
+	} else {
+		this.root = root;
+	}
+	// this.nodes = {};
+	// this.selected = null;
 	this.rowHeight = 70;
-	
-	this.genId = function() {
-		this.idRef++;
-		return this.idRef;
-	}
-	
-	// Events :
-	
-	this.eventNodeClick = function(clickedNode) {
-		var node = this.nodes[$(clickedNode).attr('id').split('-')[1]];
-		this.selectNode(node);
-	}
-	
-	this.eventEnter = function() {
-		if (this.selected != null) {
-			this.selected.editToggle();
-		}
-	}
-	
-	this.eventLeft = function() {
-		if (this.selected != null) {
-			if (this.selected.parent.children.length > 1) {
-				var siblings = this.selected.parent.children;
-				var selectedIndex = siblings.indexOf(this.selected);
-				if (selectedIndex > 0) {
-					this.selectNode(siblings[selectedIndex-1]);
-				} else {
-					this.makeChildOf(this.selected.parent,true);
-				}
-			} else {
-				this.makeChildOf(this.selected.parent,true)
-			}
-		}
-	}
-	
-	this.eventRight = function() {
-		if (this.selected != null) {
-			if (this.selected.parent.children.length > 1) {
-				var siblings = this.selected.parent.children;
-				var selectedIndex = siblings.indexOf(this.selected);
-				if (selectedIndex < siblings.length-1) {
-					this.selectNode(this.selected.parent.children[selectedIndex+1]);
-				} else {
-					this.makeChildOf(this.selected.parent);
-				}
-			} else {
-				this.makeChildOf(this.selected.parent);
-			}
-		}
-	}
-	
-	this.eventUp = function() {
-		if (this.selected.parent != null) {
-			this.selectNode(this.selected.parent);
-		}
-	}
-	
-	this.eventDown = function() {
-		if (this.selected != null) {
-			if (this.selected.children.length > 0) {
-				var possibleSelects = this.selected.children;
-				var selectHistory = H.getByType('select');
-				
-				for (i=selectHistory.length-1; i>=0; i--) {
-					if (possibleSelects.indexOf(selectHistory[i].node) >= 0) {
-						this.selectNode(selectHistory[i].node);
-						return;
-					}
-				}
-				this.selectNode(this.selected.children[0]);
-			} else {
-				this.makeChildOf(this.selected);
-			}
-		}
-	}
-	
-	// : events.
+
+	// Direct node control functions :
+	// All other node control functions should interface through these
 		
-	this.selectNode = function(node) {
-		var action = new Action('select',node);
-		if (this.selected != null) {
-			this.selected.deselect();
-		}
-		this.selected = node;
-		this.selected.select();
-	}
-	
 	this.editNode = function(node) {
 		if (!node.selected) {
-			this.selectNode(node);
+			this.P.selectNode(node);
 		}
 		node.edit();
 	}
 
-	this.makeNode = function(x,y,t) {
-		var newNode = new Node(this.genId(),x,y,t);
-		this.nodes[newNode.id] = newNode;
-		return newNode;
+	// : direct node control functions.
+	
+	this.getSubtree = function(baseNode) {
+		return new Tree(this.P,baseNode);
 	}
+	
+	this.getPath = function(which) {
+		if (typeof which === 'undefined' || which === 'both') {
+			var Left = true;
+			var Right = true;
+		} else {
+			var Left = which === 'left';
+			var Right = which === 'right';
+		}
 
+		var Y = this.root.position().y - (this.root.labelSize().h/2);
+			
+		if (Right) {
+			var rX = this.root.position().x - (this.root.labelSize().w/2);
+			var rPathString = "M" + rX + "," + Y;
+			rPathString += "H" + (rX + this.root.labelSize().w);
+			var rX = rX + this.root.labelSize().w;
+		}
+		
+		if (Left) {
+			var lX = this.root.position().x + (this.root.labelSize().w/2);
+			var lPathString = "M" + lX + "," + Y;
+			lPathString += "H" + (lX - this.root.labelSize().w);
+			var lX = lX - this.root.labelSize().w;
+		}
+
+		var lastNodes;
+		
+		var row = 1;
+		while (true) {
+			var rowNodes = this.getNodesByOffset(this.root,row);
+			if (rowNodes.length === 0) {
+				lastNodes = this.getNodesByOffset(this.root,row-1);
+				break;
+			}
+			
+			if (Right) {
+				var rNode = rowNodes[rowNodes.length-1];
+				var rPos = rNode.position();
+				var rSize = rNode.labelSize();
+				var rBound = rPos.x + (rSize.w/2);
+				console.log(rNode.labelContent());
+				console.log(rBound,rX);
+				
+				if (rBound < rX) {
+					rPathString += "V" + (rPos.y - (rSize.h/2));
+					rPathString += "H" + (rPos.x + (rSize.w/2));
+				} else {
+					rPathString += "H" + (rPos.x + (rSize.w/2));
+					rPathString += "V" + (rPos.y - (rSize.h/2));
+				}
+				
+				rX = (rPos.x + (rSize.w/2));
+			}
+			
+			if (Left) {
+				var lNode = rowNodes[0];
+				var lPos = lNode.position();
+				var lSize = lNode.labelSize();
+				var lBound = lPos.x - (lSize.w/2);
+
+				if (lBound > lX) {
+					lPathString += "V" + (lPos.y - (lSize.h/2));
+					lPathString += "H" + (lPos.x - (lSize.w/2));
+				} else {
+					lPathString += "H" + (lPos.x - (lSize.w/2));
+					lPathString += "V" + (lPos.y - (lSize.h/2));				
+				}
+				
+				lX = (lPos.x - (lSize.w/2));
+			}
+			row++;
+		}
+		
+		var lNode = lastNodes[0];
+		var rNode = lastNodes[lastNodes.length-1];
+		var lBound = lNode.position().x - (lNode.labelSize().w/2);
+		var rBound = rNode.position().x + (rNode.labelSize().w/2);
+		
+		if (Right) {
+			rPathString += "V" + (rNode.position().y + (rNode.labelSize().h/2));
+			rPathString += "H" + (lNode.position().x - (lNode.labelSize().w/2));
+		}
+		if (Left) {
+			lPathString += "V" + (lNode.position().y + (lNode.labelSize().h/2));
+			lPathString += "H" + (rNode.position().x + (rNode.labelSize().w/2));
+		}
+		
+		if (Left && Right) {
+			return lPathString + rPathString;
+		} else if (Right) {
+			return rPathString;
+		} else if (Left) {
+			return lPathString;
+		}
+	}
+	
 	this.makeChildOf = function(parentNode,left,text) {
 		if (typeof text == 'undefined') {
 			text = "";
@@ -110,7 +130,7 @@ function Tree(x,y) {
 		var pos = parentNode.position();
 		var size = parentNode.labelSize();
 
-		var newChild = this.makeNode(pos.x,pos.y+this.rowHeight,text);
+		var newChild = this.P.makeNode(pos.x,pos.y+this.rowHeight,text);
 
 		newChild.parent = parentNode;
 
@@ -120,25 +140,27 @@ function Tree(x,y) {
 			parentNode.children.push(newChild);
 		}
 
-		var siblings = parentNode.children;
-		if (siblings.length > 1) {
-			var leftBound = pos.x - (this.rowHeight * Math.tan(30 * (Math.PI / 180)));
-			var rightBound = pos.x + (this.rowHeight * Math.tan(30 * (Math.PI / 180)));
-			var spread = rightBound - leftBound;
-			var interval = spread/(siblings.length-1);
-			var i = 0;
-			while (i < siblings.length) {
-				siblings[i].position(leftBound+(interval*i));
-				siblings[i].updateAppearance(1000);
-				i = i+1;
-			}
-		}
+		// var siblings = parentNode.children;
+		// if (siblings.length > 1) {
+			// var leftBound = pos.x - (this.rowHeight * Math.tan(30 * (Math.PI / 180)));
+			// var rightBound = pos.x + (this.rowHeight * Math.tan(30 * (Math.PI / 180)));
+			// var spread = rightBound - leftBound;
+			// var interval = spread/(siblings.length-1);
+			// var i = 0;
+			// while (i < siblings.length) {
+				// siblings[i].position(leftBound+(interval*i));
+				// siblings[i].updateGraphic(500);
+				// i = i+1;
+			// }
+		// }
 		
+		this.spread(parentNode);
 		var branch = new Branch(parentNode,newChild);
+		
 		this.editNode(newChild);
 		return newChild;
 	}
-	
+
 	this.getChildrenOf = function(node,inclusive) {
 		var result = {};
 		var len = node.children.length;
@@ -159,11 +181,23 @@ function Tree(x,y) {
 
 		return result;
 	}
+
+	this.getSiblingsOf = function(node) {
+		var parent = node.parent;
+		var result = [];
+		var c = 0;
+		while (c < parent.children.length) {
+			if (parent.children[c] != node) {
+				result.push(parent.children[c]);
+			}
+		}
+		return result;
+	}
 	
 	this.getNodesByOffset = function(node,off) {
 		// Adapted from http://stackoverflow.com/questions/13523951/how-to-check-the-depth-of-an-object Kavi Siegel's answer
 		if (off == 0) {
-			return node;
+			return [node];
 		}
 
 		var result = [];
@@ -181,69 +215,121 @@ function Tree(x,y) {
 		return result;
 	}
 
-	this.move = function(nodes,deltaX,s) {
-		var i = 0;
-		while (i < nodes.length) {
-			nodes[i].move(deltaX,s);
-			i++;
+	this.spread = function(baseNode,angle) {
+		if (typeof angle === 'undefined') {
+			angle = 30;
+		}
+		
+		// var siblings = parentNode.children;
+		// if (siblings.length > 1) {
+			// var leftBound = pos.x - (this.rowHeight * Math.tan(30 * (Math.PI / 180)));
+			// var rightBound = pos.x + (this.rowHeight * Math.tan(30 * (Math.PI / 180)));
+			// var spread = rightBound - leftBound;
+			// var interval = spread/(siblings.length-1);
+			// var i = 0;
+			// while (i < siblings.length) {
+				// siblings[i].position(leftBound+(interval*i));
+				// siblings[i].updateGraphic(500);
+				// i = i+1;
+			// }
+		// }
+				
+		var children = baseNode.children;
+		if (children.length === 0) {
+			return;
+		} else if (children.length > 1) {
+			var pos = baseNode.position();
+			var leftBound = pos.x - (this.rowHeight * Math.tan(angle * (Math.PI / 180)));
+			var rightBound = pos.x + (this.rowHeight * Math.tan(angle * (Math.PI / 180)));
+			var width = rightBound - leftBound;
+			var interval = width/(children.length-1);
+			var i = 0;
+			while (i < children.length) {
+				children[i].position(leftBound+(interval*i));
+				children[i].updateGraphic();
+				// this.spread(children[i]);
+				i++;
+			}
+		}
+		
+		var c = 0;
+		var intersect = false;
+		while (c < children.length-1) {
+			var lChild = children[i];
+			var rChild = children[i+1];
+			var lPath = this.getSubtree(lChild).getPath();
+			var rPath = this.getSubtree(rChild).getPath();
+			if (Snap.path.intersection(lPath,rPath).length > 0) {
+				intersect = true;
+			}
+			c++;
+		}
+		
+		if (intersect) {
+			this.spread(baseNode,angle+3);
+		}
+		
+		if (baseNode.parent != null) {
+			this.spread(baseNode.parent);
 		}
 	}
 	
-	this.reposition = function() {		
-		var row = 0;
-		var off = 1;
-		var done = true;
+	// this.reposition = function() {		
+		// var row = 0;
+		// var off = 1;
+		// var done = true;
 		
-		while (off < 3) {
-			while (true) {
-				var nodes = this.getNodesByOffset(this.root,row);
-				if (nodes.length == 0) {
-					break;
-				}
+		// this.spread(this.root);
+		
+		// while (off < 3) {
+			// while (true) {
+				// var nodes = this.getNodesByOffset(this.root,row);
+				// if (nodes.length == 0) {
+					// break;
+				// }
 
-				var n = 0;
-				while (n < nodes.length-1) {
-					var leftNode = nodes[n];
-					var rightNode = nodes[n+1];
+				// var n = 0;
+				// while (n < nodes.length-1) {
+					// var leftNode = nodes[n];
+					// var rightNode = nodes[n+1];
 					
-					var leftChildren = this.getNodesByOffset(leftNode,off);
-					var rightChildren = this.getNodesByOffset(rightNode,off);
-					if (leftChildren.length === 0 || rightChildren.length === 0) {
-						n++;
-						continue;
-					}
+					// var leftChildren = this.getNodesByOffset(leftNode,off);
+					// var rightChildren = this.getNodesByOffset(rightNode,off);
+					// if (leftChildren.length === 0 || rightChildren.length === 0) {
+						// n++;
+						// continue;
+					// }
+					
+					// var space = this.spaceBetween(leftChildren[leftChildren.length-1], rightChildren[0]);
 
-					var leftBound = leftChildren[leftChildren.length-1].labelPosition().x + leftChildren[leftChildren.length-1].labelSize().w;
-					var rightBound = rightChildren[0].labelPosition().x;
-
-					var space = rightBound - leftBound;
-
-					if (space < 50) {
-						done = false;
-						var diff = 50 - space;
-						var m = diff/2;
-						if (leftNode.parent != rightNode.parent) {
-							var ancestors = this.getNearestParentSiblings(leftNode,rightNode);
-							ancestors[0].move(-m,0);
-							ancestors[1].move(m,0);
-						} else {
-							leftNode.move(-m,0);
-							rightNode.move(m,0);
-						}
-					}
-					n++;
-				}
-				row++;
-			}
-			off++;
-		}
-		if (!done) {
-			this.reposition();
-		}
-	}
+					// if (space < 50) {
+						// done = false;
+						// var diff = 50 - space;
+						// var m = diff/2;
+						// if (leftNode.parent != rightNode.parent) {
+							// var ancestors = this.getNearestParentSiblings(leftNode,rightNode);
+							// ancestors[0].position(ancestors[0].position().x - m);
+							// ancestors[1].position(ancestors[1].position().x + m);
+						// } else {
+							// leftNode.position(leftNode.position().x - m);
+							// rightNode.position(rightNode.position().x + m);
+						// }
+					// }
+					// n++;
+				// }
+				// row++;
+			// }
+			// off++;
+		// }
+		// if (!done) {
+			// this.reposition();
+		// } else {
+			// this.root.updateGraphic(500);
+		// }
+	// }
 
 	// Util:
-	
+
 	this.getDepthOf = function(object) {
 		// Taken from http://stackoverflow.com/questions/13523951/how-to-check-the-depth-of-an-object Kavi Siegel's answer
 		var level = 1;
@@ -260,17 +346,6 @@ function Tree(x,y) {
 		return level;
 	}
 	
-	this.spaceBetween = function(leftNode,rightNode) {
-		var leftPos = leftNode.labelPosition();
-		var rightPos = rightNode.labelPosition();
-		var leftSize = leftNode.labelSize();
-		
-		var leftNodeRightBound = leftPos.x + leftSize.w;
-		var rightNodeLeftBound = rightPos.x;
-		
-		return rightNodeLeftBound - leftNodeRightBound;
-	}
-	
 	this.getNearestParentSiblings = function(leftNode,rightNode) {
 		if (leftNode.parent == rightNode.parent) {
 			return [leftNode, rightNode];
@@ -278,8 +353,4 @@ function Tree(x,y) {
 			return this.getNearestParentSiblings(leftNode.parent, rightNode.parent);
 		}
 	}
-	
-	this.root = this.makeNode(x,y,"A long piece of text");
-	this.selectNode(this.root);
-
 }

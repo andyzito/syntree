@@ -5,7 +5,9 @@ $(document).ready(function() {
 	snap = Snap("#workspace");
 
 	var W = new Workspace();
-	var T = W.tree;
+	var T = W.page.tree;
+	W.page.selectNode(T.root);
+	// T.root.select();
 	
 	// var DP = T.makeChildOf(T.root,false,"NP");
 	// var D = T.makeChildOf(DP,false,"D");
@@ -38,12 +40,12 @@ $(document).ready(function() {
 	// var N = T.makeChildOf(NP,false,"N");
 	// var fire = T.makeChildOf(N,false,"fireman");
 	
-	// var A = T.makeChildOf(T.root,false,text="A");
+	var A = T.makeChildOf(T.root,false,text="A");
 	// var Z = T.makeChildOf(A,false,text="Z");
 	// var Y = T.makeChildOf(A,false,text="Y");
 	// var X = T.makeChildOf(Y,false,text="X");
 	// var W = T.makeChildOf(Y,false,text="W");
-	// var B = T.makeChildOf(T.root,false,text="B");
+	var B = T.makeChildOf(T.root,false,text="B");
 	// var C = T.makeChildOf(B,false,text="C");
 	// var D = T.makeChildOf(B,false,text="D");
 	// var E = T.makeChildOf(D,false,text="E");
@@ -57,15 +59,9 @@ $(document).ready(function() {
 	// var K = T.makeChildOf(F,false,text="K");
 	// var L = T.makeChildOf(F,false,text="L");
 	
-	T.selected.save();
+	// T.selected.save();
 	
     $("#background").on('click', function(e) {
-		// var wholetree = W.tree.getChildrenOf(W.tree.root,true);
-		// console.log(wholetree)
-        console.log(T.reposition());
-        // var mouseX = e.pageX - $(this).offset().left;
-        // var mouseY = e.pageY - $(this).offset().top;
-        // var newnode = new Node(mouseX,mouseY,"");
-        // newnode.edit();
+		T.getPath('both');
     });
 });

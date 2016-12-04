@@ -24,8 +24,7 @@ function Node(id,x,y,t) {
 	});
 	
 	// Anchor mark
-	this.anchorMark = snap.circle(0,0,0);
-	
+	this.anchorMark = snap.circle(this.x,this.y,3);
 
 	// Relationships
 	this.parent = null;
@@ -41,12 +40,29 @@ function Node(id,x,y,t) {
 	this.real = false;
 
 	// Property retrieval:
-	this.position = function(x,y) {
+	this.position = function(x,y,propogate) {
+		if (typeof propogate == 'undefined') {
+			propogate = true;
+		}
+		var oldX = this.x;
+		var oldY = this.y;
+		
 		if (typeof x != 'undefined') {
 			this.x = x;
 		}
 		if (typeof y != 'undefined') {
 			this.y = y;
+		}
+		if (propogate) {
+			var c = 0;
+			while (c < this.children.length) {
+				var deltaX = this.x - oldX;
+				var deltaY = this.y - oldY;
+				var thisChild = this.children[c];
+				var pos = thisChild.position();
+				thisChild.position(pos.x + deltaX,pos.y + deltaY);
+				c++;
+			}
 		}
 		return {
 			x: this.x,
@@ -88,7 +104,7 @@ function Node(id,x,y,t) {
 
 	this.select = function() {
 		this.selected = true;
-		this.updateAppearance();
+		this.updateGraphic();
 	}
 
 	this.deselect = function() {
@@ -96,7 +112,7 @@ function Node(id,x,y,t) {
 			this.cancel();
 		}
 		this.selected = false;
-		this.updateAppearance();
+		this.updateGraphic();
 	}
 
 	this.edit = function(e) {
@@ -130,57 +146,60 @@ function Node(id,x,y,t) {
 			this.editing = false;
 			this.labelContent(this.editor.val())
 			this.editor.hide();
-			this.updateAppearance();
+			this.updateGraphic();
 		}
 	}
 
 	this.cancel = function() {
 		this.editing = false;
 		this.editor.hide();
-		this.updateAppearance();
+		this.updateGraphic();
 	}
 	
-	this.move = function(deltaX,s,propagate) {
-		if (typeof propagate == 'undefined') {
-			propagate = true;
-		}
-		this.x = this.x + deltaX;
-		this.updateAppearance(s);
-		if (propagate) {
-			var i = 0;
-			while (i < this.children.length) {
-				this.children[i].move(deltaX,s);
-				i++;
-			}
-		}
-	}
+	// this.move = function(deltaX,s,propagate) {
+		// if (typeof propagate == 'undefined') {
+			// propagate = true;
+		// }
+		// this.x = this.x + deltaX;
+		// this.updateGraphic(s);
+		// if (propagate) {
+			// var i = 0;
+			// while (i < this.children.length) {
+				// this.children[i].move(deltaX,s);
+				// i++;
+			// }
+		// }
+	// }
 
-	this.updateAppearance = function(seconds) {
-		if (typeof seconds == 'undefined') {
-			var seconds = 0;
+	this.updateGraphic = function(seconds,propogate) {
+		// if (typeof seconds == 'undefined') {
+			seconds = 0;
+		// }
+		if (typeof propogate == 'undefined') {
+			propogate = true;
 		}
 		var size = this.labelSize();
 		
 		// Animation?
 		if (seconds != 0) {
-			var svgLabel = Snap("#" + this.label.attr('id'))
+			var svgLabel = Snap("#" + this.label.attr('id'));
 			
 			svgLabel.animate({
 				x: this.x-(size.w/2),
 				y: this.y+(size.h/2)
 			},seconds);
-			// var tpos = this.labelPosition();
-			// this.highlight.animate({
-				// x: tpos.x - 5,
-				// y: tpos.y - size.h - 5
-			// },seconds);
-			// this.anchorMark.animate({
-				// cx: this.x,
-				// cy: this.y
-			// },seconds)
+			// var lpos = this.labelPosition();
+			this.highlight.animate({
+				x: this.x - (size.w/2) - 5,
+				y: this.y - (size.h/2) - 5
+			},seconds);
+			this.anchorMark.animate({
+				cx: this.x,
+				cy: this.y
+			},seconds)
 		}
-		
-		this.labelPosition(this.x-(size.w/2), this.y+(size.h/2))
+
+		this.labelPosition(this.x-(size.w/2), this.y+(size.h/2));		
 		var tpos = this.labelPosition();
 		this.highlight.attr({
 			x: tpos.x - 5,
@@ -191,7 +210,7 @@ function Node(id,x,y,t) {
 		this.anchorMark.attr({
 			cx: this.x,
 			cy: this.y,
-			r:3
+			// r:3
 		})
 		if (this.selected) {
 			this.highlight.attr({
@@ -211,11 +230,20 @@ function Node(id,x,y,t) {
 		
 		// Branches
 		if (this.parentBranch != null) {
-			this.parentBranch.updateAppearance(seconds);
+			this.parentBranch.updateGraphic(seconds);
 		}
 		for (i=0;i<this.childBranches.length;i++) {
-			this.childBranches[i].updateAppearance(seconds);
+			this.childBranches[i].updateGraphic(seconds);
+		}
+		
+		if (propogate) {
+			var c = 0;
+			while (c < this.children.length) {
+				this.children[c].updateGraphic(seconds);
+				c++;
+			}
 		}
 	}
-
+	
+	this.updateGraphic();
 }

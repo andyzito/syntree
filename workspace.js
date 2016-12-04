@@ -2,25 +2,31 @@ function Workspace() {
 	this.svg = $("#workspace");
 	this.background = snap.rect(0,0,this.svg.width(),this.svg.height());
 	this.background.attr({fill:'white',id:'background'});
-	this.tree = new Tree(this.svg.width()/2,20);
 	
-	var tree = this.tree;
+	this.idRef = 100;
+	this.genId = function() {
+		this.idRef++;
+		return this.idRef;
+	}
+
+	this.page = new Page(this);
+	var page = this.page;
 	
 	$(document).on('click', '.node-label', function(){
-		tree.eventNodeClick(this);
+		page.eventNodeClick(this);
 	});
 	
 	$(document).on('keydown', function(e) {
 		if (e.keyCode === 13) {
-			tree.eventEnter();
+			page.eventEnter();
 		} else if (e.keyCode === 37) {
-			tree.eventLeft();
+			page.eventLeft();
 		} else if (e.keyCode === 38) {
-			tree.eventUp();
+			page.eventUp();
 		} else if (e.keyCode === 39) {
-			tree.eventRight();
+			page.eventRight();
 		} else if (e.keyCode === 40) {
-			tree.eventDown();
+			page.eventDown();
 		}
 	})
 }
