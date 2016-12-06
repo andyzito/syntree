@@ -6,15 +6,45 @@ function Page(W) {
 	this.selectNode = function(node) {
 		var action = new Action('select',node);
 		if (this.selectedNode != null) {
-			this.selectedNode.deselect();
+			this.deselectNode(this.selectedNode);
 		}
 		this.selectedNode = node;
 		this.selectedNode.select();
+	}
+
+	this.deselectNode = function(node) {
+		this.selectedNode = null;
+		node.deselect();
+		if (node.editing) {
+			if (node.real) {
+				node.cancel();
+			} else {
+				this.deleteNode(node);
+			}
+		}
+	}
+
+	this.deleteNode = function(node) {
+		var action = new Action('delete',node);
+		delete this.allNodes[node.id];
+		node.label.remove();
+		node.editor.remove();
+		node.anchorMark.remove();
+		node.highlight.remove();
+		if (node.parent != undefined) {
+			node.parentBranch.line.remove();
+			node.parent.children.splice(node.parent.children.indexOf(node), 1);
+			node.parent.childBranches.splice(node.parent.childBranches.indexOf(node.parentBranch), 1);
+			this.tree.spread(node.parent);
+			node.parent.updateGraphic();
+		}
+		return;
 	}
 	
 	this.makeNode = function(x,y,t) {
 		var newNode = new Node(this.W.genId(),x,y,t);
 		this.allNodes[newNode.id] = newNode;
+		var action = new Action('make',newNode);
 		return newNode;
 	}
 	
@@ -26,7 +56,6 @@ function Page(W) {
 		
 		var leftNodeRightBound = leftPos.x + (leftSize.w/2);
 		var rightNodeLeftBound = rightPos.x - (rightSize.w/2);
-		console.log(leftNodeRightBound, rightNodeLeftBound);
 		
 		return rightNodeLeftBound - leftNodeRightBound;
 	}
@@ -46,11 +75,12 @@ function Page(W) {
 	
 	this.eventLeft = function() {
 		if (this.selectedNode != null) {
-			if (this.selectedNode.parent.children.length > 1) {
-				var siblings = this.selectedNode.parent.children;
-				var selectedIndex = siblings.indexOf(this.selectedNode);
+			var off = this.tree.getNodeOffset(this.tree.root,this.selectedNode);
+			var rowNodes = this.tree.getNodesByOffset(this.tree.root,off);
+			if (rowNodes.length > 1) {
+				var selectedIndex = rowNodes.indexOf(this.selectedNode);
 				if (selectedIndex > 0) {
-					this.selectNode(siblings[selectedIndex-1]);
+					this.selectNode(rowNodes[selectedIndex-1]);
 				} else {
 					this.tree.makeChildOf(this.selectedNode.parent,true);
 				}
@@ -62,11 +92,12 @@ function Page(W) {
 	
 	this.eventRight = function() {
 		if (this.selectedNode != null) {
-			if (this.selectedNode.parent.children.length > 1) {
-				var siblings = this.selectedNode.parent.children;
-				var selectedIndex = siblings.indexOf(this.selectedNode);
-				if (selectedIndex < siblings.length-1) {
-					this.selectNode(this.selectedNode.parent.children[selectedIndex+1]);
+			var off = this.tree.getNodeOffset(this.tree.root,this.selectedNode);
+			var rowNodes = this.tree.getNodesByOffset(this.tree.root,off);
+			if (rowNodes.length > 1) {
+				var selectedIndex = rowNodes.indexOf(this.selectedNode);
+				if (selectedIndex < rowNodes.length-1) {
+					this.selectNode(rowNodes[selectedIndex+1]);
 				} else {
 					this.tree.makeChildOf(this.selectedNode.parent);
 				}
@@ -77,8 +108,10 @@ function Page(W) {
 	}
 	
 	this.eventUp = function() {
-		if (this.selectedNode.parent != null) {
-			this.selectNode(this.selectedNode.parent);
+		if (this.selectedNode != null) {
+			if (this.selectedNode.parent != null) {
+				this.selectNode(this.selectedNode.parent);
+			}
 		}
 	}
 	
@@ -98,6 +131,19 @@ function Page(W) {
 			} else {
 				this.tree.makeChildOf(this.selectedNode);
 			}
+		}
+	}
+	
+	this.eventDel = function() {
+		if (this.selectedNode != null) {
+			this.deleteNode(this.selectedNode);
+			this.selectNode(H.getNthOfType('select',1).node);
+		}
+	}
+	
+	this.eventEsc = function() {
+		if (this.selectedNode != null) {
+			this.selectedNode.cancel();
 		}
 	}
 	

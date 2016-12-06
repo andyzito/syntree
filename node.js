@@ -108,9 +108,6 @@ function Node(id,x,y,t) {
 	}
 
 	this.deselect = function() {
-		if (this.editing) {
-			this.cancel();
-		}
 		this.selected = false;
 		this.updateGraphic();
 	}
@@ -125,6 +122,8 @@ function Node(id,x,y,t) {
 		if (this.labelContent() != "") {
 			this.editor.width(size.w);
 			this.editor.height(size.h);
+		} else {
+			this.editor.width(40);
 		}
 		this.editor.show();
 		this.editor.focus();
@@ -156,21 +155,6 @@ function Node(id,x,y,t) {
 		this.updateGraphic();
 	}
 	
-	// this.move = function(deltaX,s,propagate) {
-		// if (typeof propagate == 'undefined') {
-			// propagate = true;
-		// }
-		// this.x = this.x + deltaX;
-		// this.updateGraphic(s);
-		// if (propagate) {
-			// var i = 0;
-			// while (i < this.children.length) {
-				// this.children[i].move(deltaX,s);
-				// i++;
-			// }
-		// }
-	// }
-
 	this.updateGraphic = function(seconds,propogate) {
 		// if (typeof seconds == 'undefined') {
 			seconds = 0;

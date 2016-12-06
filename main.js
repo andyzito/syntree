@@ -40,12 +40,12 @@ $(document).ready(function() {
 	// var N = T.makeChildOf(NP,false,"N");
 	// var fire = T.makeChildOf(N,false,"fireman");
 	
-	var A = T.makeChildOf(T.root,false,text="A");
+	// var A = T.makeChildOf(T.root,false,text="A");
 	// var Z = T.makeChildOf(A,false,text="Z");
 	// var Y = T.makeChildOf(A,false,text="Y");
 	// var X = T.makeChildOf(Y,false,text="X");
 	// var W = T.makeChildOf(Y,false,text="W");
-	var B = T.makeChildOf(T.root,false,text="B");
+	// var B = T.makeChildOf(T.root,false,text="B");
 	// var C = T.makeChildOf(B,false,text="C");
 	// var D = T.makeChildOf(B,false,text="D");
 	// var E = T.makeChildOf(D,false,text="E");
@@ -62,6 +62,6 @@ $(document).ready(function() {
 	// T.selected.save();
 	
     $("#background").on('click', function(e) {
-		T.getPath('both');
+		W.page.deleteNode(A);
     });
 });

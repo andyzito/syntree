@@ -27,6 +27,10 @@ function Workspace() {
 			page.eventRight();
 		} else if (e.keyCode === 40) {
 			page.eventDown();
+		} else if (e.keyCode === 46) {
+			page.eventDel();
+		} else if (e.keyCode === 27) {
+			page.eventEsc();
 		}
 	})
 }

@@ -19,4 +19,17 @@ function History() {
 		});
 		return filtered;
 	}
+	
+	this.getLastOfType = function(type) {
+		var actions = this.getByType(type);
+		return actions[actions.length-1];
+	}
+	
+	this.getNthOfType = function(type,n) {
+		if (typeof n === 'undefined') {
+			n = 0;
+		}
+		var actions = this.getByType(type);
+		return actions[actions.length - (n+1)]
+	}
 }
