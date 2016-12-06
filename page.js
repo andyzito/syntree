@@ -31,6 +31,14 @@ function Page(W) {
 		node.editor.remove();
 		node.anchorMark.remove();
 		node.highlight.remove();
+		if (node.children.length > 0) {
+			var children = node.children.slice(0);
+			var c = 0;
+			while (c < children.length) {
+				this.deleteNode(children[c]);
+				c++;
+			}
+		}
 		if (node.parent != undefined) {
 			node.parentBranch.line.remove();
 			node.parent.children.splice(node.parent.children.indexOf(node), 1);
