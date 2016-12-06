@@ -9,18 +9,6 @@ function Tree(P,root,x,y) {
 		this.root = root;
 	}
 	this.rowHeight = 70;
-
-	// Direct node control functions :
-	// All other node control functions should interface through these
-		
-	this.editNode = function(node) {
-		if (!node.selected) {
-			this.P.selectNode(node);
-		}
-		node.edit();
-	}
-
-	// : direct node control functions.
 	
 	this.getSubtree = function(baseNode) {
 		return new Tree(this.P,baseNode);
@@ -143,7 +131,8 @@ function Tree(P,root,x,y) {
 		this.spread(parentNode);
 		var branch = new Branch(parentNode,newChild);
 		
-		this.editNode(newChild);
+		this.P.selectNode(newChild);
+		newChild.editToggle();
 		return newChild;
 	}
 
@@ -168,18 +157,6 @@ function Tree(P,root,x,y) {
 		return result;
 	}
 
-	// this.getSiblingsOf = function(node) {
-		// var parent = node.parent;
-		// var result = [];
-		// var c = 0;
-		// while (c < parent.children.length) {
-			// if (parent.children[c] != node) {
-				// result.push(parent.children[c]);
-			// }
-		// }
-		// return result;
-	// }
-	
 	this.getNodeOffset = function(fromNode,toNode) {
 		if (fromNode === toNode) {
 			return 0;
@@ -267,83 +244,4 @@ function Tree(P,root,x,y) {
 		}
 	}
 	
-	// this.reposition = function() {		
-		// var row = 0;
-		// var off = 1;
-		// var done = true;
-		
-		// this.spread(this.root);
-		
-		// while (off < 3) {
-			// while (true) {
-				// var nodes = this.getNodesByOffset(this.root,row);
-				// if (nodes.length == 0) {
-					// break;
-				// }
-
-				// var n = 0;
-				// while (n < nodes.length-1) {
-					// var leftNode = nodes[n];
-					// var rightNode = nodes[n+1];
-					
-					// var leftChildren = this.getNodesByOffset(leftNode,off);
-					// var rightChildren = this.getNodesByOffset(rightNode,off);
-					// if (leftChildren.length === 0 || rightChildren.length === 0) {
-						// n++;
-						// continue;
-					// }
-					
-					// var space = this.spaceBetween(leftChildren[leftChildren.length-1], rightChildren[0]);
-
-					// if (space < 50) {
-						// done = false;
-						// var diff = 50 - space;
-						// var m = diff/2;
-						// if (leftNode.parent != rightNode.parent) {
-							// var ancestors = this.getNearestParentSiblings(leftNode,rightNode);
-							// ancestors[0].position(ancestors[0].position().x - m);
-							// ancestors[1].position(ancestors[1].position().x + m);
-						// } else {
-							// leftNode.position(leftNode.position().x - m);
-							// rightNode.position(rightNode.position().x + m);
-						// }
-					// }
-					// n++;
-				// }
-				// row++;
-			// }
-			// off++;
-		// }
-		// if (!done) {
-			// this.reposition();
-		// } else {
-			// this.root.updateGraphic(500);
-		// }
-	// }
-
-	// Util:
-
-	// this.getDepthOf = function(object) {
-		// Taken from http://stackoverflow.com/questions/13523951/how-to-check-the-depth-of-an-object Kavi Siegel's answer
-		// var level = 1;
-		// var key;
-		
-		// for(key in object) {
-			// if (!object.hasOwnProperty(key)) continue;
-
-			// if(typeof object[key] == 'object'){
-				// var depth = this.getDepthOf(object[key]) + 1;
-				// level = Math.max(depth, level);
-			// }
-		// }
-		// return level;
-	// }
-	
-	// this.getNearestParentSiblings = function(leftNode,rightNode) {
-		// if (leftNode.parent == rightNode.parent) {
-			// return [leftNode, rightNode];
-		// } else {
-			// return this.getNearestParentSiblings(leftNode.parent, rightNode.parent);
-		// }
-	// }
 }
