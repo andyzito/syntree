@@ -61,7 +61,7 @@ $(document).ready(function() {
 	
 	// T.selected.save();
 	
-    $("#background").on('click', function(e) {
-		W.page.deleteNode(A);
-    });
+    // $("#background").on('click', function(e) {
+		// W.page.deleteNode(A);
+    // });
 });

@@ -13,7 +13,7 @@ function Node(id,x,y,t) {
 
 	// Editor
 	var editorid = "editor-" + this.id;
-	$("#workspace_container").append('<input id="' + editorid + '" class="editor"></input>');
+	$("#workspace_container").append('<input id="' + editorid + '" class="editor">');
 	this.editor = $("#" + editorid);
 	this.editor.hide();
 	
@@ -101,6 +101,16 @@ function Node(id,x,y,t) {
 	}
 
 	// State change:
+	
+	this.delete = function() {
+		this.label.remove();
+		this.editor.remove();
+		this.anchorMark.remove();
+		this.highlight.remove();
+		this.parentBranch.line.remove();
+		this.parent.children.splice(this.parent.children.indexOf(this), 1);
+		this.parent.childBranches.splice(this.parent.childBranches.indexOf(this.parentBranch), 1);
+	}
 
 	this.select = function() {
 		this.selected = true;
@@ -112,28 +122,27 @@ function Node(id,x,y,t) {
 		this.updateGraphic();
 	}
 
-	this.edit = function(e) {
+	this.editInit = function(e) {
 		this.editing = true;
-		var pos = this.labelPosition();
-		var size = this.labelSize();
-		this.editor.css('left', pos.x);
-		this.editor.css('top', pos.y-size.h);
-		this.editor.val(this.label.text());
-		if (this.labelContent() != "") {
-			this.editor.width(size.w);
-			this.editor.height(size.h);
-		} else {
-			this.editor.width(40);
-		}
+		this.beforeEditLabelContent = this.labelContent();
+		this.updateGraphic();
+		this.editor.val(this.labelContent());
 		this.editor.show();
 		this.editor.focus();
+	}
+	
+	this.editUpdate = function() {
+		if (this.editing) {
+			this.labelContent(this.editor.val());
+			this.updateGraphic();
+		}
 	}
 	
 	this.editToggle = function() {
 		if (this.editing) {
 			this.save();
 		} else {
-			this.edit();
+			this.editInit();
 		}
 	}
 
@@ -145,6 +154,7 @@ function Node(id,x,y,t) {
 			this.editing = false;
 			this.labelContent(this.editor.val())
 			this.editor.hide();
+			this.editor.blur();
 			this.updateGraphic();
 		}
 	}
@@ -152,37 +162,15 @@ function Node(id,x,y,t) {
 	this.cancel = function() {
 		this.editing = false;
 		this.editor.hide();
+		this.labelContent(this.beforeEditLabelContent);
 		this.updateGraphic();
 	}
 	
-	this.updateGraphic = function(seconds,propogate) {
-		// if (typeof seconds == 'undefined') {
-			seconds = 0;
-		// }
+	this.updateGraphic = function(propogate) {
 		if (typeof propogate == 'undefined') {
 			propogate = true;
 		}
 		var size = this.labelSize();
-		
-		// Animation?
-		if (seconds != 0) {
-			var svgLabel = Snap("#" + this.label.attr('id'));
-			
-			svgLabel.animate({
-				x: this.x-(size.w/2),
-				y: this.y+(size.h/2)
-			},seconds);
-			// var lpos = this.labelPosition();
-			this.highlight.animate({
-				x: this.x - (size.w/2) - 5,
-				y: this.y - (size.h/2) - 5
-			},seconds);
-			this.anchorMark.animate({
-				cx: this.x,
-				cy: this.y
-			},seconds)
-		}
-
 		this.labelPosition(this.x-(size.w/2), this.y+(size.h/2));		
 		var tpos = this.labelPosition();
 		this.highlight.attr({
@@ -212,18 +200,25 @@ function Node(id,x,y,t) {
 			})
 		}
 		
+		this.editor.css({
+			'left': this.labelPosition().x,
+			'top': this.labelPosition().y - this.labelSize().h,
+			'width': this.labelSize().w,
+			'height': this.labelSize().h,
+		});
+		
 		// Branches
 		if (this.parentBranch != null) {
-			this.parentBranch.updateGraphic(seconds);
+			this.parentBranch.updateGraphic();
 		}
 		for (i=0;i<this.childBranches.length;i++) {
-			this.childBranches[i].updateGraphic(seconds);
+			this.childBranches[i].updateGraphic();
 		}
 		
 		if (propogate) {
 			var c = 0;
 			while (c < this.children.length) {
-				this.children[c].updateGraphic(seconds);
+				this.children[c].updateGraphic();
 				c++;
 			}
 		}

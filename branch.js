@@ -20,17 +20,17 @@ function Branch(parent,child) {
 		if (seconds != 0) {
 			this.line.animate({
 				x1: this.startPoint.x,
-				y1: this.startPoint.y,
+				y1: this.startPoint.y + 15,
 				x2: this.endPoint.x,
-				y2: this.endPoint.y,
+				y2: this.endPoint.y - 15,
 			},seconds)
 		}
 		
 		this.line.attr({
 			x1: this.startPoint.x,
-			y1: this.startPoint.y,
+			y1: this.startPoint.y + (this.parent.labelSize().h/2) + 5,
 			x2: this.endPoint.x,
-			y2: this.endPoint.y,
+			y2: this.endPoint.y - (this.child.labelSize().h/2) - 5,
 		})
 	}
 }

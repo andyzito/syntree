@@ -1,7 +1,5 @@
 function Workspace() {
 	this.svg = $("#workspace");
-	this.background = snap.rect(0,0,this.svg.width(),this.svg.height());
-	this.background.attr({fill:'white',id:'background'});
 	
 	this.idRef = 100;
 	this.genId = function() {
@@ -9,7 +7,7 @@ function Workspace() {
 		return this.idRef;
 	}
 
-	this.page = new Page(this);
+	this.page = new Page(this.genId(), this);
 	var page = this.page;
 	
 	$(document).on('click', '.node-label', function(){
@@ -33,4 +31,8 @@ function Workspace() {
 			page.eventEsc();
 		}
 	})
+	
+	$(document).on('input', '.editor', function() {
+		page.eventEditorTyping();
+	});
 }

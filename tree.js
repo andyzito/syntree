@@ -1,6 +1,7 @@
 function Tree(P,root,x,y) {
 	this.P = P;
 	this.W = P.W;
+	this.rowHeight = 70;
 
 	if (typeof root === 'undefined' || root === null) {
 		this.root = this.P.makeNode(x,y,"S");
@@ -8,7 +9,6 @@ function Tree(P,root,x,y) {
 	} else {
 		this.root = root;
 	}
-	this.rowHeight = 70;
 	
 	this.getSubtree = function(baseNode) {
 		return new Tree(this.P,baseNode);
@@ -201,6 +201,9 @@ function Tree(P,root,x,y) {
 	this.spread = function(baseNode,angle) {
 		if (typeof angle === 'undefined') {
 			angle = 30;
+		}
+		if (baseNode === 'undefined' || baseNode === null) {
+			return;
 		}
 				
 		var children = baseNode.children;

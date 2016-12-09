@@ -1,6 +1,9 @@
-function Page(W) {
+function Page(id, W) {
+	this.id = id;
 	this.allNodes = {};
 	this.selectedNode = null;
+	this.background = snap.rect(0,0,W.svg.width(),W.svg.height());
+	this.background.attr({fill:'white',id:'background'});
 	this.W = W;
 
 	this.selectNode = function(node) {
@@ -27,10 +30,7 @@ function Page(W) {
 	this.deleteNode = function(node) {
 		var action = new Action('delete',node);
 		delete this.allNodes[node.id];
-		node.label.remove();
-		node.editor.remove();
-		node.anchorMark.remove();
-		node.highlight.remove();
+		node.delete();
 		if (node.children.length > 0) {
 			var children = node.children.slice(0);
 			var c = 0;
@@ -40,9 +40,6 @@ function Page(W) {
 			}
 		}
 		if (node.parent != undefined) {
-			node.parentBranch.line.remove();
-			node.parent.children.splice(node.parent.children.indexOf(node), 1);
-			node.parent.childBranches.splice(node.parent.childBranches.indexOf(node.parentBranch), 1);
 			this.tree.spread(node.parent);
 			node.parent.updateGraphic();
 		}
@@ -77,6 +74,7 @@ function Page(W) {
 
 	this.eventEnter = function() {
 		if (this.selectedNode != null) {
+			this.tree.spread(this.selectedNode.parent);
 			this.selectedNode.editToggle();
 		}
 	}
@@ -155,7 +153,12 @@ function Page(W) {
 		}
 	}
 	
+	this.eventEditorTyping = function() {
+		this.selectedNode.editUpdate();
+		this.tree.spread(this.selectedNode.parent);
+	}
+	
 	// : events.
 	
-	this.tree = new Tree(this,undefined,W.svg.width()/2,20);
+	this.tree = new Tree(this,undefined,this.background.attr('width')/2,20);
 }
