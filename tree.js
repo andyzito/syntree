@@ -23,20 +23,24 @@ function Tree(P,root,x,y) {
 			var Right = which === 'right';
 		}
 
-		var Y = this.root.position().y - (this.root.labelSize().h/2);
+		var rootBBox = this.root.getLabelBBox();
+		var rootPos = this.root.position();
+		var Y = rootPos.y - (rootBBox.h/2);
 			
 		if (Right) {
-			var rX = this.root.position().x - (this.root.labelSize().w/2);
+			var rX = rootPos.x - (rootBBox.w/2);
 			var rPathString = "M" + rX + "," + Y;
-			rPathString += "H" + (rX + this.root.labelSize().w);
-			var rX = rX + this.root.labelSize().w;
+			rPathString += "H" + (rootPos.x + (rootBBox.w/2));
+			var rX = rootPos.x + (rootBBox.w/2);
+			var rBound = rX;
 		}
 		
 		if (Left) {
-			var lX = this.root.position().x + (this.root.labelSize().w/2);
+			var lX = rootPos.x + (rootBBox.w/2);
 			var lPathString = "M" + lX + "," + Y;
-			lPathString += "H" + (lX - this.root.labelSize().w);
-			var lX = lX - this.root.labelSize().w;
+			lPathString += "H" + (rootPos.x - (rootBBox.w/2));
+			var lX = rootPos.x - (rootBBox.w/2);
+			var lBound = lX;
 		}
 
 		var lastNodes;
@@ -52,81 +56,94 @@ function Tree(P,root,x,y) {
 			if (Right) {
 				var rNode = rowNodes[rowNodes.length-1];
 				var rPos = rNode.position();
-				var rSize = rNode.labelSize();
-				var rBound = rPos.x + (rSize.w/2);
-				
-				if (rBound < rX) {
-					rPathString += "V" + (rPos.y - (rSize.h/2));
-					rPathString += "H" + (rPos.x + (rSize.w/2));
+				var rBBox = rNode.getLabelBBox();
+				var newRX = rPos.x + (rBBox.w/2);
+
+				if (newRX < rX) {
+					rPathString += "V" + (rPos.y - (rBBox.h/2));
+					rPathString += "H" + (rPos.x + (rBBox.w/2));
 				} else {
-					rPathString += "H" + (rPos.x + (rSize.w/2));
-					rPathString += "V" + (rPos.y - (rSize.h/2));
+					rPathString += "H" + (rPos.x + (rBBox.w/2));
+					rPathString += "V" + (rPos.y - (rBBox.h/2));
 				}
-				
-				rX = (rPos.x + (rSize.w/2));
+
+				rX = newRX;
+				if (rX > rBound) {
+					rBound = rX;
+				}
 			}
 			
 			if (Left) {
 				var lNode = rowNodes[0];
 				var lPos = lNode.position();
-				var lSize = lNode.labelSize();
-				var lBound = lPos.x - (lSize.w/2);
+				var lBBox = lNode.getLabelBBox();
+				var newLX = lPos.x - (lBBox.w/2);
 
-				if (lBound > lX) {
-					lPathString += "V" + (lPos.y - (lSize.h/2));
-					lPathString += "H" + (lPos.x - (lSize.w/2));
+				if (newLX > lX) {
+					lPathString += "V" + (lPos.y - (lBBox.h/2));
+					lPathString += "H" + (lPos.x - (lBBox.w/2));
 				} else {
-					lPathString += "H" + (lPos.x - (lSize.w/2));
-					lPathString += "V" + (lPos.y - (lSize.h/2));				
+					lPathString += "H" + (lPos.x - (lBBox.w/2));
+					lPathString += "V" + (lPos.y - (lBBox.h/2));				
 				}
 				
-				lX = (lPos.x - (lSize.w/2));
+				lX = newLX;
+				if (lX < lBound) {
+					lBound = lX;
+				}
 			}
 			row++;
 		}
 		
 		var lNode = lastNodes[0];
 		var rNode = lastNodes[lastNodes.length-1];
-		var lBound = lNode.position().x - (lNode.labelSize().w/2);
-		var rBound = rNode.position().x + (rNode.labelSize().w/2);
+		var lPos = lNode.position();
+		var rPos = rNode.position();
+		var lBBox = lNode.getLabelBBox();
+		var rBBox = rNode.getLabelBBox();
 		
 		if (Right) {
-			rPathString += "V" + (rNode.position().y + (rNode.labelSize().h/2));
-			rPathString += "H" + (lNode.position().x - (lNode.labelSize().w/2));
+			rPathString += "V" + (rPos.y + (rBBox.h/2));
+			rPathString += "H" + (lPos.x - (lBBox.w/2));
 		}
 		if (Left) {
-			lPathString += "V" + (lNode.position().y + (lNode.labelSize().h/2));
-			lPathString += "H" + (rNode.position().x + (rNode.labelSize().w/2));
+			lPathString += "V" + (lPos.y + (lBBox.h/2));
+			lPathString += "H" + (rPos.x + (rBBox.w/2));
 		}
 		
+		var toReturn = {};
 		if (Left && Right) {
-			return lPathString + rPathString;
+			toReturn.pathString = lPathString + rPathString;
+			toReturn.rightBound = rBound;
+			toReturn.leftBound = lBound;
 		} else if (Right) {
-			return rPathString;
+			toReturn.pathString = rPathString;
+			toReturn.rightBound = rBound;
 		} else if (Left) {
-			return lPathString;
+			toReturn.pathString = lPathString;
+			toReturn.rightBound = rBound;
 		}
+		
+		return toReturn;
 	}
 	
-	this.makeChildOf = function(parentNode,left,text) {
+	this.makeChildOf = function(parentNode,index,text) {
 		if (typeof text == 'undefined') {
 			text = "";
+		}
+		if (typeof index === 'undefined') {
+			index = parentNode.children.length;
 		}
 		if (!parentNode.real) {
 			return;
 		}
 		var pos = parentNode.position();
-		var size = parentNode.labelSize();
 
 		var newChild = this.P.makeNode(pos.x,pos.y+this.rowHeight,text);
 
 		newChild.parent = parentNode;
 
-		if (left) {
-			parentNode.children.unshift(newChild);
-		} else {
-			parentNode.children.push(newChild);
-		}
+		parentNode.children.splice(index,0,newChild);
 		
 		this.spread(parentNode);
 		var branch = new Branch(parentNode,newChild);
@@ -200,9 +217,9 @@ function Tree(P,root,x,y) {
 
 	this.spread = function(baseNode,angle) {
 		if (typeof angle === 'undefined') {
-			angle = 30;
+			angle = 50;
 		}
-		if (baseNode === 'undefined' || baseNode === null) {
+		if (typeof baseNode === 'undefined') {
 			return;
 		}
 				
@@ -213,37 +230,45 @@ function Tree(P,root,x,y) {
 			children[0].position(baseNode.position().x)
 		} else if (children.length > 1) {
 			var pos = baseNode.position();
-			var leftBound = pos.x - (this.rowHeight * Math.tan(angle * (Math.PI / 180)));
-			var rightBound = pos.x + (this.rowHeight * Math.tan(angle * (Math.PI / 180)));
+			var leftBound = pos.x - (this.rowHeight * Math.tan((angle/2) * (Math.PI / 180)));
+			var rightBound = pos.x + (this.rowHeight * Math.tan((angle/2) * (Math.PI / 180)));
 			var width = rightBound - leftBound;
 			var interval = width/(children.length-1);
 			var i = 0;
 			while (i < children.length) {
 				children[i].position(leftBound+(interval*i));
-				children[i].updateGraphic();
 				i++;
 			}
-		}
 
-		var c = 0;
-		var intersect = false;
-		while (c < children.length-1) {
-			var lChild = children[c];
-			var rChild = children[c+1];
-			var lPath = this.getSubtree(lChild).getPath();
-			var rPath = this.getSubtree(rChild).getPath();
-			if (Snap.path.intersection(lPath,rPath).length > 0) {
-				intersect = true;
+			var c = 0;
+			var intersect = false;
+			var newWidth = width;
+			while (c < children.length-1) {
+				
+				var lChild = children[c];
+				var rChild = children[c+1];
+				var lPath = this.getSubtree(lChild).getPath();
+				var rPath = this.getSubtree(rChild).getPath();
+				if (Snap.path.intersection(lPath.pathString,rPath.pathString).length > 0) {
+					intersect = true;
+					var overlap = lPath.rightBound - rPath.leftBound;
+					newWidth += overlap;
+					newWidth += 10; //padding
+				}
+				c++;
 			}
-			c++;
+			
+			if (intersect) {
+				var newAngle = (180/Math.PI) * (2 * (Math.atan((newWidth/2)/this.rowHeight)));
+				this.spread(baseNode,newAngle);
+			}
+
 		}
 		
-		if (intersect) {
-			this.spread(baseNode,angle+6);
-		}
-		
-		if (baseNode.parent != null) {
+		if (typeof baseNode.parent != 'undefined') {
 			this.spread(baseNode.parent);
+		} else {
+			this.root.updateGraphic();
 		}
 	}
 	

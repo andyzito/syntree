@@ -1,14 +1,15 @@
 function Page(id, W) {
 	this.id = id;
 	this.allNodes = {};
-	this.selectedNode = null;
+	this.selectedNode = undefined;
 	this.background = snap.rect(0,0,W.svg.width(),W.svg.height());
 	this.background.attr({fill:'white',id:'background'});
+	// this.background.drag();
 	this.W = W;
 
 	this.selectNode = function(node) {
 		var action = new Action('select',node);
-		if (this.selectedNode != null) {
+		if (typeof this.selectedNode != 'undefined') {
 			this.deselectNode(this.selectedNode);
 		}
 		this.selectedNode = node;
@@ -16,7 +17,7 @@ function Page(id, W) {
 	}
 
 	this.deselectNode = function(node) {
-		this.selectedNode = null;
+		this.selectedNode = undefined;
 		node.deselect();
 		if (node.editing) {
 			if (node.real) {
@@ -53,17 +54,17 @@ function Page(id, W) {
 		return newNode;
 	}
 	
-	this.spaceBetween = function(leftNode,rightNode) {
-		var leftPos = leftNode.position();
-		var rightPos = rightNode.position();
-		var leftSize = leftNode.labelSize();
-		var rightSize = rightNode.labelSize();
+	// this.spaceBetween = function(leftNode,rightNode) {
+		// var leftPos = leftNode.position();
+		// var rightPos = rightNode.position();
+		// var leftSize = leftNode.labelSize();
+		// var rightSize = rightNode.labelSize();
 		
-		var leftNodeRightBound = leftPos.x + (leftSize.w/2);
-		var rightNodeLeftBound = rightPos.x - (rightSize.w/2);
+		// var leftNodeRightBound = leftPos.x + (leftSize.w/2);
+		// var rightNodeLeftBound = rightPos.x - (rightSize.w/2);
 		
-		return rightNodeLeftBound - leftNodeRightBound;
-	}
+		// return rightNodeLeftBound - leftNodeRightBound;
+	// }
 	
 	// Events :
 
@@ -73,35 +74,44 @@ function Page(id, W) {
 	}
 
 	this.eventEnter = function() {
-		if (this.selectedNode != null) {
+		if (typeof this.selectedNode != 'undefined') {
 			this.tree.spread(this.selectedNode.parent);
 			this.selectedNode.editToggle();
 		}
 	}
 	
 	this.eventLeft = function() {
-		if (this.selectedNode != null) {
+		if (typeof this.selectedNode != 'undefined') {
+			if (this.selectedNode.editing && this.selectedNode.real) {
+				return;
+			}
 			var off = this.tree.getNodeOffset(this.tree.root,this.selectedNode);
 			var rowNodes = this.tree.getNodesByOffset(this.tree.root,off);
-			if (rowNodes.length > 1) {
-				var selectedIndex = rowNodes.indexOf(this.selectedNode);
+			var selectedIndex = rowNodes.indexOf(this.selectedNode);
+			if (rowNodes.length <= 1 || this.W.ctrl === true) {
+				console.log(selectedIndex);
+				this.tree.makeChildOf(this.selectedNode.parent,selectedIndex)
+			} else if (rowNodes.length > 1) {
 				if (selectedIndex > 0) {
 					this.selectNode(rowNodes[selectedIndex-1]);
 				} else {
-					this.tree.makeChildOf(this.selectedNode.parent,true);
+					this.tree.makeChildOf(this.selectedNode.parent,0);
 				}
-			} else {
-				this.tree.makeChildOf(this.selectedNode.parent,true)
 			}
 		}
 	}
 	
 	this.eventRight = function() {
-		if (this.selectedNode != null) {
+		if (typeof this.selectedNode != 'undefined') {
+			if (this.selectedNode.editing && this.selectedNode.real) {
+				return;
+			}
 			var off = this.tree.getNodeOffset(this.tree.root,this.selectedNode);
 			var rowNodes = this.tree.getNodesByOffset(this.tree.root,off);
-			if (rowNodes.length > 1) {
-				var selectedIndex = rowNodes.indexOf(this.selectedNode);
+			var selectedIndex = rowNodes.indexOf(this.selectedNode);
+			if (rowNodes.length <= 1 || this.W.ctrl === true) {
+				this.tree.makeChildOf(this.selectedNode.parent,selectedIndex+1);
+			} else if (rowNodes.length > 1) {
 				if (selectedIndex < rowNodes.length-1) {
 					this.selectNode(rowNodes[selectedIndex+1]);
 				} else {
@@ -114,15 +124,15 @@ function Page(id, W) {
 	}
 	
 	this.eventUp = function() {
-		if (this.selectedNode != null) {
-			if (this.selectedNode.parent != null) {
+		if (typeof this.selectedNode != 'undefined') {
+			if (typeof this.selectedNode.parent != 'undefined') {
 				this.selectNode(this.selectedNode.parent);
 			}
 		}
 	}
 	
 	this.eventDown = function() {
-		if (this.selectedNode != null) {
+		if (typeof this.selectedNode != 'undefined') {
 			if (this.selectedNode.children.length > 0) {
 				var possibleSelects = this.selectedNode.children;
 				var selectHistory = H.getByType('select');
@@ -141,21 +151,21 @@ function Page(id, W) {
 	}
 	
 	this.eventDel = function() {
-		if (this.selectedNode != null) {
+		if (typeof this.selectedNode != 'undefined') {
 			this.deleteNode(this.selectedNode);
 			this.selectNode(H.getNthOfType('select',1).node);
 		}
 	}
 	
 	this.eventEsc = function() {
-		if (this.selectedNode != null) {
+		if (typeof this.selectedNode != 'undefined') {
 			this.selectedNode.cancel();
 		}
 	}
 	
 	this.eventEditorTyping = function() {
 		this.selectedNode.editUpdate();
-		this.tree.spread(this.selectedNode.parent);
+		// this.tree.spread(this.selectedNode.parent);
 	}
 	
 	// : events.

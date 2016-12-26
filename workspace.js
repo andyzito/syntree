@@ -1,5 +1,6 @@
 function Workspace() {
 	this.svg = $("#workspace");
+	this.ctrl = false;
 	
 	this.idRef = 100;
 	this.genId = function() {
@@ -9,6 +10,7 @@ function Workspace() {
 
 	this.page = new Page(this.genId(), this);
 	var page = this.page;
+	var W = this;
 	
 	$(document).on('click', '.node-label', function(){
 		page.eventNodeClick(this);
@@ -29,8 +31,16 @@ function Workspace() {
 			page.eventDel();
 		} else if (e.keyCode === 27) {
 			page.eventEsc();
+		} else if (e.keyCode === 17) {
+			W.ctrl = true;
 		}
-	})
+	});
+	
+	$(document).on('keyup', function(e) {
+		if (e.keyCode === 17) {
+			W.ctrl = false;
+		}
+	});
 	
 	$(document).on('input', '.editor', function() {
 		page.eventEditorTyping();

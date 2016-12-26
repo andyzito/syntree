@@ -10,27 +10,17 @@ function Branch(parent,child) {
 	this.parent = parent;
 	this.child = child;
 
-	this.updateGraphic = function(seconds) {
-		if (typeof seconds == 'undefined') {
-			var seconds = 0;
-		}
+	this.updateGraphic = function() {
 		this.startPoint = this.parent.position();
 		this.endPoint = this.child.position();
 		
-		if (seconds != 0) {
-			this.line.animate({
-				x1: this.startPoint.x,
-				y1: this.startPoint.y + 15,
-				x2: this.endPoint.x,
-				y2: this.endPoint.y - 15,
-			},seconds)
-		}
+		// console.log(this.child.getLabelBBox().y)
 		
 		this.line.attr({
 			x1: this.startPoint.x,
-			y1: this.startPoint.y + (this.parent.labelSize().h/2) + 5,
+			y1: this.parent.getLabelBBox().y2 + 5,
 			x2: this.endPoint.x,
-			y2: this.endPoint.y - (this.child.labelSize().h/2) - 5,
+			y2: this.child.getLabelBBox().y - 5,
 		})
 	}
 }

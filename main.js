@@ -8,6 +8,10 @@ $(document).ready(function() {
 	var T = W.page.tree;
 	W.page.selectNode(T.root);
 	// T.root.select();
+	var svgLabel = Snap("#" + T.root.label.attr('id'));
+	var allElements = snap.g(W.page.background,T.root.highlight,svgLabel);
+	// console.log(allElements);
+	allElements.drag();
 	
 	// var DP = T.makeChildOf(T.root,false,"NP");
 	// var D = T.makeChildOf(DP,false,"D");

@@ -19,25 +19,23 @@ function Node(id,x,y,t) {
 	
 	// Highlight
 	this.highlight = snap.rect(this.label.attr('x'),this.label.attr('y'),0,0);
-	this.highlight.attr({
-		fill: "rgba(255,0,0,0.5)",
-	});
 	
 	// Anchor mark
-	this.anchorMark = snap.circle(this.x,this.y,3);
+	// this.anchorMark = snap.circle(this.x,this.y,3);
 
 	// Relationships
-	this.parent = null;
+	this.parent = undefined;
 	this.children = [];
 
 	// Branches
-	this.parentBranch = null;
+	this.parentBranch = undefined;
 	this.childBranches = [];
 		
 	// States
 	this.editing = false;
 	this.selected = false;
 	this.real = false;
+	this.positionUnsynced = true;
 
 	// Property retrieval:
 	this.position = function(x,y,propogate) {
@@ -64,6 +62,7 @@ function Node(id,x,y,t) {
 				c++;
 			}
 		}
+		this.positionUnsynced = true;
 		return {
 			x: this.x,
 			y: this.y,
@@ -85,11 +84,22 @@ function Node(id,x,y,t) {
 		}
 	}	
 	
-	this.labelSize = function() {
-		return {
-			w: this.label.get()[0].getComputedTextLength(),
-			h: this.label.height(),
+	this.getLabelBBox = function() {
+		if (this.labelContent() === "" || $("#" + this.label.attr('id')).length === 0) {
+			return {
+				x: this.x,
+				x2: this.x,
+				y: this.y,
+				y2: this.y,
+				w: 0,
+				width: 0,
+				height: 0,
+				h: 0
+			}
 		}
+		svgLabel = Snap("#" + this.label.attr('id'));
+		bbox = svgLabel.getBBox();
+		return bbox;
 	}
 
 	this.labelContent = function(t) {
@@ -105,27 +115,29 @@ function Node(id,x,y,t) {
 	this.delete = function() {
 		this.label.remove();
 		this.editor.remove();
-		this.anchorMark.remove();
+		// this.anchorMark.remove();
 		this.highlight.remove();
-		this.parentBranch.line.remove();
-		this.parent.children.splice(this.parent.children.indexOf(this), 1);
-		this.parent.childBranches.splice(this.parent.childBranches.indexOf(this.parentBranch), 1);
+		if (typeof this.parent != 'undefined') {
+			this.parentBranch.line.remove();			
+			this.parent.children.splice(this.parent.children.indexOf(this), 1);
+			this.parent.childBranches.splice(this.parent.childBranches.indexOf(this.parentBranch), 1);
+		}
 	}
 
 	this.select = function() {
 		this.selected = true;
-		this.updateGraphic();
+		this.updateGraphic(false);
 	}
 
 	this.deselect = function() {
 		this.selected = false;
-		this.updateGraphic();
+		this.updateGraphic(false);
 	}
 
 	this.editInit = function(e) {
 		this.editing = true;
 		this.beforeEditLabelContent = this.labelContent();
-		this.updateGraphic();
+		this.updateGraphic(false);
 		this.editor.val(this.labelContent());
 		this.editor.show();
 		this.editor.focus();
@@ -134,7 +146,7 @@ function Node(id,x,y,t) {
 	this.editUpdate = function() {
 		if (this.editing) {
 			this.labelContent(this.editor.val());
-			this.updateGraphic();
+			this.updateGraphic(false);
 		}
 	}
 	
@@ -155,7 +167,7 @@ function Node(id,x,y,t) {
 			this.labelContent(this.editor.val())
 			this.editor.hide();
 			this.editor.blur();
-			this.updateGraphic();
+			this.updateGraphic(false);
 		}
 	}
 
@@ -163,52 +175,50 @@ function Node(id,x,y,t) {
 		this.editing = false;
 		this.editor.hide();
 		this.labelContent(this.beforeEditLabelContent);
-		this.updateGraphic();
+		this.updateGraphic(false);
 	}
 	
 	this.updateGraphic = function(propogate) {
 		if (typeof propogate == 'undefined') {
 			propogate = true;
 		}
-		var size = this.labelSize();
-		this.labelPosition(this.x-(size.w/2), this.y+(size.h/2));		
-		var tpos = this.labelPosition();
-		this.highlight.attr({
-			x: tpos.x - 5,
-			y: tpos.y - size.h - 5,
-			width: size.w + 10,
-			height: size.h + 10
+		
+		var bbox = this.getLabelBBox();
+		if (this.positionUnsynced) {
+			this.labelPosition(this.x-(bbox.w/2), this.y+(bbox.h/2));		
+			bbox = this.getLabelBBox();
+			
+			this.highlight.attr({
+				x: bbox.x - 3,
+				y: bbox.y - 3,
+				width: bbox.w + 6,
+				height: bbox.h + 6
+			})
+			
+			this.positionUnsynced = false;
+		}
+
+		if (this.editing) {
+			this.editor.css({
+				'left': bbox.x,
+				'top': bbox.y,
+				'width': bbox.w,
+				'height': bbox.h,
 			});
-		this.anchorMark.attr({
-			cx: this.x,
-			cy: this.y,
-			// r:3
-		})
+		}
+
 		if (this.selected) {
 			this.highlight.attr({
-				fill:"rgba(255,0,0,0.3)"
+				fill:"rgba(255,0,0,0.2)"
 			});
-			this.anchorMark.attr({
-				fill:"rgba(255,0,0,0.5)"
-			})
 		} else {
 			this.highlight.attr({
 				fill:"none"
 				});
-			this.anchorMark.attr({
-				fill:"none"
-			})
 		}
-		
-		this.editor.css({
-			'left': this.labelPosition().x,
-			'top': this.labelPosition().y - this.labelSize().h,
-			'width': this.labelSize().w,
-			'height': this.labelSize().h,
-		});
-		
+				
 		// Branches
-		if (this.parentBranch != null) {
+		if (typeof this.parentBranch != 'undefined') {
 			this.parentBranch.updateGraphic();
 		}
 		for (i=0;i<this.childBranches.length;i++) {
