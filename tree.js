@@ -146,7 +146,7 @@ function Tree(P,root,x,y) {
 		parentNode.children.splice(index,0,newChild);
 		
 		this.spread(parentNode);
-		var branch = new Branch(parentNode,newChild);
+		var branch = this.P.makeBranch(parentNode,newChild);
 		
 		this.P.selectNode(newChild);
 		newChild.editToggle();
@@ -227,10 +227,8 @@ function Tree(P,root,x,y) {
 			var c = 0;
 			while (c < node.children.length) {
 				var thisChild = node.children[c];
-				console.log(thisChild);
 				var add = this.toBracket(thisChild);
 				string += " " + add;
-				console.log(string);
 				c++;
 			}
 		}

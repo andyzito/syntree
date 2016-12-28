@@ -24,7 +24,7 @@ function Workspace() {
 		page.eventBGClick(e);
 	});
 	
-	$(document).on('dblclick', '.highlight', function() {
+	$(document).on('dblclick', '.node-label', function() {
 		page.eventEnter();
 	});
 	

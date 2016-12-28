@@ -7,9 +7,8 @@ function Node(id,x,y,t) {
 	this.y = y;
 	
 	// Textbox
-	var label = snap.text(x,y,[t,]);
-	label.attr({'id':"label-"+this.id,'class':'node-label'});
-	this.label = $("#label-" + this.id);
+	this.label = snap.text(x,y,[t,]);
+	this.label.attr({'id':"label-"+this.id,'class':'node-label'});
 
 	// Editor
 	var editorid = "editor-" + this.id;
@@ -23,7 +22,6 @@ function Node(id,x,y,t) {
 	
 	// Delete button
 	this.deleteButton = snap.image('delete_button.png',x,y,10,10);
-	this.deleteButton.attr({class: 'delete_button'});
 	
 	// Relationships
 	this.parent = undefined;
@@ -71,6 +69,21 @@ function Node(id,x,y,t) {
 		}
 	}	
 	
+	this.labelPosition = function(x,y) {
+		if (typeof x == 'undefined' && typeof y == 'undefined') {
+			return {
+				x: Number(this.label.attr('x')),
+				y: Number(this.label.attr('y')),
+			}
+		}
+		if (typeof x != 'undefined') {
+			this.label.attr('x',x);
+		}
+		if (typeof y != 'undefined') {
+			this.label.attr('y',y);
+		}
+	}	
+	
 	this.getLabelBBox = function() {
 		if (this.labelContent() === "" || $("#" + this.label.attr('id')).length === 0) {
 			return {
@@ -84,16 +97,16 @@ function Node(id,x,y,t) {
 				h: 0
 			}
 		}
-		svgLabel = Snap("#" + this.label.attr('id'));
-		bbox = svgLabel.getBBox();
+
+		bbox = this.label.getBBox();
 		return bbox;
 	}
 
 	this.labelContent = function(t) {
 		if (typeof t != 'undefined') {
-			this.label.text(t);
+			this.label.node.textContent = t;
 		} else {
-			return this.label.text();
+			return this.label.node.textContent;
 		}
 	}
 
@@ -171,6 +184,7 @@ function Node(id,x,y,t) {
 		}
 		
 		var bbox = this.getLabelBBox();
+		console.log(bbox)
 		if (this.positionUnsynced) {
 			this.labelPosition(this.x-(bbox.w/2), this.y+(bbox.h/2));		
 			bbox = this.getLabelBBox();
@@ -195,11 +209,14 @@ function Node(id,x,y,t) {
 			y: bbox.y - 10,
 		})
 
-
+		var bgOffset = $("#background").offset();
+		var svgOffset = $("svg").offset();
+		console.log(bbox.x);
+		console.log(bgOffset);
 		if (this.editing) {
 			this.editor.css({
-				'left': bbox.x,
-				'top': bbox.y,
+				'left': bbox.x + (bgOffset.left - svgOffset.left),
+				'top': bbox.y + (bgOffset.top - svgOffset.top),
 				'width': bbox.w,
 				'height': bbox.h,
 			});

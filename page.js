@@ -4,13 +4,24 @@ function Page(id, W) {
 	this.selectedNode = undefined;
 	this.background = snap.rect(0,0,W.svg.width(),W.svg.height());
 	this.background.attr({fill:'white',id:'background'});
-	// this.background.drag();
+	this.group = snap.g(this.background);
+	this.group.drag();
 	this.W = W;
+	
+	this.makeBranch = function(parent,child) {
+		var branch = new Branch(parent,child);		
+		this.group.append(branch.line);
+		return branch;
+	}
 
 	this.makeNode = function(x,y,t) {
 		var newNode = new Node(this.W.genId(),x,y,t);
 		this.allNodes[newNode.id] = newNode;
 		var action = new Action('make',newNode);
+		
+		var tempgroup = snap.g(newNode.highlight, newNode.deleteButton, newNode.label);
+		this.group.append(tempgroup);
+		
 		return newNode;
 	}
 
@@ -63,8 +74,8 @@ function Page(id, W) {
 
 	this.eventEnter = function() {
 		if (typeof this.selectedNode != 'undefined') {
-			this.tree.spread(this.selectedNode.parent);
 			this.selectedNode.editToggle();
+			this.tree.spread(this.selectedNode.parent)
 		}
 	}
 	

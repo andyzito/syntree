@@ -13,9 +13,7 @@ function Branch(parent,child) {
 	this.updateGraphic = function() {
 		this.startPoint = this.parent.position();
 		this.endPoint = this.child.position();
-		
-		// console.log(this.child.getLabelBBox().y)
-		
+				
 		this.line.attr({
 			x1: this.startPoint.x,
 			y1: this.parent.getLabelBBox().y2 + 5,
