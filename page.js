@@ -7,6 +7,32 @@ function Page(id, W) {
 	// this.background.drag();
 	this.W = W;
 
+	this.makeNode = function(x,y,t) {
+		var newNode = new Node(this.W.genId(),x,y,t);
+		this.allNodes[newNode.id] = newNode;
+		var action = new Action('make',newNode);
+		return newNode;
+	}
+
+	this.deleteNode = function(node) {
+		var action = new Action('delete',node);
+		delete this.allNodes[node.id];
+		node.delete();
+		if (node.children.length > 0) {
+			var children = node.children.slice(0);
+			var c = 0;
+			while (c < children.length) {
+				this.deleteNode(children[c]);
+				c++;
+			}
+		}
+		if (node.parent != undefined) {
+			this.tree.spread(node.parent);
+			node.parent.updateGraphic();
+		}
+		return;
+	}
+
 	this.selectNode = function(node) {
 		var action = new Action('select',node);
 		if (typeof this.selectedNode != 'undefined') {
@@ -28,44 +54,6 @@ function Page(id, W) {
 		}
 	}
 
-	this.deleteNode = function(node) {
-		var action = new Action('delete',node);
-		delete this.allNodes[node.id];
-		node.delete();
-		if (node.children.length > 0) {
-			var children = node.children.slice(0);
-			var c = 0;
-			while (c < children.length) {
-				this.deleteNode(children[c]);
-				c++;
-			}
-		}
-		if (node.parent != undefined) {
-			this.tree.spread(node.parent);
-			node.parent.updateGraphic();
-		}
-		return;
-	}
-	
-	this.makeNode = function(x,y,t) {
-		var newNode = new Node(this.W.genId(),x,y,t);
-		this.allNodes[newNode.id] = newNode;
-		var action = new Action('make',newNode);
-		return newNode;
-	}
-	
-	// this.spaceBetween = function(leftNode,rightNode) {
-		// var leftPos = leftNode.position();
-		// var rightPos = rightNode.position();
-		// var leftSize = leftNode.labelSize();
-		// var rightSize = rightNode.labelSize();
-		
-		// var leftNodeRightBound = leftPos.x + (leftSize.w/2);
-		// var rightNodeLeftBound = rightPos.x - (rightSize.w/2);
-		
-		// return rightNodeLeftBound - leftNodeRightBound;
-	// }
-	
 	// Events :
 
 	this.eventNodeClick = function(clickedNode) {

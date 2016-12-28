@@ -71,21 +71,6 @@ function Node(id,x,y,t) {
 		}
 	}	
 	
-	this.labelPosition = function(x,y) {
-		if (typeof x == 'undefined' && typeof y == 'undefined') {
-			return {
-				x: Number(this.label.attr('x')),
-				y: Number(this.label.attr('y')),
-			}
-		}
-		if (typeof x != 'undefined') {
-			this.label.attr('x',x);
-		}
-		if (typeof y != 'undefined') {
-			this.label.attr('y',y);
-		}
-	}	
-	
 	this.getLabelBBox = function() {
 		if (this.labelContent() === "" || $("#" + this.label.attr('id')).length === 0) {
 			return {
