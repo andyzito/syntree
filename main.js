@@ -8,10 +8,10 @@ $(document).ready(function() {
 	var T = W.page.tree;
 	W.page.selectNode(T.root);
 	// T.root.select();
-	var svgLabel = Snap("#" + T.root.label.attr('id'));
-	var allElements = snap.g(W.page.background,T.root.highlight,svgLabel);
+	// var svgLabel = Snap("#" + T.root.label.attr('id'));
+	// var allElements = snap.g(W.page.background,T.root.highlight,svgLabel);
 	// console.log(allElements);
-	allElements.drag();
+	// allElements.drag();
 	
 	// var DP = T.makeChildOf(T.root,false,"NP");
 	// var D = T.makeChildOf(DP,false,"D");
@@ -44,12 +44,14 @@ $(document).ready(function() {
 	// var N = T.makeChildOf(NP,false,"N");
 	// var fire = T.makeChildOf(N,false,"fireman");
 	
-	// var A = T.makeChildOf(T.root,false,text="A");
+	var A = T.makeChildOf(T.root,false,text="A");
+	A.save();
 	// var Z = T.makeChildOf(A,false,text="Z");
 	// var Y = T.makeChildOf(A,false,text="Y");
 	// var X = T.makeChildOf(Y,false,text="X");
 	// var W = T.makeChildOf(Y,false,text="W");
-	// var B = T.makeChildOf(T.root,false,text="B");
+	var B = T.makeChildOf(T.root,false,text="B");
+	B.save();
 	// var C = T.makeChildOf(B,false,text="C");
 	// var D = T.makeChildOf(B,false,text="D");
 	// var E = T.makeChildOf(D,false,text="E");
@@ -65,7 +67,7 @@ $(document).ready(function() {
 	
 	// T.selected.save();
 	
-    // $("#background").on('click', function(e) {
-		// W.page.deleteNode(A);
-    // });
+    $("#background").on('click', function(e) {
+		console.log(T.toBracket());
+    });
 });

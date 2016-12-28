@@ -12,8 +12,20 @@ function Workspace() {
 	var page = this.page;
 	var W = this;
 	
-	$(document).on('click', '.node-label', function(){
+	$(document).on('click', '.node-label', function() {
 		page.eventNodeClick(this);
+	});
+	
+	$(document).on('click', '.delete_button', function() {
+		page.eventDel();
+	});
+	
+	$(document).on('click', '#background', function(e) {
+		page.eventBGClick(e);
+	});
+	
+	$(document).on('dblclick', '.highlight', function() {
+		page.eventEnter();
 	});
 	
 	$(document).on('keydown', function(e) {

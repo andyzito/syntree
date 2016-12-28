@@ -154,13 +154,15 @@ function Tree(P,root,x,y) {
 	}
 
 	this.getChildrenOf = function(node,inclusive) {
-		var result = {};
+		var result = [];
 		var len = node.children.length;
 		var i = 0;
 
 		while (i < node.children.length) {
 			var thisChild = node.children[i];
-			result[thisChild.id] = this.getChildrenOf(thisChild);
+			var push = {};
+			push[thisChild.id] = this.getChildrenOf(thisChild);
+			result.push(push);
 			i = i + 1;
 		}
 
@@ -168,7 +170,7 @@ function Tree(P,root,x,y) {
 			var t = node.id;
 			temp = {};
 			temp[t] = result;
-			result = temp;
+			result = [temp];
 		}
 
 		return result;
@@ -213,6 +215,27 @@ function Tree(P,root,x,y) {
 			c++;
 		}
 		return result;
+	}
+	
+	this.toBracket = function(node) {
+		if (typeof node === 'undefined') {
+			node = this.root;
+		}
+		
+		var string = "[." + node.labelContent();
+		if (node.children.length > 0) {
+			var c = 0;
+			while (c < node.children.length) {
+				var thisChild = node.children[c];
+				console.log(thisChild);
+				var add = this.toBracket(thisChild);
+				string += " " + add;
+				console.log(string);
+				c++;
+			}
+		}
+		string += " ]";
+		return string;
 	}
 
 	this.spread = function(baseNode,angle) {

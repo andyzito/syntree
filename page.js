@@ -89,7 +89,6 @@ function Page(id, W) {
 			var rowNodes = this.tree.getNodesByOffset(this.tree.root,off);
 			var selectedIndex = rowNodes.indexOf(this.selectedNode);
 			if (rowNodes.length <= 1 || this.W.ctrl === true) {
-				console.log(selectedIndex);
 				this.tree.makeChildOf(this.selectedNode.parent,selectedIndex)
 			} else if (rowNodes.length > 1) {
 				if (selectedIndex > 0) {
@@ -133,7 +132,7 @@ function Page(id, W) {
 	
 	this.eventDown = function() {
 		if (typeof this.selectedNode != 'undefined') {
-			if (this.selectedNode.children.length > 0) {
+			if (this.selectedNode.children.length > 0 && this.W.ctrl === false) {
 				var possibleSelects = this.selectedNode.children;
 				var selectHistory = H.getByType('select');
 				
@@ -166,6 +165,58 @@ function Page(id, W) {
 	this.eventEditorTyping = function() {
 		this.selectedNode.editUpdate();
 		// this.tree.spread(this.selectedNode.parent);
+	}
+	
+	this.eventBGClick = function(e) {
+		var x = e.pageX - this.W.svg.offset().left;
+		var y = e.pageY - this.W.svg.offset().top;
+		var nearest = this.getNearestNode(x,y);
+		
+		if (typeof nearest === 'object') {
+			if (nearest.deltaY < -10) {
+				if (nearest.deltaX > 0) {
+					this.tree.makeChildOf(nearest.node,0);
+				} else {
+					this.tree.makeChildOf(nearest.node);
+				}
+			} else {
+				var childIndex = nearest.node.parent.children.indexOf(nearest.node);
+				if (nearest.deltaX > 0) {
+					this.tree.makeChildOf(nearest.node.parent,childIndex);
+				} else {
+					this.tree.makeChildOf(nearest.node.parent,childIndex+1);
+				}				
+			}
+		}
+	}
+	
+	this.getNearestNode = function(x,y) {
+		if (typeof(x) === 'undefined' || typeof(y) === 'undefined') {
+			return;
+		}
+		
+		var nearestNode;
+		var leastDist = Number.POSITIVE_INFINITY;
+		var n = 0;
+		var len = Object.keys(this.allNodes).length;
+		while (n < len) {
+			var node = this.allNodes[Object.keys(this.allNodes)[n]];
+			var pos = node.position();
+			var distance = Math.sqrt((pos.x - x)**2 + (pos.y - y)**2)
+			if (distance < leastDist) {
+				leastDist = distance;
+				nearestNode = node;
+			}
+			n++;
+		}
+		if (leastDist < this.tree.rowHeight + 10) {
+			return {
+				node: nearestNode,
+				dist: leastDist,
+				deltaX: nearestNode.position().x - x,
+				deltaY: nearestNode.position().y - y,
+			}
+		}
 	}
 	
 	// : events.

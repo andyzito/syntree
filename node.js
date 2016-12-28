@@ -19,10 +19,12 @@ function Node(id,x,y,t) {
 	
 	// Highlight
 	this.highlight = snap.rect(this.label.attr('x'),this.label.attr('y'),0,0);
+	this.highlight.attr({class: "highlight"})
 	
-	// Anchor mark
-	// this.anchorMark = snap.circle(this.x,this.y,3);
-
+	// Delete button
+	this.deleteButton = snap.image('delete_button.png',x,y,10,10);
+	this.deleteButton.attr({class: 'delete_button'});
+	
 	// Relationships
 	this.parent = undefined;
 	this.children = [];
@@ -115,8 +117,8 @@ function Node(id,x,y,t) {
 	this.delete = function() {
 		this.label.remove();
 		this.editor.remove();
-		// this.anchorMark.remove();
 		this.highlight.remove();
+		this.deleteButton.remove();
 		if (typeof this.parent != 'undefined') {
 			this.parentBranch.line.remove();			
 			this.parent.children.splice(this.parent.children.indexOf(this), 1);
@@ -189,14 +191,25 @@ function Node(id,x,y,t) {
 			bbox = this.getLabelBBox();
 			
 			this.highlight.attr({
-				x: bbox.x - 3,
-				y: bbox.y - 3,
-				width: bbox.w + 6,
-				height: bbox.h + 6
+				x: bbox.x - 5,
+				y: bbox.y - 5,
+				width: bbox.w + 10,
+				height: bbox.h + 10
 			})
 			
 			this.positionUnsynced = false;
+		} else {
+			this.highlight.attr({
+				width: bbox.w + 10,
+				height: bbox.h + 10
+			})
 		}
+		
+		this.deleteButton.attr({
+			x: bbox.x2,
+			y: bbox.y - 10,
+		})
+
 
 		if (this.editing) {
 			this.editor.css({
@@ -211,10 +224,20 @@ function Node(id,x,y,t) {
 			this.highlight.attr({
 				fill:"rgba(255,0,0,0.2)"
 			});
+			
+			this.deleteButton.attr({
+				width: 10,
+				height: 10
+			})
 		} else {
 			this.highlight.attr({
 				fill:"none"
 				});
+			
+			this.deleteButton.attr({
+				width: 0,
+				height: 0,
+			})
 		}
 				
 		// Branches
