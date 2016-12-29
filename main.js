@@ -67,7 +67,7 @@ $(document).ready(function() {
 	
 	// T.selected.save();
 	
-    $("#background").on('click', function(e) {
-		console.log(T.toBracket());
-    });
+    // $("#background").on('click', function(e) {
+		// console.log(T.toBracket());
+    // });
 });

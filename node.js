@@ -184,7 +184,6 @@ function Node(id,x,y,t) {
 		}
 		
 		var bbox = this.getLabelBBox();
-		console.log(bbox)
 		if (this.positionUnsynced) {
 			this.labelPosition(this.x-(bbox.w/2), this.y+(bbox.h/2));		
 			bbox = this.getLabelBBox();
@@ -211,12 +210,10 @@ function Node(id,x,y,t) {
 
 		var bgOffset = $("#background").offset();
 		var svgOffset = $("svg").offset();
-		console.log(bbox.x);
-		console.log(bgOffset);
 		if (this.editing) {
 			this.editor.css({
 				'left': bbox.x + (bgOffset.left - svgOffset.left),
-				'top': bbox.y + (bgOffset.top - svgOffset.top),
+				'top': bbox.y + (bgOffset.top),
 				'width': bbox.w,
 				'height': bbox.h,
 			});
@@ -224,7 +221,7 @@ function Node(id,x,y,t) {
 
 		if (this.selected) {
 			this.highlight.attr({
-				fill:"rgba(255,0,0,0.2)"
+				fill:"rgba(0,0,0,0.2)"
 			});
 			
 			this.deleteButton.attr({

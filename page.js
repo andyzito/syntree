@@ -2,7 +2,7 @@ function Page(id, W) {
 	this.id = id;
 	this.allNodes = {};
 	this.selectedNode = undefined;
-	this.background = snap.rect(0,0,W.svg.width(),W.svg.height());
+	this.background = snap.rect(0,$("#toolbar").height(),W.svg.width(),W.svg.height());
 	this.background.attr({fill:'white',id:'background'});
 	this.group = snap.g(this.background);
 	this.group.drag();
@@ -220,5 +220,5 @@ function Page(id, W) {
 	
 	// : events.
 	
-	this.tree = new Tree(this,undefined,this.background.attr('width')/2,20);
+	this.tree = new Tree(this,undefined,this.background.attr('width')/2,$("#toolbar").height()+20);
 }

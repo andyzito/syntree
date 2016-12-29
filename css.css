@@ -1,17 +1,24 @@
 * {
 	margin:0;
 	padding:0;
+	outline-width:0px;
 }
 
 #workspace_container {
 	left:10px;
 	top:10px;
 	position:absolute;
+	border: 1px solid black;
+	width: 1000px;
+	height: 600px;
 }
 
 #workspace {
-	border: 1px solid black;
 	background-color:grey;
+}
+
+#background {
+	cursor: move;
 }
 
 .editor {
@@ -36,4 +43,102 @@ text {
 
 .delete_button:hover {
 	cursor: pointer;
+}
+
+#toolbar {
+	position: absolute;
+	list-style: none;
+	border-bottom: 1px solid black;
+	width: 100%;
+	background-color: white;
+}
+
+.toolbar-button {
+	display: inline-block;
+	padding: 10px 15px;
+	cursor: pointer;
+}
+
+.toolbar-button:hover {
+	background-color: black;
+	color: white;
+}
+
+#overlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.3);
+	z-index: 100;
+}
+
+.modal {
+	font-family: sans-serif;
+}
+
+.modal_body {
+	position: absolute;
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 10px;
+	z-index: 200;
+}
+
+.modal_body.modal_export {
+	width: 90%;
+	height: 90%;
+	top: 5%;
+	left: 5%;	
+}
+
+.modal_title {
+    font-size: 2em;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.modal_title_main {
+    text-align: center;
+    padding: 15px;
+}
+
+.modal_label {
+	font-size: 1.1em;
+}
+
+.modal_section {
+	display: inline-block;
+	margin-top: 50px;
+}
+
+.modal_section__filetype {
+	float: left;
+	margin-left: 150px;
+}
+
+.modal_section__subtree {
+	float: right;
+	margin-right: 150px;
+}
+
+.modal_buttons {
+	text-align: center;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	margin-bottom: 50px;
+}
+
+.modal_button {
+	font-size: 1.3em;
+	background: white;
+	border: 1px solid black;
+	border-radius: 2px;
+	padding: 10px 15px;
+	margin: 0 50px;
+}
+
+.modal_button:hover {
+	background: black;
+	color: white;
 }
