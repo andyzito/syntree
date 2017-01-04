@@ -208,12 +208,18 @@ function Node(id,x,y,t) {
 			y: bbox.y - 10,
 		})
 
-		var bgOffset = $("#background").offset();
-		var svgOffset = $("svg").offset();
+		if ($(".page-group")[0].transform.animVal.length > 0) {
+			var groupXOffset = $(".page-group")[0].transform.animVal[0].matrix.e;
+			var groupYOffset = $(".page-group")[0].transform.animVal[0].matrix.f;
+		} else {
+			var groupXOffset = 0;
+			var groupYOffset = 0;
+		}
+
 		if (this.editing) {
 			this.editor.css({
-				'left': bbox.x + (bgOffset.left - svgOffset.left),
-				'top': bbox.y + (bgOffset.top),
+				'left': bbox.x + groupXOffset,
+				'top': bbox.y + groupYOffset,
 				'width': bbox.w,
 				'height': bbox.h,
 			});

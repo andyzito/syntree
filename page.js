@@ -4,7 +4,9 @@ function Page(id, W) {
 	this.selectedNode = undefined;
 	this.background = snap.rect(0,$("#toolbar").height(),W.svg.width(),W.svg.height());
 	this.background.attr({fill:'white',id:'background'});
+	
 	this.group = snap.g(this.background);
+	this.group.attr({id: "group-" + this.id, class: "page-group"});
 	this.group.drag();
 	this.W = W;
 	
