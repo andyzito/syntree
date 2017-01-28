@@ -3,9 +3,11 @@ function Page(id, W) {
 	this.allNodes = {};
 	this.selectedNode = undefined;
 	this.background = snap.rect(0,$("#toolbar").height(),W.svg.width(),W.svg.height());
-	this.background.attr({fill:'white',id:'background'});
+	this.background.attr({fill:'white',id:'page-background'});
+	this.backdrop = snap.rect(-200,-200,W.svg.width()+100,W.svg.height()+100);
+	this.backdrop.attr({opacity:0,id:"page-backdrop"});
 	
-	this.group = snap.g(this.background);
+	this.group = snap.g(this.backdrop, this.background);
 	this.group.attr({id: "group-" + this.id, class: "page-group"});
 	this.group.drag();
 	this.W = W;

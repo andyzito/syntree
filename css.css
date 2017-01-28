@@ -17,7 +17,7 @@
 	background-color:grey;
 }
 
-#background {
+#page-background, #page-backdrop {
 	cursor: move;
 }
 
@@ -53,13 +53,13 @@ text {
 	background-color: white;
 }
 
-.toolbar-button {
+.toolbar_button {
 	display: inline-block;
 	padding: 10px 15px;
 	cursor: pointer;
 }
 
-.toolbar-button:hover {
+.toolbar_button:hover {
 	background-color: black;
 	color: white;
 }

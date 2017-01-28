@@ -61,7 +61,7 @@ function Workspace() {
 		page.eventEditorTyping();
 	});
 
-	$(document).on('click', '#export-button', function() {
+	$(document).on('click', '.toolbar_button__export', function() {
 		$(".modal_export.modal_body").show();
 		$("#overlay").show();
 	});
@@ -77,7 +77,7 @@ function Workspace() {
 	});
 	
 	$(document).on('click', '.modal_button__export', function() {
-		
+		window.open();
 	});
 
 }
