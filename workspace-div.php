@@ -1,19 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="snap.js"></script>
-<script src="history.js"></script>
-<script src="main.js"></script>
-<script src="action.js"></script>
-<script src="workspace.js"></script>
-<script src="page.js"></script>
-<script src="tree.js"></script>
-<script src="node.js"></script>
-<script src="branch.js"></script>
-<link rel="stylesheet" href="css.css">
-</head>
-<body>
 <div id="workspace_container">
 	<div class="modal modal_body modal_export">
 		<p class="modal modal_title modal_title_main modal_export">Export</p>
@@ -53,5 +37,3 @@
 	<svg id="workspace" width="100%" height="100%">
 	</svg>
 </div>
-</body>
-</html>
