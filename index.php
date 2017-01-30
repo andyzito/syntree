@@ -4,6 +4,6 @@
 	<?php include 'head.php' ?>
 	
 	<body>
-	Testing.
+	<?php include 'app/workspace-div.php' ?>
 	</body>
 </html>
