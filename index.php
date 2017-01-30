@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-	</head>
+	<?php include 'head.php' ?>
 	
 	<body>
 	Testing.
