@@ -9,9 +9,9 @@ class DB {
 		return $this->db->query($sql);
 	}
 
-	public function get_user($name,$pass) {
-		$sql = "SELECT * FROM user WHERE username='$name' and password='$pass'";
-		return $this->db->query($sql);	
+	public function get_user($name) {
+		$sql = "SELECT * FROM user WHERE username='$name'";
+		return $this->db->query($sql)->fetch_assoc();
 	}
 
 	public function create_user($id,$uname,$pass,$email,$fname,$lname) {
