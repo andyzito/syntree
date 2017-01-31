@@ -205,7 +205,7 @@ function Page(id, W) {
 		while (n < len) {
 			var node = this.allNodes[Object.keys(this.allNodes)[n]];
 			var pos = node.position();
-			var distance = Math.sqrt((pos.x - x)**2 + (pos.y - y)**2)
+			var distance = Math.pow(Math.sqrt((pos.x - x),2) + Math.pow((pos.y - y),2));
 			if (distance < leastDist) {
 				leastDist = distance;
 				nearestNode = node;
