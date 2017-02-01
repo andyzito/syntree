@@ -4,7 +4,7 @@ $(document).ready(function() {
     //Snap
 	snap = Snap("#workspace");
 
-	var W = new Workspace();
+	W = new Workspace();
 	var T = W.page.tree;
 	W.page.selectNode(T.root);
 	// T.root.select();

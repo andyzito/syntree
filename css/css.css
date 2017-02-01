@@ -30,6 +30,12 @@ text {
 	text-align:center;
 	font-size:14px;
 	font-family:sans-serif;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .delete_button:hover {
