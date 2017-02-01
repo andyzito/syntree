@@ -21,7 +21,8 @@ function Node(id,x,y,t) {
 	this.highlight.attr({class: "highlight"})
 	
 	// Delete button
-	this.deleteButton = snap.image('app/resources/delete_button.png',x,y,10,10);
+	this.deleteButton = snap.image('resources/delete_button.png',x,y,10,10);
+	this.deleteButton.attr({class: 'delete_button'})
 	
 	// Relationships
 	this.parent = undefined;

@@ -1,18 +1,15 @@
 #workspace_container {
 	left: 10px;
-	top: 200px;
+	top: 10px;
 	position:absolute;
 	border: 1px solid black;
 	width: 1000px;
 	height: 600px;
+	cursor: default !important;
 }
 
 #workspace {
 	background-color:grey;
-}
-
-#page-background, #page-backdrop {
-	cursor: move;
 }
 
 .editor {
@@ -45,6 +42,8 @@ text {
 	border-bottom: 1px solid black;
 	width: 100%;
 	background-color: white;
+	margin: 0;
+	padding: 0;
 }
 
 .toolbar_button {
