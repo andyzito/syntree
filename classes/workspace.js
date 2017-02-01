@@ -75,9 +75,36 @@ function Workspace() {
 		$(".modal_body").hide();
 		$("#overlay").hide();
 	});
+
+	$(document).on('click', '.modal_option .modal_label', function(e) {
+		var clicked = $(e.currentTarget).children('input');
+		if ($(clicked).val() == 'bracket-file') {
+			$('.modal_option__fname span').text('.txt');
+		} else if ($(clicked).val() == 'png') {
+			$('.modal_option__fname span').text('.png');
+		}
+	});
 	
 	$(document).on('click', '.modal_button__export', function() {
-		window.open();
+		// Get type
+		var type = $('.modal_section__filetype input:checked').val();
+
+		// Get fname
+		var fname = $('.modal_option__fname input').val();
+		
+		// Get brackets if applicable
+		if ($('.modal_option__bracket-file input:checked')) {
+			var brackets = page.tree.toBracket();
+		} else {
+			var brackets = '';
+		}
+
+		// Post it
+		$.post("receive-export.php", {fname: fname, type: type, brackets: brackets}, function(link) {
+			$('body').append(link);
+			$('#temp-file-download')[0].click();
+			$('#temp-file-download').remove();
+		});
 	});
 
 }

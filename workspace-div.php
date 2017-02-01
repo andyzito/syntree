@@ -1,31 +1,38 @@
 <div id="workspace_container">
-	<div class="modal modal_body modal_export">
-		<p class="modal modal_title modal_title_main modal_export">Export</p>
-		<div class="modal modal_section modal_section__filetype">
-			<p class="modal modal_title modal_section_title modal_section_title__filetype modal_export">Filetype</p>
-			<label class="modal modal_label modal_label_radio modal_export">
-				<input type="radio" name="filetype"  checked="checked">
-				Text (bracket notation)
-			</label><br>
-			<label class="modal modal_label modal_label_radio modal_export">
-				<input type="radio" name="filetype">
-				PNG
-			</label>
+	<div class="modal_body modal_export">
+		<p class="modal_title modal_title__main">Export</p>
+		<div class="modal_section modal_section__filetype">
+			<p class="modal_title modal_title_section">Filetype</p>
+			<span class="modal_option modal_option__bracket-file">
+				<label class="modal_label">
+					<input type="radio" name="filetype" value="bracket-file" checked="checked">
+					Bracket notation (text file)
+				</label>
+			</span></br>
+			<span class="modal_option modal_option__png">
+				<label class="modal_label">
+					<input type="radio" name="filetype" value="png">
+					PNG
+				</label>
+			</span></br>
+			<span class="modal_option modal_option__fname">
+				<input type="text" value="mytree"><span>.txt</span>
+			</span>
 		</div>
-		<div class="modal modal_section modal_section__subtree">
-			<p class="modal modal_title modal_section_title modal_section_title__subtree modal_export">Subtree</p>
-			<label class="modal modal_label modal_label_radio modal_export">
+		<div class="modal_section modal_section__subtree">
+			<p class="modal_title modal_title_section">Subtree</p>
+			<label class="modal_label modal_label_option modal_label_option__from-root">
 				<input type="radio" name="subtree" checked="checked">
 				From root node
 			</label><br>
-			<label class="modal modal_label modal_label_radio modal_export">
+			<label class="modal_label modal_label_option modal_label_option__from-curr">
 				<input type="radio" name="subtree">
 				From currently selected node
 			</label>
 		</div>
-		<div class="modal modal_buttonset">
-			<button class="modal modal_button modal_button__export">Export</button>
-			<button class="modal modal_button modal_button__cancel">Cancel</button>
+		<div class="modal_section modal_section__buttonset">
+			<button class="modal_button modal_button__export">Export</button>
+			<button class="modal_button modal_button__cancel">Cancel</button>
 		</div>
 	</div>
 	<div id="overlay">
