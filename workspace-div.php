@@ -23,7 +23,7 @@
 				From currently selected node
 			</label>
 		</div>
-		<div class="modal modal_buttons">
+		<div class="modal modal_buttonset">
 			<button class="modal modal_button modal_button__export">Export</button>
 			<button class="modal modal_button modal_button__cancel">Cancel</button>
 		</div>

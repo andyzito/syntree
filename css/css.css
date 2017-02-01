@@ -114,7 +114,7 @@ text {
 	margin-right: 150px;
 }
 
-.modal_buttons {
+.modal_buttonset {
 	text-align: center;
 	position: absolute;
 	bottom: 0;
@@ -134,4 +134,5 @@ text {
 .modal_button:hover {
 	background: black;
 	color: white;
+	cursor: pointer;
 }
