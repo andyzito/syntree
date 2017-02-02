@@ -20,7 +20,7 @@ function Workspace() {
 		page.eventDel();
 	});
 	
-	$(document).on('click', '#background', function(e) {
+	$(document).on('click', '#page-background', function(e) {
 		page.eventBGClick(e);
 	});
 	
