@@ -9,11 +9,28 @@ body, html {
 	width: 100%;
 }
 
+/* Broad categorical stuff */
 a {
 	text-decoration: none;
 	color: black;
 }
 
+.button {
+	display: inline-block;
+	background: white;
+	border: 1px solid black;
+	border-radius: 2px;
+	padding: 10px 15px;
+	transition: background-color 0.2s, color 0.2s;
+}
+
+.button:hover {
+	background: black;
+	color: white;
+	cursor: pointer;	
+}
+
+/* Index */
 #main {
 	width: 80%;
 	margin: auto;
@@ -26,6 +43,27 @@ a {
 	padding: 30px 80px;
 }
 
+#main h1 {
+	text-align: center;
+	font-family: sans-serif;
+	margin-top: 50px;
+	font-size: 3rem;
+}
+
+#main #workspace_container {
+	position: relative;
+	width: 80%;
+	height: 600px;
+	left: 10%;
+	margin-top: 50px;
+}
+
+.modal_create-account.modal_body {
+	width: 50px;
+	height: 50px;
+}
+
+/* Navbar */
 .navbar_main {
 	height: 60px;
 	border-top: 1px solid black;
@@ -57,36 +95,7 @@ a {
 	float: right;
 }
 
-.button {
-	display: inline-block;
-	background: white;
-	border: 1px solid black;
-	border-radius: 2px;
-	padding: 10px 15px;
-	transition: background-color 0.2s, color 0.2s;
-}
-
-.button:hover {
-	background: black;
-	color: white;
-	cursor: pointer;	
-}
-
-#main h1 {
-	text-align: center;
-	font-family: sans-serif;
-	margin-top: 50px;
-	font-size: 3rem;
-}
-
-#main #workspace_container {
-	position: relative;
-	width: 80%;
-	height: 600px;
-	left: 10%;
-	margin-top: 50px;
-}
-
+/* Make */
 body.page_make {
 	background: white;
 }
@@ -103,4 +112,66 @@ body.page_make {
 .page_make .button_back {
 	margin: 10px;
 	font-size: 1.5rem;
+}
+
+/* Modal */
+.modal_body {
+	position: absolute;
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 10px;
+	z-index: 200;
+	font-family: sans-serif;
+}
+
+.modal_title {
+    font-size: 2em;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.modal_title__main {
+    text-align: center;
+    padding: 15px;
+}
+
+.modal_label {
+	font-size: 1.1em;
+}
+
+.modal_section {
+	display: inline-block;
+	margin-top: 20px;
+}
+
+.modal_section__buttonset {
+	text-align: center;
+	position: absolute;
+	bottom: 0;
+	left: 0; /* cause firefox is weird */
+	width: 100%;
+	margin-bottom: 50px;
+}
+
+.modal_button {
+	font-size: 1.3em;
+	background: white;
+	border: 1px solid black;
+	border-radius: 2px;
+	padding: 10px 15px;
+	margin: 0 50px;
+}
+
+.modal_button:hover {
+	background: black;
+	color: white;
+	cursor: pointer;
+}
+
+.overlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.3);
+	z-index: 100;
 }
