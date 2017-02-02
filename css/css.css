@@ -5,9 +5,8 @@
 }
 
 body, html {
-	background:grey;
+	background: grey;
 	width: 100%;
-	height: 100%;
 }
 
 a {
@@ -17,15 +16,14 @@ a {
 
 #main {
 	width: 80%;
-	height: 100%;
 	margin: auto;
 	background: white;
 	border-left: 1px solid black;
 	border-right: 1px solid black;
 }
 
-.container_logo h1{
-	font-size: 8rem;
+.container_logo img{
+	padding: 30px 80px;
 }
 
 .navbar_main {
@@ -37,7 +35,8 @@ a {
 .navbar_link {
 	height: 100%;
 	padding: 0 2rem;
-	transition: background-color 0.3s, color 0.3s;
+	transition: background-color 0.2s, color 0.2s;
+	font-size: 1.5rem;
 }
 
 .navbar_link:hover {
@@ -56,4 +55,52 @@ a {
 
 .navbar_link_right {
 	float: right;
+}
+
+.button {
+	display: inline-block;
+	background: white;
+	border: 1px solid black;
+	border-radius: 2px;
+	padding: 10px 15px;
+	transition: background-color 0.2s, color 0.2s;
+}
+
+.button:hover {
+	background: black;
+	color: white;
+	cursor: pointer;	
+}
+
+#main h1 {
+	text-align: center;
+	font-family: sans-serif;
+	margin-top: 50px;
+	font-size: 3rem;
+}
+
+#main #workspace_container {
+	position: relative;
+	width: 80%;
+	height: 600px;
+	left: 10%;
+	margin-top: 50px;
+}
+
+body.page_make {
+	background: white;
+}
+
+.page_make #workspace_container {
+	position: absolute;
+	top: 1%;
+	left: 10%;
+	width: 89%;
+	height: 98%;
+	margin: auto;
+}
+
+.page_make .button_back {
+	margin: 10px;
+	font-size: 1.5rem;
 }
