@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 
 <html>
-	<?php include 'head.php' ?>
+	<?php include 'includes/head.php' ?>
 	<body>
 
 		<div id="main">
 			
 			<div class="overlay for-modal_create-account"></div>
-			<?php include 'modal_create-account.php' ?>
+			<?php include 'includes/modal_create-account.php' ?>
 
 			<div class="container container_logo">
 				<img src="resources/syntree-logo.png">
