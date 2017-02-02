@@ -1,5 +1,5 @@
 <?php
-include '/var/www/html/div3/classes/db.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/syntree/classes/db.php';
 $uname = $_POST['username'];
 $pass = $_POST['password'];
 

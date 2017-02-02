@@ -1,5 +1,5 @@
 <?php
-include '/var/www/html/div3/db/db-config.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/syntree/db/db-config.php';
 
 class DB {
 	function __construct($dbhost,$dbuser,$dbpass,$dbname) {

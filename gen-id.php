@@ -1,6 +1,6 @@
 <?php
 function gen_id($n) {
-	include '/var/www/html/div3/classes/db.php';
+	include $_SERVER['DOCUMENT_ROOT'] . '/syntree/classes/db.php';
 	
 	if ($n === 0) {
 		return;
