@@ -3,10 +3,10 @@
 <html>
 	<?php include 'includes/head.php' ?>
 	<body>
-
+		<div class="overlay" overlay-id="index"></div>
+		
 		<div id="main">
 			
-			<div class="overlay for-modal_create-account"></div>
 			<?php include 'includes/modal_create-account.php' ?>
 
 			<div class="container container_logo">
