@@ -8,9 +8,6 @@ function Workspace() {
 		return this.idRef;
 	}
 
-	$(".modal_body").hide();
-	$("#overlay").hide();
-
 	this.page = new Page(this.genId(), this);
 	var page = this.page;
 	var W = this;
@@ -59,21 +56,6 @@ function Workspace() {
 	
 	$(document).on('input', '.editor', function() {
 		page.eventEditorTyping();
-	});
-
-	$(document).on('click', '.toolbar_button__export', function() {
-		$(".modal_export.modal_body").show();
-		$("#overlay").show();
-	});
-
-	$(document).on('click', '#overlay', function() {
-		$(".modal_body").hide();
-		$("#overlay").hide();
-	});
-	
-	$(document).on('click', '.modal_button__cancel', function() {
-		$(".modal_body").hide();
-		$("#overlay").hide();
 	});
 
 	$(document).on('click', '.modal_option .modal_label', function(e) {

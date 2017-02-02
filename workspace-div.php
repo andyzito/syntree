@@ -35,10 +35,10 @@
 			<button class="modal_button modal_button__cancel">Cancel</button>
 		</div>
 	</div>
-	<div id="overlay">
+	<div class="overlay for-modal_export">
 	</div>
 	<ul id="toolbar">
-		<li class="toolbar_button toolbar_button__export">Save/export</li>
+		<li class="toolbar_button toolbar_button__export modal_trigger" for-modal="export">Save/export</li>
 		<li class="toolbar_button">Upload/import</li>
 	</ul>
 	<svg id="workspace" width="100%" height="100%">
