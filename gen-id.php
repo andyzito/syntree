@@ -18,7 +18,7 @@ function gen_id($n) {
 			}
 		}
 	} else {
-		$result = [];
+		$result = '';
 		$ids = $DB->raw_query("SELECT value FROM data WHERE name='ids'")->fetch_assoc()['value'];
 		$ids = explode(',', $ids);
 		$i = 0;
@@ -29,7 +29,7 @@ function gen_id($n) {
 				array_push($ids,strval($x));
 				$temp_ids = implode($ids,',');
 				$DB->raw_query("UPDATE data SET value='$temp_ids' WHERE name='ids'");
-				array_push($result,$x);
+				$result = $result . ',' . strval($x);
 				$i = $i + 1;
 			}
 		}
