@@ -8,7 +8,7 @@
 			</div>
 			<div class="overlay for-modal_create-account"></div>
 			<div class="container container_logo">
-				<img src="syntree-logo.png">
+				<img src="resources/syntree-logo.png">
 			</div>
 			<nav class="navbar navbar_main">
 				<a class="navbar_link navbar_link_left" href="index.php"><span>Home</span></a>
