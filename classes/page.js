@@ -7,11 +7,12 @@ function Page(id, W) {
 	this.background.attr({fill:'white',id:'page-background'});
 	
 	var move = function(dx,dy) {
-		var off = $("#page-background").offset();
-		if ((off.left > 100 && this.data('oldDX') < dx) || (off.left < -100 && this.data('oldDX') > dx)) {
+		var offleft = $("#page-background").offset().left - $("#workspace_container").offset().left;
+		var offtop = $("#page-background").offset().top - $("#workspace_container").offset().top;
+		if ((offleft > 100 && this.data('oldDX') < dx) || (offleft < -100 && this.data('oldDX') > dx)) {
 			dx = this.data('oldDX');
 		}
-		if ((off.top > 100 && this.data('oldDY') < dy) || (off.top < -100 && this.data('oldDY') > dy)) {
+		if ((offtop > 100 && this.data('oldDY') < dy) || (offtop < -100 && this.data('oldDY') > dy)) {
 			dy = this.data('oldDY');
 		}
 
