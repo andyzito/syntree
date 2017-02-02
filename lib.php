@@ -1,4 +1,6 @@
 <?php
+include $_SERVER['DOCUMENT_ROOT'] . '/syntree/classes/db.php';
+
 function gen_id($n) {
 	include $_SERVER['DOCUMENT_ROOT'] . '/syntree/classes/db.php';
 	
@@ -37,3 +39,4 @@ function gen_id($n) {
 		return $result;
 	}
 }
+
