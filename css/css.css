@@ -65,7 +65,7 @@ a {
 	z-index: 200;
 }
 
-.modal_create-account.modal_body {
+.modal_create-account.modal_body, .modal_login.modal_body {
 	width: 35%;
 	height: 60%;
 	left: 32.5%;

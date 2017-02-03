@@ -57,4 +57,12 @@ $(document).ready(function() {
 			alert(result);
 		});
 	});
+	$(document).on('click', '.modal_button__login', function() {
+		var username = $('.modal_option__username input').val();
+		var password = $('.modal_option__password input').val();
+
+		$.post("post/login.php", {username: username, password: password}, function(result) {
+			alert(result);
+		});
+	});
 });
