@@ -1,5 +1,5 @@
 <div id="workspace_container">
-	<div class="modal_body modal_export">
+	<div class="modal_body modal_export" modal-id="export" with-overlay="app">
 		<p class="modal_title modal_title__main">Export</p>
 		<div class="modal_section modal_section__filetype">
 			<p class="modal_title modal_title_section">Filetype</p>
@@ -35,7 +35,7 @@
 			<button class="modal_button modal_button__cancel">Cancel</button>
 		</div>
 	</div>
-	<div class="overlay for-modal_export">
+	<div class="overlay" overlay-id="app">
 	</div>
 	<ul id="toolbar">
 		<li class="toolbar_button toolbar_button__export modal_trigger" for-modal="export">Save/export</li>

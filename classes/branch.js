@@ -1,6 +1,6 @@
 function Branch(parent,child) {
-	this.startPoint = parent.position();
-	this.endPoint = child.position();
+	this.startPoint = parent.getPosition();
+	this.endPoint = child.getPosition();
 
 	this.line = snap.line(this.startPoint.x,this.startPoint.y,this.endPoint.x,this.endPoint.y);
 
@@ -10,9 +10,9 @@ function Branch(parent,child) {
 	this.parent = parent;
 	this.child = child;
 
-	this.updateGraphic = function() {
-		this.startPoint = this.parent.position();
-		this.endPoint = this.child.position();
+	this.updateGraphics = function() {
+		this.startPoint = this.parent.getPosition();
+		this.endPoint = this.child.getPosition();
 				
 		this.line.attr({
 			x1: this.startPoint.x,
@@ -20,5 +20,10 @@ function Branch(parent,child) {
 			x2: this.endPoint.x,
 			y2: this.child.getLabelBBox().y - 5,
 		})
+	}
+
+	this.delete = function() {
+		this.line.remove();
+		this.parent.childBranches.splice(this.parent.childBranches.indexOf(this.parentBranch), 1);
 	}
 }

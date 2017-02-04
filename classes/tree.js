@@ -1,30 +1,29 @@
-function Tree(P,root,x,y) {
-	this.P = P;
-	this.W = P.W;
+function Tree(root,x,y) {
+	this.id = requestId();
 	this.rowHeight = 70;
 
-	if (typeof root === 'undefined' || root === null) {
-		this.root = this.P.makeNode(x,y,"S");
-		this.root.save();
+	if (typeof root === 'undefined') {
+		this.root = new Node(x,y,"S");
+		this.root.editingAction('save');
 	} else {
 		this.root = root;
 	}
 	
-	this.getSubtree = function(baseNode) {
-		return new Tree(this.P,baseNode);
+	this.getRoot = function() {
+		return this.root;
 	}
-	
+
 	this.getPath = function(which) {
-		if (typeof which === 'undefined' || which === 'both') {
+		if (typeof which === 'undefined') {
 			var Left = true;
 			var Right = true;
 		} else {
-			var Left = which === 'left';
-			var Right = which === 'right';
+			var Left = (which === 'left');
+			var Right = (which === 'right');
 		}
 
 		var rootBBox = this.root.getLabelBBox();
-		var rootPos = this.root.position();
+		var rootPos = this.root.getPosition();
 		var Y = rootPos.y - (rootBBox.h/2);
 			
 		if (Right) {
@@ -55,7 +54,7 @@ function Tree(P,root,x,y) {
 			
 			if (Right) {
 				var rNode = rowNodes[rowNodes.length-1];
-				var rPos = rNode.position();
+				var rPos = rNode.getPosition();
 				var rBBox = rNode.getLabelBBox();
 				var newRX = rPos.x + (rBBox.w/2);
 
@@ -75,7 +74,7 @@ function Tree(P,root,x,y) {
 			
 			if (Left) {
 				var lNode = rowNodes[0];
-				var lPos = lNode.position();
+				var lPos = lNode.getPosition();
 				var lBBox = lNode.getLabelBBox();
 				var newLX = lPos.x - (lBBox.w/2);
 
@@ -86,7 +85,7 @@ function Tree(P,root,x,y) {
 					lPathString += "H" + (lPos.x - (lBBox.w/2));
 					lPathString += "V" + (lPos.y - (lBBox.h/2));				
 				}
-				
+
 				lX = newLX;
 				if (lX < lBound) {
 					lBound = lX;
@@ -97,8 +96,8 @@ function Tree(P,root,x,y) {
 		
 		var lNode = lastNodes[0];
 		var rNode = lastNodes[lastNodes.length-1];
-		var lPos = lNode.position();
-		var rPos = rNode.position();
+		var lPos = lNode.getPosition();
+		var rPos = rNode.getPosition();
 		var lBBox = lNode.getLabelBBox();
 		var rBBox = rNode.getLabelBBox();
 		
@@ -124,73 +123,94 @@ function Tree(P,root,x,y) {
 			toReturn.rightBound = rBound;
 		}
 		
+		// this.path = snap.path(toReturn.pathString);
+		// this.path.attr({stroke:'black',width:1})
 		return toReturn;
 	}
 	
-	this.makeChildOf = function(parentNode,index,text) {
-		if (typeof text == 'undefined') {
-			text = "";
+	this.getDescendantsOf = function(node,attr,inclusive,flat) {
+		if (typeof node === 'undefined') {
+			node = this.root;
 		}
-		if (typeof index === 'undefined') {
-			index = parentNode.children.length;
+		if (typeof inclusive === 'undefined') {
+			inclusive = true;
 		}
-		if (!parentNode.real) {
-			return;
+		if (typeof flat === 'undefined') {
+			flat = false;
 		}
-		var pos = parentNode.position();
+		var getAttr = ""; 
+		switch (attr) {
+			case '':
+				break;
+			case 'id':
+				getAttr = ".getId()";
+				break;
+			case 'labelContent':
+				getAttr = ".getLabelContent()";
+				break;
+			case 'editing':
+			case 'selected':
+			case 'real':
+				getAttr = ".getState('" + attr + "')";
+				break;
+			case 'x':
+			case 'y':
+				getAttr = ".getPosition()." + attr;
+				break;
+		}
 
-		var newChild = this.P.makeNode(pos.x,pos.y+this.rowHeight,text);
-
-		newChild.parent = parentNode;
-
-		parentNode.children.splice(index,0,newChild);
-		
-		this.spread(parentNode);
-		var branch = this.P.makeBranch(parentNode,newChild);
-		
-		this.P.selectNode(newChild);
-		newChild.editToggle();
-		return newChild;
-	}
-
-	this.getChildrenOf = function(node,inclusive) {
 		var result = [];
-		var len = node.children.length;
+		var len = node.getChildren().length;
 		var i = 0;
 
-		while (i < node.children.length) {
-			var thisChild = node.children[i];
-			var push = {};
-			push[thisChild.id] = this.getChildrenOf(thisChild);
-			result.push(push);
+		while (i < len) {
+			var thisChild = node.getChildren()[i];
+			if (!flat) {
+				var toAdd = {};
+				toAdd[eval("thisChild"+getAttr)] = this.getDescendantsOf(thisChild,attr,false);
+				result.push(toAdd);
+			} else {
+				var toAdd = [eval("thisChild"+getAttr)];
+				toAdd = toAdd.concat(this.getDescendantsOf(thisChild,attr,false,true));
+				result = result.concat(toAdd);
+			}
 			i = i + 1;
 		}
 
 		if (inclusive) {
-			var t = node.id;
-			temp = {};
-			temp[t] = result;
-			result = [temp];
+			if(!flat) {
+				var t = eval("node"+getAttr);
+				temp = {};
+				temp[t] = result;
+				result = [temp];
+			} else {
+				result.push(eval("node"+getAttr));
+			}
 		}
 
 		return result;
 	}
 
 	this.getNodeOffset = function(fromNode,toNode) {
+		if (typeof fromNode === 'undefined' || typeof toNode === 'undefined') {
+			return NaN;
+		}
+
 		if (fromNode === toNode) {
 			return 0;
 		}
+
 		var currNode = toNode;
 		var off = 1;
 		while (true) {
-			if (currNode.parent === fromNode) {
+			var parent = currNode.getParent();
+			if (parent === fromNode) {
 				break;
-			} else if (currNode.parent === 'undefined') {
-				return;
+			} else if (parent === 'undefined') {
+				return NaN;
 			} else {
 				off++;
-				currNode = currNode.parent;
-				continue;
+				currNode = parent;
 			}
 		}
 		return off;
@@ -201,9 +221,12 @@ function Tree(P,root,x,y) {
 		if (off == 0) {
 			return [node];
 		}
+		if (typeof node === 'undefined') {
+			return [];
+		}
 
 		var result = [];
-		var children = node.children;
+		var children = node.getChildren();
 		var c = 0;
 		
 		while(c < children.length) {
@@ -217,17 +240,18 @@ function Tree(P,root,x,y) {
 		return result;
 	}
 	
-	this.toBracket = function(node) {
+	this.getBracketNotation = function(node) {
 		if (typeof node === 'undefined') {
 			node = this.root;
 		}
 		
-		var string = "[." + node.labelContent();
-		if (node.children.length > 0) {
+		var string = "[." + node.getLabelContent();
+		var children = node.getChildren();
+		if (children.length > 0) {
 			var c = 0;
-			while (c < node.children.length) {
-				var thisChild = node.children[c];
-				var add = this.toBracket(thisChild);
+			while (c < children.length) {
+				var thisChild = children[c];
+				var add = this.getBracketNotation(thisChild);
 				string += " " + add;
 				c++;
 			}
@@ -236,28 +260,26 @@ function Tree(P,root,x,y) {
 		return string;
 	}
 
-	this.spread = function(baseNode,angle) {
+	this.distribute = function(angle) {
 		if (typeof angle === 'undefined') {
 			angle = 50;
 		}
-		if (typeof baseNode === 'undefined') {
-			return;
-		}
 				
-		var children = baseNode.children;
+		var children = this.root.getChildren();
 		if (children.length === 0) {
 			return;
 		} else if (children.length === 1){
-			children[0].position(baseNode.position().x)
+			children[0].move(this.root.getPosition().x,this.root.getPosition().y+this.rowHeight);
 		} else if (children.length > 1) {
-			var pos = baseNode.position();
+			var pos = this.root.getPosition();
 			var leftBound = pos.x - (this.rowHeight * Math.tan((angle/2) * (Math.PI / 180)));
 			var rightBound = pos.x + (this.rowHeight * Math.tan((angle/2) * (Math.PI / 180)));
+			console.log(leftBound + " to " + rightBound)
 			var width = rightBound - leftBound;
 			var interval = width/(children.length-1);
 			var i = 0;
 			while (i < children.length) {
-				children[i].position(leftBound+(interval*i));
+				children[i].move(leftBound+(interval*i),this.root.getPosition().y+this.rowHeight);
 				i++;
 			}
 
@@ -265,32 +287,41 @@ function Tree(P,root,x,y) {
 			var intersect = false;
 			var newWidth = width;
 			while (c < children.length-1) {
-				
 				var lChild = children[c];
 				var rChild = children[c+1];
-				var lPath = this.getSubtree(lChild).getPath();
-				var rPath = this.getSubtree(rChild).getPath();
+				var lPath = new Tree(lChild).getPath();
+				var rPath = new Tree(rChild).getPath();
 				if (Snap.path.intersection(lPath.pathString,rPath.pathString).length > 0) {
 					intersect = true;
 					var overlap = lPath.rightBound - rPath.leftBound;
-					newWidth += overlap;
+					newWidth += Math.abs(overlap);
 					newWidth += 10; //padding
 				}
 				c++;
 			}
 			
 			if (intersect) {
-				var newAngle = (180/Math.PI) * (2 * (Math.atan((newWidth/2)/this.rowHeight)));
-				this.spread(baseNode,newAngle);
+				var newAngle = 2 * ((180/Math.PI) * (Math.atan(newWidth/(2*this.rowHeight))));
+				var oldAngle = 2 * ((180/Math.PI) * (Math.atan(width/(2*this.rowHeight))));
+				this.distribute(newAngle);
 			}
 
 		}
 		
-		if (typeof baseNode.parent != 'undefined') {
-			this.spread(baseNode.parent);
+		if (typeof this.root.getParent() != 'undefined') {
+			var tree = new Tree(this.root.getParent());
+			tree.distribute();
 		} else {
-			this.root.updateGraphic();
+			this.root.updateGraphics();
 		}
 	}
-	
+
+	this.delete = function() {
+		var nodes = this.getDescendantsOf(this.root,"",true,true);
+		var i = 0;
+		while (i < nodes.length) {
+			nodes[i].delete();
+			i++;
+		}
+	}
 }

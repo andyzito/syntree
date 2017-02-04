@@ -1,16 +1,18 @@
 H = new History();
+requestId = function(id) {
+	return Math.floor(Math.random()*1000);
+}
 
 $(document).ready(function() {
     //Snap
 	snap = Snap("#workspace");
 
-	W = new Workspace();
+	new Workspace();
 	var T = W.page.tree;
-	W.page.selectNode(T.root);
+	W.page.nodeSelect(T.root);
 	// T.root.select();
 	// var svgLabel = Snap("#" + T.root.label.attr('id'));
 	// var allElements = snap.g(W.page.background,T.root.highlight,svgLabel);
-	// console.log(allElements);
 	// allElements.drag();
 	
 	// var DP = T.makeChildOf(T.root,false,"NP");
@@ -44,14 +46,14 @@ $(document).ready(function() {
 	// var N = T.makeChildOf(NP,false,"N");
 	// var fire = T.makeChildOf(N,false,"fireman");
 	
-	var A = T.makeChildOf(T.root,false,text="A");
-	A.save();
+	// var A = T.makeChildOf(T.root,false,text="A");
+	// A.save();
 	// var Z = T.makeChildOf(A,false,text="Z");
 	// var Y = T.makeChildOf(A,false,text="Y");
 	// var X = T.makeChildOf(Y,false,text="X");
 	// var W = T.makeChildOf(Y,false,text="W");
-	var B = T.makeChildOf(T.root,false,text="B");
-	B.save();
+	// var B = T.makeChildOf(T.root,false,text="B");
+	// B.save();
 	// var C = T.makeChildOf(B,false,text="C");
 	// var D = T.makeChildOf(B,false,text="D");
 	// var E = T.makeChildOf(D,false,text="E");
@@ -68,6 +70,5 @@ $(document).ready(function() {
 	// T.selected.save();
 	
     // $("#background").on('click', function(e) {
-		// console.log(T.toBracket());
     // });
 });

@@ -62,7 +62,12 @@ text {
 	width: 90%;
 	height: 90%;
 	top: 5%;
-	left: 5%;	
+	left: 5%;
+	z-index: 101;
+}
+
+.overlay[overlay-id=app] {
+	z-index: 100;
 }
 
 .modal_option__fname input{

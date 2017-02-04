@@ -1,221 +1,189 @@
-function Page(id, W) {
-	this.W = W;
-	this.id = id;
-	this.allNodes = {};
-	this.selectedNode = undefined;
-	this.background = snap.rect(0,$("#toolbar").height(),W.svg.width(),W.svg.height());
+function Page() {
+	this.id = requestId();
+	this.allNodes = {}; // so we can always get a node by its id
+	this.selectedNode = undefined; // will keep track of the selected node
+
+	// Page background
+	this.background = snap.rect(0,$("#toolbar").height(),$("#workspace").width(),$("#workspace").height());
 	this.background.attr({fill:'white',id:'page-background'});
-	
-	var move = function(dx,dy) {
-		var offleft = $("#page-background").offset().left - $("#workspace_container").offset().left;
-		var offtop = $("#page-background").offset().top - $("#workspace_container").offset().top;
-		if ((offleft > 100 && this.data('oldDX') < dx) || (offleft < -100 && this.data('oldDX') > dx)) {
-			dx = this.data('oldDX');
-		}
-		if ((offtop > 100 && this.data('oldDY') < dy) || (offtop < -100 && this.data('oldDY') > dy)) {
-			dy = this.data('oldDY');
-		}
 
-        this.attr({
-                    transform: this.data('origTransform') + (this.data('origTransform') ? "T" : "t") + [dx, dy]
-                });
-        W.page.group.attr({
-                    transform: this.data('origTransform') + (this.data('origTransform') ? "T" : "t") + [dx, dy]
-                });
-
-        this.data('oldDX', dx);
-        this.data('oldDY', dy);
-	}
-
-	var start = function() {
-        this.data('origTransform', this.transform().local);
-	}
-
+	// Make group (used for panning)
 	this.group = snap.g();
 	this.group.attr({id: "group-" + this.id, class: "page-group"});
-	this.background.drag(move,start);
-	
-	this.makeBranch = function(parent,child) {
-		var branch = new Branch(parent,child);		
-		this.group.append(branch.line);
-		return branch;
+
+	this.navigateHorizontal = function(direction,fcreate) {
+		if (typeof fcreate === 'undefined') {
+			fcreate = false;
+		}
+		
+		if (typeof direction === 'undefined') {
+			return;
+		}
+
+		if (direction === 'left') {
+			var left = true;
+			var right = false;
+			var n = 0;
+			// var x = 0;
+			// var y = -1;
+		} else if (direction === 'right') {
+			var right = true;
+			var left = false;
+			var n = 1;
+			// var y = 1;
+		} else {
+			return;
+		}
+
+		if (typeof this.selectedNode != 'undefined') {
+			// if (this.selectedNode.getState('editing') && this.selectedNode.getState('real')) {
+			// 	return;
+			// }
+			var off = this.tree.getNodeOffset(this.tree.getRoot(),this.selectedNode);
+			var rowNodes = this.tree.getNodesByOffset(this.tree.getRoot(),off);
+			var selectedIndex = rowNodes.indexOf(this.selectedNode);
+			var real = this.selectedNode.getState('real');
+
+			if (right) {
+				if (selectedIndex === rowNodes.length-1 || fcreate) {
+					if (real) {
+						var siblingIndex = this.selectedNode.getParent().getChildren().indexOf(this.selectedNode);
+						var newNode = new Node(0,0);
+						this.selectedNode.getParent().addChild(newNode,siblingIndex+1);
+						this.nodeSelect(newNode);
+						this.nodeEditing('init');
+					} else {
+						return;
+					}
+				} else {
+					this.nodeSelect(rowNodes[selectedIndex+1]);
+				}
+			} else {
+				if (selectedIndex === 0 || fcreate) {
+					if (real) {
+						var siblingIndex = this.selectedNode.getParent().getChildren().indexOf(this.selectedNode);
+						var newNode = new Node(0,0);
+						this.selectedNode.getParent().addChild(newNode,siblingIndex);
+						this.nodeSelect(newNode);
+						this.nodeEditing('init');
+					} else {
+						return;
+					}
+				} else {
+					this.nodeSelect(rowNodes[selectedIndex-1]);
+				}
+			}
+
+		}
+		var tree = new Tree(this.selectedNode.getParent());
+		tree.distribute();
 	}
 
-	this.makeNode = function(x,y,t) {
-		var newNode = new Node(this.W.genId(),x,y,t);
-		this.allNodes[newNode.id] = newNode;
-		var action = new Action('make',newNode);
-		
-		var tempgroup = snap.g(newNode.highlight, newNode.deleteButton, newNode.label);
-		this.group.append(tempgroup);
-		
-		return newNode;
+	this.navigateUp = function() {
+		if (typeof this.selectedNode != 'undefined' && typeof this.selectedNode.getParent() != 'undefined') {
+			this.nodeSelect(this.selectedNode.getParent());
+		}
+		var tree = new Tree(this.selectedNode);
+		tree.distribute();
 	}
 
-	this.deleteNode = function(node) {
-		var action = new Action('delete',node);
-		delete this.allNodes[node.id];
-		node.delete();
-		if (node.children.length > 0) {
-			var children = node.children.slice(0);
-			var c = 0;
-			while (c < children.length) {
-				this.deleteNode(children[c]);
-				c++;
+	this.navigateDown = function(fcreate) {
+		if (typeof this.selectedNode != 'undefined') {
+			if (this.selectedNode.getChildren().length > 0 && !fcreate) {
+				var possibleSelects = this.selectedNode.getChildren();
+				// var selectHistory = H.getByType('select');
+				
+				// for (i=selectHistory.length-1; i>=0; i--) {
+				// 	if (possibleSelects.indexOf(selectHistory[i].node) >= 0) {
+				// 		this.selectNode(selectHistory[i].node);
+				// 		return;
+				// 	}
+				// }
+				this.nodeSelect(this.selectedNode.getChildren()[0]);
+			} else if (this.selectedNode.getState('real')) {
+				var newNode = new Node(0,0,"");
+				this.selectedNode.addChild(newNode);
+				var tree = new Tree(this.selectedNode);
+				tree.distribute();
+				this.nodeSelect(newNode);
+				this.nodeEditing('init');
 			}
 		}
-		if (node.parent != undefined) {
-			this.tree.spread(node.parent);
-			node.parent.updateGraphic();
-		}
-		return;
 	}
 
-	this.selectNode = function(node) {
-		var action = new Action('select',node);
+	this.nodeEditing = function(type,node) {
+		if (typeof node === 'undefined') {
+			node = this.selectedNode;
+		}
+		if (typeof node === 'undefined') {
+			return;
+		}
+		var dist = false;
+		if (type === 'init') {
+			node.editingAction('init');
+		} else if (type === 'update') {
+			node.editingAction('update');
+		} else if (type === 'toggle') {
+			if (node.getState('editing')) {
+				this.nodeEditing('save');
+			} else {
+				this.nodeEditing('init');
+			}
+		} else if (type === 'save') {
+			node.editingAction('save');
+			if (this.selectedNode.getParent()) {
+				var tree = new Tree(this.selectedNode.getParent());
+				tree.distribute();
+			}
+		} else if (type === 'cancel') {
+			node.editingAction('cancel');
+		}
+	}
+
+	this.nodeDelete = function(node) {
+		// var action = new Action('delete',node);
+		if (typeof node === 'undefined') {
+			node = this.selectedNode;
+		}
+		tree = new Tree(node);
+		tree.delete();
+		delete this.allNodes[node.getId()];
+		// this.nodeSelect(this.tree.getRoot())
+		// if (node.children.length > 0) {
+		// 	var children = node.children.slice(0);
+		// 	var c = 0;
+		// 	while (c < children.length) {
+		// 		this.deleteNode(children[c]);
+		// 		c++;
+		// 	}
+		// }
+		// if (node.parent != undefined) {
+		// 	this.tree.spread(node.parent);
+		// 	node.parent.updateGraphics();
+		// }
+	}
+
+	this.nodeSelect = function(node) {
+		// var action = new Action('select',node);
 		if (typeof this.selectedNode != 'undefined') {
-			this.deselectNode(this.selectedNode);
+			this.nodeDeselect(this.selectedNode);
 		}
 		this.selectedNode = node;
 		this.selectedNode.select();
 	}
 
-	this.deselectNode = function(node) {
+	this.nodeDeselect = function(node) {
 		this.selectedNode = undefined;
 		node.deselect();
-		if (node.editing) {
-			if (node.real) {
-				node.cancel();
+		if (node.getState('editing')) {
+			if (node.getState('real')) {
+				node.editingAction('cancel');
 			} else {
-				this.deleteNode(node);
+				this.nodeDelete(node);
 			}
 		}
 	}
 
-	// Events :
-
-	this.eventNodeClick = function(clickedNode) {
-		var node = this.allNodes[$(clickedNode).attr('id').split('-')[1]];
-		this.selectNode(node);
-	}
-
-	this.eventEnter = function() {
-		if (typeof this.selectedNode != 'undefined') {
-			this.selectedNode.editToggle();
-			this.tree.spread(this.selectedNode.parent)
-		}
-	}
-	
-	this.eventLeft = function() {
-		if (typeof this.selectedNode != 'undefined') {
-			if (this.selectedNode.editing && this.selectedNode.real) {
-				return;
-			}
-			var off = this.tree.getNodeOffset(this.tree.root,this.selectedNode);
-			var rowNodes = this.tree.getNodesByOffset(this.tree.root,off);
-			var selectedIndex = rowNodes.indexOf(this.selectedNode);
-			if (rowNodes.length <= 1 || this.W.ctrl === true) {
-				this.tree.makeChildOf(this.selectedNode.parent,selectedIndex)
-			} else if (rowNodes.length > 1) {
-				if (selectedIndex > 0) {
-					this.selectNode(rowNodes[selectedIndex-1]);
-				} else {
-					this.tree.makeChildOf(this.selectedNode.parent,0);
-				}
-			}
-		}
-	}
-	
-	this.eventRight = function() {
-		if (typeof this.selectedNode != 'undefined') {
-			if (this.selectedNode.editing && this.selectedNode.real) {
-				return;
-			}
-			var off = this.tree.getNodeOffset(this.tree.root,this.selectedNode);
-			var rowNodes = this.tree.getNodesByOffset(this.tree.root,off);
-			var selectedIndex = rowNodes.indexOf(this.selectedNode);
-			if (rowNodes.length <= 1 || this.W.ctrl === true) {
-				this.tree.makeChildOf(this.selectedNode.parent,selectedIndex+1);
-			} else if (rowNodes.length > 1) {
-				if (selectedIndex < rowNodes.length-1) {
-					this.selectNode(rowNodes[selectedIndex+1]);
-				} else {
-					this.tree.makeChildOf(this.selectedNode.parent);
-				}
-			} else {
-				this.tree.makeChildOf(this.selectedNode.parent);
-			}
-		}
-	}
-	
-	this.eventUp = function() {
-		if (typeof this.selectedNode != 'undefined') {
-			if (typeof this.selectedNode.parent != 'undefined') {
-				this.selectNode(this.selectedNode.parent);
-			}
-		}
-	}
-	
-	this.eventDown = function() {
-		if (typeof this.selectedNode != 'undefined') {
-			if (this.selectedNode.children.length > 0 && this.W.ctrl === false) {
-				var possibleSelects = this.selectedNode.children;
-				var selectHistory = H.getByType('select');
-				
-				for (i=selectHistory.length-1; i>=0; i--) {
-					if (possibleSelects.indexOf(selectHistory[i].node) >= 0) {
-						this.selectNode(selectHistory[i].node);
-						return;
-					}
-				}
-				this.selectNode(this.selectedNode.children[0]);
-			} else {
-				this.tree.makeChildOf(this.selectedNode);
-			}
-		}
-	}
-	
-	this.eventDel = function() {
-		if (typeof this.selectedNode != 'undefined') {
-			this.deleteNode(this.selectedNode);
-			this.selectNode(H.getNthOfType('select',1).node);
-		}
-	}
-	
-	this.eventEsc = function() {
-		if (typeof this.selectedNode != 'undefined') {
-			this.selectedNode.cancel();
-		}
-	}
-	
-	this.eventEditorTyping = function() {
-		this.selectedNode.editUpdate();
-		// this.tree.spread(this.selectedNode.parent);
-	}
-	
-	this.eventBGClick = function(e) {
-		var x = e.pageX - this.W.svg.offset().left;
-		var y = e.pageY - this.W.svg.offset().top;
-		var nearest = this.getNearestNode(x,y);
-		
-		if (typeof nearest === 'object') {
-			if (nearest.deltaY < -10) {
-				if (nearest.deltaX > 0) {
-					this.tree.makeChildOf(nearest.node,0);
-				} else {
-					this.tree.makeChildOf(nearest.node);
-				}
-			} else {
-				var childIndex = nearest.node.parent.children.indexOf(nearest.node);
-				if (nearest.deltaX > 0) {
-					this.tree.makeChildOf(nearest.node.parent,childIndex);
-				} else {
-					this.tree.makeChildOf(nearest.node.parent,childIndex+1);
-				}				
-			}
-		}
-	}
-	
 	this.getNearestNode = function(x,y) {
 		if (typeof(x) === 'undefined' || typeof(y) === 'undefined') {
 			return;
@@ -227,7 +195,7 @@ function Page(id, W) {
 		var len = Object.keys(this.allNodes).length;
 		while (n < len) {
 			var node = this.allNodes[Object.keys(this.allNodes)[n]];
-			var pos = node.position();
+			var pos = node.getPosition();
 			var distance = Math.sqrt(Math.pow((pos.x - x),2) + Math.pow((pos.y - y),2));
 			if (distance < leastDist) {
 				leastDist = distance;
@@ -239,13 +207,44 @@ function Page(id, W) {
 			return {
 				node: nearestNode,
 				dist: leastDist,
-				deltaX: nearestNode.position().x - x,
-				deltaY: nearestNode.position().y - y,
+				deltaX: nearestNode.getPosition().x - x,
+				deltaY: nearestNode.getPosition().y - y,
 			}
 		}
 	}
 	
-	// : events.
-	
-	this.tree = new Tree(this,undefined,this.background.attr('width')/2,$("#toolbar").height()+20);
+	this.addTree = function() {
+		this.tree = new Tree(undefined,this.background.attr('width')/2,$("#toolbar").height()+20);
+	}
+
+	this._enablePanning = function() {
+		// We need a custom move function to implement panning limits
+		var move = function(dx,dy) {
+			var offleft = $("#page-background").offset().left - $("#workspace_container").offset().left;
+			var offtop = $("#page-background").offset().top - $("#workspace_container").offset().top;
+			if ((offleft > 100 && this.data('oldDX') < dx) || (offleft < -100 && this.data('oldDX') > dx)) {
+				dx = this.data('oldDX');
+			}
+			if ((offtop > 100 && this.data('oldDY') < dy) || (offtop < -100 && this.data('oldDY') > dy)) {
+				dy = this.data('oldDY');
+			}
+
+	        this.attr({
+	                    transform: this.data('origTransform') + (this.data('origTransform') ? "T" : "t") + [dx, dy]
+	                });
+	        // This allows us to make page elements pan as well, but still make panning happen only on background click
+	        W.page.group.attr({
+	                    transform: this.data('origTransform') + (this.data('origTransform') ? "T" : "t") + [dx, dy]
+	                });
+
+	        this.data('oldDX', dx);
+	        this.data('oldDY', dy);
+		}
+
+		var start = function() {
+	        this.data('origTransform', this.transform().local);
+		}
+
+		this.background.drag(move,start);
+	}
 }

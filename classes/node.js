@@ -1,13 +1,18 @@
-function Node(id,x,y,t) {
+function Node(x,y,t) {
+	if (typeof t === 'undefined') {
+		t = "";
+	}
+
 	// ID
-	this.id = id;
+	this.id = requestId();
+	W.page.allNodes[this.id] = this;
 	
 	// Position
 	this.x = x;
 	this.y = y;
 	
-	// Textbox
-	this.label = snap.text(x,y,[t,]);
+	// Label
+	this.label = snap.text(x,y,t);
 	this.label.attr({'id':"label-"+this.id,'class':'node-label'});
 
 	// Editor
@@ -39,54 +44,48 @@ function Node(id,x,y,t) {
 	this.positionUnsynced = true;
 
 	// Property retrieval:
-	this.position = function(x,y,propogate) {
-		if (typeof propogate == 'undefined') {
-			propogate = true;
+	this.getPosition = function() {
+		return {x: this.x, y: this.y};
+	}
+
+	this.getState = function(which) {
+		switch (which) {
+			case 'selected':
+				return this.selected;
+				break;
+			case 'editing':
+				return this.editing;
+				break;
+			case 'real':
+				return this.real;
+				break;
+			default:
+				return {
+					selected: this.selected,
+					editing: this.editing,
+					real: this.real
+				}
 		}
-		var oldX = this.x;
-		var oldY = this.y;
-		
-		if (typeof x != 'undefined') {
-			this.x = x;
-		}
-		if (typeof y != 'undefined') {
-			this.y = y;
-		}
-		if (propogate) {
-			var c = 0;
-			while (c < this.children.length) {
-				var deltaX = this.x - oldX;
-				var deltaY = this.y - oldY;
-				var thisChild = this.children[c];
-				var pos = thisChild.position();
-				thisChild.position(pos.x + deltaX,pos.y + deltaY);
-				c++;
-			}
-		}
-		this.positionUnsynced = true;
-		return {
-			x: this.x,
-			y: this.y,
-		}
-	}	
-	
-	this.labelPosition = function(x,y) {
-		if (typeof x == 'undefined' && typeof y == 'undefined') {
-			return {
-				x: Number(this.label.attr('x')),
-				y: Number(this.label.attr('y')),
-			}
-		}
-		if (typeof x != 'undefined') {
-			this.label.attr('x',x);
-		}
-		if (typeof y != 'undefined') {
-			this.label.attr('y',y);
-		}
-	}	
-	
+	}
+
+	this.getParent = function() {
+		return this.parent;
+	}
+
+	this.getChildren = function() {
+		return this.children;
+	}
+
+	this.getId = function() {
+		return this.id;
+	}
+
+	this.getLabelContent = function() {
+		return this.label.node.textContent;
+	}
+
 	this.getLabelBBox = function() {
-		if (this.labelContent() === "" || $("#" + this.label.attr('id')).length === 0) {
+		if (this.label.node.textContent === "" || $("#" + this.label.attr('id')).length === 0) {
 			return {
 				x: this.x,
 				x2: this.x,
@@ -103,107 +102,128 @@ function Node(id,x,y,t) {
 		return bbox;
 	}
 
-	this.labelContent = function(t) {
-		if (typeof t != 'undefined') {
-			this.label.node.textContent = t;
-		} else {
-			return this.label.node.textContent;
-		}
-	}
 
-	// State change:
+	this.move = function(x,y,propagate) {
+		if (typeof propagate == 'undefined') {
+			propagate = true;
+		}
+		var oldX = this.x;
+		var oldY = this.y;
+		
+		if (typeof x != 'undefined') {
+			this.x = x;
+		}
+		if (typeof y != 'undefined') {
+			this.y = y;
+		}
+		if (propagate) {
+			var c = 0;
+			while (c < this.children.length) {
+				var deltaX = this.x - oldX;
+				var deltaY = this.y - oldY;
+				var thisChild = this.children[c];
+				var pos = thisChild.getPosition();
+				thisChild.move(pos.x + deltaX,pos.y + deltaY);
+				c++;
+			}
+		}
+		this.positionUnsynced = true;
+		return {
+			x: this.x,
+			y: this.y,
+		}
+	}	
 	
 	this.delete = function() {
 		this.label.remove();
 		this.editor.remove();
 		this.highlight.remove();
 		this.deleteButton.remove();
+		if (typeof this.parentBranch != 'undefined') {
+			this.parentBranch.delete();
+		}
 		if (typeof this.parent != 'undefined') {
-			this.parentBranch.line.remove();			
 			this.parent.children.splice(this.parent.children.indexOf(this), 1);
-			this.parent.childBranches.splice(this.parent.childBranches.indexOf(this.parentBranch), 1);
 		}
 	}
 
 	this.select = function() {
 		this.selected = true;
-		this.updateGraphic(false);
+		this.updateGraphics(false);
 	}
 
 	this.deselect = function() {
 		this.selected = false;
-		this.updateGraphic(false);
+		this.updateGraphics(false);
 	}
 
-	this.editInit = function(e) {
-		this.editing = true;
-		this.beforeEditLabelContent = this.labelContent();
-		this.updateGraphic(false);
-		this.editor.val(this.labelContent());
-		this.editor.show();
-		this.editor.focus();
-	}
-	
-	this.editUpdate = function() {
-		if (this.editing) {
-			this.labelContent(this.editor.val());
-			this.updateGraphic(false);
-		}
-	}
-	
-	this.editToggle = function() {
-		if (this.editing) {
-			this.save();
-		} else {
-			this.editInit();
+	this.editingAction = function(action) {
+		switch(action) {
+			case 'init':
+				this.editing = true;
+				this.beforeEditLabelContent = this.label.node.textContent;
+				this.updateGraphics(false);
+				this.editor.val(this.label.node.textContent);
+				this.editor.show();
+				this.editor.focus();
+				break;
+			case 'update':
+				if (this.editing) {
+					this.label.node.textContent = this.editor.val();
+					this.updateGraphics(false);
+				}
+				break;
+			case 'save':
+				if (!this.real) {
+					this.real = true;
+				}
+				if (this.editing) {
+					this.editing = false;
+					this.label.node.textContent = this.editor.val()
+					this.editor.hide();
+					this.editor.blur();
+					this.updateGraphics(false);
+				}
+				break;
+			case 'cancel':
+				if (this.editing) {
+					this.editing = false;
+					this.editor.hide();
+					this.label.node.textContent = this.beforeEditLabelContent;
+					this.updateGraphics(false);
+					break;
+				}
 		}
 	}
 
-	this.save = function(e) {
-		if (!this.real) {
-			this.real = true;
-		}
-		if (this.editing) {
-			this.editing = false;
-			this.labelContent(this.editor.val())
-			this.editor.hide();
-			this.editor.blur();
-			this.updateGraphic(false);
-		}
-	}
-
-	this.cancel = function() {
-		this.editing = false;
-		this.editor.hide();
-		this.labelContent(this.beforeEditLabelContent);
-		this.updateGraphic(false);
-	}
-	
-	this.updateGraphic = function(propogate) {
-		if (typeof propogate == 'undefined') {
-			propogate = true;
+	this.updateGraphics = function(propagate) {
+		if (typeof propagate == 'undefined') {
+			propagate = true;
 		}
 		
 		var bbox = this.getLabelBBox();
-		if (this.positionUnsynced) {
-			this.labelPosition(this.x-(bbox.w/2), this.y+(bbox.h/2));		
-			bbox = this.getLabelBBox();
+		// if (this.positionUnsynced) {
+		// console.log("I am at " + this.x + "," + this.y);
+		this.label.attr({x: this.x-(bbox.w/2)});
+		this.label.attr({y: this.y+(bbox.h/2)});
+		// console.log("My label is at " + this.label.attr('x') + "," + this.label.attr('y'));
+		// console.log("But my label is SUPPOSED to be at " + (this.x-(bbox.w/2)) + "," + (this.y+(bbox.h/2)));
+		bbox = this.getLabelBBox();
+
+		this.highlight.attr({
+			x: bbox.x - 5,
+			y: bbox.y - 5,
+		})
 			
-			this.highlight.attr({
-				x: bbox.x - 5,
-				y: bbox.y - 5,
-				width: bbox.w + 10,
-				height: bbox.h + 10
-			})
-			
-			this.positionUnsynced = false;
-		} else {
-			this.highlight.attr({
-				width: bbox.w + 10,
-				height: bbox.h + 10
-			})
-		}
-		
+		// 	this.positionUnsynced = false;
+		// }
+
+		this.highlight.attr({
+			width: bbox.w + 10,
+			height: bbox.h + 10
+		})
+
+
 		this.deleteButton.attr({
 			x: bbox.x2,
 			y: bbox.y - 10,
@@ -248,20 +268,40 @@ function Node(id,x,y,t) {
 				
 		// Branches
 		if (typeof this.parentBranch != 'undefined') {
-			this.parentBranch.updateGraphic();
+			this.parentBranch.updateGraphics();
 		}
 		for (i=0;i<this.childBranches.length;i++) {
-			this.childBranches[i].updateGraphic();
+			this.childBranches[i].updateGraphics();
 		}
 		
-		if (propogate) {
+		if (propagate) {
 			var c = 0;
 			while (c < this.children.length) {
-				this.children[c].updateGraphic();
+				this.children[c].updateGraphics();
 				c++;
 			}
 		}
 	}
+
+	this.addChild = function(newNode,index,text) {
+		if (typeof text == 'undefined') {
+			text = "";
+		}
+		if (typeof index === 'undefined') {
+			index = this.children.length;
+		}
+		if (!this.real) {
+			return;
+		}
+		var pos = this.getPosition();
+
+		newNode.parent = this;
+
+		this.children.splice(index,0,newNode);
+		
+		var branch = new Branch(this,newNode)
+	}
+
 	
-	this.updateGraphic();
+	this.updateGraphics();
 }
