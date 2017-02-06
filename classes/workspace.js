@@ -14,22 +14,24 @@ function Workspace(id) {
 		$(document).on('input', '.editor', function() {W._eventEditorTyping();});
 		// Keyboard stuff
 		$(document).on('keydown', function(e) {
-			if (e.keyCode === 13) { // Enter
-				W._eventEnter();
-			} else if (e.keyCode === 37) { // Left arrow key
-				W._eventLeft();
-			} else if (e.keyCode === 38) { // Up arrow key 
-				W._eventUp();
-			} else if (e.keyCode === 39) { // Right arrow key
-				W._eventRight();
-			} else if (e.keyCode === 40) { // Down arrow key
-				W._eventDown();
-			} else if (e.keyCode === 46) { // Delete key
-				W._eventDel();
-			} else if (e.keyCode === 27) { // Esc key
-				W._eventEsc();
-			} else if (e.keyCode === 17) { // CTRL
-				W.ctrl = true; // to keep track of whether or not CTRL is pressed
+			if ($(document.activeElement).parents('#workspace_container').length > 0) {
+				if (e.keyCode === 13) { // Enter
+					W._eventEnter();
+				} else if (e.keyCode === 37) { // Left arrow key
+					W._eventLeft();
+				} else if (e.keyCode === 38) { // Up arrow key 
+					W._eventUp();
+				} else if (e.keyCode === 39) { // Right arrow key
+					W._eventRight();
+				} else if (e.keyCode === 40) { // Down arrow key
+					W._eventDown();
+				} else if (e.keyCode === 46) { // Delete key
+					W._eventDel();
+				} else if (e.keyCode === 27) { // Esc key
+					W._eventEsc();
+				} else if (e.keyCode === 17) { // CTRL
+					W.ctrl = true; // to keep track of whether or not CTRL is pressed
+				}
 			}
 		});
 		// To keep track of whether or not CTRL is pressed
