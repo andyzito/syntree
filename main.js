@@ -1,6 +1,17 @@
 H = new History();
-requestId = function(id) {
-	return Math.floor(Math.random()*1000);
+
+var allids = [];
+requestId = function() {
+	n = 1000;
+	if (allids.length === n) {
+		n += 1000;
+	}
+	while (true) {
+		var x = Math.floor(Math.random()*1000);
+		if (allids.indexOf(x) === -1) {
+			return x;
+		}
+	}
 }
 
 $(document).ready(function() {

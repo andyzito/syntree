@@ -1,5 +1,5 @@
-function Page() {
-	this.id = requestId();
+function Page(id) {
+	this.id = id;
 	this.allNodes = {}; // so we can always get a node by its id
 	this.selectedNode = undefined; // will keep track of the selected node
 

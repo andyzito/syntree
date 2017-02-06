@@ -1,5 +1,5 @@
-function Tree(root,x,y) {
-	this.id = requestId();
+function Tree(root,x,y,id) {
+	this.id = id;
 	this.rowHeight = 70;
 
 	if (typeof root === 'undefined') {

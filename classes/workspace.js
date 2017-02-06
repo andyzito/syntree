@@ -1,6 +1,6 @@
-function Workspace() {
+function Workspace(id) {
 	W = this;
-	this.id = requestId();
+	this.id = id;
 	this.ctrl = false;
 
 	this._attachEventListeners = function() {
