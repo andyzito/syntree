@@ -14,7 +14,7 @@
 				<img src="resources/syntree-logo.png">
 			</div>
 
-			<nav class="navbar navbar_main" render-id="navbar">
+			<nav class="navbar navbar_main">
 				<?php print($R->navbar()); ?>
 			</nav>
 

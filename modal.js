@@ -26,14 +26,10 @@ $(document).ready(function() {
 	$(".overlay").hide();
 
 	// Fetch any/all modal triggers and add event listeners
-	var all_triggers = $(".modal_trigger");
-	for (i=0; i<all_triggers.length; i++) {
-		var trigger = all_triggers[i];
-		$(trigger).click(function() {
-			var name = $(this).attr('for-modal');
-			modal_open(name);
-		});
-	};
+	$(document).on('click','.modal_trigger',function(e) {
+		var name = $(e.currentTarget).attr('for-modal');
+		modal_open(name);
+	});
 
 	// Event listeners for closing modals
 	$(document).on('click', '.overlay', function(e) {

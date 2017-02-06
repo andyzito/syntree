@@ -8,7 +8,7 @@
 	</div>
 
 	<div class="modal_section modal_section__buttonset">
-		<button class="modal_button modal_button__create-account">Create account</button>
+		<button class="modal_button modal_button__create-account modal_submit">Create account</button>
 		<button class="modal_button modal_button__cancel">Cancel</button>
 	</div>
 </div>

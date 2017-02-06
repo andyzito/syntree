@@ -1,6 +1,5 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/syntree/db/db-config.php';
-include $_SERVER['DOCUMENT_ROOT'] . '/syntree/lib.php';
 
 if (!class_exists('DB')) {
 	class DB {
@@ -12,13 +11,25 @@ if (!class_exists('DB')) {
 			return $this->db->query($sql);
 		}
 
-		public function select($field,$table) {
-			$dbobject = $this->db->query("SELECT $field FROM $table;");
+		public function select($field,$table,$where='') {
+			$sql = "SELECT $field FROM $table";
+			if (isset($where)) {
+				$sql .= " WHERE $where";
+			}
+			$sql .= ";";
+			$dbobject = $this->db->query($sql);
 			$result = [];
-			while($row = $dbobject->fetch_assoc()) {
-				array_push($result,$row[$field]);
+			if (is_object($dbobject)) {
+				while($row = $dbobject->fetch_assoc()) {
+					array_push($result,$row[$field]);
+				}
 			}
 			return $result;
+		}
+
+		public function update($field,$value,$table,$where) {
+			$sql = "UPDATE $table SET $field='$value' WHERE $where;";
+			return $this->db->query($sql);
 		}
 
 		public function get_user($name) {
@@ -31,8 +42,8 @@ if (!class_exists('DB')) {
 			return $this->db->query($sql);
 		}
 
-		public function save_tree($id,$treestring) {
-			$sql = "INSERT INTO tree (id,tree_string) VALUES($id,'$treestring')";
+		public function save_tree($id,$ownerid,$treestring) {
+			$sql = "INSERT INTO tree (id,ownerid,tree_string) VALUES($id,$ownerid,'$treestring')";
 			return $this->db->query($sql);
 		}
 	}

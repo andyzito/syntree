@@ -8,7 +8,7 @@
 	</div>
 
 	<div class="modal_section modal_section__buttonset">
-		<button class="modal_button modal_button__login render_trigger">Login</button>
+		<button class="modal_button modal_button__login modal_submit">Login</button>
 		<button class="modal_button modal_button__cancel">Cancel</button>
 	</div>
 </div>
