@@ -4,7 +4,7 @@
 		<span class="modal_option modal_option_text modal_option__new-username">
 			<input type="text" name="new-username" placeholder="Username"></span>
 		<span class="modal_option modal_option_text modal_option__new-password">
-			<input type="text" name="new-password" placeholder="Password"></span>
+			<input type="password" name="new-password" placeholder="Password"></span>
 	</div>
 
 	<div class="modal_section modal_section__buttonset">

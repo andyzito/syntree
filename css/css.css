@@ -66,10 +66,10 @@ a {
 }
 
 .modal_create-account.modal_body, .modal_login.modal_body {
-	width: 35%;
-	height: 60%;
-	left: 32.5%;
-	top: 20%;
+	width: 50%;
+	height: 45%;
+	left: 25%;
+	top: 10%;
 	z-index: 201;
 }
 

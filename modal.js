@@ -45,22 +45,4 @@ $(document).ready(function() {
 		var modal = $(clicked).parents('.modal_body');
 		modal_close(modal.attr('with-overlay'));
 	});
-
-	// Specific modal button callbacks
-	$(document).on('click', '.modal_button__create-account', function() {
-		var username = $('.modal_option__new-username input').val();
-		var password = $('.modal_option__new-password input').val();
-
-		$.post("post/new-user.php", {username: username, password: password}, function(result) {
-			alert(result);
-		});
-	});
-	$(document).on('click', '.modal_button__login', function() {
-		var username = $('.modal_option__username input').val();
-		var password = $('.modal_option__password input').val();
-
-		$.post("post/login.php", {username: username, password: password}, function(result) {
-			alert(result);
-		});
-	});
 });

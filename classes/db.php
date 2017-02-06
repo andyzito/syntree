@@ -11,6 +11,15 @@ if (!class_exists('DB')) {
 			return $this->db->query($sql);
 		}
 
+		public function select($field,$table) {
+			$dbobject = $this->db->query("SELECT $field FROM $table;");
+			$result = [];
+			while($row = $dbobject->fetch_assoc()) {
+				array_push($result,$row[$field]);
+			}
+			return $result;
+		}
+
 		public function get_user($name) {
 			$sql = "SELECT * FROM user WHERE username='$name'";
 			return $this->db->query($sql)->fetch_assoc();
@@ -18,7 +27,6 @@ if (!class_exists('DB')) {
 
 		public function create_user($id,$uname,$pass,$email,$fname,$lname) {
 			$sql = "INSERT INTO user (id,username,password,email,firstname,lastname) VALUES($id,'$uname','$pass','$email','$fname','$lname')";
-			echo $sql;	
 			return $this->db->query($sql);
 		}
 	}

@@ -14,6 +14,7 @@ if (is_array($user) && $user['password'] === $pass) {
 	$_SESSION['firstname'] = $user['firstname'];
 	$_SESSION['lastname'] = $user['lastname'];
 	$_SESSION['email'] = $user['email'];
+	echo 'Logged in';
 } else {
-	echo 'incorrect username or password';
+	echo 'Incorrect username or password';
 }
