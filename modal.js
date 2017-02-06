@@ -42,9 +42,7 @@ $(document).ready(function() {
 	});
 	$(document).on('click', '.modal_button__cancel', function(e) {
 		var clicked = e.currentTarget;
-		console.log(clicked);
 		var modal = $(clicked).parents('.modal_body');
-		console.log(modal.attr('modal-id'));
 		modal_close(modal.attr('with-overlay'));
 	});
 
