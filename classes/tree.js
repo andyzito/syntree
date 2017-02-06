@@ -184,7 +184,7 @@ function Tree(root,x,y,id) {
 				temp[t] = result;
 				result = [temp];
 			} else {
-				result.push(eval("node"+getAttr));
+				result.unshift(eval("node"+getAttr));
 			}
 		}
 
@@ -240,11 +240,33 @@ function Tree(root,x,y,id) {
 		return result;
 	}
 	
+	this.getTreeString = function() {
+		var s = "";
+		var nodes = this.getDescendantsOf(this.root,'',true,true);
+		var i = 0;
+		while (i < nodes.length) {
+			var node = nodes[i];
+			s += node.getId();
+			s += "{";
+			s += "labelContent:" + node.getLabelContent();
+			if (node.getChildren().length > 0) {
+				var children = node.getChildren().map(function(c){return c.getId()});
+				s += ",children:" + children.join();
+			}
+			if (node.getParent()) {
+				s += ",parent:" + node.getParent().getId();
+			}
+			s += "};";
+			i++;
+		}
+		return s;
+	}
+
 	this.getBracketNotation = function(node) {
 		if (typeof node === 'undefined') {
 			node = this.root;
 		}
-		
+
 		var string = "[." + node.getLabelContent();
 		var children = node.getChildren();
 		if (children.length > 0) {

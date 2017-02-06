@@ -38,6 +38,7 @@ function Workspace(id) {
 				W.ctrl = false;
 			}
 		});
+		$(document).on('click', '.toolbar_button__save', function(){W._eventSave()});
 		// Modal export stuff
 		$(document).on('click', '.modal_section__filetype .modal_label', function(e) {W._eventFiletypeLabelClick(e)});
 		$(document).on('click', '.modal_button__export', function() {W._eventExport()});
@@ -126,7 +127,7 @@ function Workspace(id) {
 		}
 	}
 
-	this._eventExport = function(){
+	this._eventExport = function() {
 		console.log('exporting');
 		// Get type
 		var type = $('.modal_section__filetype input:checked').val();
@@ -147,6 +148,13 @@ function Workspace(id) {
 			$('#temp-file-download')[0].click();
 			$('#temp-file-download').remove();
 			console.log(link)
+		});
+	}
+
+	this._eventSave = function() {
+		var treestring = this.page.tree.getTreeString();
+		$.post('app/save-tree.php',{treestring:treestring},function(result){
+			alert(result);
 		});
 	}
 
