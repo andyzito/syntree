@@ -1,5 +1,6 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/syntree/db/db-config.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/syntree/lib.php';
 
 if (!class_exists('DB')) {
 	class DB {
@@ -27,6 +28,11 @@ if (!class_exists('DB')) {
 
 		public function create_user($id,$uname,$pass,$email,$fname,$lname) {
 			$sql = "INSERT INTO user (id,username,password,email,firstname,lastname) VALUES($id,'$uname','$pass','$email','$fname','$lname')";
+			return $this->db->query($sql);
+		}
+
+		public function save_tree($id,$treestring) {
+			$sql = "INSERT INTO tree (id,tree_string) VALUES($id,'$treestring')";
 			return $this->db->query($sql);
 		}
 	}
