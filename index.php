@@ -19,7 +19,7 @@
 			</nav>
 
 			<h1>Try it! Right here:</h1>
-			<?php include 'app/workspace-div.php' ?>
+			<?php include 'app/workspace-div.html' ?>
 			
 		</div>
 	</body>

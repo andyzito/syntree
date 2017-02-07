@@ -1,4 +1,12 @@
 $(document).ready(function() {
+	var init = {
+		save_tree_script:"/syntree/post/save-tree.php",
+		export_tree_script:"/syntree/post/export-tree.php",
+		focus_checking_enabled:true
+	};
+
+	W = new Workspace(0,init)
+
 	function create_account() {
 		var username = $('.modal_option__new-username input').val();
 		var password = $('.modal_option__new-password input').val();
