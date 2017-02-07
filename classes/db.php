@@ -13,7 +13,7 @@ if (!class_exists('DB')) {
 
 		public function select($field,$table,$where='') {
 			$sql = "SELECT $field FROM $table";
-			if (isset($where)) {
+			if ($where != '') {
 				$sql .= " WHERE $where";
 			}
 			$sql .= ";";
@@ -43,7 +43,12 @@ if (!class_exists('DB')) {
 		}
 
 		public function save_tree($id,$ownerid,$treestring) {
-			$sql = "INSERT INTO tree (id,ownerid,tree_string) VALUES($id,$ownerid,'$treestring')";
+			$alltreeids = $this->select('id','tree');
+			if (in_array($id,$alltreeids)) {
+				$sql = "UPDATE tree SET tree_string='$treestring' WHERE id=$id;";
+			} else {
+				$sql = "INSERT INTO tree (id,ownerid,tree_string) VALUES($id,$ownerid,'$treestring')";
+			}
 			return $this->db->query($sql);
 		}
 	}
