@@ -181,7 +181,7 @@ function Node(x,y,t) {
 					this.editing = false;
 					this.label.node.textContent = this.editor.val()
 					this.editor.hide();
-					this.editor.blur();
+					$('#workspace').focus();
 					this.updateGraphics(false);
 				}
 				break;

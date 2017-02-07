@@ -155,8 +155,16 @@ function Workspace(id) {
 
 	this._eventSave = function() {
 		var treestring = this.page.tree.getTreeString();
-		$.post('app/save-tree.php',{treestring:treestring},function(result){
-			alert(result);
+		var W = this;
+		$.post('app/save-tree.php',{treestring:treestring,treeid:this.page.tree.getId()},function(result){
+			if (result != '') {
+				if (typeof W.page.tree.getId() !== 'number') {
+					W.page.tree.setId(Number(result));
+				}
+				alert('Saved');
+			} else {
+				alert('Sorry, there was a problem');
+			}
 		});
 	}
 

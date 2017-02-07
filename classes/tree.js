@@ -9,6 +9,16 @@ function Tree(root,x,y,id) {
 		this.root = root;
 	}
 	
+	this.getId = function() {
+		return this.id;
+	}
+
+	this.setId = function(id) {
+		if (typeof id === 'number') {
+			this.id = id;
+		}
+	}
+
 	this.getRoot = function() {
 		return this.root;
 	}

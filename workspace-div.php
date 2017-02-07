@@ -42,6 +42,6 @@
 		<li class="toolbar_button toolbar_button__export modal_trigger" for-modal="export">Export</li>
 		<li class="toolbar_button">Upload/import</li>
 	</ul>
-	<svg id="workspace" width="100%" height="100%">
+	<svg id="workspace" width="100%" height="100%" tabIndex="0">
 	</svg>
 </div>
