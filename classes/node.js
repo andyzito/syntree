@@ -4,7 +4,7 @@ function Node(x,y,t) {
 	}
 
 	// ID
-	this.id = requestId();
+	this.id = W.genId();
 	W.page.allNodes[this.id] = this;
 	
 	// Position

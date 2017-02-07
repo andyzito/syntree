@@ -1,7 +1,26 @@
-function Workspace(id) {
+function Workspace(id,init) {
+	snap = Snap("#workspace");
 	W = this;
 	this.id = id;
 	this.ctrl = false;
+	// The path to the script for saving a tree; see this._eventSave below
+	this.save_tree_script = init['save_tree_script'];
+	// The path to the php script for exporting a tree; see this._eventExport below
+	this.export_tree_script = init['export_tree_script'];
+	this.allids = [];
+	
+	this.genId = function() {
+		n = 1000;
+		if (this.allids.length === n) {
+			n += 1000;
+		}
+		while (true) {
+			var x = Math.floor(Math.random()*1000);
+			if (this.allids.indexOf(x) === -1) {
+				return x;
+			}
+		}
+	}
 
 	this._attachEventListeners = function() {
 		// Store 'this' as local variable to avoid conflicts in callback scope
@@ -145,27 +164,31 @@ function Workspace(id) {
 		}
 
 		// Post it
-		$.post("app/receive-export.php", {fname: fname, type: type, brackets: brackets}, function(link) {
-			$('body').append(link);
-			$('#temp-file-download')[0].click();
-			$('#temp-file-download').remove();
-			console.log(link)
-		});
+		if (typeof this.export_tree_script != 'undefined') {
+			$.post(this.export_tree_script, {fname: fname, type: type, brackets: brackets}, function(link) {
+				$('body').append(link);
+				$('#temp-file-download')[0].click();
+				$('#temp-file-download').remove();
+				console.log(link)
+			});
+		}
 	}
 
 	this._eventSave = function() {
 		var treestring = this.page.tree.getTreeString();
 		var W = this;
-		$.post('app/save-tree.php',{treestring:treestring,treeid:this.page.tree.getId()},function(result){
-			if (result != '') {
-				if (typeof W.page.tree.getId() !== 'number') {
-					W.page.tree.setId(Number(result));
+		if (typeof this.save_tree_script != 'undefined') {
+			$.post(this.save_tree_script,{treestring:treestring,treeid:this.page.tree.getId()},function(result){
+				if (result != '') {
+					if (typeof W.page.tree.getId() !== 'number') {
+						W.page.tree.setId(Number(result));
+					}
+					alert('Saved');
+				} else {
+					alert('Sorry, there was a problem');
 				}
-				alert('Saved');
-			} else {
-				alert('Sorry, there was a problem');
-			}
-		});
+			});
+		}
 	}
 
 	this._attachEventListeners();
