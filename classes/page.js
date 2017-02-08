@@ -11,6 +11,12 @@ function Page(id) {
 	this.group = snap.g();
 	this.group.attr({id: "group-" + this.id, class: "page-group"});
 
+	this.getSVGString = function() {
+		var bgsvg = this.background.node.outerHTML;
+		var treesvg = this.tree.getSVGString();
+		return bgsvg+treesvg;
+	}
+
 	this.navigateHorizontal = function(direction,fcreate) {
 		if (typeof fcreate === 'undefined') {
 			fcreate = false;

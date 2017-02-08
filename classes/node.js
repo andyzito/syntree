@@ -44,6 +44,13 @@ function Node(x,y,t) {
 	this.positionUnsynced = true;
 
 	// Property retrieval:
+	this.getSVGString = function() {
+		s = this.label.node.outerHTML;
+		if (typeof this.parentBranch != 'undefined') {
+			s += this.parentBranch.line.node.outerHTML
+		}
+		return s;
+	}
 	this.getPosition = function() {
 		return {x: this.x, y: this.y};
 	}

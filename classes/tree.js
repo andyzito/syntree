@@ -292,6 +292,17 @@ function Tree(root,x,y,id) {
 		return string;
 	}
 
+	this.getSVGString = function() {
+		var s = "";
+		var nodes = this.getDescendantsOf(this.root,'',true,true);
+		var i = 0;
+		while (i<nodes.length) {
+			s += nodes[i].getSVGString();
+			i++;
+		}
+		return s;
+	}
+
 	this.distribute = function(angle) {
 		if (typeof angle === 'undefined') {
 			angle = 50;

@@ -98,7 +98,14 @@ function Workspace(id,init) {
 		$(document).on('click', '.toolbar_button__save', function(){W._eventSave()});
 		// Modal export stuff
 		$(document).on('click', '.modal_section__filetype .modal_label', function(e) {W._eventFiletypeLabelClick(e)});
-		$(document).on('click', '.modal_button__export', function() {W._eventExport()});
+		$(document).on('click', '.modal_button__export', function() {
+			var type = $('.modal_section__filetype input:checked').val();
+			if (type === 'bracket-file') {
+				W._eventExportBrackets();
+			} else if (type === 'png') {
+				W._eventExportImage();
+			}
+		});
 	}
 
 	this._eventNodeClick = function(clickedNode) {
@@ -184,15 +191,20 @@ function Workspace(id,init) {
 		}
 	}
 
-	this._eventExport = function() {
-		console.log('exporting');
-		// Get type
-		var type = $('.modal_section__filetype input:checked').val();
+	this._eventExportImage = function() {
+		var svgstring = '<svg>'+this.page.getSVGString()+'</svg>';
+		canvg('export-image-canvas', svgstring);
+		var canvas = document.getElementById('export-image-canvas');
+		var imgd = canvas.toDataURL("image/png");
+		var link = '<a id="temp-file-download" href="'+imgd+'" download="mytree.png"></a>';
+		$('body').append(link);
+		$(link)[0].click();
+	}
 
+	this._eventExportBrackets = function() {
 		// Get fname
-		var fname = $('.modal_option__fname input').val();
-		
-		// Get brackets if applicable
+		var fname = $('.modal_option__fname input').val();		
+		// Get brackets
 		if ($('.modal_option__bracket-file input:checked')) {
 			var brackets = this.page.tree.getBracketNotation();
 		} else {
@@ -201,11 +213,10 @@ function Workspace(id,init) {
 
 		// Post it
 		if (typeof this.export_tree_script != 'undefined') {
-			$.post(this.export_tree_script, {fname: fname, type: type, brackets: brackets}, function(link) {
+			$.post(this.export_tree_script, {fname: fname, type: 'bracket-file', brackets: brackets}, function(link) {
 				$('body').append(link);
 				$('#temp-file-download')[0].click();
 				$('#temp-file-download').remove();
-				console.log(link)
 			});
 		}
 	}

@@ -17,10 +17,6 @@
 	padding:1px;
 }
 
-line {
-	stroke:black;
-}
-
 text {
 	text-align:center;
 	font-size:14px;
@@ -96,4 +92,8 @@ text {
 
 .focus_check_underlay {
 	z-index: 98;
+}
+
+#export-image-canvas {
+	display: none;
 }

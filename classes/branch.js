@@ -3,7 +3,7 @@ function Branch(parent,child) {
 	this.endPoint = child.getPosition();
 
 	this.line = snap.line(this.startPoint.x,this.startPoint.y,this.endPoint.x,this.endPoint.y);
-
+	this.line.attr({stroke:'black'})
 	child.parentBranch = this;
 	parent.childBranches.push(this);
 	
