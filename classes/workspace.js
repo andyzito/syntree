@@ -1,14 +1,23 @@
 function Workspace(id,init) {
 	snap = Snap("#workspace");
 	W = this;
+
 	this.id = id;
 	this.ctrl = false;
 	// The path to the script for saving a tree; see this._eventSave below
 	this.save_tree_script = init['save_tree_script'];
 	// The path to the php script for exporting a tree; see this._eventExport below
 	this.export_tree_script = init['export_tree_script'];
+	// Should we do focus checking? Set to 'true' if embedded, 'false' for full page
+	this.focus_checking_enabled = init['focus_checking_enabled'];
+	if (this.focus_checking_enabled) {
+		$("#workspace_container").prepend('<div class="focus_check_overlay"></div>');
+		$("body").prepend('<div class="focus_check_underlay"></div>');
+		$('.focus_check_underlay').hide();
+		this.focused = false;
+	}
+
 	this.allids = [];
-	
 	this.genId = function() {
 		n = 1000;
 		if (this.allids.length === n) {
@@ -22,6 +31,23 @@ function Workspace(id,init) {
 		}
 	}
 
+	this._eventFocus = function() {
+		$(".focus_check_overlay").hide();
+		$(".focus_check_underlay").show();
+		window.scrollTo($("#workspace").offset().left,$("#workspace").offset().top);
+		// $('body').css('overflow','hidden');
+		$('#workspace_container').css('z-index',103);
+		this.focused = true;
+	}
+
+	this._eventUnfocus = function() {
+		$(".focus_check_overlay").show();
+		$(".focus_check_underlay").hide();
+		$('body').css('overflow','initial');
+		$('#workspace_container').css('z-index',0);
+		this.focused = false;
+	}
+
 	this._attachEventListeners = function() {
 		// Store 'this' as local variable to avoid conflicts in callback scope
 		var W = this;
@@ -33,17 +59,21 @@ function Workspace(id,init) {
 		$(document).on('input', '.editor', function() {W._eventEditorTyping();});
 		// Keyboard stuff
 		$(document).on('keydown', function(e) {
-			if ($(document.activeElement).parents('#workspace_container').length > 0) {
+			if ((W.focus_checking_enabled && W.focused) || !W.focus_checking_enabled) {
 				if (e.keyCode === 13) { // Enter
 					W._eventEnter();
 				} else if (e.keyCode === 37) { // Left arrow key
 					W._eventLeft();
+					return false;
 				} else if (e.keyCode === 38) { // Up arrow key 
 					W._eventUp();
+					return false;
 				} else if (e.keyCode === 39) { // Right arrow key
 					W._eventRight();
+					return false;
 				} else if (e.keyCode === 40) { // Down arrow key
 					W._eventDown();
+					return false;
 				} else if (e.keyCode === 46) { // Delete key
 					W._eventDel();
 				} else if (e.keyCode === 27) { // Esc key
@@ -59,6 +89,12 @@ function Workspace(id,init) {
 				W.ctrl = false;
 			}
 		});
+		// Focus checking
+		if (W.focus_checking_enabled) {
+			$(document).on('click', '.focus_check_overlay', function(){W._eventFocus()});
+			$(document).on('click', '.focus_check_underlay', function(){W._eventUnfocus()});
+			$(window).on('mousewheel DOMMouseScroll', function(){W._eventUnfocus});
+		}
 		$(document).on('click', '.toolbar_button__save', function(){W._eventSave()});
 		// Modal export stuff
 		$(document).on('click', '.modal_section__filetype .modal_label', function(e) {W._eventFiletypeLabelClick(e)});
@@ -196,4 +232,5 @@ function Workspace(id,init) {
 	// Make the page
 	this.page = new Page();
 	this.page.addTree();
+	this.page.nodeSelect(this.page.tree.getRoot());
 }

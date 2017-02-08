@@ -4,7 +4,7 @@ function Page(id) {
 	this.selectedNode = undefined; // will keep track of the selected node
 
 	// Page background
-	this.background = snap.rect(0,$("#toolbar").height(),$("#workspace").width(),$("#workspace").height());
+	this.background = snap.rect(-100,-100,$("#workspace").width()+200,$("#workspace").height()+200);
 	this.background.attr({fill:'white',id:'page-background'});
 
 	// Make group (used for panning)
@@ -214,7 +214,7 @@ function Page(id) {
 	}
 	
 	this.addTree = function() {
-		this.tree = new Tree(undefined,this.background.attr('width')/2,$("#toolbar").height()+20);
+		this.tree = new Tree(undefined,$("#workspace").width()/2,$("#toolbar").height()+20);
 	}
 
 	this._enablePanning = function() {
