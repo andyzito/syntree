@@ -1,16 +1,20 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . '/syntree/lib.php';
+// This script is for the app
+// It receives a tree string and saves it to the database
+// It returns the tree id on success and false on failure
+
+include $_SERVER['DOCUMENT_ROOT'] . '/lib.php';
 
 if (!isset($_SESSION['username'])) {
-	echo "Please log in to save your work";
-	exit();
+    echo "Please log in to save your work";
+    exit();
 }
 $userid = $_SESSION['id'];
 
 if (!isset($_POST['treeid'])) {
-	$treeid = gen_id();	
+    $treeid = gen_id();    
 } else {
-	$treeid = $_POST['treeid'];
+    $treeid = $_POST['treeid'];
 }
 
 $treestring = $_POST['treestring'];
@@ -21,5 +25,7 @@ $oldusertrees = $DB->select('treeids','user',"id=$userid");
 $userupdated = $DB->update('treeids',$oldusertrees[0] . $treeid . ";",'user',"id=$userid");
 
 if ($treesaved && $userupdated) {
-	echo $treeid;
+    echo $treeid;
+} else {
+    echo false;
 }

@@ -1,148 +1,149 @@
 * {
-	margin:0;
-	padding:0;
-	outline-width:0px;
+    margin:0;
+    padding:0;
+    outline-width:0px;
 }
 
 body, html {
-	background: grey;
-	width: 100%;
-	position: absolute;
+    background: grey;
+    width: 100%;
+    position: absolute;
 }
 
 /* Broad categorical stuff */
 a {
-	text-decoration: none;
-	color: black;
+    text-decoration: none;
+    color: black;
 }
 
 .button {
-	display: inline-block;
-	background: white;
-	border: 1px solid black;
-	border-radius: 2px;
-	padding: 10px 15px;
-	transition: background-color 0.2s, color 0.2s;
+    display: inline-block;
+    background: white;
+    border: 1px solid black;
+    border-radius: 2px;
+    padding: 10px 15px;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .button:hover {
-	background: black;
-	color: white;
-	cursor: pointer;	
+    background: black;
+    color: white;
+    cursor: pointer;    
 }
 
 /* Index */
 #main {
-	position: relative;
-	width: 80%;
-	height: 100%;
-	margin: auto;
-	background: white;
-	border-left: 1px solid black;
-	border-right: 1px solid black;
+    position: relative;
+    width: 80%;
+    height: 100%;
+    margin: auto;
+    background: white;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
 }
 
 .container_logo img{
-	padding: 30px 80px;
+    padding: 30px 80px;
 }
 
 #main h1 {
-	text-align: center;
-	font-family: sans-serif;
-	margin-top: 50px;
-	font-size: 3rem;
+    text-align: center;
+    font-family: sans-serif;
+    margin-top: 50px;
+    font-size: 3rem;
 }
 
 #main #workspace_container {
-	position: relative;
-	width: 80%;
-	height: 800px;
-	left: 10%;
-	margin-top: 50px;
+    position: relative;
+    width: 80%;
+    height: 800px;
+    left: 10%;
+    margin-top: 50px;
 }
 
 .overlay[overlay-id=index] {
-	z-index: 200;
+    z-index: 200;
 }
 
 .modal_create-account.modal_body, .modal_login.modal_body {
-	width: 50%;
-	height: 45%;
-	left: 25%;
-	top: 10%;
-	z-index: 201;
+    width: 50%;
+    height: 45%;
+    left: 25%;
+    top: 10%;
+    z-index: 201;
 }
 
 .modal_section__user-creds {
-	position: relative;
-	width: 50%;
-	left: 25%;
+    position: relative;
+    width: 50%;
+    left: 25%;
 }
 
 .modal_section__user-creds input {
-	font-size: 2.3rem;
-	width: 100%;
-	margin-top: 30%;
+    font-size: 2.3rem;
+    width: 100%;
+    margin-top: 30%;
 }
 
 /* Navbar */
 .navbar_main {
-	height: 60px;
-	border-top: 1px solid black;
-	border-bottom: 1px solid black;
+    height: 60px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
 .navbar_link {
-	height: 100%;
-	padding: 0 2rem;
-	transition: background-color 0.2s, color 0.2s;
-	font-size: 1.5rem;
+    height: 100%;
+    padding: 0 2rem;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 1.5rem;
 }
 
 .navbar_link:hover {
-	cursor: pointer;
-	color: white;
-	background-color: black;
+    cursor: pointer;
+    color: white;
+    background-color: black;
 }
 
 .navbar_link span {
-	line-height: 60px;
+    line-height: 60px;
 }
 
 .navbar_link_left {
-	float: left;
+    float: left;
 }
 
 .navbar_link_right {
-	float: right;
+    float: right;
 }
 
 /* Make */
 body.page_make {
-	background: white;
+    background: white;
 }
 
 .page_make #workspace_container {
-	position: absolute;
-	top: 1%;
-	left: 10%;
-	width: 89%;
-	height: 98%;
-	margin: auto;
+    position: absolute;
+    top: 1%;
+    left: 10%;
+    width: 89%;
+    height: 98%;
+    margin: auto;
 }
 
 .page_make .button_back {
-	margin: 10px;
-	font-size: 1.5rem;
+    margin: 10px;
+    font-size: 1.5rem;
 }
 
 /* Modal */
 .modal_body {
-	position: absolute;
-	background-color: white;
-	border: 1px solid black;
-	border-radius: 10px;
-	font-family: sans-serif;
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-family: sans-serif;
+    z-index: 101;
 }
 
 .modal_title {
@@ -157,52 +158,53 @@ body.page_make {
 }
 
 .modal_label {
-	font-size: 1.1em;
+    font-size: 1.1em;
 }
 
 .modal_section {
-	display: inline-block;
-	margin-top: 20px;
+    display: inline-block;
+    margin-top: 20px;
 }
 
 .modal_section__buttonset {
-	text-align: center;
-	position: absolute;
-	bottom: 0;
-	left: 0; /* cause firefox is weird */
-	width: 100%;
-	margin-bottom: 50px;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 0; /* cause firefox is weird */
+    width: 100%;
+    margin-bottom: 50px;
 }
 
 .modal_button {
-	font-size: 1.3em;
-	background: white;
-	border: 1px solid black;
-	border-radius: 2px;
-	padding: 10px 15px;
-	margin: 0 50px;
-	transition: background-color 0.2s, color 0.2s;
+    font-size: 1.3em;
+    background: white;
+    border: 1px solid black;
+    border-radius: 2px;
+    padding: 10px 15px;
+    margin: 0 50px;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .modal_button:hover {
-	background: black;
-	color: white;
-	cursor: pointer;
+    background: black;
+    color: white;
+    cursor: pointer;
 }
 
 .modal_option_text input {
-	padding: 10px;
-	border: 1px solid black;
-	border-radius: 3px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 3px;
 }
 
 .modal_option_text input:focus {
-	border: 2px solid black;
+    border: 2px solid black;
 }
 
 .overlay {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0,0,0,0.3);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 100;
 }
