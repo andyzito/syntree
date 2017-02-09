@@ -41,50 +41,15 @@ function Node(x,y,t) {
 	this.editing = false;
 	this.selected = false;
 	this.real = false;
-	this.positionUnsynced = true;
+	this.deleted = false;
 
 	// Property retrieval:
-	this.getSVGString = function() {
-		s = this.label.node.outerHTML;
-		if (typeof this.parentBranch != 'undefined') {
-			s += this.parentBranch.line.node.outerHTML
-		}
-		return s;
-	}
-	this.getPosition = function() {
-		return {x: this.x, y: this.y};
-	}
-
-	this.getState = function(which) {
-		switch (which) {
-			case 'selected':
-				return this.selected;
-				break;
-			case 'editing':
-				return this.editing;
-				break;
-			case 'real':
-				return this.real;
-				break;
-			default:
-				return {
-					selected: this.selected,
-					editing: this.editing,
-					real: this.real
-				}
-		}
-	}
-
-	this.getParent = function() {
-		return this.parent;
-	}
-
-	this.getChildren = function() {
-		return this.children;
-	}
-
 	this.getId = function() {
 		return this.id;
+	}
+
+	this.getPosition = function() {
+		return {x: this.x, y: this.y};
 	}
 
 	this.getLabelContent = function() {
@@ -109,6 +74,45 @@ function Node(x,y,t) {
 		return bbox;
 	}
 
+	this.getParent = function() {
+		return this.parent;
+	}
+
+	this.getChildren = function() {
+		return this.children;
+	}
+
+	this.getState = function(which) {
+		switch (which) {
+			case 'selected':
+				return this.selected;
+				break;
+			case 'editing':
+				return this.editing;
+				break;
+			case 'real':
+				return this.real;
+				break;
+			case 'deleted':
+				return this.deleted;
+				break;
+			default:
+				return {
+					selected: this.selected,
+					editing: this.editing,
+					real: this.real,
+					deleted: this.deleted,
+				}
+		}
+	}
+
+	this.getSVGString = function() {
+		s = this.label.node.outerHTML;
+		if (typeof this.parentBranch != 'undefined') {
+			s += this.parentBranch.line.node.outerHTML
+		}
+		return s;
+	}
 
 	this.move = function(x,y,propagate) {
 		if (typeof propagate == 'undefined') {
@@ -152,6 +156,7 @@ function Node(x,y,t) {
 		if (typeof this.parent != 'undefined') {
 			this.parent.children.splice(this.parent.children.indexOf(this), 1);
 		}
+		this.deleted = true;
 	}
 
 	this.select = function() {
@@ -210,11 +215,8 @@ function Node(x,y,t) {
 		
 		var bbox = this.getLabelBBox();
 		// if (this.positionUnsynced) {
-		// console.log("I am at " + this.x + "," + this.y);
 		this.label.attr({x: this.x-(bbox.w/2)});
 		this.label.attr({y: this.y+(bbox.h/2)});
-		// console.log("My label is at " + this.label.attr('x') + "," + this.label.attr('y'));
-		// console.log("But my label is SUPPOSED to be at " + (this.x-(bbox.w/2)) + "," + (this.y+(bbox.h/2)));
 		bbox = this.getLabelBBox();
 
 		this.highlight.attr({

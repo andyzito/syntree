@@ -11,10 +11,46 @@ function Page(id) {
 	this.group = snap.g();
 	this.group.attr({id: "group-" + this.id, class: "page-group"});
 
+	this.getSelectedNode = function() {
+		return this.selectedNode;
+	}
+
 	this.getSVGString = function() {
+		if (!this.selectedNode.getState('real')) {
+			this.nodeDelete(this.selectedNode);
+		}
 		var bgsvg = this.background.node.outerHTML;
 		var treesvg = this.tree.getSVGString();
 		return bgsvg+treesvg;
+	}
+
+	this.getNearestNode = function(x,y) {
+		if (typeof(x) === 'undefined' || typeof(y) === 'undefined') {
+			return;
+		}
+		
+		var nearestNode;
+		var leastDist = Number.POSITIVE_INFINITY;
+		var n = 0;
+		var len = Object.keys(this.allNodes).length;
+		while (n < len) {
+			var node = this.allNodes[Object.keys(this.allNodes)[n]];
+			var pos = node.getPosition();
+			var distance = Math.sqrt(Math.pow((pos.x - x),2) + Math.pow((pos.y - y),2));
+			if (distance < leastDist) {
+				leastDist = distance;
+				nearestNode = node;
+			}
+			n++;
+		}
+		if (leastDist < this.tree.rowHeight + 10) {
+			return {
+				node: nearestNode,
+				dist: leastDist,
+				deltaX: nearestNode.getPosition().x - x,
+				deltaY: nearestNode.getPosition().y - y,
+			}
+		}
 	}
 
 	this.navigateHorizontal = function(direction,fcreate) {
@@ -151,9 +187,18 @@ function Page(id) {
 		if (typeof node === 'undefined') {
 			node = this.selectedNode;
 		}
-		tree = new Tree(node);
+		if (node.getState('deleted')) {
+			return;
+		}
+		var parent = node.getParent();
+		var tree = new Tree(node);
 		tree.delete();
 		delete this.allNodes[node.getId()];
+		if (parent != undefined && this.selectedNode != undefined) {
+			this.nodeSelect(parent);
+			tree = new Tree(parent);
+			tree.distribute();
+		}
 		// this.nodeSelect(this.tree.getRoot())
 		// if (node.children.length > 0) {
 		// 	var children = node.children.slice(0);
@@ -186,35 +231,6 @@ function Page(id) {
 				node.editingAction('cancel');
 			} else {
 				this.nodeDelete(node);
-			}
-		}
-	}
-
-	this.getNearestNode = function(x,y) {
-		if (typeof(x) === 'undefined' || typeof(y) === 'undefined') {
-			return;
-		}
-		
-		var nearestNode;
-		var leastDist = Number.POSITIVE_INFINITY;
-		var n = 0;
-		var len = Object.keys(this.allNodes).length;
-		while (n < len) {
-			var node = this.allNodes[Object.keys(this.allNodes)[n]];
-			var pos = node.getPosition();
-			var distance = Math.sqrt(Math.pow((pos.x - x),2) + Math.pow((pos.y - y),2));
-			if (distance < leastDist) {
-				leastDist = distance;
-				nearestNode = node;
-			}
-			n++;
-		}
-		if (leastDist < this.tree.rowHeight + 10) {
-			return {
-				node: nearestNode,
-				dist: leastDist,
-				deltaX: nearestNode.getPosition().x - x,
-				deltaY: nearestNode.getPosition().y - y,
 			}
 		}
 	}

@@ -23,7 +23,7 @@ function Tree(root,x,y,id) {
 		return this.root;
 	}
 
-	this.getPath = function(which) {
+	this._getPath = function(which) {
 		if (typeof which === 'undefined') {
 			var Left = true;
 			var Right = true;
@@ -317,7 +317,6 @@ function Tree(root,x,y,id) {
 			var pos = this.root.getPosition();
 			var leftBound = pos.x - (this.rowHeight * Math.tan((angle/2) * (Math.PI / 180)));
 			var rightBound = pos.x + (this.rowHeight * Math.tan((angle/2) * (Math.PI / 180)));
-			console.log(leftBound + " to " + rightBound)
 			var width = rightBound - leftBound;
 			var interval = width/(children.length-1);
 			var i = 0;
@@ -332,8 +331,8 @@ function Tree(root,x,y,id) {
 			while (c < children.length-1) {
 				var lChild = children[c];
 				var rChild = children[c+1];
-				var lPath = new Tree(lChild).getPath();
-				var rPath = new Tree(rChild).getPath();
+				var lPath = new Tree(lChild)._getPath();
+				var rPath = new Tree(rChild)._getPath();
 				if (Snap.path.intersection(lPath.pathString,rPath.pathString).length > 0) {
 					intersect = true;
 					var overlap = lPath.rightBound - rPath.leftBound;

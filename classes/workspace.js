@@ -31,23 +31,6 @@ function Workspace(id,init) {
 		}
 	}
 
-	this._eventFocus = function() {
-		$(".focus_check_overlay").hide();
-		$(".focus_check_underlay").show();
-		window.scrollTo($("#workspace").offset().left,$("#workspace").offset().top);
-		// $('body').css('overflow','hidden');
-		$('#workspace_container').css('z-index',103);
-		this.focused = true;
-	}
-
-	this._eventUnfocus = function() {
-		$(".focus_check_overlay").show();
-		$(".focus_check_underlay").hide();
-		$('body').css('overflow','initial');
-		$('#workspace_container').css('z-index',0);
-		this.focused = false;
-	}
-
 	this._attachEventListeners = function() {
 		// Store 'this' as local variable to avoid conflicts in callback scope
 		var W = this;
@@ -158,8 +141,7 @@ function Workspace(id,init) {
 	}
 	
 	this._eventBGClick = function(e) {
-		console.log('bgclick');
-		var x = e.pageX - $("#workspace").offset().left;
+			var x = e.pageX - $("#workspace").offset().left;
 		var y = e.pageY - $("#workspace").offset().top;
 		var nearest = this.page.getNearestNode(x,y);
 		var newNode = new Node(0,0);
@@ -236,6 +218,23 @@ function Workspace(id,init) {
 				}
 			});
 		}
+	}
+	
+	this._eventFocus = function() {
+		$(".focus_check_overlay").hide();
+		$(".focus_check_underlay").show();
+		window.scrollTo($("#workspace").offset().left,$("#workspace").offset().top);
+		// $('body').css('overflow','hidden');
+		$('#workspace_container').css('z-index',103);
+		this.focused = true;
+	}
+
+	this._eventUnfocus = function() {
+		$(".focus_check_overlay").show();
+		$(".focus_check_underlay").hide();
+		$('body').css('overflow','initial');
+		$('#workspace_container').css('z-index',0);
+		this.focused = false;
 	}
 
 	this._attachEventListeners();
