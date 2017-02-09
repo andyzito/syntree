@@ -85,6 +85,8 @@ function Workspace(id,init) {
 			var type = $('.modal_section__filetype input:checked').val();
 			if (type === 'bracket-file') {
 				W._eventExportBrackets();
+			} else if (type === 'tree-file') {
+				W._eventExportTreeFile();
 			} else if (type === 'png') {
 				W._eventExportImage();
 			}
@@ -168,6 +170,8 @@ function Workspace(id,init) {
 		var clicked = $(e.currentTarget).children('input');
 		if ($(clicked).val() == 'bracket-file') {
 			$('.modal_option__fname span').text('.txt');
+		} else if ($(clicked).val() == 'tree-file') {
+			$('.modal_option__fname span').text('.tree');
 		} else if ($(clicked).val() == 'png') {
 			$('.modal_option__fname span').text('.png');
 		}
@@ -183,16 +187,24 @@ function Workspace(id,init) {
 		$(link)[0].click();
 	}
 
+	this._eventExportTreeFile = function() {
+		var fname = $('.modal_option__fname input').val();
+		var treestring = this.page.tree.getTreeString();
+		if (typeof this.export_tree_script != 'undefined') {
+			$.post(this.export_tree_script, {fname: fname, type: 'tree-file', treestring: treestring}, function(link){
+				$('body').append(link);
+				$('#temp-file-download')[0].click();
+				$('#temp-file-download').remove();
+			}) 
+
+		}
+	}
+
 	this._eventExportBrackets = function() {
 		// Get fname
 		var fname = $('.modal_option__fname input').val();		
 		// Get brackets
-		if ($('.modal_option__bracket-file input:checked')) {
-			var brackets = this.page.tree.getBracketNotation();
-		} else {
-			var brackets = '';
-		}
-
+		var brackets = this.page.tree.getBracketNotation();
 		// Post it
 		if (typeof this.export_tree_script != 'undefined') {
 			$.post(this.export_tree_script, {fname: fname, type: 'bracket-file', brackets: brackets}, function(link) {
@@ -219,7 +231,7 @@ function Workspace(id,init) {
 			});
 		}
 	}
-	
+
 	this._eventFocus = function() {
 		$(".focus_check_overlay").hide();
 		$(".focus_check_underlay").show();

@@ -9,6 +9,12 @@
 					Bracket notation (text file)
 				</label>
 			</span></br>
+			<span class="modal_option modal_option__tree-file">
+				<label class="modal_label">
+					<input type="radio" name="filetype" value="tree-file">
+					Tree File
+				</label>
+			</span></br>
 			<span class="modal_option modal_option__png">
 				<label class="modal_label">
 					<input type="radio" name="filetype" value="png">
@@ -19,7 +25,7 @@
 				<input type="text" value="mytree"><span>.txt</span>
 			</span>
 		</div>
-		<div class="modal_section modal_section__subtree">
+		<!-- <div class="modal_section modal_section__subtree">
 			<p class="modal_title modal_title_section">Subtree</p>
 			<label class="modal_label modal_label_option modal_label_option__from-root">
 				<input type="radio" name="subtree" checked="checked">
@@ -29,7 +35,7 @@
 				<input type="radio" name="subtree">
 				From currently selected node
 			</label>
-		</div>
+		</div> -->
 		<div class="modal_section modal_section__buttonset">
 			<button class="modal_button modal_button__export">Export</button>
 			<button class="modal_button modal_button__cancel">Cancel</button>
@@ -40,7 +46,8 @@
 	<ul id="toolbar">
 		<li class="toolbar_button toolbar_button__save">Save</li>
 		<li class="toolbar_button toolbar_button__export modal_trigger" for-modal="export">Export</li>
-		<li class="toolbar_button">Upload/import</li>
+		<li class="toolbar_button toolbar_button__open">Open</li>
+		<li class="toolbar_button toolbar_button__upload">Upload</li>
 	</ul>
 	<svg id="workspace" width="100%" height="100%" tabIndex="0">
 	</svg>
