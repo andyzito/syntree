@@ -1,20 +1,20 @@
-function Node(x,y,t) {
+function Node(x,y,t,id) {
 	if (typeof t === 'undefined') {
 		t = "";
 	}
 
 	// ID
-	this.id = W.genId();
+	if (typeof id === 'undefined') {
+		this.id = W.genId();
+	} else {
+		this.id = id;
+	}
 	W.page.allNodes[this.id] = this;
 	
 	// Position
 	this.x = x;
 	this.y = y;
 	
-	// Label
-	this.label = snap.text(x,y,t);
-	this.label.attr({'id':"label-"+this.id,'class':'node-label'});
-
 	// Editor
 	var editorid = "editor-" + this.id;
 	$("#workspace_container").append('<input id="' + editorid + '" class="editor">');
@@ -22,13 +22,17 @@ function Node(x,y,t) {
 	this.editor.hide();
 	
 	// Highlight
-	this.highlight = snap.rect(this.label.attr('x'),this.label.attr('y'),0,0);
+	this.highlight = snap.rect(x,y,0,0);
 	this.highlight.attr({class: "highlight"})
 	
 	// Delete button
-	this.deleteButton = snap.image('/syntree/app/resources/delete_button.png',x,y,10,10);
+	this.deleteButton = snap.image('/app/resources/delete_button.png',x,y,10,10);
 	this.deleteButton.attr({class: 'delete_button'})
-	
+
+	// Label
+	this.label = snap.text(x,y,t);
+	this.label.attr({'id':"label-"+this.id,'class':'node-label'});
+
 	// Relationships
 	this.parent = undefined;
 	this.children = [];
@@ -58,15 +62,17 @@ function Node(x,y,t) {
 
 	this.getLabelBBox = function() {
 		if (this.label.node.textContent === "" || $("#" + this.label.attr('id')).length === 0) {
+			var fakeHeight = 15;
+			var fakeWidth = 10;
 			return {
-				x: this.x,
-				x2: this.x,
-				y: this.y,
-				y2: this.y,
-				w: 0,
-				width: 0,
-				height: 0,
-				h: 0
+				x: this.x - fakeWidth/2,
+				x2: this.x + fakeWidth/2,
+				y: this.y - fakeHeight/2,
+				y2: this.y + fakeHeight/2,
+				w: fakeWidth,
+				width: fakeWidth,
+				height: fakeHeight,
+				h: fakeHeight
 			}
 		}
 
@@ -177,7 +183,7 @@ function Node(x,y,t) {
 				this.updateGraphics(false);
 				this.editor.val(this.label.node.textContent);
 				this.editor.show();
-				this.editor.focus();
+				focusNoScroll(this.editor);
 				break;
 			case 'update':
 				if (this.editing) {
@@ -193,7 +199,7 @@ function Node(x,y,t) {
 					this.editing = false;
 					this.label.node.textContent = this.editor.val()
 					this.editor.hide();
-					$('#workspace').focus();
+					// $('#workspace').focus();
 					this.updateGraphics(false);
 				}
 				break;
@@ -292,23 +298,18 @@ function Node(x,y,t) {
 		}
 	}
 
-	this.addChild = function(newNode,index,text) {
-		if (typeof text == 'undefined') {
-			text = "";
-		}
+	this.addChild = function(newNode,index) {
 		if (typeof index === 'undefined') {
 			index = this.children.length;
 		}
 		if (!this.real) {
 			return;
 		}
-		var pos = this.getPosition();
-
 		newNode.parent = this;
 
 		this.children.splice(index,0,newNode);
-		
-		var branch = new Branch(this,newNode)
+
+		var branch = new Branch(this,newNode);
 	}
 
 	

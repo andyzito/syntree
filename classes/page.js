@@ -11,6 +11,52 @@ function Page(id) {
 	this.group = snap.g();
 	this.group.attr({id: "group-" + this.id, class: "page-group"});
 
+	this.openTree = function(treestring) {
+		this.tree.delete();
+		var nodes = (treestring.split(';'));
+		nodes.pop();
+		var nodelist = [];
+		var i = 0;
+		while (i < nodes.length) {
+			var node = {};
+			node['id'] = nodes[i].split('{')[0];
+			var attrs = nodes[i].split('{')[1].slice(0,-1).split('|');
+			var ii = 0;
+			while (ii < attrs.length) {
+				var name = attrs[ii].split(':')[0];
+				var val = attrs[ii].split(':')[1];
+				node[name] = val;
+				ii++;
+			}
+			nodelist.push(node);
+			i++;
+		}
+		var root = new Node($('#workspace').width()/2,$('#toolbar').height()+20,nodelist[0].labelContent,nodelist[0].id);
+		root.editingAction('save');
+		var tree = new Tree(root,undefined,undefined,0);
+		var n = 1;
+		while (n < nodelist.length) {
+			var newnode = new Node(0,0,nodelist[n].labelContent,nodelist[n].id);
+			newnode.editingAction('save');
+			n++;
+		}
+		n = 0;
+		while (n < nodelist.length) {
+			if (typeof nodelist[n].children != 'undefined') {
+				var childids = nodelist[n].children.split(',');
+				var c = 0;
+				while (c < childids.length) {
+					this.allNodes[nodelist[n].id].addChild(this.allNodes[childids[c]]);
+					c++;
+				}
+			}
+			var temp = new Tree(this.allNodes[nodelist[n].id])
+			temp.distribute();
+			n++;
+		}
+		this.tree = tree;
+	}
+
 	this.getSelectedNode = function() {
 		return this.selectedNode;
 	}

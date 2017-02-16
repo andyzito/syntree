@@ -261,10 +261,10 @@ function Tree(root,x,y,id) {
 			s += "labelContent:" + node.getLabelContent();
 			if (node.getChildren().length > 0) {
 				var children = node.getChildren().map(function(c){return c.getId()});
-				s += ",children:" + children.join();
+				s += "|children:" + children.join();
 			}
 			if (node.getParent()) {
-				s += ",parent:" + node.getParent().getId();
+				s += "|parent:" + node.getParent().getId();
 			}
 			s += "};";
 			i++;

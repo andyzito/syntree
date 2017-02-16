@@ -2,6 +2,13 @@ function Workspace(id,init) {
 	snap = Snap("#workspace");
 	W = this;
 
+	// Gotta put this somewhere else... eventually...
+	focusNoScroll = function(elem) {
+	  var x = window.scrollX, y = window.scrollY;
+	  elem.focus();
+	  window.scrollTo(x, y);
+	}	
+
 	this.id = id;
 	this.ctrl = false;
 	// The path to the script for saving a tree; see this._eventSave below
@@ -79,7 +86,7 @@ function Workspace(id,init) {
 			$(window).on('mousewheel DOMMouseScroll', function(){W._eventUnfocus});
 		}
 		$(document).on('click', '.toolbar_button__save', function(){W._eventSave()});
-		// Modal export stuff
+		// Modal export
 		$(document).on('click', '.modal_section__filetype .modal_label', function(e) {W._eventFiletypeLabelClick(e)});
 		$(document).on('click', '.modal_button__export', function() {
 			var type = $('.modal_section__filetype input:checked').val();
@@ -91,6 +98,25 @@ function Workspace(id,init) {
 				W._eventExportImage();
 			}
 		});
+		// Modal upload
+		$(document).on('click', '.modal_button__upload', function() {
+			W._eventUpload();
+		});
+	}
+
+	this._eventUpload = function() {
+		var W = this;
+		var f = document.getElementById("choose-file").files[0];
+		if (f) {
+		    var reader = new FileReader();
+		    reader.readAsText(f, "UTF-8");
+		    reader.onload = function (e) {
+		    	W.page.openTree(e.target.result);
+		    }
+		    reader.onerror = function (e) {
+		    	alert('Unable to read file. Please upload a .tree file.')
+		    }
+		}
 	}
 
 	this._eventNodeClick = function(clickedNode) {
@@ -143,7 +169,8 @@ function Workspace(id,init) {
 	}
 	
 	this._eventBGClick = function(e) {
-			var x = e.pageX - $("#workspace").offset().left;
+		return; //temporary
+		var x = e.pageX - $("#workspace").offset().left;
 		var y = e.pageY - $("#workspace").offset().top;
 		var nearest = this.page.getNearestNode(x,y);
 		var newNode = new Node(0,0);
@@ -220,13 +247,13 @@ function Workspace(id,init) {
 		var W = this;
 		if (typeof this.save_tree_script != 'undefined') {
 			$.post(this.save_tree_script,{treestring:treestring,treeid:this.page.tree.getId()},function(result){
-				if (result != '') {
+				if (Number(result)) {
 					if (typeof W.page.tree.getId() !== 'number') {
 						W.page.tree.setId(Number(result));
 					}
 					alert('Saved');
 				} else {
-					alert('Sorry, there was a problem');
+					alert(result);
 				}
 			});
 		}
