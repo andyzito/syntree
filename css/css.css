@@ -1,101 +1,104 @@
+/* CSS file for the app. Should not touch anything outside of #workspace_container
+ (except for dynamically generated content like .focus_check_underlay) */
+ 
 #workspace_container {
-	border: 1px solid black;
-	cursor: default !important;
+    border: 1px solid black;
+    cursor: default !important;
 }
 
 #workspace {
-	background-color:grey;
+    background-color:grey;
 }
 
 .editor {
-	position:absolute;
-	display:none;
-	font-size:14px;
-	font-family:sans-serif;
-	outline-width:0;
-	border:none;
-	padding:1px;
+    position:absolute;
+    display:none;
+    font-size:14px;
+    font-family:sans-serif;
+    outline-width:0;
+    border:none;
+    padding:1px;
 }
 
 text {
-	text-align:center;
-	font-size:14px;
-	font-family:sans-serif;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+    text-align:center;
+    font-size:14px;
+    font-family:sans-serif;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .delete_button:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 #toolbar {
-	position: absolute;
-	list-style: none;
-	border-bottom: 1px solid black;
-	width: 100%;
-	background-color: white;
-	margin: 0;
-	padding: 0;
+    position: absolute;
+    list-style: none;
+    border-bottom: 1px solid black;
+    width: 100%;
+    background-color: white;
+    margin: 0;
+    padding: 0;
 }
 
 .toolbar_button {
-	display: inline-block;
-	padding: 10px 15px;
-	cursor: pointer;
+    display: inline-block;
+    padding: 10px 15px;
+    cursor: pointer;
 }
 
 .toolbar_button:hover {
-	background-color: black;
-	color: white;
+    background-color: black;
+    color: white;
 }
 
 .modal_body.modal_export, .modal_body.modal_upload {
-	width: 90%;
-	height: 90%;
-	top: 5%;
-	left: 5%;
-	z-index: 101;
+    width: 90%;
+    height: 90%;
+    top: 5%;
+    left: 5%;
+    z-index: 101;
 }
 /*
 .overlay[overlay-id=app] {
-	z-index: 100;
+    z-index: 100;
 }
 */
 .modal_option__fname input{
-	margin-top: 20px;
-	margin-right: 5px;
-	text-align: right;
+    margin-top: 20px;
+    margin-right: 5px;
+    text-align: right;
 }
 
 .modal_section__filetype {
-/*	float: left;
-	margin-left: 150px;*/
-	width: 100%;
-	text-align: center;
+/*    float: left;
+    margin-left: 150px;*/
+    width: 100%;
+    text-align: center;
 }
 
 .modal_section__subtree {
-	float: right;
-	margin-right: 150px;
+    float: right;
+    margin-right: 150px;
 }
 
 .focus_check_overlay, .focus_check_underlay {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(255,255,255,0.6);
-	z-index: 102;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,0.6);
+    z-index: 102;
 }
 
 .focus_check_underlay {
-	z-index: 98;
+    z-index: 98;
 }
 
 #export-image-canvas {
-	display: none;
+    display: none;
 }
