@@ -31,12 +31,18 @@ function Page(id) {
             nodelist.push(node);
             i++;
         }
-        var root = new Node($('#workspace').width()/2,$('#toolbar').height()+20,nodelist[0].labelContent,nodelist[0].id);
+        var rootAttrs = {
+            x: $('#workspace').width()/2,
+            y: $('#toolbar').height()+20,
+            labelContent: nodelist[0].labelContent,
+            id: Number(nodelist[0].id),
+        }
+        var root = new Node(rootAttrs);
         root.editingAction('save');
         var tree = new Tree({root:root});
         var n = 1;
         while (n < nodelist.length) {
-            var newnode = new Node(0,0,nodelist[n].labelContent,nodelist[n].id);
+            var newnode = new Node({labelContent:nodelist[n].labelContent,id:Number(nodelist[n].id)});
             newnode.editingAction('save');
             n++;
         }
@@ -136,7 +142,7 @@ function Page(id) {
                 if (selectedIndex === rowNodes.length-1 || fcreate) {
                     if (real) {
                         var siblingIndex = this.selectedNode.getParent().getChildren().indexOf(this.selectedNode);
-                        var newNode = new Node({x:0,y:0});
+                        var newNode = new Node({});
                         this.selectedNode.getParent().addChild(newNode,siblingIndex+1);
                         this.nodeSelect(newNode);
                         this.nodeEditing('init');
@@ -150,7 +156,7 @@ function Page(id) {
                 if (selectedIndex === 0 || fcreate) {
                     if (real) {
                         var siblingIndex = this.selectedNode.getParent().getChildren().indexOf(this.selectedNode);
-                        var newNode = new Node({x:0,y:0});
+                        var newNode = new Node({});
                         this.selectedNode.getParent().addChild(newNode,siblingIndex);
                         this.nodeSelect(newNode);
                         this.nodeEditing('init');

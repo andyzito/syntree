@@ -101,24 +101,29 @@ function Workspace(id,init) {
             }
         });
         // Modal upload
-        $(document).on('click', '.modal_button__upload', function() {
+        $(document).on('click', '.toolbar_button__upload', function() {
             W._eventUpload();
         });
     }
 
     this._eventUpload = function() {
         var W = this;
-        var f = document.getElementById("choose-file").files[0];
-        if (f) {
-            var reader = new FileReader();
-            reader.readAsText(f, "UTF-8");
-            reader.onload = function (e) {
-                W.page.openTree(e.target.result);
+        $('body').append('<input type="file" id="temp-choose-file">');
+        $('#temp-choose-file').change(function() {
+            var f = document.getElementById("temp-choose-file").files[0];            
+            if (f) {
+                var reader = new FileReader();
+                reader.readAsText(f, "UTF-8");
+                reader.onload = function (e) {
+                    W.page.openTree(e.target.result);
+                }
+                reader.onerror = function (e) {
+                    alert('Unable to read file. Please upload a .tree file.')
+                }
             }
-            reader.onerror = function (e) {
-                alert('Unable to read file. Please upload a .tree file.')
-            }
-        }
+            $('#temp-choose-file').remove();
+        });
+        $('#temp-choose-file').click();
     }
 
     this._eventNodeClick = function(clickedNode) {

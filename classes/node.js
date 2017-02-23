@@ -4,7 +4,7 @@ function Node(attrs) {
     if (typeof attrs.id !== 'number') {
         this.id = W.genId();
     } else {
-        this.id = attrsid;
+        this.id = attrs.id;
     }
     W.page.allNodes[this.id] = this; // register with master list of nodes
     
