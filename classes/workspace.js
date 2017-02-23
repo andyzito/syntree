@@ -14,6 +14,9 @@ function Workspace(id,init) {
     // The path to the script for saving a tree; see this._eventSave below
     // This script should return the tree's id on success, false on failure
     this.save_tree_script = init['save_tree_script'];
+    // The path to the script for retrieving saved trees
+    // This script should return some HTML on success and false on failure
+    this.get_trees_script = init['get_trees_script'];
     // The path to the php script for exporting a tree; see this._eventExport below
     // This script should return a download link for the export file on success, false on failure
     this.export_tree_script = init['export_tree_script'];
@@ -103,6 +106,12 @@ function Workspace(id,init) {
         // Modal upload
         $(document).on('click', '.toolbar_button__upload', function() {
             W._eventUpload();
+        });
+        // Modal open
+        $(document).on('click', '.toolbar_button__open', function() {
+            $.post(W.get_trees_script, {}, function(result) {
+                $('.modal_section__trees').html(result);
+            });
         });
     }
 
