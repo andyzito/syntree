@@ -22,7 +22,12 @@ $treestring = $_POST['treestring'];
 $treesaved = $DB->save_tree($treeid,$userid,$treestring);
 
 $oldusertrees = $DB->select('treeids','user',"id=$userid");
-$userupdated = $DB->update('treeids',$oldusertrees[0] . $treeid . ";",'user',"id=$userid");
+$oldids = explode(';', $oldusertrees[0]);
+if (!in_array($treeid,$oldids)) {
+	$userupdated = $DB->update('treeids', $oldusertrees[0] . $treeid . ";", 'user', "id=$userid");
+} else {
+	$userupdated = true;
+}
 
 if ($treesaved && $userupdated) {
     echo $treeid;
