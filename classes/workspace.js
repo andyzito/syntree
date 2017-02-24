@@ -1,4 +1,4 @@
-function Workspace(id,init) {
+function Workspace(init) {
     snap = Snap("#workspace");
     W = this;
 
@@ -9,17 +9,34 @@ function Workspace(id,init) {
       window.scrollTo(x, y);
     }    
 
-    this.id = id;
     this.ctrl = false;
+    this.upload_enabled = init['upload_enabled'];
+    if (typeof this.upload_enabled === 'undefined') {
+        this.upload_enabled = true;
+    }
+    if (!this.upload_enabled) {
+        $('.toolbar_button__upload').remove();
+    }
     // The path to the script for saving a tree; see this._eventSave below
     // This script should return the tree's id on success, false on failure
     this.save_tree_script = init['save_tree_script'];
+    if (typeof this.save_tree_script === 'undefined') {
+        $('.toolbar_button__save').remove();
+    }
     // The path to the script for retrieving saved trees
     // This script should return some HTML on success and false on failure
     this.get_trees_script = init['get_trees_script'];
+    if (typeof this.get_trees_script === 'undefined') {
+        $('.toolbar_button__open').remove();
+        $('.modal_open').remove();
+    }
     // The path to the php script for exporting a tree; see this._eventExport below
     // This script should return a download link for the export file on success, false on failure
     this.export_tree_script = init['export_tree_script'];
+    if (typeof this.export_tree_script === 'undefined') {
+        $('.toolbar_button__export').remove();
+        $('.modal_export').remove();
+    }
     // Should we do focus checking? Set to 'true' if embedded, 'false' for full page
     this.focus_checking_enabled = init['focus_checking_enabled'];
     if (this.focus_checking_enabled) {
@@ -90,29 +107,37 @@ function Workspace(id,init) {
             $(document).on('click', '.focus_check_underlay', function(){W._eventUnfocus()});
             $(window).on('mousewheel DOMMouseScroll', function(){W._eventUnfocus});
         }
-        $(document).on('click', '.toolbar_button__save', function(){W._eventSave()});
+        if (typeof this.save_tree_script !== 'undefined') {
+            $(document).on('click', '.toolbar_button__save', function(){W._eventSave()});
+        }
         // Modal export
-        $(document).on('click', '.modal_section__filetype .modal_label', function(e) {W._eventFiletypeLabelClick(e)});
-        $(document).on('click', '.modal_button__export', function() {
-            var type = $('.modal_section__filetype input:checked').val();
-            if (type === 'bracket-file') {
-                W._eventExportBrackets();
-            } else if (type === 'tree-file') {
-                W._eventExportTreeFile();
-            } else if (type === 'png') {
-                W._eventExportImage();
-            }
-        });
-        // Modal upload
-        $(document).on('click', '.toolbar_button__upload', function() {
-            W._eventUpload();
-        });
-        // Modal open
-        $(document).on('click', '.toolbar_button__open', function() {
-            $.post(W.get_trees_script, {}, function(result) {
-                $('.modal_section__trees').html(result);
+        if (typeof this.export_tree_script !== 'undefined') {
+            $(document).on('click', '.modal_section__filetype .modal_label', function(e) {W._eventFiletypeLabelClick(e)});
+            $(document).on('click', '.modal_button__export', function() {
+                var type = $('.modal_section__filetype input:checked').val();
+                if (type === 'bracket-file') {
+                    W._eventExportBrackets();
+                } else if (type === 'tree-file') {
+                    W._eventExportTreeFile();
+                } else if (type === 'png') {
+                    W._eventExportImage();
+                }
             });
-        });
+        }
+        // Upload
+        if (this.upload_enabled) {
+            $(document).on('click', '.toolbar_button__upload', function() {
+                W._eventUpload();
+            });
+        }
+        // Modal open
+        if (typeof this.get_trees_script !== 'undefined') {
+            $(document).on('click', '.toolbar_button__open', function() {
+                $.post(W.get_trees_script, {}, function(result) {
+                    $('.modal_section__trees').html(result);
+                });
+            });
+        }
     }
 
     this._eventUpload = function() {
