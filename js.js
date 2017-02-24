@@ -1,12 +1,9 @@
 $(document).ready(function() {
-    var init = {
-        save_tree_script:"/post/save-tree.php",
-        get_trees_script:"/post/get-trees.php",
-        export_tree_script:"/post/export-tree.php",
-        focus_checking_enabled:true
-    };
-
-    W = new Workspace(0,init)
+    if (typeof init === 'undefined') {
+        init = {};
+    }
+    H = new History();
+    W = new Workspace(init);
 
     function create_account() {
         var username = $('.modal_option__new-username input').val();

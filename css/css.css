@@ -2,12 +2,16 @@
     margin:0;
     padding:0;
     outline-width:0px;
+    box-sizing:border-box;
+}
+
+html {
+    height: 100%;
 }
 
 body, html {
     background: grey;
     width: 100%;
-    position: absolute;
 }
 
 /* Broad categorical stuff */
@@ -28,7 +32,7 @@ a {
 .button:hover {
     background: black;
     color: white;
-    cursor: pointer;    
+    cursor: pointer;
 }
 
 /* Index */
@@ -119,16 +123,13 @@ a {
 
 /* Make */
 body.page_make {
-    background: white;
+    background: grey;
+    height: 100%;
+    overflow: hidden;
 }
 
 .page_make #workspace_container {
-    position: absolute;
-    top: 1%;
-    left: 10%;
-    width: 89%;
-    height: 98%;
-    margin: auto;
+    height: 100%;
 }
 
 .page_make .button_back {

@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 
 <html>
+    <script>    
+    init = {
+        save_tree_script:"/post/save-tree.php",
+        get_trees_script:"/post/get-trees.php",
+        export_tree_script:"/post/export-tree.php",
+        focus_checking_enabled:true
+    };
+    </script>
     <?php include 'includes/head.php' ?>
     <body>
         <div class="overlay" overlay-id="index"></div>

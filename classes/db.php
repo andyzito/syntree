@@ -17,7 +17,7 @@ if (!class_exists('DB')) {
 			} else {
 				$sql = "SELECT $field FROM $table";
 			}
-			if ($where != '') {
+			if ($where !== '') {
 				$sql .= " WHERE $where";
 			}
 			$sql .= ";";
