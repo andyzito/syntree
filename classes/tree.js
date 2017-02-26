@@ -371,7 +371,7 @@ function Tree(attrs) {
 
         }
         
-        if (typeof this.root.getParent() != 'undefined') {
+        if (typeof this.root.getParent() !== 'undefined') {
             var tree = new Tree({root:this.root.getParent()});
             tree.distribute();
         } else {

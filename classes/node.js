@@ -21,7 +21,7 @@ function Node(attrs) {
     }
 
     // labelContent
-    if (typeof attrs.labelContent != 'string') {
+    if (typeof attrs.labelContent !== 'string') {
         this.labelContent = '';
     } else {
         this.labelContent = attrs.labelContent;
@@ -43,7 +43,6 @@ function Node(attrs) {
     this.deleteButton.attr({class: 'delete_button'})
 
     // Label
-    console.log('making a new label for ' + this.id)
     this.label = snap.text(this.x,this.y,this.labelContent);
     this.label.attr({'id':"label-"+this.id,'class':'node-label'});
 
@@ -128,7 +127,7 @@ function Node(attrs) {
 
     this.getSVGString = function() {
         s = this.label.node.outerHTML;
-        if (typeof this.parentBranch != 'undefined') {
+        if (typeof this.parentBranch !== 'undefined') {
             s += this.parentBranch.line.node.outerHTML
         }
         return s;
@@ -141,10 +140,10 @@ function Node(attrs) {
         var oldX = this.x;
         var oldY = this.y;
         
-        if (typeof x != 'undefined') {
+        if (typeof x !== 'undefined') {
             this.x = x;
         }
-        if (typeof y != 'undefined') {
+        if (typeof y !== 'undefined') {
             this.y = y;
         }
         if (propagate) {
@@ -170,10 +169,11 @@ function Node(attrs) {
         this.editor.remove();
         this.highlight.remove();
         this.deleteButton.remove();
-        if (typeof this.parentBranch != 'undefined') {
+        delete W.page.allNodes[this.id];
+        if (typeof this.parentBranch !== 'undefined') {
             this.parentBranch.delete();
         }
-        if (typeof this.parent != 'undefined') {
+        if (typeof this.parent !== 'undefined') {
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
         }
         this.deleted = true;
@@ -297,7 +297,7 @@ function Node(attrs) {
         }
                 
         // Branches
-        if (typeof this.parentBranch != 'undefined') {
+        if (typeof this.parentBranch !== 'undefined') {
             this.parentBranch.updateGraphics();
         }
         for (i=0;i<this.childBranches.length;i++) {

@@ -1,18 +1,19 @@
 function Workspace(init) {
-    snap = Snap("#workspace");
-    W = this;
+    snap = Snap("#workspace"); // Ensure that the snap variable exists
+    W = this; // Ensure that workspace is globally available
 
     // Gotta put this somewhere else... eventually...
     focusNoScroll = function(elem) {
       var x = window.scrollX, y = window.scrollY;
       elem.focus();
       window.scrollTo(x, y);
-    }    
+    }
 
-    this.ctrl = false;
+    // Use 'init' object to set up some config variables
+    // Is uploading enabled?
     this.upload_enabled = init['upload_enabled'];
     if (typeof this.upload_enabled === 'undefined') {
-        this.upload_enabled = true;
+        this.upload_enabled = true; // Default to enabled
     }
     if (!this.upload_enabled) {
         $('.toolbar_button__upload').remove();
@@ -46,7 +47,9 @@ function Workspace(init) {
         this.focused = false;
     }
 
-    this.allids = [];
+    // Other properties
+    this.allids = []; // To ensure local ids are unique
+
     this.genId = function() {
         n = 1000;
         if (this.allids.length === n) {
@@ -75,37 +78,28 @@ function Workspace(init) {
                 if (e.keyCode === 13) { // Enter
                     W._eventEnter();
                 } else if (e.keyCode === 37) { // Left arrow key
-                    W._eventLeft();
+                    W._eventLeft(e);
                     return false;
                 } else if (e.keyCode === 38) { // Up arrow key 
                     W._eventUp();
                     return false;
                 } else if (e.keyCode === 39) { // Right arrow key
-                    W._eventRight();
+                    W._eventRight(e);
                     return false;
                 } else if (e.keyCode === 40) { // Down arrow key
-                    W._eventDown();
+                    W._eventDown(e);
                     return false;
                 } else if (e.keyCode === 46) { // Delete key
                     W._eventDel();
                 } else if (e.keyCode === 27) { // Esc key
                     W._eventEsc();
-                } else if (e.keyCode === 17) { // CTRL
-                    W.ctrl = true; // to keep track of whether or not CTRL is pressed
                 }
-            }
-        });
-        // To keep track of whether or not CTRL is pressed
-        $(document).on('keyup', function(e) {
-            if (e.keyCode === 17) {
-                W.ctrl = false;
             }
         });
         // Focus checking
         if (W.focus_checking_enabled) {
             $(document).on('click', '.focus_check_overlay', function(){W._eventFocus()});
             $(document).on('click', '.focus_check_underlay', function(){W._eventUnfocus()});
-            $(window).on('mousewheel DOMMouseScroll', function(){W._eventUnfocus});
         }
         if (typeof this.save_tree_script !== 'undefined') {
             $(document).on('click', '.toolbar_button__save', function(){W._eventSave()});
@@ -169,16 +163,16 @@ function Workspace(init) {
         this.page.nodeEditing('toggle');
     }
     
-    this._eventLeft = function() {
-        if (!this.ctrl) {
+    this._eventLeft = function(e) {
+        if (!e.ctrlKey) {
             this.page.navigateHorizontal('left');
         } else {
             this.page.navigateHorizontal('left',true);
         }
     }
     
-    this._eventRight = function() {
-        if (!this.ctrl) {
+    this._eventRight = function(e) {
+        if (!e.ctrlKey) {
             this.page.navigateHorizontal('right');
         } else {
             this.page.navigateHorizontal('right',true);
@@ -189,8 +183,8 @@ function Workspace(init) {
         this.page.navigateUp();
     }
     
-    this._eventDown = function() {
-        if (!this.ctrl) {
+    this._eventDown = function(e) {
+        if (!e.ctrlKey) {
             this.page.navigateDown();
         } else {
             this.page.navigateDown(true);
@@ -258,7 +252,7 @@ function Workspace(init) {
     this._eventExportTreeFile = function() {
         var fname = $('.modal_option__fname input').val();
         var treestring = this.page.tree.getTreeString();
-        if (typeof this.export_tree_script != 'undefined') {
+        if (typeof this.export_tree_script !== 'undefined') {
             $.post(this.export_tree_script, {fname: fname, type: 'tree-file', treestring: treestring}, function(link){
                 $('body').append(link);
                 $('#temp-file-download')[0].click();
@@ -274,7 +268,7 @@ function Workspace(init) {
         // Get brackets
         var brackets = this.page.tree.getBracketNotation();
         // Post it
-        if (typeof this.export_tree_script != 'undefined') {
+        if (typeof this.export_tree_script !== 'undefined') {
             $.post(this.export_tree_script, {fname: fname, type: 'bracket-file', brackets: brackets}, function(link) {
                 $('body').append(link);
                 $('#temp-file-download')[0].click();
@@ -286,7 +280,7 @@ function Workspace(init) {
     this._eventSave = function() {
         var treestring = this.page.tree.getTreeString();
         var W = this;
-        if (typeof this.save_tree_script != 'undefined') {
+        if (typeof this.save_tree_script !== 'undefined') {
             $.post(this.save_tree_script,{treestring:treestring,treeid:this.page.tree.getId()},function(result){
                 if (Number(result)) {
                     if (typeof W.page.tree.getId() !== 'number') {

@@ -48,7 +48,7 @@ function Page(id) {
         }
         n = 0;
         while (n < nodelist.length) {
-            if (typeof nodelist[n].children != 'undefined') {
+            if (typeof nodelist[n].children !== 'undefined') {
                 var childids = nodelist[n].children.split(',');
                 var c = 0;
                 while (c < childids.length) {
@@ -129,7 +129,7 @@ function Page(id) {
             return;
         }
 
-        if (typeof this.selectedNode != 'undefined') {
+        if (typeof this.selectedNode !== 'undefined') {
             // if (this.selectedNode.getState('editing') && this.selectedNode.getState('real')) {
             //     return;
             // }
@@ -174,7 +174,7 @@ function Page(id) {
     }
 
     this.navigateUp = function() {
-        if (typeof this.selectedNode != 'undefined' && typeof this.selectedNode.getParent() != 'undefined') {
+        if (typeof this.selectedNode !== 'undefined' && typeof this.selectedNode.getParent() !== 'undefined') {
             this.nodeSelect(this.selectedNode.getParent());
         }
         var tree = new Tree({root:this.selectedNode});
@@ -182,7 +182,7 @@ function Page(id) {
     }
 
     this.navigateDown = function(fcreate) {
-        if (typeof this.selectedNode != 'undefined') {
+        if (typeof this.selectedNode !== 'undefined') {
             if (this.selectedNode.getChildren().length > 0 && !fcreate) {
                 var possibleSelects = this.selectedNode.getChildren();
                 // var selectHistory = H.getByType('select');
@@ -230,26 +230,35 @@ function Page(id) {
                 tree.distribute();
             }
         } else if (type === 'cancel') {
-            node.editingAction('cancel');
+            if (node.getState('editing')) {
+                node.editingAction('cancel');
+                if (!node.getState('real')) {
+                    this.nodeDelete(node);
+                }
+            }
         }
     }
 
     this.nodeDelete = function(node) {
         // var action = new Action('delete',node);
-        if (typeof node === 'undefined') {
+        if (typeof node === 'undefined' && typeof this.selectedNode !== 'undefined') {
             node = this.selectedNode;
         }
         if (node.getState('deleted')) {
             return;
         }
+        if (typeof node === 'undefined') {
+            return;
+        }
         var parent = node.getParent();
         var tree = new Tree({root:node});
         tree.delete();
-        delete this.allNodes[node.getId()];
-        if (parent != undefined && this.selectedNode != undefined) {
-            this.nodeSelect(parent);
+        if (parent !== undefined && this.selectedNode !== undefined) {
             tree = new Tree({root:parent});
             tree.distribute();
+        }
+        if (typeof this.selectedNode !== 'undefined') {
+            this.nodeSelect(this.tree.getRoot());
         }
         // this.nodeSelect(this.tree.getRoot())
         // if (node.children.length > 0) {
@@ -260,7 +269,7 @@ function Page(id) {
         //         c++;
         //     }
         // }
-        // if (node.parent != undefined) {
+        // if (node.parent !== undefined) {
         //     this.tree.spread(node.parent);
         //     node.parent.updateGraphics();
         // }
@@ -268,7 +277,7 @@ function Page(id) {
 
     this.nodeSelect = function(node) {
         // var action = new Action('select',node);
-        if (typeof this.selectedNode != 'undefined') {
+        if (typeof this.selectedNode !== 'undefined') {
             this.nodeDeselect(this.selectedNode);
         }
         this.selectedNode = node;
@@ -278,12 +287,10 @@ function Page(id) {
     this.nodeDeselect = function(node) {
         this.selectedNode = undefined;
         node.deselect();
-        if (node.getState('editing')) {
-            if (node.getState('real')) {
-                node.editingAction('cancel');
-            } else {
-                this.nodeDelete(node);
-            }
+        if (node.getState('real')) {
+            this.nodeEditing('cancel',node);
+        } else {
+            this.nodeDelete(node);
         }
     }
     
