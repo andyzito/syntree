@@ -7,7 +7,7 @@ function Node(attrs) {
         this.id = attrs.id;
     }
     W.page.allNodes[this.id] = this; // register with master list of nodes
-    
+
     // Position
     if (typeof attrs.x !== 'number') {
         this.x = 0;
@@ -26,18 +26,18 @@ function Node(attrs) {
     } else {
         this.labelContent = attrs.labelContent;
     }
-    
+
     // Create graphical elements
     // Editor
     var editorid = "editor-" + this.id;
     $("#workspace_container").append('<input id="' + editorid + '" class="editor">');
     this.editor = $("#" + editorid);
     this.editor.hide();
-    
+
     // Highlight
     this.highlight = snap.rect(this.x,this.y,0,0);
     this.highlight.attr({class: "highlight"})
-    
+
     // Delete button
     this.deleteButton = snap.image('/app/resources/delete_button.png',this.x,this.y,10,10);
     this.deleteButton.attr({class: 'delete_button'})
@@ -53,7 +53,7 @@ function Node(attrs) {
     // Branches
     this.parentBranch = undefined;
     this.childBranches = [];
-        
+
     // States
     this.editing = false;
     this.selected = false;
@@ -139,7 +139,7 @@ function Node(attrs) {
         }
         var oldX = this.x;
         var oldY = this.y;
-        
+
         if (typeof x !== 'undefined') {
             this.x = x;
         }
@@ -162,8 +162,8 @@ function Node(attrs) {
             x: this.x,
             y: this.y,
         }
-    }    
-    
+    }
+
     this.delete = function() {
         this.label.remove();
         this.editor.remove();
@@ -201,7 +201,7 @@ function Node(attrs) {
                 break;
             case 'update':
                 if (this.editing) {
-                    this.label.node.textContent = this.editor.val();
+                    this.labelContent = this.editor.val();
                     this.updateGraphics(false);
                 }
                 break;
@@ -212,9 +212,8 @@ function Node(attrs) {
                 if (this.editing) {
                     this.editing = false;
                     this.labelContent = this.editor.val();
-                    this.label.node.textContent = this.labelContent;
                     this.editor.hide();
-                    // $('#workspace').focus();
+                    this.beforeEditLabelContent = undefined;
                     this.updateGraphics(false);
                 }
                 break;
@@ -222,7 +221,8 @@ function Node(attrs) {
                 if (this.editing) {
                     this.editing = false;
                     this.editor.hide();
-                    this.label.node.textContent = this.beforeEditLabelContent;
+                    this.labelContent = this.beforeEditLabelContent;
+                    this.beforeEditLabelContent = undefined;
                     this.updateGraphics(false);
                     break;
                 }
@@ -233,7 +233,8 @@ function Node(attrs) {
         if (typeof propagate == 'undefined') {
             propagate = true;
         }
-        
+        this.label.node.textContent = this.labelContent;
+
         var bbox = this.getLabelBBox();
         // if (this.positionUnsynced) {
         this.label.attr({x: this.x-(bbox.w/2)});
@@ -244,7 +245,7 @@ function Node(attrs) {
             x: bbox.x - 5,
             y: bbox.y - 5,
         })
-            
+
         //     this.positionUnsynced = false;
         // }
 
@@ -280,7 +281,7 @@ function Node(attrs) {
             this.highlight.attr({
                 fill:"rgba(0,0,0,0.2)"
             });
-            
+
             this.deleteButton.attr({
                 width: 10,
                 height: 10
@@ -289,13 +290,13 @@ function Node(attrs) {
             this.highlight.attr({
                 fill:"none"
                 });
-            
+
             this.deleteButton.attr({
                 width: 0,
                 height: 0,
             })
         }
-                
+
         // Branches
         if (typeof this.parentBranch !== 'undefined') {
             this.parentBranch.updateGraphics();
@@ -303,7 +304,7 @@ function Node(attrs) {
         for (i=0;i<this.childBranches.length;i++) {
             this.childBranches[i].updateGraphics();
         }
-        
+
         if (propagate) {
             var c = 0;
             while (c < this.children.length) {
@@ -327,6 +328,6 @@ function Node(attrs) {
         var branch = new Branch(this,newNode);
     }
 
-    
+
     this.updateGraphics();
 }

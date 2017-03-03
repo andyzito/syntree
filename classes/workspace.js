@@ -1,6 +1,6 @@
 function Workspace(init) {
     snap = Snap("#workspace"); // Ensure that the snap variable exists
-    W = this; // Ensure that workspace is globally available
+    W = this; // Ensure that workspace is available to objects created from within this constructor
 
     // Gotta put this somewhere else... eventually...
     focusNoScroll = function(elem) {
@@ -80,7 +80,7 @@ function Workspace(init) {
                 } else if (e.keyCode === 37) { // Left arrow key
                     W._eventLeft(e);
                     return false;
-                } else if (e.keyCode === 38) { // Up arrow key 
+                } else if (e.keyCode === 38) { // Up arrow key
                     W._eventUp();
                     return false;
                 } else if (e.keyCode === 39) { // Right arrow key
@@ -93,6 +93,8 @@ function Workspace(init) {
                     W._eventDel();
                 } else if (e.keyCode === 27) { // Esc key
                     W._eventEsc();
+                } else if (e.keyCode === 90 && e.ctrlKey) { // CTRL + Z
+                    W._eventUndo();
                 }
             }
         });
@@ -134,11 +136,15 @@ function Workspace(init) {
         }
     }
 
+    this._eventUndo = function() {
+        H.undo();
+    }
+
     this._eventUpload = function() {
         var W = this;
         $('body').append('<input type="file" id="temp-choose-file">');
         $('#temp-choose-file').change(function() {
-            var f = document.getElementById("temp-choose-file").files[0];            
+            var f = document.getElementById("temp-choose-file").files[0];
             if (f) {
                 var reader = new FileReader();
                 reader.readAsText(f, "UTF-8");
@@ -162,7 +168,7 @@ function Workspace(init) {
     this._eventEnter = function() {
         this.page.nodeEditing('toggle');
     }
-    
+
     this._eventLeft = function(e) {
         if (!e.ctrlKey) {
             this.page.navigateHorizontal('left');
@@ -170,7 +176,7 @@ function Workspace(init) {
             this.page.navigateHorizontal('left',true);
         }
     }
-    
+
     this._eventRight = function(e) {
         if (!e.ctrlKey) {
             this.page.navigateHorizontal('right');
@@ -178,11 +184,11 @@ function Workspace(init) {
             this.page.navigateHorizontal('right',true);
         }
     }
-    
+
     this._eventUp = function() {
         this.page.navigateUp();
     }
-    
+
     this._eventDown = function(e) {
         if (!e.ctrlKey) {
             this.page.navigateDown();
@@ -190,26 +196,26 @@ function Workspace(init) {
             this.page.navigateDown(true);
         }
     }
-    
+
     this._eventDel = function() {
         this.page.nodeDelete();
     }
-    
+
     this._eventEsc = function() {
         this.page.nodeEditing('cancel');
     }
-    
+
     this._eventEditorTyping = function() {
         this.page.nodeEditing('update');
     }
-    
+
     this._eventBGClick = function(e) {
         return; //temporary
         var x = e.pageX - $("#workspace").offset().left;
         var y = e.pageY - $("#workspace").offset().top;
         var nearest = this.page.getNearestNode(x,y);
         var newNode = new Node(0,0);
-        
+
         if (typeof nearest === 'object') {
             if (nearest.deltaY < -10) {
                 if (nearest.deltaX > 0) {
@@ -223,7 +229,7 @@ function Workspace(init) {
                     nearest.node.addChild(newNode,childIndex);
                 } else {
                     nearest.node.addChild(newNode,childIndex+1);
-                }                
+                }
             }
         }
     }
@@ -257,14 +263,14 @@ function Workspace(init) {
                 $('body').append(link);
                 $('#temp-file-download')[0].click();
                 $('#temp-file-download').remove();
-            }) 
+            })
 
         }
     }
 
     this._eventExportBrackets = function() {
         // Get fname
-        var fname = $('.modal_option__fname input').val();        
+        var fname = $('.modal_option__fname input').val();
         // Get brackets
         var brackets = this.page.tree.getBracketNotation();
         // Post it

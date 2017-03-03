@@ -1,6 +1,6 @@
 /* CSS file for the app. Should not touch anything outside of #workspace_container
  (except for dynamically generated content like .focus_check_underlay) */
- 
+
 #workspace_container {
     border: 1px solid black;
     cursor: default !important;
@@ -96,6 +96,7 @@ text {
 }
 
 .focus_check_underlay {
+    position: fixed;
     z-index: 98;
 }
 

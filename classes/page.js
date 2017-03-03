@@ -80,7 +80,7 @@ function Page(id) {
     //     if (typeof(x) === 'undefined' || typeof(y) === 'undefined') {
     //         return;
     //     }
-        
+
     //     var nearestNode;
     //     var leastDist = Number.POSITIVE_INFINITY;
     //     var n = 0;
@@ -109,7 +109,7 @@ function Page(id) {
         if (typeof fcreate === 'undefined') {
             fcreate = false;
         }
-        
+
         if (typeof direction === 'undefined') {
             return;
         }
@@ -129,7 +129,7 @@ function Page(id) {
             return;
         }
 
-        if (typeof this.selectedNode !== 'undefined') {
+        if (typeof this.selectedNode !== 'undefined' && typeof this.selectedNode.getParent() !== 'undefined') {
             // if (this.selectedNode.getState('editing') && this.selectedNode.getState('real')) {
             //     return;
             // }
@@ -185,15 +185,14 @@ function Page(id) {
         if (typeof this.selectedNode !== 'undefined') {
             if (this.selectedNode.getChildren().length > 0 && !fcreate) {
                 var possibleSelects = this.selectedNode.getChildren();
-                // var selectHistory = H.getByType('select');
-                
-                // for (i=selectHistory.length-1; i>=0; i--) {
-                //     if (possibleSelects.indexOf(selectHistory[i].node) >= 0) {
-                //         this.selectNode(selectHistory[i].node);
-                //         return;
-                //     }
-                // }
-                this.nodeSelect(this.selectedNode.getChildren()[0]);
+                var selectHistory = H.getAllByType('select');
+
+                for (i=0; i<=selectHistory.length; i++) {
+                    if (possibleSelects.indexOf(selectHistory[i].node) >= 0) {
+                        this.nodeSelect(selectHistory[i].node);
+                        return;
+                    }
+                }
             } else if (this.selectedNode.getState('real')) {
                 var newNode = new Node({x:0,y:0,labelContent:""});
                 this.selectedNode.addChild(newNode);
@@ -224,6 +223,13 @@ function Page(id) {
                 this.nodeEditing('init');
             }
         } else if (type === 'save') {
+            if (node.getState('real')) {
+                var pre = node.beforeEditLabelContent;
+                var post = node.getLabelContent();
+                new ActionSave(node,pre,post);
+            } else {
+                new ActionCreate(node);
+            }
             node.editingAction('save');
             if (this.selectedNode.getParent()) {
                 var tree = new Tree({root:this.selectedNode.getParent()});
@@ -260,28 +266,15 @@ function Page(id) {
         if (typeof this.selectedNode !== 'undefined') {
             this.nodeSelect(this.tree.getRoot());
         }
-        // this.nodeSelect(this.tree.getRoot())
-        // if (node.children.length > 0) {
-        //     var children = node.children.slice(0);
-        //     var c = 0;
-        //     while (c < children.length) {
-        //         this.deleteNode(children[c]);
-        //         c++;
-        //     }
-        // }
-        // if (node.parent !== undefined) {
-        //     this.tree.spread(node.parent);
-        //     node.parent.updateGraphics();
-        // }
     }
 
     this.nodeSelect = function(node) {
-        // var action = new Action('select',node);
         if (typeof this.selectedNode !== 'undefined') {
             this.nodeDeselect(this.selectedNode);
         }
         this.selectedNode = node;
         this.selectedNode.select();
+        new ActionSelect(node);
     }
 
     this.nodeDeselect = function(node) {
@@ -293,7 +286,7 @@ function Page(id) {
             this.nodeDelete(node);
         }
     }
-    
+
     this.addTree = function(attrs) {
         if (typeof attrs === 'undefined') {
             // Default tree
