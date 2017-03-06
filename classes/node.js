@@ -237,8 +237,10 @@ function Node(attrs) {
 
         var bbox = this.getLabelBBox();
         // if (this.positionUnsynced) {
-        this.label.attr({x: this.x-(bbox.w/2)});
-        this.label.attr({y: this.y+(bbox.h/2)});
+        this.label.attr({
+            x: this.x-(bbox.w/2),
+            y: this.y+(bbox.h/2),
+        });
         bbox = this.getLabelBBox();
 
         this.highlight.attr({

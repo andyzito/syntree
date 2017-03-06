@@ -4,7 +4,7 @@ function Tree(attrs) {
 
     // ID
     if (typeof attrs.id !== 'number') {
-        this.id = undefined;        
+        this.id = undefined;
     } else {
         this.id = attrs.id;
     }
@@ -22,14 +22,16 @@ function Tree(attrs) {
     }
 
     // Root node
-    if (typeof attrs.root !== 'object') {
+    if (typeof attrs.root === 'undefined') {
         // Default root
         this.root = new Node({x:x,y:y,labelContent:"S"});
         this.root.editingAction('save');
+    } else if (typeof attrs.root === null) {
+        this.root = undefined;
     } else {
         this.root = attrs.root;
     }
-    
+
     this.getId = function() {
         return this.id;
     }
@@ -56,7 +58,7 @@ function Tree(attrs) {
         var rootBBox = this.root.getLabelBBox();
         var rootPos = this.root.getPosition();
         var Y = rootPos.y - (rootBBox.h/2);
-            
+
         if (Right) {
             var rX = rootPos.x - (rootBBox.w/2);
             var rPathString = "M" + rX + "," + Y;
@@ -64,7 +66,7 @@ function Tree(attrs) {
             var rX = rootPos.x + (rootBBox.w/2);
             var rBound = rX;
         }
-        
+
         if (Left) {
             var lX = rootPos.x + (rootBBox.w/2);
             var lPathString = "M" + lX + "," + Y;
@@ -74,7 +76,7 @@ function Tree(attrs) {
         }
 
         var lastNodes;
-        
+
         var row = 1;
         while (true) {
             var rowNodes = this.getNodesByOffset(this.root,row);
@@ -82,7 +84,7 @@ function Tree(attrs) {
                 lastNodes = this.getNodesByOffset(this.root,row-1);
                 break;
             }
-            
+
             if (Right) {
                 var rNode = rowNodes[rowNodes.length-1];
                 var rPos = rNode.getPosition();
@@ -102,7 +104,7 @@ function Tree(attrs) {
                     rBound = rX;
                 }
             }
-            
+
             if (Left) {
                 var lNode = rowNodes[0];
                 var lPos = lNode.getPosition();
@@ -114,7 +116,7 @@ function Tree(attrs) {
                     lPathString += "H" + (lPos.x - (lBBox.w/2));
                 } else {
                     lPathString += "H" + (lPos.x - (lBBox.w/2));
-                    lPathString += "V" + (lPos.y - (lBBox.h/2));                
+                    lPathString += "V" + (lPos.y - (lBBox.h/2));
                 }
 
                 lX = newLX;
@@ -124,14 +126,14 @@ function Tree(attrs) {
             }
             row++;
         }
-        
+
         var lNode = lastNodes[0];
         var rNode = lastNodes[lastNodes.length-1];
         var lPos = lNode.getPosition();
         var rPos = rNode.getPosition();
         var lBBox = lNode.getLabelBBox();
         var rBBox = rNode.getLabelBBox();
-        
+
         if (Right) {
             rPathString += "V" + (rPos.y + (rBBox.h/2));
             rPathString += "H" + (lPos.x - (lBBox.w/2));
@@ -140,7 +142,7 @@ function Tree(attrs) {
             lPathString += "V" + (lPos.y + (lBBox.h/2));
             lPathString += "H" + (rPos.x + (rBBox.w/2));
         }
-        
+
         var toReturn = {};
         if (Left && Right) {
             toReturn.pathString = lPathString + rPathString;
@@ -153,12 +155,12 @@ function Tree(attrs) {
             toReturn.pathString = lPathString;
             toReturn.rightBound = rBound;
         }
-        
+
         // this.path = snap.path(toReturn.pathString);
         // this.path.attr({stroke:'black',width:1})
         return toReturn;
     }
-    
+
     this.getDescendantsOf = function(node,attr,inclusive,flat) {
         if (typeof node === 'undefined') {
             node = this.root;
@@ -169,7 +171,7 @@ function Tree(attrs) {
         if (typeof flat === 'undefined') {
             flat = false;
         }
-        var getAttr = ""; 
+        var getAttr = "";
         switch (attr) {
             case '':
                 break;
@@ -246,7 +248,7 @@ function Tree(attrs) {
         }
         return off;
     }
-    
+
     this.getNodesByOffset = function(node,off) {
         // Adapted from http://stackoverflow.com/questions/13523951/how-to-check-the-depth-of-an-object Kavi Siegel's answer
         if (off == 0) {
@@ -259,7 +261,7 @@ function Tree(attrs) {
         var result = [];
         var children = node.getChildren();
         var c = 0;
-        
+
         while(c < children.length) {
             if (off === 0) {
                 result.push(children[c]);
@@ -270,7 +272,7 @@ function Tree(attrs) {
         }
         return result;
     }
-    
+
     this.getTreeString = function() {
         var s = "";
         var nodes = this.getDescendantsOf(this.root,'',true,true);
@@ -324,11 +326,60 @@ function Tree(attrs) {
         return s;
     }
 
+    this.buildFromTreestring = function(treestring) {
+        var nodes = (treestring.split(';'));
+        nodes.pop(); // remove trailing item from split
+        var nodelist = [];
+        var i = 0;
+        while (i < nodes.length) {
+            var node = {};
+            node['id'] = nodes[i].split('{')[0];
+            var attrs = nodes[i].split('{')[1].slice(0,-1).split('|');
+            var ii = 0;
+            while (ii < attrs.length) {
+                var name = attrs[ii].split(':')[0];
+                var val = attrs[ii].split(':')[1];
+                node[name] = val;
+                ii++;
+            }
+            nodelist.push(node);
+            i++;
+        }
+        var rootAttrs = {
+            x: $('#workspace').width()/2,
+            y: $('#toolbar').height()+20,
+            labelContent: nodelist[0].labelContent,
+            id: Number(nodelist[0].id),
+        }
+        this.root = new Node(rootAttrs);
+        this.root.editingAction('save');
+        var n = 1;
+        while (n < nodelist.length) {
+            var newnode = new Node({labelContent:nodelist[n].labelContent,id:Number(nodelist[n].id)});
+            newnode.editingAction('save');
+            n++;
+        }
+        n = 0;
+        while (n < nodelist.length) {
+            if (typeof nodelist[n].children !== 'undefined') {
+                var childids = nodelist[n].children.split(',');
+                var c = 0;
+                while (c < childids.length) {
+                    W.page.allNodes[nodelist[n].id].addChild(W.page.allNodes[childids[c]]);
+                    c++;
+                }
+            }
+            var temp = new Tree({root:W.page.allNodes[nodelist[n].id]})
+            temp.distribute();
+            n++;
+        }
+    }
+
     this.distribute = function(angle) {
         if (typeof angle === 'undefined') {
             angle = 50;
         }
-                
+
         var children = this.root.getChildren();
         if (children.length === 0) {
             return;
@@ -362,7 +413,7 @@ function Tree(attrs) {
                 }
                 c++;
             }
-            
+
             if (intersect) {
                 var newAngle = 2 * ((180/Math.PI) * (Math.atan(newWidth/(2*this.rowHeight))));
                 var oldAngle = 2 * ((180/Math.PI) * (Math.atan(width/(2*this.rowHeight))));
@@ -370,7 +421,7 @@ function Tree(attrs) {
             }
 
         }
-        
+
         if (typeof this.root.getParent() !== 'undefined') {
             var tree = new Tree({root:this.root.getParent()});
             tree.distribute();

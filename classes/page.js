@@ -11,56 +11,28 @@ function Page(id) {
     // this.group = snap.g();
     // this.group.attr({id: "group-" + this.id, class: "page-group"});
 
-    this.openTree = function(treestring) {
-        this.tree.delete();
-        var nodes = (treestring.split(';'));
-        nodes.pop();
-        var nodelist = [];
-        var i = 0;
-        while (i < nodes.length) {
-            var node = {};
-            node['id'] = nodes[i].split('{')[0];
-            var attrs = nodes[i].split('{')[1].slice(0,-1).split('|');
-            var ii = 0;
-            while (ii < attrs.length) {
-                var name = attrs[ii].split(':')[0];
-                var val = attrs[ii].split(':')[1];
-                node[name] = val;
-                ii++;
+    this.addTree = function(tree,parent,index) {
+        if (typeof tree === 'undefined') {
+            // Default tree
+            attrs = {
+                x:$("#workspace").width()/2,
+                y:$("#toolbar").height()+20,
             }
-            nodelist.push(node);
-            i++;
-        }
-        var rootAttrs = {
-            x: $('#workspace').width()/2,
-            y: $('#toolbar').height()+20,
-            labelContent: nodelist[0].labelContent,
-            id: Number(nodelist[0].id),
-        }
-        var root = new Node(rootAttrs);
-        root.editingAction('save');
-        var tree = new Tree({root:root});
-        var n = 1;
-        while (n < nodelist.length) {
-            var newnode = new Node({labelContent:nodelist[n].labelContent,id:Number(nodelist[n].id)});
-            newnode.editingAction('save');
-            n++;
-        }
-        n = 0;
-        while (n < nodelist.length) {
-            if (typeof nodelist[n].children !== 'undefined') {
-                var childids = nodelist[n].children.split(',');
-                var c = 0;
-                while (c < childids.length) {
-                    this.allNodes[nodelist[n].id].addChild(this.allNodes[childids[c]]);
-                    c++;
-                }
+            this.tree = new Tree(attrs);
+        } else {
+            if (typeof parent === 'undefined') {
+                this.tree.delete();
+                this.tree = tree;
+            } else {
+                parent.addChild(tree.root,index);
             }
-            var temp = new Tree({root:this.allNodes[nodelist[n].id]})
-            temp.distribute();
-            n++;
         }
-        this.tree = tree;
+    }
+
+    this.openTree = function(treestring,parent,index) {
+        var newTree = new Tree({});
+        newTree.buildFromTreestring(treestring);
+        this.addTree(newTree,parent,index);
     }
 
     this.getSelectedNode = function() {
@@ -258,6 +230,7 @@ function Page(id) {
         }
         var parent = node.getParent();
         var tree = new Tree({root:node});
+        new ActionDelete(tree,parent,parent.getChildren().indexOf(tree.root));
         tree.delete();
         if (parent !== undefined && this.selectedNode !== undefined) {
             tree = new Tree({root:parent});
@@ -284,17 +257,6 @@ function Page(id) {
             this.nodeEditing('cancel',node);
         } else {
             this.nodeDelete(node);
-        }
-    }
-
-    this.addTree = function(attrs) {
-        if (typeof attrs === 'undefined') {
-            // Default tree
-            attrs = {
-                x:$("#workspace").width()/2,
-                y:$("#toolbar").height()+20
-            }
-            this.tree = new Tree(attrs);
         }
     }
 

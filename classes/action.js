@@ -25,23 +25,19 @@ function ActionCreate(node) {
 	H.addAction(this);
 }
 
-// function ActionDelete(node,index) {
-// 	this.id = W.genId();
-// 	this.type = 'delete';
-// 	this.node = node;
-// 	this.index = index;
+function ActionDelete(tree,parent,index) {
+	this.id = W.genId();
+	this.type = 'delete';
+	this.tree = tree.getTreeString();
+	this.parent = parent;
+	this.index = index;
 
-// 	this.undo = function() {
-// 		var attrs = {
-// 			id: this.node.id,
-// 			x: this.node.x,
-// 			y: this.node.y,
-// 			labelContent: this.node.labelContent,
-// 		}
-// 		var newNode = new Node(attrs);
-// 		newNode.parent.addChild(newNode,this.index);
-// 	}
-// }
+	this.undo = function() {
+		W.page.openTree(this.tree,this.parent,this.index);
+	}
+
+	H.addAction(this);
+}
 
 function ActionSave(node,pre,post) {
 	this.id = W.genId();
