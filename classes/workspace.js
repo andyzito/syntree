@@ -78,20 +78,14 @@ function Workspace(init) {
                 if (e.keyCode === 13) { // Enter
                     W._eventEnter();
                 } else if (e.keyCode === 37) { // Left arrow key
-                    if ($(document.activeElement).hasClass('editor')) {
-                        return;
-                    }
                     W._eventLeft(e);
-                    return false;
+                    // return false;
                 } else if (e.keyCode === 38) { // Up arrow key
                     W._eventUp();
                     return false;
                 } else if (e.keyCode === 39) { // Right arrow key
-                    if ($(document.activeElement).hasClass('editor')) {
-                        return;
-                    }
                     W._eventRight(e);
-                    return false;
+                    // return false;
                 } else if (e.keyCode === 40) { // Down arrow key
                     W._eventDown(e);
                     return false;
@@ -176,6 +170,9 @@ function Workspace(init) {
     }
 
     this._eventLeft = function(e) {
+        if ($(document.activeElement).hasClass('editor') && $(document.activeElement).val() !== '') {
+            return;
+        }
         if (!e.ctrlKey) {
             this.page.navigateHorizontal('left');
         } else {
@@ -184,6 +181,9 @@ function Workspace(init) {
     }
 
     this._eventRight = function(e) {
+        if ($(document.activeElement).hasClass('editor') && $(document.activeElement).val() !== '') {
+            return;
+        }
         if (!e.ctrlKey) {
             this.page.navigateHorizontal('right');
         } else {

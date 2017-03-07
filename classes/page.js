@@ -23,15 +23,18 @@ function Page(id) {
             if (typeof parent === 'undefined') {
                 this.tree.delete();
                 this.tree = tree;
+                tree.distribute();
             } else {
                 parent.addChild(tree.root,index);
+                var temp = new Tree({root:parent});
+                temp.distribute();
             }
         }
     }
 
-    this.openTree = function(treestring,parent,index) {
+    this.openTree = function(treestring,parent,index,nodes) {
         var newTree = new Tree({});
-        newTree.buildFromTreestring(treestring);
+        newTree.buildFromTreestring(treestring,nodes);
         this.addTree(newTree,parent,index);
     }
 
@@ -156,12 +159,12 @@ function Page(id) {
     this.navigateDown = function(fcreate) {
         if (typeof this.selectedNode !== 'undefined') {
             if (this.selectedNode.getChildren().length > 0 && !fcreate) {
-                var possibleSelects = this.selectedNode.getChildren();
+                var possibleSelects = this.selectedNode.getChildren().map(function(c){return c.id});
                 var selectHistory = H.getAllByType('select');
-
-                for (i=0; i<=selectHistory.length; i++) {
-                    if (possibleSelects.indexOf(selectHistory[i].node) >= 0) {
-                        this.nodeSelect(selectHistory[i].node);
+                for (i=0; i<selectHistory.length; i++) {
+                    console.log(possibleSelects);
+                    if (possibleSelects.indexOf(selectHistory[i].node.id) >= 0) {
+                        this.nodeSelect(W.page.allNodes[selectHistory[i].node.id]);
                         return;
                     }
                 }

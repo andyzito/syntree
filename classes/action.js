@@ -32,6 +32,14 @@ function ActionDelete(tree,parent,index) {
 	this.parent = parent;
 	this.index = index;
 
+	this.nodes = {};
+	var descendants = tree.getDescendantsOf(tree.root,'id',true,true);
+	var i = 0;
+	while (i < descendants.length) {
+		this.nodes[String(descendants[i])] = W.page.allNodes[String(descendants[i])];
+		i++;
+	}
+
 	this.undo = function() {
 		W.page.openTree(this.tree,this.parent,this.index);
 	}
