@@ -10,6 +10,20 @@ function Workspace(init) {
     }
 
     // Use 'init' object to set up some config variables
+    // Goal sentence
+    this.goal_sentence = init['goal_sentence'];
+    if (typeof this.goal_sentence !== 'string') {
+        this.goal_sentence = undefined;
+    }
+    // Should we offer to show the user a tutorial?
+    this.offer_tutorial = init['offer_tutorial'];
+    if (typeof this.offer_tutorial !== 'boolean') {
+        this.offer_tutorial = true;
+    }
+    if (this.offer_tutorial) {
+        $(document).ready(function(){modal_open('tutorial')});
+        $(document).on('click', '.modal_button__begin-tutorial', function() {tutorial.continue()})
+    }
     // Is uploading enabled?
     this.upload_enabled = init['upload_enabled'];
     if (typeof this.upload_enabled === 'undefined') {

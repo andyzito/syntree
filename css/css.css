@@ -64,6 +64,13 @@ text {
     left: 5%;
     z-index: 101;
 }
+
+.modal_body.modal_tutorial {
+    width: 50%;
+    height: 24%;
+    top: 38%;
+    left: 25%;
+}
 /*
 .overlay[overlay-id=app] {
     z-index: 100;
@@ -102,4 +109,16 @@ text {
 
 #export-image-canvas {
     display: none;
+}
+
+.tutorial_instruction {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 2em;
+    font-family: sans-serif;
+    margin-bottom: 250px;
 }
