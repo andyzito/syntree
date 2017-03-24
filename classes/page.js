@@ -1,24 +1,39 @@
 function Page(id) {
-    this.id = id;
+    Syntree.Page = this;
+
     this.allNodes = {}; // so we can always get a node by its id
     this.selectedNode = undefined; // will keep track of the selected node
 
     // Page background
-    this.background = snap.rect(-100,-100,$("#workspace").width()+200,$("#workspace").height()+200);
-    this.background.attr({fill:'white',id:'page-background'});
+    this.background = Syntree.snap.rect(
+        -100,
+        -100,
+        $("#workspace").width()+200,
+        $("#workspace").height()+200
+    );
+    this.background.attr({
+        fill:'white',
+        id:'page-background'}
+    );
 
     // Make group (used for panning)
     // this.group = snap.g();
     // this.group.attr({id: "group-" + this.id, class: "page-group"});
 
+    this.registerNode = function(node) {
+        this.allNodes[node.id] = node;
+    }
+
     this.addTree = function(tree,parent,index) {
         if (typeof tree === 'undefined') {
             // Default tree
-            attrs = {
-                x:$("#workspace").width()/2,
-                y:$("#toolbar").height()+20,
-            }
-            this.tree = new Tree(attrs);
+            var root = new Node({
+                x: $("#workspace").width()/2,
+                y: $("#toolbar").height()+20,
+            });
+            this.tree = new Tree({
+                root: root,
+            });
         } else {
             if (typeof parent === 'undefined') {
                 this.tree.delete();
@@ -51,34 +66,33 @@ function Page(id) {
         return bgsvg+treesvg;
     }
 
-    // this.getNearestNode = function(x,y) {
-    //     if (typeof(x) === 'undefined' || typeof(y) === 'undefined') {
-    //         return;
-    //     }
+    this.getNearestNode = function(x,y) {
+        if (typeof(x) !== 'number' || typeof(y) !== 'number') {
+            return;
+        }
 
-    //     var nearestNode;
-    //     var leastDist = Number.POSITIVE_INFINITY;
-    //     var n = 0;
-    //     var len = Object.keys(this.allNodes).length;
-    //     while (n < len) {
-    //         var node = this.allNodes[Object.keys(this.allNodes)[n]];
-    //         var pos = node.getPosition();
-    //         var distance = Math.sqrt(Math.pow((pos.x - x),2) + Math.pow((pos.y - y),2));
-    //         if (distance < leastDist) {
-    //             leastDist = distance;
-    //             nearestNode = node;
-    //         }
-    //         n++;
-    //     }
-    //     if (leastDist < this.tree.rowHeight + 10) {
-    //         return {
-    //             node: nearestNode,
-    //             dist: leastDist,
-    //             deltaX: nearestNode.getPosition().x - x,
-    //             deltaY: nearestNode.getPosition().y - y,
-    //         }
-    //     }
-    // }
+        var nearestNode;
+        var leastDist = Number.POSITIVE_INFINITY;
+        for (id in this.allNodes) {
+            var node = this.allNodes[id];
+            var pos = node.getPosition();
+            var distance = Math.sqrt(Math.pow((pos.x - x),2) + Math.pow((pos.y - y),2));
+            console.log(distance)
+            if (distance < leastDist) {
+                leastDist = distance;
+                nearestNode = node;
+            }
+            n++;
+        }
+        if (leastDist < this.tree.rowHeight + 10) {
+            return {
+                node: nearestNode,
+                dist: leastDist,
+                deltaX: nearestNode.getPosition().x - x,
+                deltaY: nearestNode.getPosition().y - y,
+            }
+        }
+    }
 
     this.navigateHorizontal = function(direction,fcreate) {
         if (typeof fcreate === 'undefined') {

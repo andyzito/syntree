@@ -1,31 +1,26 @@
-function Node(attrs) {
-    // Set up attributes
-    // ID
-    if (typeof attrs.id !== 'number') {
-        this.id = W.genId();
-    } else {
-        this.id = attrs.id;
-    }
-    W.page.allNodes[this.id] = this; // register with master list of nodes
+function Node(config_matrix) {
+    this.config_map = {
+        id: {
+            type: 'number',
+            default: Syntree.Lib.genId(),
+        },
+        x: {
+            type: 'number',
+            default: 0,
+        },
+        y: {
+            type: 'number',
+            default: 0,
+        },
+        labelContent: {
+            type: 'string',
+            default: '',
+        },
 
-    // Position
-    if (typeof attrs.x !== 'number') {
-        this.x = 0;
-    } else {
-        this.x = attrs.x;
-    }
-    if (typeof attrs.y !== 'number') {
-        this.y = 0;
-    } else {
-        this.y = attrs.y;
     }
 
-    // labelContent
-    if (typeof attrs.labelContent !== 'string') {
-        this.labelContent = '';
-    } else {
-        this.labelContent = attrs.labelContent;
-    }
+    Syntree.Lib.config(config_matrix,this);
+    Syntree.Page.registerNode(this); // register with master list of nodes
 
     // Create graphical elements
     // Editor
@@ -35,15 +30,15 @@ function Node(attrs) {
     this.editor.hide();
 
     // Highlight
-    this.highlight = snap.rect(this.x,this.y,0,0);
+    this.highlight = Syntree.snap.rect(this.x,this.y,0,0);
     this.highlight.attr({class: "highlight"})
 
     // Delete button
-    this.deleteButton = snap.image('/app/resources/delete_button.png',this.x,this.y,10,10);
+    this.deleteButton = Syntree.snap.image('/app/resources/delete_button.png',this.x,this.y,10,10);
     this.deleteButton.attr({class: 'delete_button'})
 
     // Label
-    this.label = snap.text(this.x,this.y,this.labelContent);
+    this.label = Syntree.snap.text(this.x,this.y,this.labelContent);
     this.label.attr({'id':"label-"+this.id,'class':'node-label'});
 
     // Relationships

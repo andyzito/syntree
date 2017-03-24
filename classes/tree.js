@@ -1,36 +1,20 @@
-function Tree(attrs) {
-    // Set up attributes
-    this.rowHeight = 70;
-
-    // ID
-    if (typeof attrs.id !== 'number') {
-        this.id = undefined;
-    } else {
-        this.id = attrs.id;
+function Tree(config_matrix) {
+    this.config_map = {
+        id: {
+            type: 'number',
+            default: undefined,
+        },
+        rowHeight: {
+            type: 'number',
+            default: 70,
+        },
+        root: {
+            type: 'object',
+            default: undefined,
+        },
     }
 
-    // Default root position
-    if (typeof attrs.x !== 'number') {
-        var x = 0;
-    } else {
-        var x = attrs.x;
-    }
-    if (typeof attrs.y !== 'number') {
-        var y = 0;
-    } else {
-        var y = attrs.y;
-    }
-
-    // Root node
-    if (typeof attrs.root === 'undefined') {
-        // Default root
-        this.root = new Node({x:x,y:y,labelContent:"S"});
-        this.root.editingAction('save');
-    } else if (typeof attrs.root === null) {
-        this.root = undefined;
-    } else {
-        this.root = attrs.root;
-    }
+    Syntree.Lib.config(config_matrix,this);
 
     this.getId = function() {
         return this.id;

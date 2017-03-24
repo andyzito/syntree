@@ -1,80 +1,71 @@
-function Workspace(init) {
-    snap = Snap("#workspace"); // Ensure that the snap variable exists
-    W = this; // Ensure that workspace is available to objects created from within this constructor
+function Workspace(config_matrix) {
+    Syntree.snap = Snap("#workspace"); // Ensure that the snap variable exists
+    Syntree.Workspace = this; // Ensure that workspace is available to objects created from within this constructor
 
-    // Gotta put this somewhere else... eventually...
-    focusNoScroll = function(elem) {
-      var x = window.scrollX, y = window.scrollY;
-      elem.focus();
-      window.scrollTo(x, y);
+    // Config map provides information about configurable properties passed in from the constructor
+    this.accept_unmapped_config = false; // Accept config properties that are not in the map below?
+    this.config_map = {
+        goal_sentence: {
+            type: 'string',
+            default_value: undefined,
+        },
+        tutorial_enabled: {
+            type: 'boolean',
+            default_value: undefined,
+        },
+        upload_enabled: {
+            type: 'boolean',
+            default_value: true,
+        },
+        save_tree_script: {    
+            // The path to the script for saving a tree; see this._eventSave below
+            // This script should return the tree's id on success, false on failure
+            type: 'string',
+            default_value: undefined,
+        },
+        get_trees_script: {
+            // The path to the script for retrieving saved trees
+            // This script should return some HTML on success and false on failure
+            type: 'string',
+            default_value: undefined,
+        },
+        export_tree_script: {
+            // The path to the php script for exporting a tree; see this._eventExport below
+            // This script should return a download link for the export file on success, false on failure
+            type: 'string',
+            default_value: undefined,
+        },
+        focus_checking_enabled: {
+            // Should we do focus checking? Set to 'true' if embedded, 'false' for full page
+            type: 'boolean',
+            default_value: false,
+        },
     }
+    Syntree.Lib.config(config_matrix, this); // use config matrix to set up some properties
 
-    // Use 'init' object to set up some config variables
-    // Goal sentence
-    this.goal_sentence = init['goal_sentence'];
-    if (typeof this.goal_sentence !== 'string') {
-        this.goal_sentence = undefined;
-    }
-    // Should we offer to show the user a tutorial?
-    this.offer_tutorial = init['offer_tutorial'];
-    if (typeof this.offer_tutorial !== 'boolean') {
-        this.offer_tutorial = true;
-    }
-    if (this.offer_tutorial) {
+    if (this.tutorial_enabled) {
         $(document).ready(function(){modal_open('tutorial')});
         $(document).on('click', '.modal_button__begin-tutorial', function() {tutorial.continue()})
-    }
-    // Is uploading enabled?
-    this.upload_enabled = init['upload_enabled'];
-    if (typeof this.upload_enabled === 'undefined') {
-        this.upload_enabled = true; // Default to enabled
     }
     if (!this.upload_enabled) {
         $('.toolbar_button__upload').remove();
     }
-    // The path to the script for saving a tree; see this._eventSave below
-    // This script should return the tree's id on success, false on failure
-    this.save_tree_script = init['save_tree_script'];
     if (typeof this.save_tree_script === 'undefined') {
         $('.toolbar_button__save').remove();
     }
-    // The path to the script for retrieving saved trees
-    // This script should return some HTML on success and false on failure
-    this.get_trees_script = init['get_trees_script'];
     if (typeof this.get_trees_script === 'undefined') {
         $('.toolbar_button__open').remove();
         $('.modal_open').remove();
     }
-    // The path to the php script for exporting a tree; see this._eventExport below
-    // This script should return a download link for the export file on success, false on failure
-    this.export_tree_script = init['export_tree_script'];
     if (typeof this.export_tree_script === 'undefined') {
         $('.toolbar_button__export').remove();
         $('.modal_export').remove();
     }
-    // Should we do focus checking? Set to 'true' if embedded, 'false' for full page
-    this.focus_checking_enabled = init['focus_checking_enabled'];
     if (this.focus_checking_enabled) {
         $("#workspace_container").prepend('<div class="focus_check_overlay"></div>');
         $("body").prepend('<div class="focus_check_underlay"></div>');
         $('.focus_check_underlay').hide();
         this.focused = false;
-    }
-
-    // Other properties
-    this.allids = []; // To ensure local ids are unique
-
-    this.genId = function() {
-        n = 1000;
-        if (this.allids.length === n) {
-            n += 1000;
-        }
-        while (true) {
-            var x = Math.floor(Math.random()*1000);
-            if (this.allids.indexOf(x) === -1) {
-                return x;
-            }
-        }
     }
 
     this._attachEventListeners = function() {
