@@ -2,23 +2,24 @@ function Node(config_matrix) {
     this.config_map = {
         id: {
             type: 'number',
-            default: Syntree.Lib.genId(),
+            default_value: Syntree.Lib.genId(),
         },
         x: {
             type: 'number',
-            default: 0,
+            default_value: 0,
         },
         y: {
             type: 'number',
-            default: 0,
+            default_value: 0,
         },
         labelContent: {
             type: 'string',
-            default: '',
+            default_value: '',
         },
 
     }
 
+    console.log('about to do node config');
     Syntree.Lib.config(config_matrix,this);
     Syntree.Page.registerNode(this); // register with master list of nodes
 
@@ -61,7 +62,10 @@ function Node(config_matrix) {
     }
 
     this.getPosition = function() {
-        return {x: this.x, y: this.y};
+        return {
+            x: this.x,
+            y: this.y
+        };
     }
 
     this.getLabelContent = function() {
@@ -129,6 +133,9 @@ function Node(config_matrix) {
     }
 
     this.move = function(x,y,propagate) {
+        x = Syntree.Lib.checkArg(x, 'number');
+        y = Syntree.Lib.checkArg(y, 'number');
+
         if (typeof propagate == 'undefined') {
             propagate = true;
         }
@@ -192,7 +199,7 @@ function Node(config_matrix) {
                 this.updateGraphics(false);
                 this.editor.val(this.label.node.textContent);
                 this.editor.show();
-                focusNoScroll(this.editor);
+                Syntree.Lib.focusNoScroll(this.editor);
                 break;
             case 'update':
                 if (this.editing) {
@@ -327,4 +334,8 @@ function Node(config_matrix) {
 
 
     this.updateGraphics();
+}
+
+Node.prototype.toString = function() {
+    return "[object Node]";
 }

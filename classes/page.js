@@ -1,4 +1,4 @@
-function Page(id) {
+function Page() {
     Syntree.Page = this;
 
     this.allNodes = {}; // so we can always get a node by its id
@@ -21,25 +21,29 @@ function Page(id) {
     // this.group.attr({id: "group-" + this.id, class: "page-group"});
 
     this.registerNode = function(node) {
+        node = Syntree.Lib.checkArg(node, 'node');
         this.allNodes[node.id] = node;
     }
 
     this.addTree = function(tree,parent,index) {
-        if (typeof tree === 'undefined') {
+        if (!Syntree.Lib.checkType(tree, 'tree')) {
             // Default tree
             var root = new Node({
                 x: $("#workspace").width()/2,
                 y: $("#toolbar").height()+20,
+                labelContent: "S",
             });
             this.tree = new Tree({
                 root: root,
             });
+            root.editingAction('save');
         } else {
-            if (typeof parent === 'undefined') {
+            if (!Syntree.Lib.checkType(parent, 'node')) {
                 this.tree.delete();
                 this.tree = tree;
                 tree.distribute();
             } else {
+                index = Syntree.Lib.checkArg(index, 'number', 0);
                 parent.addChild(tree.root,index);
                 var temp = new Tree({root:parent});
                 temp.distribute();
@@ -48,6 +52,11 @@ function Page(id) {
     }
 
     this.openTree = function(treestring,parent,index,nodes) {
+        treestring = Syntree.Lib.checkArg(treestring, 'string');
+        parent = Syntree.Lib.checkArg(parent, 'node', '#undefined');
+        index = Syntree.Lib.checkArg(index, 'number', 0);
+        nodes = Syntree.Lib.checkArg(nodes, 'array', '#undefined');
+
         var newTree = new Tree({});
         newTree.buildFromTreestring(treestring,nodes);
         this.addTree(newTree,parent,index);
@@ -67,9 +76,8 @@ function Page(id) {
     }
 
     this.getNearestNode = function(x,y) {
-        if (typeof(x) !== 'number' || typeof(y) !== 'number') {
-            return;
-        }
+        x = Syntree.Lib.checkArg(x, 'number');
+        y = Syntree.Lib.checkArg(y, 'number');
 
         var nearestNode;
         var leastDist = Number.POSITIVE_INFINITY;
@@ -95,13 +103,8 @@ function Page(id) {
     }
 
     this.navigateHorizontal = function(direction,fcreate) {
-        if (typeof fcreate === 'undefined') {
-            fcreate = false;
-        }
-
-        if (typeof direction === 'undefined') {
-            return;
-        }
+        direct = Syntree.Lib.checkArg(direction, 'string');
+        fcreate = Syntree.Lib.checkArg(fcreate, 'boolean', false);
 
         if (direction === 'left') {
             var left = true;
@@ -118,7 +121,7 @@ function Page(id) {
             return;
         }
 
-        if (typeof this.selectedNode !== 'undefined' && typeof this.selectedNode.getParent() !== 'undefined') {
+        if (Syntree.Lib.checkType(this.selectedNode, 'node') && Syntree.Lib.checkType(this.selectedNode.getParent(), 'node')) {
             // if (this.selectedNode.getState('editing') && this.selectedNode.getState('real')) {
             //     return;
             // }
@@ -163,7 +166,7 @@ function Page(id) {
     }
 
     this.navigateUp = function() {
-        if (typeof this.selectedNode !== 'undefined' && typeof this.selectedNode.getParent() !== 'undefined') {
+        if (Syntree.Lib.checkType(this.selectedNode, 'node') && Syntree.Lib.checkType(this.selectedNode.getParent(), 'node')) {
             this.nodeSelect(this.selectedNode.getParent());
         }
         var tree = new Tree({root:this.selectedNode});
@@ -171,12 +174,13 @@ function Page(id) {
     }
 
     this.navigateDown = function(fcreate) {
-        if (typeof this.selectedNode !== 'undefined') {
+        fcreate = Syntree.Lib.checkArg(fcreate, 'boolean', false);
+
+        if (Syntree.Lib.checkType(this.selectedNode, 'node')) {
             if (this.selectedNode.getChildren().length > 0 && !fcreate) {
                 var possibleSelects = this.selectedNode.getChildren().map(function(c){return c.id});
                 var selectHistory = H.getAllByType('select');
                 for (i=0; i<selectHistory.length; i++) {
-                    console.log(possibleSelects);
                     if (possibleSelects.indexOf(selectHistory[i].node.id) >= 0) {
                         this.nodeSelect(W.page.allNodes[selectHistory[i].node.id]);
                         return;
@@ -194,13 +198,10 @@ function Page(id) {
     }
 
     this.nodeEditing = function(type,node) {
-        if (typeof node === 'undefined') {
-            node = this.selectedNode;
-        }
-        if (typeof node === 'undefined') {
-            return;
-        }
-        var dist = false;
+        type = Syntree.Lib.checkArg(type, 'string');
+        node = Syntree.Lib.checkArg(node, 'node', this.selectedNode);
+        node = Syntree.Lib.checkArg(node, 'node');
+
         if (type === 'init') {
             node.editingAction('init');
         } else if (type === 'update') {
@@ -235,31 +236,29 @@ function Page(id) {
     }
 
     this.nodeDelete = function(node) {
-        // var action = new Action('delete',node);
-        if (typeof node === 'undefined' && typeof this.selectedNode !== 'undefined') {
-            node = this.selectedNode;
-        }
+        node = Syntree.Lib.checkArg(node, 'node', this.selectedNode);
+        node = Syntree.Lib.checkArg(node, 'node');
         if (node.getState('deleted')) {
             return;
         }
-        if (typeof node === 'undefined') {
-            return;
-        }
+
         var parent = node.getParent();
         var tree = new Tree({root:node});
         new ActionDelete(tree,parent,parent.getChildren().indexOf(tree.root));
         tree.delete();
-        if (parent !== undefined && this.selectedNode !== undefined) {
+        if (Syntree.Lib.checkType(parent, 'node') && Syntree.Lib.checkType(this.selectedNode, 'node')) {
             tree = new Tree({root:parent});
             tree.distribute();
         }
-        if (typeof this.selectedNode !== 'undefined') {
+        if (Syntree.Lib.checkType(this.selectedNode, 'node')) {
             this.nodeSelect(this.tree.getRoot());
         }
     }
 
     this.nodeSelect = function(node) {
-        if (typeof this.selectedNode !== 'undefined') {
+        node = Syntree.Lib.checkArg(node, 'node');
+
+        if (Syntree.Lib.checkType(this.selectedNode, 'node')) {
             this.nodeDeselect(this.selectedNode);
         }
         this.selectedNode = node;
@@ -268,6 +267,8 @@ function Page(id) {
     }
 
     this.nodeDeselect = function(node) {
+        node = Syntree.Lib.checkArg(node, 'node');
+
         this.selectedNode = undefined;
         node.deselect();
         if (node.getState('real')) {
@@ -307,4 +308,8 @@ function Page(id) {
 
     //     this.background.drag(move,start);
     // }
+}
+
+Page.prototype.toString = function() {
+    return "[object Page]"
 }

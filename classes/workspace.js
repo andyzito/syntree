@@ -1,39 +1,40 @@
 function Workspace(config_matrix) {
     Syntree.snap = Snap("#workspace"); // Ensure that the snap variable exists
     Syntree.Workspace = this; // Ensure that workspace is available to objects created from within this constructor
+    Syntree.History = new History();
 
     // Config map provides information about configurable properties passed in from the constructor
     this.accept_unmapped_config = false; // Accept config properties that are not in the map below?
     this.config_map = {
         goal_sentence: {
             type: 'string',
-            default_value: undefined,
+            default_value: '#undefined',
         },
         tutorial_enabled: {
             type: 'boolean',
-            default_value: undefined,
+            default_value: false,
         },
         upload_enabled: {
             type: 'boolean',
             default_value: true,
         },
-        save_tree_script: {    
+        save_tree_script: {
             // The path to the script for saving a tree; see this._eventSave below
             // This script should return the tree's id on success, false on failure
             type: 'string',
-            default_value: undefined,
+            default_value: '#undefined',
         },
         get_trees_script: {
             // The path to the script for retrieving saved trees
             // This script should return some HTML on success and false on failure
             type: 'string',
-            default_value: undefined,
+            default_value: '#undefined',
         },
         export_tree_script: {
             // The path to the php script for exporting a tree; see this._eventExport below
             // This script should return a download link for the export file on success, false on failure
             type: 'string',
-            default_value: undefined,
+            default_value: '#undefined',
         },
         focus_checking_enabled: {
             // Should we do focus checking? Set to 'true' if embedded, 'false' for full page
@@ -44,20 +45,29 @@ function Workspace(config_matrix) {
     Syntree.Lib.config(config_matrix, this); // use config matrix to set up some properties
 
     if (this.tutorial_enabled) {
-        $(document).ready(function(){modal_open('tutorial')});
-        $(document).on('click', '.modal_button__begin-tutorial', function() {tutorial.continue()})
+        $(document).ready(
+            function() {
+                modal_open('tutorial')
+            });
+        $(document).on(
+            'click',
+            '.modal_button__begin-tutorial',
+            function() {
+                tutorial.continue()
+            });
     }
+
     if (!this.upload_enabled) {
         $('.toolbar_button__upload').remove();
     }
-    if (typeof this.save_tree_script === 'undefined') {
+    if (Syntree.Lib.checkType(this.save_tree_script, 'undefined')) {
         $('.toolbar_button__save').remove();
     }
-    if (typeof this.get_trees_script === 'undefined') {
+    if (Syntree.Lib.checkType(this.get_trees_script, 'undefined')) {
         $('.toolbar_button__open').remove();
         $('.modal_open').remove();
     }
-    if (typeof this.export_tree_script === 'undefined') {
+    if (Syntree.Lib.checkType(this.export_tree_script, 'undefined')) {
         $('.toolbar_button__export').remove();
         $('.modal_export').remove();
     }
@@ -108,11 +118,11 @@ function Workspace(config_matrix) {
             $(document).on('click', '.focus_check_overlay', function(){W._eventFocus()});
             $(document).on('click', '.focus_check_underlay', function(){W._eventUnfocus()});
         }
-        if (typeof this.save_tree_script !== 'undefined') {
+        if (Syntree.Lib.checkType(this.save_tree_script, 'string')) {
             $(document).on('click', '.toolbar_button__save', function(){W._eventSave()});
         }
         // Modal export
-        if (typeof this.export_tree_script !== 'undefined') {
+        if (Syntree.Lib.checkType(this.export_tree_script, 'string')) {
             $(document).on('click', '.modal_section__filetype .modal_label', function(e) {W._eventFiletypeLabelClick(e)});
             $(document).on('click', '.modal_button__export', function() {
                 var type = $('.modal_section__filetype input:checked').val();
@@ -132,7 +142,7 @@ function Workspace(config_matrix) {
             });
         }
         // Modal open
-        if (typeof this.get_trees_script !== 'undefined') {
+        if (Syntree.Lib.checkType(this.get_trees_script, 'string')) {
             $(document).on('click', '.toolbar_button__open', function() {
                 $.post(W.get_trees_script, {}, function(result) {
                     $('.modal_section__trees').html(result);
@@ -166,6 +176,7 @@ function Workspace(config_matrix) {
     }
 
     this._eventNodeClick = function(clickedNode) {
+        clickedNode = Syntree.Lib.checkArg(clickedNode, 'svgtextelement');
         var node = this.page.allNodes[$(clickedNode).attr('id').split('-')[1]];
         this.page.nodeSelect(node);
     }
@@ -227,7 +238,7 @@ function Workspace(config_matrix) {
         var nearest = this.page.getNearestNode(x,y);
         var newNode = new Node(0,0);
 
-        if (typeof nearest === 'object') {
+        if (Syntree.Lib.checkType(nearest, 'object')) {
             if (nearest.deltaY < -10) {
                 if (nearest.deltaX > 0) {
                     nearest.node.addChild(newNode,0);
@@ -269,7 +280,7 @@ function Workspace(config_matrix) {
     this._eventExportTreeFile = function() {
         var fname = $('.modal_option__fname input').val();
         var treestring = this.page.tree.getTreeString();
-        if (typeof this.export_tree_script !== 'undefined') {
+        if (Syntree.Lib.checkType(this.export_tree_script, 'string')) {
             $.post(this.export_tree_script, {fname: fname, type: 'tree-file', treestring: treestring}, function(link){
                 $('body').append(link);
                 $('#temp-file-download')[0].click();
@@ -285,7 +296,7 @@ function Workspace(config_matrix) {
         // Get brackets
         var brackets = this.page.tree.getBracketNotation();
         // Post it
-        if (typeof this.export_tree_script !== 'undefined') {
+        if (Syntree.Lib.checkType(this.export_tree_script, 'string')) {
             $.post(this.export_tree_script, {fname: fname, type: 'bracket-file', brackets: brackets}, function(link) {
                 $('body').append(link);
                 $('#temp-file-download')[0].click();
@@ -297,10 +308,10 @@ function Workspace(config_matrix) {
     this._eventSave = function() {
         var treestring = this.page.tree.getTreeString();
         var W = this;
-        if (typeof this.save_tree_script !== 'undefined') {
+        if (Syntree.Lib.checkType(this.save_tree_script, 'string')) {
             $.post(this.save_tree_script,{treestring:treestring,treeid:this.page.tree.getId()},function(result){
                 if (Number(result)) {
-                    if (typeof W.page.tree.getId() !== 'number') {
+                    if (!Syntree.Lib.checkType(Syntree.Page.tree.getId(), 'number')) {
                         W.page.tree.setId(Number(result));
                     }
                     alert('Saved');

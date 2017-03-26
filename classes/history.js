@@ -56,3 +56,7 @@ function History() {
         }
     }
 }
+
+History.prototype.toString = function() {
+    return "[object History]"
+}

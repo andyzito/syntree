@@ -2,15 +2,14 @@ function Tree(config_matrix) {
     this.config_map = {
         id: {
             type: 'number',
-            default: undefined,
+            default_value: '#undefined',
         },
         rowHeight: {
             type: 'number',
-            default: 70,
+            default_value: 70,
         },
         root: {
-            type: 'object',
-            default: undefined,
+            type: 'node',
         },
     }
 
@@ -21,9 +20,9 @@ function Tree(config_matrix) {
     }
 
     this.setId = function(id) {
-        if (typeof id === 'number') {
-            this.id = id;
-        }
+        id = Syntree.Lib.checkArg(id, 'number');
+
+        this.id = id;
     }
 
     this.getRoot = function() {
@@ -31,7 +30,9 @@ function Tree(config_matrix) {
     }
 
     this._getPath = function(which) {
-        if (typeof which === 'undefined') {
+        which = Syntree.Lib.checkArg(which, 'string', '#undefined');
+
+        if (Syntree.Lib.checkType(which, 'undefined')) {
             var Left = true;
             var Right = true;
         } else {
@@ -146,9 +147,8 @@ function Tree(config_matrix) {
     }
 
     this.getDescendantsOf = function(node,attr,inclusive,flat) {
-        if (typeof node === 'undefined') {
-            node = this.root;
-        }
+        node = Syntree.Lib.checkArg(node, 'node', this.root);
+        node = Syntree.Lib.checkArg(node, 'node');
         if (typeof inclusive === 'undefined') {
             inclusive = true;
         }
@@ -368,7 +368,10 @@ function Tree(config_matrix) {
         if (children.length === 0) {
             return;
         } else if (children.length === 1){
-            children[0].move(this.root.getPosition().x,this.root.getPosition().y+this.rowHeight);
+            children[0].move(
+                this.root.getPosition().x,
+                this.root.getPosition().y+this.rowHeight
+            );
         } else if (children.length > 1) {
             var pos = this.root.getPosition();
             var leftBound = pos.x - (this.rowHeight * Math.tan((angle/2) * (Math.PI / 180)));
@@ -422,4 +425,8 @@ function Tree(config_matrix) {
             i++;
         }
     }
+}
+
+Tree.prototype.toString = function() {
+    return "[object Tree]"
 }
