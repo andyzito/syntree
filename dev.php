@@ -2,10 +2,9 @@
 
 <html>
     <script>
-    alert("This is Andrew Zito's Division III project, working title: 'Syntree'. Please be aware that it is very much a work in progress.");
     init = {
         export_tree_script: '/post/export-tree.php',
-        tutorial_enabled: true,
+        tutorial_enabled: false,
     }
     </script>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php' ?>
