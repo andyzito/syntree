@@ -1,4 +1,7 @@
 function Branch(parent,child) {
+    parent = Syntree.Lib.checkArg(parent, 'node');
+    child = Syntree.Lib.checkArg(child, 'node');
+
     this.startPoint = parent.getPosition();
     this.endPoint = child.getPosition();
 

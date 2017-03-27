@@ -152,7 +152,7 @@ function Workspace(config_matrix) {
     }
 
     this._eventUndo = function() {
-        H.undo();
+        Syntree.History.undo();
     }
 
     this._eventUpload = function() {

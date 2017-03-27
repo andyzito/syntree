@@ -51,14 +51,16 @@ function Page() {
         }
     }
 
-    this.openTree = function(treestring,parent,index,nodes) {
+    this.openTree = function(treestring,parent,index) {
         treestring = Syntree.Lib.checkArg(treestring, 'string');
         parent = Syntree.Lib.checkArg(parent, 'node', '#undefined');
         index = Syntree.Lib.checkArg(index, 'number', 0);
-        nodes = Syntree.Lib.checkArg(nodes, 'array', '#undefined');
+        // nodes = Syntree.Lib.checkArg(nodes, 'array', '#undefined');
 
-        var newTree = new Tree({});
-        newTree.buildFromTreestring(treestring,nodes);
+        var newTree = new Tree({
+            build_treestring: treestring,
+        });
+        // newTree.buildFromTreestring(treestring);
         this.addTree(newTree,parent,index);
     }
 
@@ -179,10 +181,10 @@ function Page() {
         if (Syntree.Lib.checkType(this.selectedNode, 'node')) {
             if (this.selectedNode.getChildren().length > 0 && !fcreate) {
                 var possibleSelects = this.selectedNode.getChildren().map(function(c){return c.id});
-                var selectHistory = H.getAllByType('select');
+                var selectHistory = Syntree.History.getAllByType('select');
                 for (i=0; i<selectHistory.length; i++) {
                     if (possibleSelects.indexOf(selectHistory[i].node.id) >= 0) {
-                        this.nodeSelect(W.page.allNodes[selectHistory[i].node.id]);
+                        this.nodeSelect(Syntree.Page.allNodes[selectHistory[i].node.id]);
                         return;
                     }
                 }
@@ -243,7 +245,9 @@ function Page() {
         }
 
         var parent = node.getParent();
-        var tree = new Tree({root:node});
+        var tree = new Tree({
+            root:node
+        });
         new ActionDelete(tree,parent,parent.getChildren().indexOf(tree.root));
         tree.delete();
         if (Syntree.Lib.checkType(parent, 'node') && Syntree.Lib.checkType(this.selectedNode, 'node')) {

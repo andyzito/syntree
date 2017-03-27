@@ -4,6 +4,7 @@ function History() {
     this.actions = [];
 
     this.addAction = function(action) {
+
         this.actions.push(action);
     }
 
@@ -44,6 +45,7 @@ function History() {
         for (i=0; i<all.length; i++) {
             if (typeof all[i].undo !== 'undefined') {
                 this.removeAction(all[i]);
+                console.log(all[i]);
                 all[i].undo();
                 return;
             }
@@ -59,4 +61,4 @@ function History() {
 
 History.prototype.toString = function() {
     return "[object History]"
-}
+};

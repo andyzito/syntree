@@ -19,7 +19,6 @@ function Node(config_matrix) {
 
     }
 
-    console.log('about to do node config');
     Syntree.Lib.config(config_matrix,this);
     Syntree.Page.registerNode(this); // register with master list of nodes
 
@@ -126,8 +125,8 @@ function Node(config_matrix) {
 
     this.getSVGString = function() {
         s = this.label.node.outerHTML;
-        if (typeof this.parentBranch !== 'undefined') {
-            s += this.parentBranch.line.node.outerHTML
+        if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
+            s += this.parentBranch.line.node.outerHTML;
         }
         return s;
     }
@@ -135,19 +134,13 @@ function Node(config_matrix) {
     this.move = function(x,y,propagate) {
         x = Syntree.Lib.checkArg(x, 'number');
         y = Syntree.Lib.checkArg(y, 'number');
+        propagate = Syntree.Lib.checkArg(propagate, 'boolean', true);
 
-        if (typeof propagate == 'undefined') {
-            propagate = true;
-        }
         var oldX = this.x;
         var oldY = this.y;
 
-        if (typeof x !== 'undefined') {
-            this.x = x;
-        }
-        if (typeof y !== 'undefined') {
-            this.y = y;
-        }
+        this.x = x;
+        this.y = y;
         if (propagate) {
             var c = 0;
             while (c < this.children.length) {
@@ -171,11 +164,11 @@ function Node(config_matrix) {
         this.editor.remove();
         this.highlight.remove();
         this.deleteButton.remove();
-        delete W.page.allNodes[this.id];
-        if (typeof this.parentBranch !== 'undefined') {
+        delete Syntree.Page.allNodes[this.id];
+        if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
             this.parentBranch.delete();
         }
-        if (typeof this.parent !== 'undefined') {
+        if (Syntree.Lib.checkType(this.parent, 'node')) {
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
         }
         this.deleted = true;
@@ -226,15 +219,14 @@ function Node(config_matrix) {
                     this.labelContent = this.beforeEditLabelContent;
                     this.beforeEditLabelContent = undefined;
                     this.updateGraphics(false);
-                    break;
                 }
+                break;
         }
     }
 
     this.updateGraphics = function(propagate) {
-        if (typeof propagate == 'undefined') {
-            propagate = true;
-        }
+        propagate = Syntree.Lib.checkArg(propagate, 'boolean', true);
+
         this.label.node.textContent = this.labelContent;
 
         var bbox = this.getLabelBBox();
@@ -302,7 +294,7 @@ function Node(config_matrix) {
         }
 
         // Branches
-        if (typeof this.parentBranch !== 'undefined') {
+        if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
             this.parentBranch.updateGraphics();
         }
         for (i=0;i<this.childBranches.length;i++) {
@@ -319,9 +311,10 @@ function Node(config_matrix) {
     }
 
     this.addChild = function(newNode,index) {
-        if (typeof index === 'undefined') {
-            index = this.children.length;
-        }
+        newNode = Syntree.Lib.checkArg(newNode, 'node');
+        index = Syntree.Lib.checkArg(index, 'number', this.children.length);
+        index = Syntree.Lib.checkArg(index, 'number');
+
         if (!this.real) {
             return;
         }

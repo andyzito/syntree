@@ -10,10 +10,23 @@ function Tree(config_matrix) {
         },
         root: {
             type: 'node',
+            default_value: '#undefined',
         },
+        build_treestring: {
+            type: 'string',
+            default_value: '#undefined',
+        }
     }
 
     Syntree.Lib.config(config_matrix,this);
+
+    if (!Syntree.Lib.checkType(this.build_treestring, 'string') && !Syntree.Lib.checkType(this.root, 'node')) {
+        throw new Error ('You must provide a root node or a treestring when making a new Tree instance');
+    }
+
+    if (Syntree.Lib.checkType(this.build_treestring, 'string')) {
+        this._buildFromTreestring(this.build_treestring);
+    }
 
     this.getId = function() {
         return this.id;
@@ -149,16 +162,12 @@ function Tree(config_matrix) {
     this.getDescendantsOf = function(node,attr,inclusive,flat) {
         node = Syntree.Lib.checkArg(node, 'node', this.root);
         node = Syntree.Lib.checkArg(node, 'node');
-        if (typeof inclusive === 'undefined') {
-            inclusive = true;
-        }
-        if (typeof flat === 'undefined') {
-            flat = false;
-        }
-        var getAttr = "";
+        attr = Syntree.Lib.checkArg(attr, 'string', '');
+        inclusive = Syntree.Lib.checkArg(inclusive, 'boolean', true);
+        flat = Syntree.Lib.checkArg(flat, 'boolean', false);
+
+        var getAttr;
         switch (attr) {
-            case '':
-                break;
             case 'id':
                 getAttr = ".getId()";
                 break;
@@ -174,6 +183,8 @@ function Tree(config_matrix) {
             case 'y':
                 getAttr = ".getPosition()." + attr;
                 break;
+            default:
+                getAttr = "";
         }
 
         var result = [];
@@ -209,9 +220,8 @@ function Tree(config_matrix) {
     }
 
     this.getNodeOffset = function(fromNode,toNode) {
-        if (typeof fromNode === 'undefined' || typeof toNode === 'undefined') {
-            return NaN;
-        }
+        fromNode = Syntree.Lib.checkArg(fromNode, 'node');
+        toNode = Syntree.Lib.checkArg(toNode, 'node');
 
         if (fromNode === toNode) {
             return 0;
@@ -235,11 +245,11 @@ function Tree(config_matrix) {
 
     this.getNodesByOffset = function(node,off) {
         // Adapted from http://stackoverflow.com/questions/13523951/how-to-check-the-depth-of-an-object Kavi Siegel's answer
+        node = Syntree.Lib.checkArg(node, 'node');
+        off = Syntree.Lib.checkArg(off, 'number');
+
         if (off == 0) {
             return [node];
-        }
-        if (typeof node === 'undefined') {
-            return [];
         }
 
         var result = [];
@@ -280,9 +290,8 @@ function Tree(config_matrix) {
     }
 
     this.getBracketNotation = function(node) {
-        if (typeof node === 'undefined') {
-            node = this.root;
-        }
+        node = Syntree.Lib.checkArg(node, 'node', this.root);
+        node = Syntree.Lib.checkArg(node, 'node');
 
         var string = "[." + node.getLabelContent();
         var children = node.getChildren();
@@ -310,59 +319,8 @@ function Tree(config_matrix) {
         return s;
     }
 
-    this.buildFromTreestring = function(treestring) {
-        var nodes = (treestring.split(';'));
-        nodes.pop(); // remove trailing item from split
-        var nodelist = [];
-        var i = 0;
-        while (i < nodes.length) {
-            var node = {};
-            node['id'] = nodes[i].split('{')[0];
-            var attrs = nodes[i].split('{')[1].slice(0,-1).split('|');
-            var ii = 0;
-            while (ii < attrs.length) {
-                var name = attrs[ii].split(':')[0];
-                var val = attrs[ii].split(':')[1];
-                node[name] = val;
-                ii++;
-            }
-            nodelist.push(node);
-            i++;
-        }
-        var rootAttrs = {
-            x: $('#workspace').width()/2,
-            y: $('#toolbar').height()+20,
-            labelContent: nodelist[0].labelContent,
-            id: Number(nodelist[0].id),
-        }
-        this.root = new Node(rootAttrs);
-        this.root.editingAction('save');
-        var n = 1;
-        while (n < nodelist.length) {
-            var newnode = new Node({labelContent:nodelist[n].labelContent,id:Number(nodelist[n].id)});
-            newnode.editingAction('save');
-            n++;
-        }
-        n = 0;
-        while (n < nodelist.length) {
-            if (typeof nodelist[n].children !== 'undefined') {
-                var childids = nodelist[n].children.split(',');
-                var c = 0;
-                while (c < childids.length) {
-                    W.page.allNodes[nodelist[n].id].addChild(W.page.allNodes[childids[c]]);
-                    c++;
-                }
-            }
-            var temp = new Tree({root:W.page.allNodes[nodelist[n].id]})
-            temp.distribute();
-            n++;
-        }
-    }
-
     this.distribute = function(angle) {
-        if (typeof angle === 'undefined') {
-            angle = 50;
-        }
+        angle = Syntree.Lib.checkArg(angle, 'number', 50);
 
         var children = this.root.getChildren();
         if (children.length === 0) {
@@ -409,7 +367,7 @@ function Tree(config_matrix) {
 
         }
 
-        if (typeof this.root.getParent() !== 'undefined') {
+        if (Syntree.Lib.checkType(this.root.getParent(), 'node')) {
             var tree = new Tree({root:this.root.getParent()});
             tree.distribute();
         } else {
@@ -430,3 +388,54 @@ function Tree(config_matrix) {
 Tree.prototype.toString = function() {
     return "[object Tree]"
 }
+
+Tree.prototype._buildFromTreestring = function(treestring) {
+        treestring = Syntree.Lib.checkArg(treestring, 'string');
+
+        var nodes = (treestring.split(';'));
+        nodes.pop(); // remove trailing item from split
+        var nodelist = [];
+        var i = 0;
+        while (i < nodes.length) {
+            var node = {};
+            node['id'] = nodes[i].split('{')[0];
+            var attrs = nodes[i].split('{')[1].slice(0,-1).split('|');
+            var ii = 0;
+            while (ii < attrs.length) {
+                var name = attrs[ii].split(':')[0];
+                var val = attrs[ii].split(':')[1];
+                node[name] = val;
+                ii++;
+            }
+            nodelist.push(node);
+            i++;
+        }
+        var rootAttrs = {
+            x: $('#workspace').width()/2,
+            y: $('#toolbar').height()+20,
+            labelContent: nodelist[0].labelContent,
+            id: Number(nodelist[0].id),
+        }
+        this.root = new Node(rootAttrs);
+        this.root.editingAction('save');
+        var n = 1;
+        while (n < nodelist.length) {
+            var newnode = new Node({labelContent:nodelist[n].labelContent,id:Number(nodelist[n].id)});
+            newnode.editingAction('save');
+            n++;
+        }
+        n = 0;
+        while (n < nodelist.length) {
+            if (Syntree.Lib.checkType(nodelist[n].children, 'array')) {
+                var childids = nodelist[n].children.split(',');
+                var c = 0;
+                while (c < childids.length) {
+                    Syntree.Page.allNodes[nodelist[n].id].addChild(Syntree.Workspace.page.allNodes[childids[c]]);
+                    c++;
+                }
+            }
+            var temp = new Tree({root:Syntree.Workspace.page.allNodes[nodelist[n].id]})
+            temp.distribute();
+            n++;
+        }
+    }
