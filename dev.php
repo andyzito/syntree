@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 
 <html>
-    <script>
-    init = {
-        export_tree_script: '/post/export-tree.php',
-        tutorial_enabled: false,
-    }
-    </script>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php' ?>
+    <script>
+    $(document).ready(function(){
+        init = {
+            export_tree_script: '/post/export-tree.php',
+            tutorial_enabled: false,
+        }
+        new Workspace(init);
+    });
+    </script>
 
     <body class="page_make">
 

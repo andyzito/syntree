@@ -1,10 +1,4 @@
 $(document).ready(function() {
-    if (typeof init === 'undefined') {
-        init = {};
-    }
-    H = new History();
-    W = new Workspace(init);
-
     function create_account() {
         var username = $('.modal_option__new-username input').val();
         var password = $('.modal_option__new-password input').val();
