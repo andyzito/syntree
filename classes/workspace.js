@@ -53,7 +53,7 @@ function Workspace(config_matrix) {
             'click',
             '.modal_button__begin-tutorial',
             function() {
-                tutorial.continue()
+                Syntree.Tutorial.start()
             });
     }
 

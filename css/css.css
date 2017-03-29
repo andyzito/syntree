@@ -113,6 +113,7 @@ text {
 
 .tutorial_instruction {
     display: block;
+    display: none;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -120,5 +121,36 @@ text {
     text-align: center;
     font-size: 2em;
     font-family: sans-serif;
-    margin-bottom: 250px;
+    margin-bottom: 300px;
+    color: grey;
+    transition: margin-bottom 1.2s;
+}
+
+.tutorial_instruction.primary {
+    margin-bottom: 400px;
+    color: black;
+}
+
+.tutorial_arrow {
+    position: absolute;
+    display: inline-block;
+    display: none;
+    height: 1px;
+    width: 1px;
+}
+
+.tutorial_arrow:after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    height: 70px;
+    width: 70px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.tutorial_arrow.from_right:after {
+    background-image: url("https://www.wpclipart.com/signs_symbol/arrows/arrows_outlined/arrow_outline_orange_left.png");
+    top: -35px;
 }

@@ -56,21 +56,14 @@ Syntree.Lib = {
     },
 
     typeOf: function(a) {
-        // console.log("Inside typeOf:");
-        // Cp'ed from http://stackoverflow.com/questions/13926213/checking-the-types-of-function-arguments-in-javascript
-        try {
-            // console.log("Try:")
-            if (typeof a.toString !== 'undefined') {
-                return a.toString().match(/\s(\w+)/)[1].toLowerCase();
-            }
-        }
-        catch(err) {
-            // console.log("Catch:")
-            if (a !== a) {
-                // console.log("isNaN")
-                return 'undefined';
-            }
-            return ({}).toString.call(a).match(/\s(\w+)/)[1].toLowerCase();
+        // Modified from http://stackoverflow.com/questions/13926213/checking-the-types-of-function-arguments-in-javascript
+        var type = ({}).toString.call(a).match(/\s(\w+)/)[1].toLowerCase();
+        if (type === 'object') {
+            return a.toString().match(/\s(\w+)/)[1].toLowerCase();
+        } else if (type === 'number' && a !== a) {
+            return 'NaN';
+        } else {
+            return type;
         }
     },
 
@@ -79,7 +72,20 @@ Syntree.Lib = {
         // console.log('a is ' + a);
         // console.log('type of a is ' + this.typeOf(a));
         // console.log('required_type is ' + required_type);
-        return this.typeOf(a) === required_type;
+        if (this.typeOf(required_type) === 'string') {
+            return this.typeOf(a) === required_type;
+        } else if (this.typeOf(required_type) === 'array') {
+            var i = 0;
+            while (i < required_type.length) {
+                if (this.typeOf(a) === required_type[i]) {
+                    return true;
+                }
+                i++;
+            }
+            return false;
+        } else {
+            throw new TypeError("Please pass checkType a type string or an array of type strings for the second argument");
+        }
     },
 
     checkArg: function(passed, required_type, default_value) {
@@ -93,7 +99,7 @@ Syntree.Lib = {
                     return default_value;
                 }
             } else {
-                throw new TypeError('Argument is required to be type ' + required_type + ', was type ' + this.typeOf(passed));
+                throw new TypeError('Argument is required to be type ' + String(required_type).replace(',', ' or ') + ', was type ' + this.typeOf(passed));
             }
         }
     },

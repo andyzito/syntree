@@ -4,6 +4,7 @@ function History() {
     this.actions = [];
 
     this.addAction = function(action) {
+        action = Syntree.Lib.checkArg(action, 'action');
 
         this.actions.push(action);
     }
@@ -21,6 +22,8 @@ function History() {
     }
 
     this.getAllByType = function(type) {
+        type = Syntree.Lib.checkArg(type, 'string');
+
         var filtered = this.actions.filter(function(value) {
             return value.type === type;
         });
@@ -28,14 +31,16 @@ function History() {
     }
 
     this.getLastOfType = function(type) {
+        type = Syntree.Lib.checkArg(type, 'string');
+
         var actions = this.getByType(type);
         return actions[actions.length-1];
     }
 
     this.getNthOfType = function(type,n) {
-        if (typeof n === 'undefined') {
-            n = 0;
-        }
+        type = Syntree.Lib.checkArg(type, 'string');
+        n = Syntree.Lib.checkArg(n, 'number', 0);
+
         var actions = this.getByType(type);
         return actions[actions.length - (n+1)]
     }
@@ -53,6 +58,8 @@ function History() {
     }
 
     this.removeAction = function(a) {
+        a = Syntree.Lib.checkArg(a, 'action');
+
         if (typeof a === 'object') {
             this.actions.splice(this.actions.indexOf(a),1);
         }
