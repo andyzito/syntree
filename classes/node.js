@@ -55,6 +55,8 @@ function Node(config_matrix) {
     this.real = false;
     this.deleted = false;
 
+    this._labelbbox;
+
     // Property retrieval:
     this.getId = function() {
         return this.id;
@@ -85,10 +87,15 @@ function Node(config_matrix) {
                 height: fakeHeight,
                 h: fakeHeight
             }
+        } else {
+            if (!Syntree.Lib.checkType(this._labelbbox, 'object')) {
+                // console.log('');
+                this._labelbbox = this.label.getBBox();
+            } else {
+                console.log('nah')
+            }
+            return this._labelbbox;
         }
-
-        bbox = this.label.getBBox();
-        return bbox;
     }
 
     this.getParent = function() {
@@ -132,6 +139,7 @@ function Node(config_matrix) {
     }
 
     this.move = function(x,y,propagate) {
+        this._labelbbox = undefined;
         x = Syntree.Lib.checkArg(x, 'number');
         y = Syntree.Lib.checkArg(y, 'number');
         propagate = Syntree.Lib.checkArg(propagate, 'boolean', true);
@@ -152,7 +160,7 @@ function Node(config_matrix) {
                 c++;
             }
         }
-        this.positionUnsynced = true;
+        // this.positionUnsynced = true;
         return {
             x: this.x,
             y: this.y,
@@ -196,11 +204,13 @@ function Node(config_matrix) {
                 break;
             case 'update':
                 if (this.editing) {
+                    this._labelbbox = undefined;
                     this.labelContent = this.editor.val();
                     this.updateGraphics(false);
                 }
                 break;
             case 'save':
+                this._labelbbox = undefined;
                 if (!this.real) {
                     this.real = true;
                 }

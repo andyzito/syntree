@@ -23,8 +23,7 @@ function ActionCreate(node) {
     this.node = node;
 
     this.undo = function() {
-        console.log('undoing');
-        Syntree.Workspace.page.nodeDelete(this.node);
+        Syntree.Workspace.page.nodeDelete(this.node, true);
     }
 
     Syntree.History.addAction(this);

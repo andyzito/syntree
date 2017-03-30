@@ -12,7 +12,7 @@ Syntree.Tutorial = {
         },
         {
             message: "Right now there is one node, called S",
-            gateway: this.standard_message_interval,
+            gateway: this,
             arrows: [
                 (function() {
                     var id = Syntree.Page.tree.getRoot().getId();
@@ -28,7 +28,6 @@ Syntree.Tutorial = {
         },
         {
             message: "You can tell it is selected because it is highlighted in gray",
-            gateway: this.standard_message_interval,
         },
         {
             message: "Press the down arrow key to create a child node of S",
@@ -42,18 +41,16 @@ Syntree.Tutorial = {
         },
         {
             message: "Good job!",
-            gateway: this.standard_message_interval,
         },
         {
             message: "Now give this new node a name (just type!)",
             gateway: {
                 event_type: "keypress",
                 condition: function(e) {
-                    console.log("OVER HERE: " + Syntree.Tutorial.data['node_naming_1']);
                     if (e.key.length === 1) {
                         Syntree.Tutorial.data['node_naming_1'] += 1;
                     }
-                    if (Syntree.Tutorial.data['node_naming_1'] > 3) {
+                    if (Syntree.Tutorial.data['node_naming_1'] > 2) {
                         return true;
                     }
                     return false;
@@ -71,7 +68,6 @@ Syntree.Tutorial = {
         },
         {
             message: "Well done!",
-            gateway: this.standard_message_interval,
         },
         {
             message: "Press left or right to create a sibling node",
@@ -93,11 +89,9 @@ Syntree.Tutorial = {
         },
         {
             message: "Woohoo! You've got a tiny tree!",
-            gateway: this.standard_message_interval,
         },
         {
             message: "The arrow keys can also be used to navigate to existing nodes",
-            gateway: this.standard_message_interval,
         },
         {
             message: "Navigate back to the root node",
@@ -111,7 +105,10 @@ Syntree.Tutorial = {
         {
             message: "Great! You can press Enter, or double click, to edit the node",
             gateway: {
-                event_type: "keydown",
+                event_type: [
+                    "keydown",
+                    "dblclick",
+                    ],
                 condition: function() {
                     return Syntree.Page.tree.getRoot().getState('editing');
                 }
@@ -128,11 +125,13 @@ Syntree.Tutorial = {
         },
         {
             message: "Remember, if you navigate away from a node without saving, your change will be lost!",
-            gateway: this.standard_message_interval,
+            gateway: 3000,
+        },
+        {
+            message: "Ok. Moving on.",
         },
         {
             message: "You can press CTRL + Z to undo most actions",
-            gateway: this.standard_message_interval,
         },
         {
             message: "Try it now -- undo your actions until you're back to where you started!",
@@ -143,6 +142,9 @@ Syntree.Tutorial = {
                 },
             }
         },
+        {
+            message: "Great!"
+        }
     ],
     index: 10,
     running: false,
@@ -164,7 +166,7 @@ Syntree.Tutorial = {
 
     frame: function(frame) {
         var message = Syntree.Lib.checkArg(frame.message, 'string');
-        var gateway = Syntree.Lib.checkArg(frame.gateway, ['object', 'number']);
+        var gateway = Syntree.Lib.checkArg(frame.gateway, ['object', 'number'], 2000);
 
         this.instruction(message);
         if (Syntree.Lib.checkType(frame.arrows, 'array')) {
@@ -172,7 +174,6 @@ Syntree.Tutorial = {
             while (i < frame.arrows.length) {
                 if (Syntree.Lib.checkType(frame.arrows[i], 'function')) {
                     var arrow = frame.arrows[i]();
-                    console.log(arrow);
                     $('#workspace_container').append("<div class='tutorial_arrow from_" + arrow.from_direction + "'></div>");
                     $('.tutorial_arrow').css({
                         "top": arrow.y,
@@ -191,9 +192,10 @@ Syntree.Tutorial = {
                     this.continue()
                 }).bind(this), gateway);
         } else if (Syntree.Lib.checkType(gateway, 'object')) {
-            $(document).on(gateway.event_type + ".syntree_tutorial", (function(e) {
+            var event_string = String(gateway.event_type).replace(',', '.syntree_tutorial ') + ".syntree_tutorial";
+            $(document).on(event_string, (function(e) {
                 if (gateway.condition(e)) {
-                    $(document).off(gateway.event_type + ".syntree_tutorial");
+                    $(document).off(event_string);
                     this.continue();
                 }
             }).bind(this))

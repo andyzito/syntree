@@ -50,7 +50,6 @@ function History() {
         for (i=0; i<all.length; i++) {
             if (typeof all[i].undo !== 'undefined') {
                 this.removeAction(all[i]);
-                console.log(all[i]);
                 all[i].undo();
                 return;
             }
