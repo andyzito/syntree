@@ -56,6 +56,8 @@ function Node(config_matrix) {
     this.deleted = false;
 
     this._labelbbox;
+    this.positionUnsynced = true;
+    this.selectStateUnsynced = true;
 
     // Property retrieval:
     this.getId = function() {
@@ -71,6 +73,24 @@ function Node(config_matrix) {
 
     this.getLabelContent = function() {
         return this.labelContent;
+    }
+
+    this.getLabelBBox2 = function() {
+        if (this.label.node.textContent === "" || $("#" + this.label.attr('id')).length === 0) {
+            var fakeHeight = 15;
+            var fakeWidth = 10;
+            return {
+                x: this.x - fakeWidth/2,
+                x2: this.x + fakeWidth/2,
+                y: this.y - fakeHeight/2,
+                y2: this.y + fakeHeight/2,
+                w: fakeWidth,
+                width: fakeWidth,
+                height: fakeHeight,
+                h: fakeHeight
+            }
+        }
+        return this.label.getBBox();
     }
 
     this.getLabelBBox = function() {
@@ -89,14 +109,12 @@ function Node(config_matrix) {
             }
         } else {
             if (!Syntree.Lib.checkType(this._labelbbox, 'object')) {
-                // console.log('');
                 this._labelbbox = this.label.getBBox();
-            } else {
-                console.log('nah')
             }
             return this._labelbbox;
         }
     }
+
 
     this.getParent = function() {
         return this.parent;
@@ -139,7 +157,6 @@ function Node(config_matrix) {
     }
 
     this.move = function(x,y,propagate) {
-        this._labelbbox = undefined;
         x = Syntree.Lib.checkArg(x, 'number');
         y = Syntree.Lib.checkArg(y, 'number');
         propagate = Syntree.Lib.checkArg(propagate, 'boolean', true);
@@ -149,6 +166,8 @@ function Node(config_matrix) {
 
         this.x = x;
         this.y = y;
+        this._labelbbox = undefined;
+        this.positionUnsynced = true;
         if (propagate) {
             var c = 0;
             while (c < this.children.length) {
@@ -184,11 +203,13 @@ function Node(config_matrix) {
 
     this.select = function() {
         this.selected = true;
+        this.selectStateUnsynced = true;
         this.updateGraphics(false);
     }
 
     this.deselect = function() {
         this.selected = false;
+        this.selectStateUnsynced = true;
         this.updateGraphics(false);
     }
 
@@ -235,27 +256,27 @@ function Node(config_matrix) {
     }
 
     this.updateGraphics = function(propagate) {
-        propagate = Syntree.Lib.checkArg(propagate, 'boolean', true);
+        propagate = Syntree.Lib.checkArg(propagate, 'boolean', false);
+        if (this.positionUnsynced) {
+            propagate = true;
+        }
 
         this.label.node.textContent = this.labelContent;
 
         var bbox = this.getLabelBBox();
-        // if (this.positionUnsynced) {
-        this.label.attr({
-            x: this.x-(bbox.w/2),
-            y: this.y+(bbox.h/2),
-        });
-        bbox = this.getLabelBBox();
+        if (this.positionUnsynced) {
+            this.label.attr({
+                x: this.x-(bbox.w/2),
+                y: this.y+(bbox.h/2),
+            });
+            this._labelbbox = undefined;
+            bbox = this.getLabelBBox();
+            this.positionUnsynced = false;
+        }
 
         this.highlight.attr({
             x: bbox.x - 5,
             y: bbox.y - 5,
-        })
-
-        //     this.positionUnsynced = false;
-        // }
-
-        this.highlight.attr({
             width: bbox.w + 10,
             height: bbox.h + 10
         })
@@ -266,14 +287,6 @@ function Node(config_matrix) {
             y: bbox.y - 10,
         })
 
-        // if ($(".page-group")[0].transform.animVal.length > 0) {
-        //     var groupXOffset = $(".page-group")[0].transform.animVal[0].matrix.e;
-        //     var groupYOffset = $(".page-group")[0].transform.animVal[0].matrix.f;
-        // } else {
-        //     var groupXOffset = 0;
-        //     var groupYOffset = 0;
-        // }
-
         if (this.editing) {
             this.editor.css({
                 'left': bbox.x,// + groupXOffset,
@@ -283,26 +296,28 @@ function Node(config_matrix) {
             });
         }
 
-        if (this.selected) {
-            this.highlight.attr({
-                fill:"rgba(0,0,0,0.2)"
-            });
-
-            this.deleteButton.attr({
-                width: 10,
-                height: 10
-            })
-        } else {
-            this.highlight.attr({
-                fill:"none"
+        if (this.selectStateUnsynced) {
+            if (this.selected) {
+                this.highlight.attr({
+                    fill:"rgba(0,0,0,0.2)",
                 });
 
-            this.deleteButton.attr({
-                width: 0,
-                height: 0,
-            })
-        }
+                this.deleteButton.attr({
+                    opacity: 100,
+                    class: "delete_button"
+                })
+            } else {
+                this.highlight.attr({
+                    fill:"none"
+                    });
 
+                this.deleteButton.attr({
+                    opacity: 0,
+                    class: "delete_button invisible",
+                })
+            }
+            this.selectStateUnsynced = false;
+        }
         // Branches
         if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
             this.parentBranch.updateGraphics();

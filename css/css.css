@@ -32,8 +32,12 @@ text {
     user-select: none;
 }
 
-.delete_button:hover {
+.delete_button {
     cursor: pointer;
+}
+
+.delete_button.invisible {
+    cursor: default;
 }
 
 #toolbar {

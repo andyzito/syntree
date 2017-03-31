@@ -28,6 +28,27 @@ function Tree(config_matrix) {
         this._buildFromTreestring(this.build_treestring);
     }
 
+    this.node_properties_to_save = {
+        id: function(n) {
+            return n.getId();
+        },
+        children: function(n) {
+            if (n.getChildren().length > 0) {
+                return n.getChildren().map(function(c){
+                    return c.getId()
+                });
+            }
+        },
+        parent: function(n) {
+            if (Syntree.Lib.checkType(n.getParent(), 'node')) {
+                return n.getParent().getId();
+            }
+        },
+        labelContent: function(n) {
+            return n.getLabelContent();
+        },
+    };
+
     this.getId = function() {
         return this.id;
     }
@@ -273,17 +294,13 @@ function Tree(config_matrix) {
         var i = 0;
         while (i < nodes.length) {
             var node = nodes[i];
-            s += node.getId();
-            s += "{";
-            s += "labelContent:" + node.getLabelContent();
-            if (node.getChildren().length > 0) {
-                var children = node.getChildren().map(function(c){return c.getId()});
-                s += "|children:" + children.join();
+            for (p in this.node_properties_to_save) {
+                s += p;
+                s += ":";
+                s += this.node_properties_to_save[p](node);
+                s += "|";
             }
-            if (node.getParent()) {
-                s += "|parent:" + node.getParent().getId();
-            }
-            s += "};";
+            s += ';';
             i++;
         }
         return s;
@@ -320,7 +337,7 @@ function Tree(config_matrix) {
     }
 
     this.distribute = function(angle) {
-        angle = Syntree.Lib.checkArg(angle, 'number', 50);
+        angle = Syntree.Lib.checkArg(angle, 'number', 60);
 
         var children = this.root.getChildren();
         if (children.length === 0) {
@@ -354,7 +371,7 @@ function Tree(config_matrix) {
                     intersect = true;
                     var overlap = lPath.rightBound - rPath.leftBound;
                     newWidth += Math.abs(overlap);
-                    newWidth += 10; //padding
+                    newWidth += 20; //padding
                 }
                 c++;
             }
@@ -371,7 +388,10 @@ function Tree(config_matrix) {
             var tree = new Tree({root:this.root.getParent()});
             tree.distribute();
         } else {
-            this.root.updateGraphics();
+            if (this.root.getChildren().length > 1) {
+                // console.log(this.root.getChildren()[1].getLabelBBox());
+            }
+            this.root.updateGraphics(true);
         }
     }
 
@@ -392,49 +412,56 @@ Tree.prototype.toString = function() {
 Tree.prototype._buildFromTreestring = function(treestring) {
         treestring = Syntree.Lib.checkArg(treestring, 'string');
 
-        var nodes = (treestring.split(';'));
-        nodes.pop(); // remove trailing item from split
-        var nodelist = [];
+        var node_entries = (treestring.split(';'));
+        node_entries.pop(); // remove trailing item from split
+        var node_entry_list = [];
         var i = 0;
-        while (i < nodes.length) {
-            var node = {};
-            node['id'] = nodes[i].split('{')[0];
-            var attrs = nodes[i].split('{')[1].slice(0,-1).split('|');
+        while (i < node_entries.length) {
+            var node_config = {};
+            var attrs = node_entries[i].split('|');
             var ii = 0;
             while (ii < attrs.length) {
                 var name = attrs[ii].split(':')[0];
                 var val = attrs[ii].split(':')[1];
-                node[name] = val;
+                node_config[name] = val;
                 ii++;
             }
-            nodelist.push(node);
+            node_entry_list.push(node_config);
             i++;
         }
         var rootAttrs = {
             x: $('#workspace').width()/2,
             y: $('#toolbar').height()+20,
-            labelContent: nodelist[0].labelContent,
-            id: Number(nodelist[0].id),
+            labelContent: node_entry_list[0].labelContent,
+            id: Number(node_entry_list[0].id),
         }
         this.root = new Node(rootAttrs);
         this.root.editingAction('save');
+
         var n = 1;
-        while (n < nodelist.length) {
-            var newnode = new Node({labelContent:nodelist[n].labelContent,id:Number(nodelist[n].id)});
+        while (n < node_entry_list.length) {
+            var entry = node_entry_list[n];
+            var newnode = new Node({
+                labelContent:entry.labelContent,
+                id:Number(entry.id)
+            });
             newnode.editingAction('save');
             n++;
         }
         n = 0;
-        while (n < nodelist.length) {
-            if (Syntree.Lib.checkType(nodelist[n].children, 'array')) {
-                var childids = nodelist[n].children.split(',');
+        while (n < node_entry_list.length) {
+            var entry = node_entry_list[n];
+            if (entry.children !== 'undefined') {
+                var childIds = entry.children.split(',');
                 var c = 0;
-                while (c < childids.length) {
-                    Syntree.Page.allNodes[nodelist[n].id].addChild(Syntree.Workspace.page.allNodes[childids[c]]);
+                while (c < childIds.length) {
+                    Syntree.Page.allNodes[entry.id].addChild(Syntree.Page.allNodes[childIds[c]]);
                     c++;
                 }
             }
-            var temp = new Tree({root:Syntree.Workspace.page.allNodes[nodelist[n].id]})
+            var temp = new Tree({
+                root:Syntree.Page.allNodes[entry.id]
+            })
             temp.distribute();
             n++;
         }

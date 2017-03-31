@@ -28,15 +28,15 @@ function Page() {
     this.addTree = function(tree,parent,index) {
         if (!Syntree.Lib.checkType(tree, 'tree')) {
             // Default tree
-            var root = new Node({
-                x: $("#workspace").width()/2,
-                y: $("#toolbar").height()+20,
-                labelContent: "S",
-            });
+            // var root = new Node({
+            //     // x: $("#workspace").width()/2,
+            //     // y: $("#toolbar").height()+20,
+            //     // labelContent: "S",
+            // });
             this.tree = new Tree({
-                root: root,
+                build_treestring: "id:47|children:336,250|parent:undefined|labelContent:S|;id:336|children:570,175|parent:47|labelContent:Q|;id:570|children:838,146|parent:336|labelContent:O|;id:838|children:126,716|parent:570|labelContent:C|;id:126|children:undefined|parent:838|labelContent:E|;id:716|children:undefined|parent:838|labelContent:X|;id:146|children:911,337|parent:570|labelContent:V|;id:911|children:undefined|parent:146|labelContent:G|;id:337|children:undefined|parent:146|labelContent:H|;id:175|children:883,866|parent:336|labelContent:A|;id:883|children:956,748|parent:175|labelContent:R|;id:956|children:undefined|parent:883|labelContent:S|;id:748|children:undefined|parent:883|labelContent:U|;id:866|children:391,578|parent:175|labelContent:T|;id:391|children:undefined|parent:866|labelContent:K|;id:578|children:undefined|parent:866|labelContent:N|;id:250|children:8,863|parent:47|labelContent:Z|;id:8|children:483,514|parent:250|labelContent:x|;id:483|children:109,271|parent:8|labelContent:Z|;id:109|children:undefined|parent:483|labelContent:Y|;id:271|children:undefined|parent:483|labelContent:I|;id:514|children:378,168|parent:8|labelContent:P|;id:378|children:undefined|parent:514|labelContent:B|;id:168|children:undefined|parent:514|labelContent:V|;id:863|children:564,746|parent:250|labelContent:L|;id:564|children:300,349|parent:863|labelContent:K|;id:300|children:undefined|parent:564|labelContent:J|;id:349|children:undefined|parent:564|labelContent:F|;id:746|children:766,805|parent:863|labelContent:M|;id:766|children:undefined|parent:746|labelContent:W|;id:805|children:undefined|parent:746|labelContent:Q|;",
             });
-            root.editingAction('save');
+            // root.editingAction('save');
         } else {
             if (!Syntree.Lib.checkType(parent, 'node')) {
                 this.tree.delete();
@@ -137,6 +137,8 @@ function Page() {
                         var siblingIndex = this.selectedNode.getParent().getChildren().indexOf(this.selectedNode);
                         var newNode = new Node({});
                         this.selectedNode.getParent().addChild(newNode,siblingIndex+1);
+                        var tree = new Tree({root:this.selectedNode.getParent()});
+                        tree.distribute();
                         this.nodeSelect(newNode);
                         this.nodeEditing('init');
                     } else {
@@ -151,6 +153,8 @@ function Page() {
                         var siblingIndex = this.selectedNode.getParent().getChildren().indexOf(this.selectedNode);
                         var newNode = new Node({});
                         this.selectedNode.getParent().addChild(newNode,siblingIndex);
+                        var tree = new Tree({root:this.selectedNode.getParent()});
+                        tree.distribute();
                         this.nodeSelect(newNode);
                         this.nodeEditing('init');
                     } else {
@@ -162,16 +166,12 @@ function Page() {
             }
 
         }
-        var tree = new Tree({root:this.selectedNode.getParent()});
-        tree.distribute();
     }
 
     this.navigateUp = function() {
         if (Syntree.Lib.checkType(this.selectedNode, 'node') && Syntree.Lib.checkType(this.selectedNode.getParent(), 'node')) {
             this.nodeSelect(this.selectedNode.getParent());
         }
-        var tree = new Tree({root:this.selectedNode});
-        tree.distribute();
     }
 
     this.navigateDown = function(fcreate) {
@@ -187,6 +187,7 @@ function Page() {
                         return;
                     }
                 }
+                this.nodeSelect(this.selectedNode.getChildren()[0]);
             } else if (this.selectedNode.getState('real')) {
                 var newNode = new Node({x:0,y:0,labelContent:""});
                 this.selectedNode.addChild(newNode);
@@ -258,7 +259,7 @@ function Page() {
             new ActionDelete(tree,parent,parent.getChildren().indexOf(tree.root));
         }
         tree.delete();
-        if (Syntree.Lib.checkType(parent, 'node') && Syntree.Lib.checkType(this.selectedNode, 'node')) {
+        if (Syntree.Lib.checkType(parent, 'node')) {
             tree = new Tree({root:parent});
             tree.distribute();
         }

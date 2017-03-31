@@ -1,3 +1,11 @@
+time_function = function(f,o) {
+    console.log("Timing " + f);
+    var start_time = new Date().getTime();
+    o[f]();
+    var end_time = new Date().getTime();
+    return end_time - start_time;
+}
+
 window.Syntree = {}; // Single global object, append any other 'globals' to this
 
 Syntree.Lib = {
