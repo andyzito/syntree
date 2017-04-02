@@ -10,8 +10,11 @@ html {
 }
 
 body, html {
-    background: grey;
     width: 100%;
+}
+
+body {
+    background-color: grey;
 }
 
 /* Broad categorical stuff */
@@ -208,4 +211,148 @@ body.page_make {
     height: 100%;
     background-color: rgba(0,0,0,0.3);
     z-index: 100;
+}
+
+body.splash, body.what {
+    background-color: #ededed;
+    font-family: sans-serif;
+}
+
+body.splash h4 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-top: 10rem;
+}
+
+body.splash h3 {
+    text-align: center;
+    font-size: 4rem;
+    margin-top: 2rem;
+    letter-spacing: 0.1rem;
+}
+
+body.splash h3 span {
+    font-size: 2rem;
+}
+
+body.splash p {
+    font-size: 1.3rem;
+    border: 1px solid grey;
+    border-radius: 5px;
+    width: 50%;
+    margin: auto;
+    padding: 1rem;
+    margin-top: 4rem;
+    background-color: lightgrey;
+}
+
+body.splash div {
+    display: block;
+    margin: auto;
+    text-align: center;
+    margin-top: 4rem;
+}
+
+body.splash div.yah-nah-wrapper {
+    width: 45%;
+}
+
+body.splash div.yah-nah-wrapper:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+body.splash a {
+    border: 1px solid black;
+    padding: 1rem 2.5rem;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    background-color: white;
+}
+
+body.splash a.what {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+}
+
+body.splash a:hover {
+    background-color: black;
+    color: white;
+}
+
+body.splash a.nah {
+    float: left;
+}
+
+body.splash a.yah {
+    float: right;
+}
+
+body.what .title {
+    text-align: center;
+    font-size: 4rem;
+    margin-top: 5rem;
+    padding-bottom: 5rem;
+    margin-bottom: 5rem;
+    border-bottom: 1px solid grey;
+}
+
+body.what h4 {
+    font-size: 2rem;
+    text-align: center;
+}
+
+body.what ul {
+    margin: auto;
+    width: 75%;
+    list-style: none;
+}
+
+body.what li {
+    margin-bottom: 1.5rem;
+    line-height: 1.4rem;
+}
+
+body.what li span {
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 0.05rem;
+}
+
+body.what p a {
+    text-decoration: underline;
+    color: blue;
+}
+
+body.what p a:hover {
+    color: darkblue;
+}
+
+body.what div.contents {
+    position: fixed;
+    border: 1px solid black;
+    background-color: white;
+    width: 10%;
+    top: 5px;
+    left: 5px;
+    border-radius: 3px;
+}
+
+body.what div.contents ul {
+    margin: 0;
+    width: 100%;
+}
+
+body.what div.contents li {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+body.what div.contents li:hover {
+    color: white;
+    background-color: black;
 }

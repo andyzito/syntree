@@ -2,26 +2,17 @@
 
 <html>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php' ?>
-    <script>
-    $(document).ready(function(){
-        alert("This is Andrew Zito's Division III project, working title: 'Syntree'. Please be aware that it is very much a work in progress.");
-        init = {
-            export_tree_script: '/post/export-tree.php',
-            tutorial_enabled: true,
-        }
-        new Workspace(init);
-    });
-    </script>
-
-    <body class="page_make">
-
-        <!-- <a href="index.php">
-            <div class="button button_back">
-            << Back
-            </div>
-        </a> -->
-
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/app/workspace-div.html' ?>
+    <body class="splash">
+        <h4>Hello! Welcome to Andy Zito's Division III Project!</h4>
+        <h3><span>Working Title: </span>Syntree</h3>
+        <p>Please bear in mind that this is very much a work in progress. It may be slow, it will definitely be buggy, and sometimes it might not even work at all. But it's still super cool I promise!</p>
+        <div class="yah-nah-wrapper">
+            <a class="nah" href="http://www.reactiongifs.com/wp-content/uploads/2013/09/sad.gif"><<&nbsp;&nbsp;&nbsp;Nah, I'm good</a>
+            <a class="yah" href="front-page.php">Check it out!&nbsp;&nbsp;&nbsp;>></a>
+        </div>
+        <div class="what-wrapper">
+            <a class="what" href="what.php">Wait... but what is this?</a>
+        </div>
 
     </body>
 </html>
