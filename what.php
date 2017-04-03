@@ -7,7 +7,7 @@
             <ul>
                 <a href="#section-faq"><li>FAQ</li></a>
                 <a href="#section-how-to"><li>How to...</li></a>
-                <a><li>Code docs</li></a>
+                <a href="#section-keys"><li>Keyboard Shortcuts</li></a>
             </ul>
         </div>
         <h2 class="title">Syntree Help</h4>
@@ -40,6 +40,39 @@
                 <li><span class="how-to-title">Undo actions:</span>
                     <p>If you messed up (like if you accidentally deleted half your tree, for example) never fear! Just press CTRL+Z and everything should be ok. Currently you can undo node creation, node deletion, and node edits.</p></li>
             </ul>
+        </div>
+        <div id="section-keys" class="help_section help_section__keyboard-shortcuts">
+            <h4>Keyboard shortcuts</h4>
+            <table>
+                <tr>
+                    <td>Down</td>
+                    <td>Make a new child node / navigate to an existing child node</td>
+                <tr>
+                <tr>
+                    <td>Left/Right</td>
+                    <td>Make a sibling node / navigate to an existing sibling node</td>
+                <tr>
+                <tr>
+                    <td>Up</td>
+                    <td>Navigate to parent node</td>
+                <tr>
+                <tr>
+                    <td>Enter</td>
+                    <td>Edit / save selected node</td>
+                <tr>
+                <tr>
+                    <td>Delete</td>
+                    <td>Delete selected node and its descendants</td>
+                <tr>
+                <tr>
+                    <td>Escape</td>
+                    <td>Exit current edit, without saving changes</td>
+                <tr>
+                <tr>
+                    <td>CTRL + arrow key</td>
+                    <td>Force node creation in the specified direction (except up)</td>
+                <tr>
+            </table>
         </div>
     </body>
 </html>

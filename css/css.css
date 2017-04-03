@@ -294,8 +294,7 @@ body.what .title {
     font-size: 4rem;
     margin-top: 5rem;
     padding-bottom: 5rem;
-    margin-bottom: 5rem;
-    border-bottom: 1px solid grey;
+    /*border-bottom: 1px solid grey;*/
 }
 
 body.what h4 {
@@ -355,4 +354,26 @@ body.what div.contents li {
 body.what div.contents li:hover {
     color: white;
     background-color: black;
+}
+
+body.what table {
+    width: 70%;
+    margin: auto;
+    border-collapse: collapse;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 3px;
+    margin-top: 1rem;
+    margin-bottom: 5rem;
+}
+
+body.what td {
+    padding: 20px;
+    border: 1px solid black;
+}
+
+body.what div.help_section {
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid darkgrey;
 }
