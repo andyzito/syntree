@@ -8,23 +8,21 @@ Syntree.Tutorial = {
     frames: [
         {
             message: "Hello! Welcome to Syntree",
-            gateway: 20,
         },
         {
             message: "Right now there is one node, called S",
-            gateway: this,
-            arrows: [
-                (function() {
-                    var id = Syntree.Page.tree.getRoot().getId();
-                    var pos = $("#label-" + id).position();
-                    var bbox = Syntree.Page.tree.getRoot().getLabelBBox();
-                    return {
-                        x: pos.left + 30,
-                        y: pos.top + (bbox.h / 2),
-                        from_direction: 'right',
-                    }
-                }),
-            ]
+            // arrows: [
+            //     (function() {
+            //         var id = Syntree.Page.tree.getRoot().getId();
+            //         var pos = $("#label-" + id).position();
+            //         var bbox = Syntree.Page.tree.getRoot().getLabelBBox();
+            //         return {
+            //             x: pos.left + 30,
+            //             y: pos.top + (bbox.h / 2),
+            //             from_direction: 'right',
+            //         }
+            //     }),
+            // ]
         },
         {
             message: "You can tell it is selected because it is highlighted in gray",
@@ -103,7 +101,11 @@ Syntree.Tutorial = {
             },
         },
         {
-            message: "Great! You can press Enter, or double click, to edit the node",
+            message: "Note: to force node creation, instead of navigation, hold down CTRL + SHIFT",
+            gateway: 5000,
+        },
+        {
+            message: "Ok! You can press Enter, or double click, to edit the node",
             gateway: {
                 event_type: [
                     "keydown",
@@ -125,7 +127,15 @@ Syntree.Tutorial = {
         },
         {
             message: "Remember, if you navigate away from a node without saving, your change will be lost!",
-            gateway: 3000,
+            gateway: 5000,
+        },
+        {
+            message: "Similarly, if you navigate away from a new node that hasn't been saved, it will disappear.",
+            gateway: 5000,
+        },
+        {
+            message: "This makes it easy to fix accidental node creation -- if you press down and make a node you didn't want, just press up!",
+            gateway: 5000,
         },
         {
             message: "Ok. Moving on.",
@@ -144,9 +154,12 @@ Syntree.Tutorial = {
         },
         {
             message: "Great!"
-        }
+        },
+        {
+            message: "That's all for now. For more help, click \"Help\" in the upper lefthand corner."
+        },
     ],
-    index: 10,
+    index: -1,
     running: false,
 
     continue: function() {
@@ -160,13 +173,17 @@ Syntree.Tutorial = {
     },
 
     quit: function() {
+        console.log('quit');
         this.index = Infinity;
         this.running = false;
+        $('.tutorial_instruction').fadeOut(2000, function(){
+            $(this).remove();
+        });
     },
 
     frame: function(frame) {
         var message = Syntree.Lib.checkArg(frame.message, 'string');
-        var gateway = Syntree.Lib.checkArg(frame.gateway, ['object', 'number'], 2000);
+        var gateway = Syntree.Lib.checkArg(frame.gateway, ['object', 'number'], 2700);
 
         this.instruction(message);
         if (Syntree.Lib.checkType(frame.arrows, 'array')) {

@@ -14,10 +14,11 @@
     position:absolute;
     display:none;
     font-size:14px;
+    line-height: 14px;
     font-family:sans-serif;
     outline-width:0;
     border:none;
-    padding:1px;
+    /*padding:1px;*/
 }
 
 text {
@@ -62,10 +63,10 @@ text {
 }
 
 .modal_body.modal_export, .modal_body.modal_open {
-    width: 90%;
+    width: 50%;
     height: 90%;
     top: 5%;
-    left: 5%;
+    left: 25%;
     z-index: 101;
 }
 

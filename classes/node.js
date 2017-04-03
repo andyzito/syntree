@@ -239,7 +239,10 @@ function Node(config_matrix) {
                     this.editing = false;
                     this.labelContent = this.editor.val();
                     this.editor.hide();
+                    this.editor.blur();
                     this.beforeEditLabelContent = undefined;
+                    this._labelbbox = undefined;
+                    this.positionUnsynced = true;
                     this.updateGraphics(false);
                 }
                 break;
@@ -249,6 +252,7 @@ function Node(config_matrix) {
                     this.editor.hide();
                     this.labelContent = this.beforeEditLabelContent;
                     this.beforeEditLabelContent = undefined;
+                    this._labelbbox = undefined;
                     this.updateGraphics(false);
                 }
                 break;

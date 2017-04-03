@@ -69,6 +69,8 @@ function ActionSave(node,pre,post) {
     if (this.preSaveLabelContent !== this.postSaveLabelContent) {
         this.undo = function() {
             this.node.labelContent = this.preSaveLabelContent;
+            this.node._labelbbox = undefined;
+            this.node.positionUnsynced = true;
             this.node.updateGraphics();
         }
     }
