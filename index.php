@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php' ?>
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/head.php' ?>
     <body class="splash">
         <h4>Hello! Welcome to Andy Zito's Division III Project!</h4>
         <h3><span>Working Title: </span>Syntree</h3>

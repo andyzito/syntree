@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php' ?>
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/head.php' ?>
     <script>
     $(document).ready(function(){
         init = {
