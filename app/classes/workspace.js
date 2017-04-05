@@ -130,7 +130,7 @@ function Workspace(config_matrix) {
         // Modal export
         if (Syntree.Lib.checkType(this.export_tree_script, 'string')) {
             $(document).on('click', '.modal_section__filetype .modal_label', function(e) {W._eventFiletypeLabelClick(e)});
-            $(document).on('click', '.modal_button__export', function() {
+            $(document).on('click', '.button_modal__export', function() {
                 var type = $('.modal_section__filetype input:checked').val();
                 if (type === 'bracket-file') {
                     W._eventExportBrackets();
@@ -312,6 +312,7 @@ function Workspace(config_matrix) {
     }
 
     this._eventExportBrackets = function() {
+        $('.loading-icon').show();
         // Get fname
         var fname = $('.modal_option__fname input').val();
         // Get brackets
@@ -322,6 +323,7 @@ function Workspace(config_matrix) {
                 $('body').append(link);
                 $('#temp-file-download')[0].click();
                 $('#temp-file-download').remove();
+                $('.loading-icon').hide();
             });
         }
     }

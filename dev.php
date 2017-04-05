@@ -5,7 +5,7 @@
     <script>
     $(document).ready(function(){
         init = {
-            export_tree_script: '/post/export-tree.php',
+            export_tree_script: '/export-tree.php',
             tutorial_enabled: false,
         }
         new Workspace(init);

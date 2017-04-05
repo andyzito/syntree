@@ -6,6 +6,12 @@
     font-family: sans-serif;
     z-index: 101;
 
+    .loading-icon {
+        display: block;
+        margin: auto;
+        margin-top: 3rem;
+    }
+
     &.modal_export, &.modal_open {
         width: 50%;
         height: 90%;
@@ -27,27 +33,50 @@
 
         &__main {
             text-align: center;
-            padding: 15px;
+            font-size: 4rem;
+            margin-top: 2rem;
         }
-    }
-
-    .modal_label {
-        font-size: 1.1em;
     }
 
     .modal_section {
         display: inline-block;
         margin-top: 20px;
 
-        &_filetype {
+        &__filetype {
             width: 100%;
             text-align: center;
-        }
 
-        &__fname input{
-            margin-top: 20px;
-            margin-right: 5px;
-            text-align: right;
+            .option_wrapper {
+                display: inline-block;
+                text-align: left;
+                margin: 1rem;
+                font-size: 1.5rem;
+                width: 50%;
+
+                .option_wrapper_radio {
+                    width: 100%;
+                }
+
+                .modal_option__fname {
+                    margin: 1rem 0;
+                    position: relative;
+
+                    input {
+                        text-align: right;
+                        font-size: inherit;
+                        margin-right: 0.2rem;
+                        padding-right: 5ch;
+                        width: 100%;
+                    }
+
+                    span {
+                        position: absolute;
+                        top: 0.25rem;
+                        right: 1ch;
+                        color: #666666;
+                    }
+                }
+            }
         }
 
         &__subtree {
