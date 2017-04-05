@@ -8,7 +8,7 @@
             export_tree_script: '/export-tree.php',
             tutorial_enabled: false,
         }
-        new Workspace(init);
+        new Syntree.workspace_constructor(init);
     });
     </script>
 

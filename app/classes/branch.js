@@ -1,4 +1,4 @@
-function Branch(parent,child) {
+Syntree.Branch = function(parent,child) {
     parent = Syntree.Lib.checkArg(parent, 'node');
     child = Syntree.Lib.checkArg(child, 'node');
 
@@ -33,6 +33,6 @@ function Branch(parent,child) {
     }
 }
 
-Branch.prototype.toString = function() {
+Syntree.Branch.prototype.toString = function() {
     return "[object Branch]"
 }
