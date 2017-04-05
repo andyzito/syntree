@@ -6,7 +6,6 @@
 <script type="text/javascript" src="http://canvg.github.io/canvg/canvg.js"></script>
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/app/scripts.html'; ?>
 <script src="modal.js"></script>
-<link rel="stylesheet" href="css/css.css">
-<link rel="stylesheet" href="app/css/css.css">
+<link rel="stylesheet" href="style/css/main.css">
 </head>
 

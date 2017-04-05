@@ -1,0 +1,46 @@
+body.splash {
+    background-color: #ededed;
+    font-family: sans-serif;
+
+    .page_title {
+        margin-top: 2rem;
+
+        &_secondary {
+            margin-top: 10rem;
+        }
+
+        span {
+            font-size: 3rem;
+        }
+    }
+
+    p {
+        font-size: 1.3rem;
+        border: 1px solid grey;
+        border-radius: 5px;
+        width: 50%;
+        margin: auto;
+        padding: 1rem;
+        margin-top: 4rem;
+        background-color: lightgrey;
+    }
+
+    .wrapper {
+        display: block;
+        margin: auto;
+        text-align: center;
+        margin-top: 4rem;
+
+        &_yah_nah {
+            width: 45%
+        }
+    }
+
+    .nah {
+        float: left;
+    }
+
+    .yah {
+        float: right;
+    }
+}

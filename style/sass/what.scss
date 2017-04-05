@@ -1,0 +1,91 @@
+body.what {
+    background-color: #ededed;
+
+    .page_title {
+        margin-top: 5rem;
+        padding-bottom: 5rem;
+    }
+
+    h4 {
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .faq-list, .how-to-list {
+        margin: auto;
+        width: 75%;
+    }
+
+    .help_section {
+        margin-top: 2.5rem;
+        padding-top: 2.5rem;
+        border-top: 1px solid darkgrey;
+
+        a {
+            text-decoration: underline;
+            color: blue;
+
+            &:hover {
+                color: darkblue;
+            }
+        }
+
+        li {
+            margin-bottom: 1.5rem;
+            line-height: 1.4rem;
+
+            span {
+                font-size: 1.1rem;
+                font-weight: bold;
+                letter-spacing: 0.05rem;
+            }
+        }
+    }
+
+    .contents {
+        position: fixed;
+        border: 1px solid black;
+        background-color: white;
+        width: 11%;
+        top: 5px;
+        left: 5px;
+        border-radius: 3px;
+
+        ul {
+            width: 100%;
+
+            li {
+                width: 100%;
+                text-align: center;
+                padding: 20px 0;
+                margin: 0;
+                font-size: 1.3rem;
+
+                &:hover {
+                    color: white;
+                    background-color: black;
+                }
+            }
+        }
+    }
+
+    table {
+        width: 70%;
+        margin: auto;
+        border-collapse: collapse;
+        border: 1px solid black;
+        background-color: white;
+        border-radius: 3px;
+        margin-top: 1rem;
+        margin-bottom: 5rem;
+
+        td {
+            padding: 20px;
+            border: 1px solid black;
+        }
+
+        tr:hover {
+            background-color: lightgrey;
+        }
+    }
+}

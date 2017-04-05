@@ -35,7 +35,7 @@ Syntree.Tutorial = {
                     return e.keyCode === 40;
                 },
             },
-            arrows: false,
+            // arrows: false,
         },
         {
             message: "Good job!",
@@ -43,16 +43,20 @@ Syntree.Tutorial = {
         {
             message: "Now give this new node a name (just type!)",
             gateway: {
-                event_type: "keypress",
+                event_type: "keydown",
                 condition: function(e) {
-                    if (e.key.length === 1) {
-                        Syntree.Tutorial.data['node_naming_1'] += 1;
-                    }
-                    if (Syntree.Tutorial.data['node_naming_1'] > 2) {
-                        return true;
-                    }
-                    return false;
-                }
+                    return e.keyCode === 40;
+                },
+                // event_type: "keypress",
+                // condition: function(e) {
+                //     if (e.key.length === 1) {
+                //         Syntree.Tutorial.data['node_naming_1'] += 1;
+                //     }
+                //     if (Syntree.Tutorial.data['node_naming_1'] > 2) {
+                //         return true;
+                //     }
+                //     return true;
+                // }
             },
         },
         {
@@ -163,55 +167,98 @@ Syntree.Tutorial = {
     running: false,
 
     continue: function() {
+        console.log("Continue():")
+        console.log("Index " + this.index);
         this.index += 1;
-        if (this.index < this.frames.length) {
+        console.log("Index is now " + this.index);
+        if (this.index < this.frames.length && this.running) {
+            console.log("check good, continuing");
             frame = this.frames[this.index];
+            console.log('calling frame for index ' + this.index);
+            console.log(frame);
             this.frame(frame);
         } else {
+            console.log('tutorial over');
+            $('.tutorial_instruction').fadeOut(2000, function(){
+                this.quit();
+            });
+        }
+    },
+
+    start: function() {
+        $('.tutorial_instruction').remove();
+        console.log("Start():")
+        if (this.running) {
+            console.log("restart");
             this.quit();
+            console.log("(start()): .quit() run, running start")
+            this.start();
+        } else {
+            this.index = -1;
+            modal_close('app');
+            this.running = true;
+            console.log("(start()): running continue(), index is " + this.index)
+            this.continue();
         }
     },
 
     quit: function() {
-        console.log('quit');
+        console.log("Quit():");
         this.index = Infinity;
         this.running = false;
-        $('.tutorial_instruction').fadeOut(2000, function(){
-            $(this).remove();
-        });
+        $(document).off(".syntree_tutorial");
+        clearTimeout(this.timer);
+        console.log('clearing timeout for id ' + this.timer);
+        this.timer = undefined;
+        this.data.node_naming_1 = 0;
+        $('.tutorial_instruction').remove();
     },
 
     frame: function(frame) {
+        console.log("Frame():");
+        console.log("Index is " + this.index);
         var message = Syntree.Lib.checkArg(frame.message, 'string');
         var gateway = Syntree.Lib.checkArg(frame.gateway, ['object', 'number'], 2700);
 
+        console.log("message is " + message);
+        console.log("gateway:");
+        console.log(gateway);
+
         this.instruction(message);
-        if (Syntree.Lib.checkType(frame.arrows, 'array')) {
-            var i = 0;
-            while (i < frame.arrows.length) {
-                if (Syntree.Lib.checkType(frame.arrows[i], 'function')) {
-                    var arrow = frame.arrows[i]();
-                    $('#workspace_container').append("<div class='tutorial_arrow from_" + arrow.from_direction + "'></div>");
-                    $('.tutorial_arrow').css({
-                        "top": arrow.y,
-                        "left": arrow.x,
-                    });
-                    $('.tutorial_arrow').fadeIn(1500);
-                }
-                i++;
-            }
-        } else if (Syntree.Lib.checkType(frame.arrows, 'boolean') && !frame.arrows) {
-            $('.tutorial_arrow').remove();
-        }
+        console.log("(frame()): just called instruction()");
+        // if (Syntree.Lib.checkType(frame.arrows, 'array')) {
+        //     var i = 0;
+        //     while (i < frame.arrows.length) {
+        //         if (Syntree.Lib.checkType(frame.arrows[i], 'function')) {
+        //             var arrow = frame.arrows[i]();
+        //             $('#workspace_container').append("<div class='tutorial_arrow from_" + arrow.from_direction + "'></div>");
+        //             $('.tutorial_arrow').css({
+        //                 "top": arrow.y,
+        //                 "left": arrow.x,
+        //             });
+        //             $('.tutorial_arrow').fadeIn(1500);
+        //         }
+        //         i++;
+        //     }
+        // } else if (Syntree.Lib.checkType(frame.arrows, 'boolean') && !frame.arrows) {
+        //     $('.tutorial_arrow').remove();
+        // }
         if (Syntree.Lib.checkType(gateway, 'number')) {
-            setTimeout(
+            console.log("gateway is a number");
+            this.timer = setTimeout(
                 (function() {
+                    console.log('running timeout id ' + Syntree.Tutorial.timer);
                     this.continue()
                 }).bind(this), gateway);
+            console.log("just set timeout, id is " + this.timer);
         } else if (Syntree.Lib.checkType(gateway, 'object')) {
+            console.log("gateway is object");
             var event_string = String(gateway.event_type).replace(',', '.syntree_tutorial ') + ".syntree_tutorial";
+            console.log("event string is '" + event_string + "'");
             $(document).on(event_string, (function(e) {
+                console.log("**Inside gateway event callback");
                 if (gateway.condition(e)) {
+                    console.log("***Inside gateway condition");
                     $(document).off(event_string);
                     this.continue();
                 }
@@ -220,79 +267,19 @@ Syntree.Tutorial = {
     },
 
     instruction: function(text) {
-        if ($('.tutorial_instruction:not(.primary)')) {
+        console.log("Instruction():");
+        if ($('.tutorial_instruction:not(.primary)').length > 0) {
+            console.log("secondary instruction exists");
             $('.tutorial_instruction:not(.primary)').fadeOut(1000, function() {
+                console.log("removing secondary instruction");
                 $(this).remove();
             });
         }
-        if ($('.tutorial_instruction.primary')) {
+        if ($('.tutorial_instruction.primary').length > 0) {
+            console.log("primary instruction exists");
             $('.tutorial_instruction.primary').removeClass('primary');
         }
         $("#workspace_container").append('<p class="tutorial_instruction primary">' + text + '</p>');
         $('.tutorial_instruction.primary').fadeIn(1500);
     },
-
-    start: function() {
-        modal_close('app');
-        this.running = true;
-        this.continue();
-    },
-
-    down: function() {
-
-        this.instruction("The selected node is labeled S", 400, function() {
-            this.instruction("Press the down arrow key to create a child node of S");
-        });
-        $(document).on('keydown.tutorial', (function(e) {
-            if (e.keyCode === 40) {
-                $('.tutorial_instruction').remove();
-                $(document).off('keydown.tutorial');
-                this.instruction("Good job!", 1000, this.continue);
-            }
-        }).bind(this))
-    },
-
-    label: function() {
-        this.instruction("You can type to label the new node");
-        $(document).on('input.tutorial', '.editor', (function(){
-            $('.tutorial_instruction').remove();
-            $(document).off('input.tutorial');
-            this.instruction("And press Enter to save your change");
-            $(document).on('keydown.tutorial', (function(e){
-                if (e.keyCode === 13) {
-                    $('.tutorial_instruction').remove();
-                    $(document).off('keydown.tutorial');
-                    this.continue();
-                }
-            }).bind(this));
-        }).bind(this));
-    },
-
-    sibling: function() {
-        this.instruction("Press right or left to create a sibling node");
-        $(document).on('keydown.tutorial', (function(e) {
-            if (e.keyCode === 37 || e.keyCode === 39) {
-                $('.tutorial_instruction').remove();
-                $(document).off('keydown.tutorial');
-                this.instruction("Label the node and press Enter to save");
-                $(document).one('keypress', (function(e){
-                    if (e.keyCode === 13) {
-                        this.instruction("Well done!", 400, this.continue);
-                    }
-                }).bind(this));
-            }
-        }).bind(this));
-    },
-
-    navigate: function() {
-        this.instruction("The arrow keys can also be used to navigate to existing nodes", 400, function(){
-            this.instruction("Navigate to the root node ('" + Syntree.Page.tree.getRoot().getLabelContent() + "')");
-            $(document).on('keydown.tutorial', (function(e) {
-                if (e.keyCode === 40) {
-                    $(document).off('keydown.tutorial');
-                    this.instruction("Good! You can press Enter or Double Click to edit the node")
-                }
-            }).bind(this))
-        });
-    }
 }

@@ -1,0 +1,285 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline-width: 0px;
+  outline: none;
+  box-sizing: border-box; }
+
+html {
+  height: 100%; }
+
+body, html {
+  width: 100%; }
+
+body {
+  background-color: grey; }
+
+a {
+  text-decoration: none;
+  color: black; }
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0; }
+
+.page_title {
+  text-align: center;
+  font-size: 4rem;
+  letter-spacing: 0.1rem;
+  font-family: sans-serif; }
+  .page_title_secondary {
+    font-size: 2.5rem;
+    letter-spacing: initial; }
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both; }
+
+.button, #workspace_container #toolbar .toolbar_button {
+  display: inline-block;
+  background: white;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 1rem 15px;
+  transition: background-color 0.2s, color 0.2s;
+  cursor: pointer; }
+  .button:hover, #workspace_container #toolbar .toolbar_button:hover {
+    background: black;
+    color: white; }
+  .button_big, .modal_body .modal_section__buttonset button, .modal_body .modal_section__buttonset a {
+    font-size: 1.3em;
+    padding: 1.5rem 3rem; }
+  .button_small {
+    padding: 0.8rem 1rem;
+    font-size: 1rem; }
+
+.modal_body {
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  font-family: sans-serif;
+  z-index: 101; }
+  .modal_body.modal_export, .modal_body.modal_open {
+    width: 50%;
+    height: 90%;
+    top: 5%;
+    left: 25%; }
+  .modal_body.modal_tutorial {
+    width: 40%;
+    height: 24%;
+    top: 38%;
+    left: 30%; }
+  .modal_body .modal_title {
+    font-size: 2em;
+    letter-spacing: 2px;
+    font-weight: bold; }
+    .modal_body .modal_title__main {
+      text-align: center;
+      padding: 15px; }
+  .modal_body .modal_label {
+    font-size: 1.1em; }
+  .modal_body .modal_section {
+    display: inline-block;
+    margin-top: 20px; }
+    .modal_body .modal_section_filetype {
+      width: 100%;
+      text-align: center; }
+    .modal_body .modal_section__fname input {
+      margin-top: 20px;
+      margin-right: 5px;
+      text-align: right; }
+    .modal_body .modal_section__subtree {
+      float: right;
+      margin-right: 150px; }
+  .modal_body .modal_section__buttonset {
+    text-align: center;
+    width: 100%;
+    margin: 0.5rem 0; }
+    .modal_body .modal_section__buttonset button, .modal_body .modal_section__buttonset a {
+      margin: 0 1rem; }
+  .modal_body .modal_option_text input {
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 3px; }
+  .modal_body .modal_option_text input:focus {
+    border: 2px solid black; }
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 100; }
+
+body.splash {
+  background-color: #ededed;
+  font-family: sans-serif; }
+  body.splash .page_title {
+    margin-top: 2rem; }
+    body.splash .page_title_secondary {
+      margin-top: 10rem; }
+    body.splash .page_title span {
+      font-size: 3rem; }
+  body.splash p {
+    font-size: 1.3rem;
+    border: 1px solid grey;
+    border-radius: 5px;
+    width: 50%;
+    margin: auto;
+    padding: 1rem;
+    margin-top: 4rem;
+    background-color: lightgrey; }
+  body.splash .wrapper {
+    display: block;
+    margin: auto;
+    text-align: center;
+    margin-top: 4rem; }
+    body.splash .wrapper_yah_nah {
+      width: 45%; }
+  body.splash .nah {
+    float: left; }
+  body.splash .yah {
+    float: right; }
+
+body.what {
+  background-color: #ededed; }
+  body.what .page_title {
+    margin-top: 5rem;
+    padding-bottom: 5rem; }
+  body.what h4 {
+    font-size: 2rem;
+    text-align: center; }
+  body.what .faq-list, body.what .how-to-list {
+    margin: auto;
+    width: 75%; }
+  body.what .help_section {
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid darkgrey; }
+    body.what .help_section a {
+      text-decoration: underline;
+      color: blue; }
+      body.what .help_section a:hover {
+        color: darkblue; }
+    body.what .help_section li {
+      margin-bottom: 1.5rem;
+      line-height: 1.4rem; }
+      body.what .help_section li span {
+        font-size: 1.1rem;
+        font-weight: bold;
+        letter-spacing: 0.05rem; }
+  body.what .contents {
+    position: fixed;
+    border: 1px solid black;
+    background-color: white;
+    width: 11%;
+    top: 5px;
+    left: 5px;
+    border-radius: 3px; }
+    body.what .contents ul {
+      width: 100%; }
+      body.what .contents ul li {
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+        margin: 0;
+        font-size: 1.3rem; }
+        body.what .contents ul li:hover {
+          color: white;
+          background-color: black; }
+  body.what table {
+    width: 70%;
+    margin: auto;
+    border-collapse: collapse;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 3px;
+    margin-top: 1rem;
+    margin-bottom: 5rem; }
+    body.what table td {
+      padding: 20px;
+      border: 1px solid black; }
+    body.what table tr:hover {
+      background-color: lightgrey; }
+
+body.page_make {
+  background: grey;
+  height: 100%;
+  overflow: hidden; }
+  body.page_make #workspace_container {
+    height: 100%; }
+
+#workspace_container {
+  border: 1px solid black;
+  cursor: default !important; }
+  #workspace_container .editor, #workspace_container .node-label {
+    text-align: center;
+    font-size: 14px;
+    line-height: 14px;
+    font-family: sans-serif; }
+  #workspace_container .editor {
+    position: absolute;
+    display: none;
+    outline-width: 0;
+    outline: none;
+    border: none; }
+  #workspace_container .node-label {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+  #workspace_container .delete_button {
+    cursor: pointer; }
+    #workspace_container .delete_button.invisible {
+      cursor: default; }
+  #workspace_container #toolbar {
+    position: absolute;
+    border-bottom: 1px solid black;
+    width: 100%;
+    background-color: white; }
+    #workspace_container #toolbar .toolbar_button {
+      border: none;
+      border-radius: 0; }
+    #workspace_container #toolbar .toolbar_area_right {
+      float: right; }
+  #workspace_container .tutorial_instruction {
+    display: block;
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 2em;
+    font-family: sans-serif;
+    margin-bottom: 300px;
+    color: grey;
+    transition: margin-bottom 1.2s; }
+    #workspace_container .tutorial_instruction.primary {
+      margin-bottom: 400px;
+      color: black; }
+  #workspace_container .tutorial_arrow {
+    position: absolute;
+    display: inline-block;
+    display: none;
+    height: 1px;
+    width: 1px; }
+    #workspace_container .tutorial_arrow:after {
+      content: "";
+      display: inline-block;
+      position: absolute;
+      height: 70px;
+      width: 70px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center; }
+  #workspace_container #workspace {
+    background-color: grey; }
+
+#export-image-canvas {
+  display: none; }

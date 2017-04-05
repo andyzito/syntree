@@ -1,0 +1,24 @@
+.button {
+    display: inline-block;
+    background: white;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 1rem 15px;
+    transition: background-color 0.2s, color 0.2s;
+    cursor: pointer;
+
+    &:hover {
+	    background: black;
+	    color: white;
+    }
+
+    &_big {
+	    font-size: 1.3em;
+        padding: 1.5rem 3rem;
+    }
+
+    &_small {
+		padding: 0.8rem 1rem;
+		font-size: 1rem;
+    }
+}

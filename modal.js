@@ -36,7 +36,7 @@ $(document).ready(function() {
         var clicked = e.currentTarget;
         modal_close($(clicked).attr('overlay-id'));
     });
-    $(document).on('click', '.modal_button__cancel', function(e) {
+    $(document).on('click', '.button_modal__cancel', function(e) {
         var clicked = e.currentTarget;
         var modal = $(clicked).parents('.modal_body');
         modal_close(modal.attr('with-overlay'));

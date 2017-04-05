@@ -51,9 +51,15 @@ function Workspace(config_matrix) {
             });
         $(document).on(
             'click',
-            '.modal_button__begin-tutorial',
+            '.button_modal__begin-tutorial',
             function() {
                 Syntree.Tutorial.start()
+            });
+        $(document).on(
+            'click',
+            '.toolbar_button__tutorial',
+            function() {
+                Syntree.Workspace._eventRewatchTutorial();
             });
     }
 
@@ -148,6 +154,21 @@ function Workspace(config_matrix) {
                     $('.modal_section__trees').html(result);
                 });
             });
+        }
+    }
+
+    this._eventRewatchTutorial = function() {
+        var check;
+        if (Syntree.Tutorial.running) {
+            check = confirm("Restart tutorial?");
+        } else {
+            check = confirm("This will delete any work you have open. Start tutorial anyway?");
+        }
+        if (check) {
+            Syntree.Page.tree.delete();
+            Syntree.Page.addTree();
+            Syntree.Page.nodeSelect(Syntree.Page.tree.getRoot());
+            Syntree.Tutorial.start();
         }
     }
 

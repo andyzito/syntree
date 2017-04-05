@@ -1,0 +1,16 @@
+#toolbar {
+    position: absolute;
+    border-bottom: 1px solid black;
+    width: 100%;
+    background-color: white;
+
+    .toolbar_button {
+        @extend .button;
+        border: none;
+        border-radius: 0;
+    }
+
+    .toolbar_area_right {
+    	float: right;
+    }
+}

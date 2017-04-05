@@ -8,9 +8,11 @@
                 <a href="#section-faq"><li>FAQ</li></a>
                 <a href="#section-how-to"><li>How to...</li></a>
                 <a href="#section-keys"><li>Keyboard Shortcuts</li></a>
+                <a href="index.php"><li><< Splash Page</li></a>
+                <a href="front-page.php"><li>App >></li></a>
             </ul>
         </div>
-        <h2 class="title">Syntree Help</h4>
+        <h2 class="page_title">Syntree Help</h4>
         <div id="section-faq" class="help_section help_section__faq">
             <h4>FAQ</h4>
             <ul class="faq-list">

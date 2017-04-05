@@ -1,0 +1,34 @@
+%node_label_text {
+    text-align: center;
+    font-size: 14px;
+    line-height: 14px;
+    font-family: sans-serif;
+}
+
+.editor {
+    @extend %node_label_text;
+    position: absolute;
+    display: none;
+    outline-width: 0;
+    outline: none;
+    border: none;
+}
+
+.node-label {
+    @extend %node_label_text;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.delete_button {
+    cursor: pointer;
+
+    &.invisible {
+        cursor: default;
+    }
+}
+

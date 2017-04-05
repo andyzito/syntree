@@ -1,0 +1,87 @@
+.modal_body {
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-family: sans-serif;
+    z-index: 101;
+
+    &.modal_export, &.modal_open {
+        width: 50%;
+        height: 90%;
+        top: 5%;
+        left: 25%;
+    }
+
+    &.modal_tutorial {
+        width: 40%;
+        height: 24%;
+        top: 38%;
+        left: 30%;
+    }
+
+    .modal_title {
+        font-size: 2em;
+        letter-spacing: 2px;
+        font-weight: bold;
+
+        &__main {
+            text-align: center;
+            padding: 15px;
+        }
+    }
+
+    .modal_label {
+        font-size: 1.1em;
+    }
+
+    .modal_section {
+        display: inline-block;
+        margin-top: 20px;
+
+        &_filetype {
+            width: 100%;
+            text-align: center;
+        }
+
+        &__fname input{
+            margin-top: 20px;
+            margin-right: 5px;
+            text-align: right;
+        }
+
+        &__subtree {
+            float: right;
+            margin-right: 150px;
+        }
+    }
+
+    .modal_section__buttonset {
+        text-align: center;
+        width: 100%;
+        margin: 0.5rem 0;
+
+        button, a {
+            @extend .button_big;
+            margin: 0 1rem;
+        }
+    }
+
+    .modal_option_text input {
+        padding: 10px;
+        border: 1px solid black;
+        border-radius: 3px;
+    }
+
+    .modal_option_text input:focus {
+        border: 2px solid black;
+    }
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 100;
+}

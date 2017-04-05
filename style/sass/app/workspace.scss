@@ -1,0 +1,12 @@
+#workspace_container {
+    border: 1px solid black;
+    cursor: default !important;
+
+    @import 'node';
+    @import 'toolbar';
+    @import 'tutorial';
+
+    #workspace {
+        background-color: grey;
+    }
+}

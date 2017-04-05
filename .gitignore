@@ -1,2 +1,3 @@
-app
 db/db-config.php
+node_modules/
+sass/node_modules
