@@ -238,10 +238,10 @@ Syntree.workspace_constructor.prototype._eventUp = function() {
 }
 
 Syntree.workspace_constructor.prototype._eventDown = function(e) {
-    if (!e.ctrlKey) {
-        this.page.navigateDown();
-    } else {
+    if (Syntree.Lib.checkType(e, 'object') && Syntree.Lib.checkType(e.ctrlKey, 'boolean') && e.ctrlKey) {
         this.page.navigateDown(true);
+    } else {
+        this.page.navigateDown();
     }
 }
 

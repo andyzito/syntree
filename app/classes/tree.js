@@ -15,7 +15,7 @@ Syntree.Tree = function(config_matrix) {
         build_treestring: {
             type: 'string',
             default_value: '#undefined',
-        }
+        },
     }
 
     Syntree.Lib.config(config_matrix,this);
@@ -48,6 +48,10 @@ Syntree.Tree = function(config_matrix) {
             return n.getLabelContent();
         },
     };
+}
+
+Syntree.Tree.prototype.getCenter = function() {
+    // return this.root.
 }
 
 Syntree.Tree.prototype.getId = function() {
@@ -386,12 +390,11 @@ Syntree.Tree.prototype.distribute = function(angle) {
     }
 
     if (Syntree.Lib.checkType(this.root.getParent(), 'node')) {
-        var tree = new Syntree.Tree({root:this.root.getParent()});
+        var tree = new Syntree.Tree({
+            root:this.root.getParent()
+        });
         tree.distribute();
     } else {
-        if (this.root.getChildren().length > 1) {
-            // console.log(this.root.getChildren()[1].getLabelBBox());
-        }
         this.root.updateGraphics(true);
     }
 }

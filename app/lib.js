@@ -6,6 +6,19 @@ time_function = function(f,o) {
     return end_time - start_time;
 }
 
+time_make_child = function(id,n) {
+    Syntree.Page.nodeSelect(Syntree.Page.allNodes[id]);
+    var times = [];
+    var i = 0;
+    while (i < n) {
+        times.push(time_function('_eventDown', Syntree.Workspace));
+        Syntree.Workspace._eventUp();
+        i++;
+    }
+    var sum = times.reduce(function(a, b) { return a + b; });
+    return sum / times.length;
+}
+
 window.Syntree = {}; // Single global object, append any other 'globals' to this
 
 Syntree.Lib = {
