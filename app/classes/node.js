@@ -1,5 +1,8 @@
 Syntree.Node = function(config_matrix) {
     Syntree.Lib.config(config_matrix,this);
+    if (!Syntree.Lib.checkType(this.id, 'number')) {
+        this.id = Syntree.Lib.genId();
+    }
     Syntree.Page.registerNode(this); // register with master list of nodes
 
     // Relationships
@@ -27,7 +30,7 @@ Syntree.Node = function(config_matrix) {
 Syntree.Node.prototype.config_map = {
     id: {
         type: 'number',
-        default_value: Syntree.Lib.genId(),
+        default_value: '#undefined',
     },
     x: {
         type: 'number',
@@ -77,8 +80,8 @@ Syntree.Node.prototype.createGraphic = function() {
         },
         states_synced: {
             selected: false,
-            position: false,
             labelContent: false,
+            position: false,
         },
         data_object: this,
         update_functions: {
@@ -307,6 +310,7 @@ Syntree.Node.prototype.editingAction = function(action) {
             break;
         case 'update':
             if (this.editing) {
+                this.graphic.unsync('position');
                 this._labelbbox = undefined;
                 this.setLabelContent(this.graphic.getEl('editor').val());
                 this.updateGraphics(false);
