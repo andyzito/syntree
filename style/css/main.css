@@ -44,19 +44,19 @@ input[type=text] {
   border-radius: 3px;
   padding: 0.2rem; }
 
-@keyframes $name {
+@keyframes spin {
   from {
     transform: rotate(0deg); }
   to {
     transform: rotate(360deg); } }
 
-@-webkit-keyframes $name {
+@-webkit-keyframes spin {
   from {
     transform: rotate(0deg); }
   to {
     transform: rotate(360deg); } }
 
-@-moz-keyframes $name {
+@-moz-keyframes spin {
   from {
     transform: rotate(0deg); }
   to {
@@ -370,6 +370,8 @@ body.page_make {
       background-position: center; }
   #workspace_container #workspace {
     background-color: grey; }
+  #workspace_container #export-image-canvas {
+    display: none; }
   #workspace_container .loading_screen {
     display: block;
     position: absolute;
@@ -391,6 +393,3 @@ body.page_make {
       animation-iteration-count: 5;
       -webkit-animation-iteration-count: 5;
       -moz-animation-iteration-count: 5; }
-
-#export-image-canvas {
-  display: none; }

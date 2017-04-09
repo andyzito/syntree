@@ -11,13 +11,13 @@
 }
 
 @mixin create-animation ($name) {
-	@keyframes $name {
+	@keyframes #{$name} {
 		@content;
 	}
-	@-webkit-keyframes $name {
+	@-webkit-keyframes #{$name} {
 		@content;
 	}
-	@-moz-keyframes $name {
+	@-moz-keyframes #{$name} {
 		@content;
 	}
 }

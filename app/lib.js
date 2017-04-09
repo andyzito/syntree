@@ -1,5 +1,4 @@
 time_function = function(f,o) {
-    console.log("Timing " + f);
     var start_time = new Date().getTime();
     o[f]();
     var end_time = new Date().getTime();
@@ -27,12 +26,8 @@ Syntree.Lib = {
             var required_type = target.config_map[property_name].type;
             var default_value = target.config_map[property_name].default_value;
 
-            // console.log('doing ' + property_name);
-
             if (!this.checkType(matrix[property_name], required_type)) {
-                // console.log(property_name + "  ---  " + default_value);
                 if (this.checkType(default_value, 'undefined')) {
-                    // console.log(default_value);
                     throw new Error('You must provide a value for "' + property_name + '"');
                 } else {
                     if (default_value !== '#undefined') {
@@ -40,7 +35,6 @@ Syntree.Lib = {
                     }
                 }
             } else {
-                // console.log(property_name + "  ---  " + matrix[property_name]);
                 target[property_name] = matrix[property_name];
             }
         }
@@ -89,10 +83,6 @@ Syntree.Lib = {
     },
 
     checkType: function(a, required_type) {
-        // console.log('Inside checkType:');
-        // console.log('a is ' + a);
-        // console.log('type of a is ' + this.typeOf(a));
-        // console.log('required_type is ' + required_type);
         if (this.typeOf(required_type) === 'string') {
             return this.typeOf(a) === required_type;
         } else if (this.typeOf(required_type) === 'array') {

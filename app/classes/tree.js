@@ -71,6 +71,8 @@ Syntree.Tree.prototype.getRoot = function() {
 Syntree.Tree.prototype._getPath = function(which) {
     which = Syntree.Lib.checkArg(which, 'string', '#undefined');
 
+    var toReturn = {};
+
     if (Syntree.Lib.checkType(which, 'undefined')) {
         var Left = true;
         var Right = true;
@@ -82,6 +84,8 @@ Syntree.Tree.prototype._getPath = function(which) {
     var rootBBox = this.root.getLabelBBox();
     var rootPos = this.root.getPosition();
     var Y = rootPos.y - (rootBBox.h/2);
+    toReturn.topBound = Y;
+    toReturn.bottomBound = Y + rootBBox.h;
 
     if (Right) {
         var rX = rootPos.x - (rootBBox.w/2);
@@ -127,6 +131,7 @@ Syntree.Tree.prototype._getPath = function(which) {
             if (rX > rBound) {
                 rBound = rX;
             }
+            var rBotBound = (rPos.y + (rBBox.h/2));
         }
 
         if (Left) {
@@ -147,7 +152,9 @@ Syntree.Tree.prototype._getPath = function(which) {
             if (lX < lBound) {
                 lBound = lX;
             }
+            var lBotBound = (lPos.y + (lBBox.h/2));
         }
+        toReturn.bottomBound = Math.max(rBotBound, lBotBound);
         row++;
     }
 
@@ -167,7 +174,6 @@ Syntree.Tree.prototype._getPath = function(which) {
         lPathString += "H" + (rPos.x + (rBBox.w/2));
     }
 
-    var toReturn = {};
     if (Left && Right) {
         toReturn.pathString = lPathString + rPathString;
         toReturn.rightBound = rBound;

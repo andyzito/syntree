@@ -167,18 +167,11 @@ Syntree.Tutorial = {
     running: false,
 
     continue: function() {
-        console.log("Continue():")
-        console.log("Index " + this.index);
         this.index += 1;
-        console.log("Index is now " + this.index);
         if (this.index < this.frames.length && this.running) {
-            console.log("check good, continuing");
             frame = this.frames[this.index];
-            console.log('calling frame for index ' + this.index);
-            console.log(frame);
             this.frame(frame);
         } else {
-            console.log('tutorial over');
             $('.tutorial_instruction').fadeOut(2000, function(){
                 this.quit();
             });
@@ -187,45 +180,32 @@ Syntree.Tutorial = {
 
     start: function() {
         $('.tutorial_instruction').remove();
-        console.log("Start():")
         if (this.running) {
-            console.log("restart");
             this.quit();
-            console.log("(start()): .quit() run, running start")
             this.start();
         } else {
             this.index = -1;
             modal_close('app');
             this.running = true;
-            console.log("(start()): running continue(), index is " + this.index)
             this.continue();
         }
     },
 
     quit: function() {
-        console.log("Quit():");
         this.index = Infinity;
         this.running = false;
         $(document).off(".syntree_tutorial");
         clearTimeout(this.timer);
-        console.log('clearing timeout for id ' + this.timer);
         this.timer = undefined;
         this.data.node_naming_1 = 0;
         $('.tutorial_instruction').remove();
     },
 
     frame: function(frame) {
-        console.log("Frame():");
-        console.log("Index is " + this.index);
         var message = Syntree.Lib.checkArg(frame.message, 'string');
         var gateway = Syntree.Lib.checkArg(frame.gateway, ['object', 'number'], 2700);
 
-        console.log("message is " + message);
-        console.log("gateway:");
-        console.log(gateway);
-
         this.instruction(message);
-        console.log("(frame()): just called instruction()");
         // if (Syntree.Lib.checkType(frame.arrows, 'array')) {
         //     var i = 0;
         //     while (i < frame.arrows.length) {
@@ -244,21 +224,14 @@ Syntree.Tutorial = {
         //     $('.tutorial_arrow').remove();
         // }
         if (Syntree.Lib.checkType(gateway, 'number')) {
-            console.log("gateway is a number");
             this.timer = setTimeout(
                 (function() {
-                    console.log('running timeout id ' + Syntree.Tutorial.timer);
                     this.continue()
                 }).bind(this), gateway);
-            console.log("just set timeout, id is " + this.timer);
         } else if (Syntree.Lib.checkType(gateway, 'object')) {
-            console.log("gateway is object");
             var event_string = String(gateway.event_type).replace(',', '.syntree_tutorial ') + ".syntree_tutorial";
-            console.log("event string is '" + event_string + "'");
             $(document).on(event_string, (function(e) {
-                console.log("**Inside gateway event callback");
                 if (gateway.condition(e)) {
-                    console.log("***Inside gateway condition");
                     $(document).off(event_string);
                     this.continue();
                 }
@@ -267,16 +240,12 @@ Syntree.Tutorial = {
     },
 
     instruction: function(text) {
-        console.log("Instruction():");
         if ($('.tutorial_instruction:not(.primary)').length > 0) {
-            console.log("secondary instruction exists");
             $('.tutorial_instruction:not(.primary)').fadeOut(1000, function() {
-                console.log("removing secondary instruction");
                 $(this).remove();
             });
         }
         if ($('.tutorial_instruction.primary').length > 0) {
-            console.log("primary instruction exists");
             $('.tutorial_instruction.primary').removeClass('primary');
         }
         $("#workspace_container").append('<p class="tutorial_instruction primary">' + text + '</p>');

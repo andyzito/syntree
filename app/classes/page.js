@@ -76,7 +76,8 @@ Syntree.page_constructor.prototype.getSVGString = function() {
     }
     var bgsvg = this.background.node.outerHTML;
     var treesvg = this.tree.getSVGString();
-    return bgsvg+treesvg;
+    var style = '<style type="text/css">text{font-family:sans-serif}</style>';
+    return style+bgsvg+treesvg;
 }
 
 Syntree.page_constructor.prototype.getNearestNode = function(x,y) {
