@@ -55,6 +55,11 @@ input[type=text] {
     padding: 0.2rem;
 }
 
+@include create-animation(spin) {
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
 .option_wrapper_radio {
     display: inline-block;
     border: 1px solid black;

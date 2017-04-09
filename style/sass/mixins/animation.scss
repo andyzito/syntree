@@ -1,0 +1,23 @@
+@mixin animation ($name, $duration, $iteration) {
+	animation-name: $name;
+	-webkit-animation-name: $name;
+	-moz-animation-name: $name;
+	animation-duration: $duration;
+	-webkit-animation-duration: $duration;
+	-moz-animation-duration: $duration;
+	animation-iteration-count: $iteration;
+	-webkit-animation-iteration-count: $iteration;
+	-moz-animation-iteration-count: $iteration;
+}
+
+@mixin create-animation ($name) {
+	@keyframes $name {
+		@content;
+	}
+	@-webkit-keyframes $name {
+		@content;
+	}
+	@-moz-keyframes $name {
+		@content;
+	}
+}

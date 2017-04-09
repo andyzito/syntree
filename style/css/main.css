@@ -44,6 +44,24 @@ input[type=text] {
   border-radius: 3px;
   padding: 0.2rem; }
 
+@keyframes $name {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }
+
+@-webkit-keyframes $name {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }
+
+@-moz-keyframes $name {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }
+
 .option_wrapper_radio {
   display: inline-block;
   border: 1px solid black;
@@ -285,7 +303,8 @@ body.page_make {
 
 #workspace_container {
   border: 1px solid black;
-  cursor: default !important; }
+  cursor: default !important;
+  position: relative; }
   #workspace_container .editor, #workspace_container .node-label {
     text-align: center;
     font-size: 14px;
@@ -351,6 +370,27 @@ body.page_make {
       background-position: center; }
   #workspace_container #workspace {
     background-color: grey; }
+  #workspace_container .loading_screen {
+    display: block;
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    left: 0;
+    top: 0;
+    z-index: 6000;
+    background-color: white; }
+    #workspace_container .loading_screen img {
+      margin-top: 11%;
+      margin-left: 22%;
+      animation-name: spin;
+      -webkit-animation-name: spin;
+      -moz-animation-name: spin;
+      animation-duration: 1s;
+      -webkit-animation-duration: 1s;
+      -moz-animation-duration: 1s;
+      animation-iteration-count: 5;
+      -webkit-animation-iteration-count: 5;
+      -moz-animation-iteration-count: 5; }
 
 #export-image-canvas {
   display: none; }
