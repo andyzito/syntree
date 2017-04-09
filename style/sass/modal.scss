@@ -6,17 +6,11 @@
     font-family: sans-serif;
     z-index: 101;
 
-    .loading-icon {
-        display: block;
-        margin: auto;
-        margin-top: 3rem;
-    }
-
     &.modal_export, &.modal_open {
-        width: 50%;
-        height: 90%;
-        top: 5%;
-        left: 25%;
+        width: 45%;
+        height: 65%;
+        top: 17.5%;
+        left: 27.5%;
     }
 
     &.modal_tutorial {
@@ -51,7 +45,7 @@
                 text-align: left;
                 margin: 1rem;
                 font-size: 1.5rem;
-                width: 50%;
+                width: 60%;
 
                 .option_wrapper_radio {
                     width: 100%;

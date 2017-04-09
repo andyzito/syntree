@@ -102,6 +102,12 @@ input[type=text] {
   .button_small {
     padding: 0.8rem 1rem;
     font-size: 1rem; }
+  .button.loading, #workspace_container #toolbar .loading.toolbar_button {
+    color: transparent;
+    background-image: url("/hourglass.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain; }
 
 .modal_body {
   position: absolute;
@@ -110,16 +116,11 @@ input[type=text] {
   border-radius: 10px;
   font-family: sans-serif;
   z-index: 101; }
-  .modal_body .loading-icon {
-    display: block;
-    margin: auto;
-    margin-top: 3rem;
-    display: none; }
   .modal_body.modal_export, .modal_body.modal_open {
-    width: 50%;
-    height: 90%;
-    top: 5%;
-    left: 25%; }
+    width: 45%;
+    height: 65%;
+    top: 17.5%;
+    left: 27.5%; }
   .modal_body.modal_tutorial {
     width: 40%;
     height: 24%;
@@ -144,7 +145,7 @@ input[type=text] {
         text-align: left;
         margin: 1rem;
         font-size: 1.5rem;
-        width: 50%; }
+        width: 60%; }
         .modal_body .modal_section__filetype .option_wrapper .option_wrapper_radio {
           width: 100%; }
         .modal_body .modal_section__filetype .option_wrapper .modal_option__fname {

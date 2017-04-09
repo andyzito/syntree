@@ -140,6 +140,7 @@ Syntree.workspace_constructor.prototype._attachEventListeners = function() {
     if (Syntree.Lib.checkType(this.export_tree_script, 'string')) {
         $(document).on('click', '.modal_section__filetype .modal_label', function(e) {W._eventFiletypeLabelClick(e)});
         $(document).on('click', '.button_modal__export', function() {
+            $(this).addClass('loading');
             var type = $('.modal_section__filetype input:checked').val();
             if (type === 'bracket-file') {
                 W._eventExportBrackets();
@@ -148,6 +149,7 @@ Syntree.workspace_constructor.prototype._attachEventListeners = function() {
             } else if (type === 'png') {
                 W._eventExportImage();
             }
+            $(this).removeClass('loading');
         });
     }
     // Upload
