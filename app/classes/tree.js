@@ -380,6 +380,7 @@ Syntree.Tree.prototype.distribute = function(angle) {
             this.root.getPosition().x,
             this.root.getPosition().y+this.rowHeight
         );
+        return;
     } else if (children.length > 1) {
         var pos = this.root.getPosition();
         var leftBound = pos.x - (this.rowHeight * Math.tan((angle/2) * (Math.PI / 180)));

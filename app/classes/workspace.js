@@ -222,7 +222,7 @@ Syntree.workspace_constructor.prototype._eventLeft = function(e) {
     if ($(document.activeElement).hasClass('editor') && $(document.activeElement).val() !== '') {
         return;
     }
-    if (!e.ctrlKey) {
+    if (Syntree.Lib.checkType(e, 'object') && !e.ctrlKey) {
         this.page.navigateHorizontal('left');
     } else {
         this.page.navigateHorizontal('left',true);
@@ -233,7 +233,7 @@ Syntree.workspace_constructor.prototype._eventRight = function(e) {
     if ($(document.activeElement).hasClass('editor') && $(document.activeElement).val() !== '') {
         return;
     }
-    if (!e.ctrlKey) {
+    if (Syntree.Lib.checkType(e, 'object') && !e.ctrlKey) {
         this.page.navigateHorizontal('right');
     } else {
         this.page.navigateHorizontal('right',true);

@@ -19,6 +19,20 @@ time_make_child = function(id,n) {
     return sum / times.length;
 }
 
+time_make_sibling = function(id,n) {
+    Syntree.Page.nodeSelect(Syntree.Page.allNodes[id]);
+    var times = [];
+    var i = 0;
+    while (i < n) {
+        console.log('timing');
+        times.push(time_function('_eventLeft', Syntree.Workspace));
+        Syntree.Workspace._eventRight();
+        i++;
+    }
+    var sum = times.reduce(function(a, b) { return a + b; });
+    return sum / times.length;
+}
+
 window.Syntree = {}; // Single global object, append any other 'globals' to this
 
 Syntree.Lib = {
