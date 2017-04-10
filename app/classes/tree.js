@@ -347,6 +347,28 @@ Syntree.Tree.prototype.getSVGString = function() {
     return s;
 }
 
+Syntree.Tree.prototype.getLeftMostNode = function() {
+    var node = this.root;
+    while (true) {
+        if (node.getChildren().length === 0) {
+            return node;
+        } else {
+            node = node.getChildren()[0];
+        }
+    }
+}
+
+Syntree.Tree.prototype.getRightMostNode = function() {
+    var node = this.root;
+    while (true) {
+        if (node.getChildren().length === 0) {
+            return node;
+        } else {
+            node = node.getChildren()[node.getChildren().length-1];
+        }
+    }
+}
+
 Syntree.Tree.prototype.distribute = function(angle) {
     angle = Syntree.Lib.checkArg(angle, 'number', 60);
 
@@ -376,11 +398,16 @@ Syntree.Tree.prototype.distribute = function(angle) {
         while (c < children.length-1) {
             var lChild = children[c];
             var rChild = children[c+1];
-            var lPath = new Syntree.Tree({root:lChild})._getPath();
-            var rPath = new Syntree.Tree({root:rChild})._getPath();
-            if (Snap.path.intersection(lPath.pathString,rPath.pathString).length > 0) {
+            var lNode = new Syntree.Tree({root:rChild}).getLeftMostNode();
+            var rNode = new Syntree.Tree({root:lChild}).getRightMostNode();
+            var lBBox = lNode.getLabelBBox();
+            var rBBox = rNode.getLabelBBox();
+            var lBound = lNode.getPosition().x - (lBBox.w/2);
+            var rBound = rNode.getPosition().x + (rBBox.w/2);
+            // if (Snap.path.intersection(lPath.pathString,rPath.pathString).length > 0) {
+            if (rBound >= lBound) {
                 intersect = true;
-                var overlap = lPath.rightBound - rPath.leftBound;
+                var overlap = rBound - lBound;
                 newWidth += Math.abs(overlap);
                 newWidth += 20; //padding
             }

@@ -10,6 +10,7 @@ time_make_child = function(id,n) {
     var times = [];
     var i = 0;
     while (i < n) {
+        console.log('timing');
         times.push(time_function('_eventDown', Syntree.Workspace));
         Syntree.Workspace._eventUp();
         i++;
