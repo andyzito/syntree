@@ -51,7 +51,7 @@ Syntree.Tree = function(config_matrix) {
 }
 
 Syntree.Tree.prototype.getCenter = function() {
-    // return this.root.
+    return this.root.getPosition().x;
 }
 
 Syntree.Tree.prototype.getId = function() {
@@ -354,21 +354,26 @@ Syntree.Tree.prototype.distribute = function(angle) {
     if (children.length === 0) {
         return;
     } else if (children.length === 1){
-        children[0].move(
-            this.root.getPosition().x,
-            this.root.getPosition().y+this.rowHeight
-        );
+        children[0].shift(0);
+        children[0].setLevel(this.root.getLevel() + this.rowHeight);
     } else if (children.length > 1) {
         var pos = this.root.getPosition();
         var leftBound = pos.x - (this.rowHeight * Math.tan((angle/2) * (Math.PI / 180)));
         var rightBound = pos.x + (this.rowHeight * Math.tan((angle/2) * (Math.PI / 180)));
         var width = rightBound - leftBound;
         var interval = width/(children.length-1);
-        var i = 0;
-        while (i < children.length) {
-            children[i].move(leftBound+(interval*i),this.root.getPosition().y+this.rowHeight);
-            i++;
-        }
+
+        children[0].setLevel(this.root.getLevel() + this.rowHeight);
+        children[1].setLevel(this.root.getLevel() + this.rowHeight);
+        children[0].shift(-1*(width/2));
+        children[1].shift(width/2);
+        // var i = 0;
+        // while (i < children.length) {
+            // children[i].setLevel(this.root.getLevel() + this.rowHeight);
+            // children[i].move(leftBound+(interval*i),this.root.getPosition().y+this.rowHeight);
+            // children[i].shift()
+            // i++;
+        // }
 
         var c = 0;
         var intersect = false;

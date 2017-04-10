@@ -1,8 +1,14 @@
 Syntree.Node = function(config_matrix) {
     Syntree.Lib.config(config_matrix,this);
+
+    if (!Syntree.Lib.checkType(this.tree, 'tree')) {
+        this.tree = Syntree.Page.tree;
+    }
+
     if (!Syntree.Lib.checkType(this.id, 'number')) {
         this.id = Syntree.Lib.genId();
     }
+
     Syntree.Page.registerNode(this); // register with master list of nodes
 
     // Relationships
@@ -43,6 +49,10 @@ Syntree.Node.prototype.config_map = {
     labelContent: {
         type: 'string',
         default_value: '',
+    },
+    tree: {
+        type: 'tree',
+        default_value: '#undefined',
     },
 }
 
@@ -139,14 +149,34 @@ Syntree.Node.prototype.createGraphic = function() {
     this.graphic = new Syntree.Graphic(config_matrix)
 }
 
+Syntree.Node.prototype.shift = function(x) {
+    this.xShift = x;
+    return this.xShift;
+}
+
+Syntree.Node.prototype.relShift = function(deltaX) {
+    this.xShift = this.xShift + x;
+    return this.xShift;
+}
+
+Syntree.Node.prototype.getLevel = function() {
+    return this.y;
+}
+
+Syntree.Node.prototype.setLevel = function(y) {
+    this.y = y;
+}
+
+// Syntree.Node.prototype.
+
 Syntree.Node.prototype.getId = function() {
     return this.id;
 }
 
 Syntree.Node.prototype.getPosition = function() {
     return {
-        x: this.x,
-        y: this.y
+        x: this.tree.getCenter() + this.xShift,
+        y: this.y,
     };
 }
 
@@ -159,31 +189,13 @@ Syntree.Node.prototype.setLabelContent = function(content) {
     this.labelContent = content;
 }
 
-Syntree.Node.prototype.getLabelBBox2 = function() {
-    if (this.graphic.getEl('label').node.textContent === "" || $("#" + this.graphic.getEl('label').attr('id')).length === 0) {
-        var fakeHeight = 15;
-        var fakeWidth = 10;
-        return {
-            x: this.x - fakeWidth/2,
-            x2: this.x + fakeWidth/2,
-            y: this.y - fakeHeight/2,
-            y2: this.y + fakeHeight/2,
-            w: fakeWidth,
-            width: fakeWidth,
-            height: fakeHeight,
-            h: fakeHeight
-        }
-    }
-    return this.graphic.getEl('label').getBBox();
-}
-
 Syntree.Node.prototype.getLabelBBox = function() {
     if (this.graphic.getEl('label').node.textContent === "" || $("#" + this.graphic.getEl('label').attr('id')).length === 0) {
         var fakeHeight = 15;
         var fakeWidth = 10;
         return {
-            x: this.x - fakeWidth/2,
-            x2: this.x + fakeWidth/2,
+            x: (this.x - fakeWidth/2) + this.xShift,
+            x2: (this.x + fakeWidth/2) + this.xShift,
             y: this.y - fakeHeight/2,
             y2: this.y + fakeHeight/2,
             w: fakeWidth,
@@ -195,6 +207,9 @@ Syntree.Node.prototype.getLabelBBox = function() {
         if (!Syntree.Lib.checkType(this._labelbbox, 'object')) {
             this._labelbbox = this.graphic.getEl('label').getBBox();
         }
+        this._labelbbox.x += this.xShift;
+        this._labelbbox.x2 += this.xShift;
+        this._labelbbox.cx += this.xShift;
         return this._labelbbox;
     }
 }
@@ -241,34 +256,34 @@ Syntree.Node.prototype.getSVGString = function() {
 }
 
 Syntree.Node.prototype.move = function(x,y,propagate) {
-    this.graphic.unsync('position');
-    x = Syntree.Lib.checkArg(x, 'number');
-    y = Syntree.Lib.checkArg(y, 'number');
-    propagate = Syntree.Lib.checkArg(propagate, 'boolean', true);
+    // this.graphic.unsync('position');
+    // x = Syntree.Lib.checkArg(x, 'number');
+    // y = Syntree.Lib.checkArg(y, 'number');
+    // propagate = Syntree.Lib.checkArg(propagate, 'boolean', true);
 
-    var oldX = this.x;
-    var oldY = this.y;
+    // var oldX = this.x;
+    // var oldY = this.y;
 
-    this.x = x;
-    this.y = y;
-    this._labelbbox = undefined;
-    this.positionUnsynced = true;
-    if (propagate) {
-        var c = 0;
-        while (c < this.children.length) {
-            var deltaX = this.x - oldX;
-            var deltaY = this.y - oldY;
-            var thisChild = this.children[c];
-            var pos = thisChild.getPosition();
-            thisChild.move(pos.x + deltaX,pos.y + deltaY);
-            c++;
-        }
-    }
+    // this.x = x;
+    // this.y = y;
+    // this._labelbbox = undefined;
     // this.positionUnsynced = true;
-    return {
-        x: this.x,
-        y: this.y,
-    }
+    // if (propagate) {
+    //     var c = 0;
+    //     while (c < this.children.length) {
+    //         var deltaX = this.x - oldX;
+    //         var deltaY = this.y - oldY;
+    //         var thisChild = this.children[c];
+    //         var pos = thisChild.getPosition();
+    //         thisChild.move(pos.x + deltaX,pos.y + deltaY);
+    //         c++;
+    //     }
+    // }
+    // // this.positionUnsynced = true;
+    // return {
+    //     x: this.x,
+    //     y: this.y,
+    // }
 }
 
 Syntree.Node.prototype.delete = function() {

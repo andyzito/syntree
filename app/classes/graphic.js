@@ -40,3 +40,11 @@ Syntree.Graphic.prototype.update = function() {
 		}
 	}
 }
+
+Syntree.Graphic.getGroup = function() {
+	var g = Syntree.snap.g();
+	for (el_name in this.elements) {
+		g.add(this.elements[el_name]);
+	}
+	return g;
+}
