@@ -152,15 +152,7 @@ Syntree.Lib = {
             var side1 = box1[sides[i]];
             var ii = 0;
             while (ii < sides.length) {
-                console.log(i, ii);
                 var side2 = box2[sides[ii]];
-
-                // console.log({
-                //     x1: sides[i].includes('x') ? 'side1' : 'box1.cx',
-                //     y1: sides[i].includes('y') ? 'side1' : 'box1.cy',
-                //     x2: sides[ii].includes('x') ? 'side2' : 'box2.cx',
-                //     y2: sides[ii].includes('y') ? 'side2' : 'box2.cy',
-                // });
 
                 var temp = {
                     x1: sides[i].includes('x') ? side1 : box1.cx,
@@ -180,5 +172,5 @@ Syntree.Lib = {
             i++;
         }
         return closestSides;
-    }
+    },
 }

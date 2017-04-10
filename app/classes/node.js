@@ -217,6 +217,16 @@ Syntree.Node.prototype.getChildren = function() {
     return this.children;
 }
 
+Syntree.Node.prototype.getPath = function() {
+    var bbox = this.getLabelBBox();
+    var s = "M " + bbox.x + " " + bbox.y + ", ";
+    s += "L " + bbox.x2 + " " + bbox.y + ", ";
+    s += "L " + bbox.x2 + " " + bbox.y2 + ", ";
+    s += "L " + bbox.x + " " + bbox.y2 + ", ";
+    s += "L " + bbox.x + " " + bbox.y + ", ";
+    return s;
+}
+
 Syntree.Node.prototype.getState = function(which) {
     switch (which) {
         case 'selected':
