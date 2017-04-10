@@ -21,6 +21,19 @@ Syntree.page_constructor = function() {
     // this.group.attr({id: "group-" + this.id, class: "page-group"});
 }
 
+Syntree.page_constructor.prototype.startMovementArrow = function(node) {
+    console.log('start arrow');
+    this.drawingMovementArrow = true;
+    this.movementArrowStartNode = node;
+}
+
+Syntree.page_constructor.prototype.endMovementArrow = function(node) {
+    new Syntree.Arrow(this.movementArrowStartNode,node);
+    this.drawingMovementArrow = false;
+    this.movementArrowStartNode = undefined;
+    console.log('end arrow');
+}
+
 Syntree.page_constructor.prototype.registerNode = function(node) {
     node = Syntree.Lib.checkArg(node, 'node');
     this.allNodes[node.id] = node;

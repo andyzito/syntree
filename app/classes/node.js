@@ -107,7 +107,16 @@ Syntree.Node.prototype.createGraphic = function() {
                 }
             },
             labelContent: function(d,g) {
+                if (d.labelContent.match(/\s|^$/)) {
+                    g.getEl('label').node.textContent = "Oalsdnfkabsfjhbdsfj";
+                    g.getEl('label').attr({
+                        color: 'transparent',
+                    });
+                }
                 g.getEl('label').node.textContent = d.labelContent;
+                    // g.getEl('label').attr({
+                    //     color: 'transparent',
+                    // });
             },
             position: function(d,g) {
                 var bbox = d.getLabelBBox();

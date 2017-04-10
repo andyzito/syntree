@@ -114,4 +114,56 @@ Syntree.Lib = {
             }
         }
     },
+
+    distance: function(args) {
+        x1 = Syntree.Lib.checkArg(args.x1, 'number');
+        x2 = Syntree.Lib.checkArg(args.x2, 'number');
+        y1 = Syntree.Lib.checkArg(args.y1, 'number');
+        y2 = Syntree.Lib.checkArg(args.y2, 'number');
+
+        return Math.sqrt(Math.pow((x2 - x1),2)+Math.pow((y2 - y1),2));
+    },
+
+    getClosestSides: function(box1, box2) {
+        var sides = ['x', 'x2', 'y', 'y2'];
+
+        var leastDistance = Number.POSITIVE_INFINITY;
+        var closestSides = {
+            s1: '',
+            s2: '',
+        }
+        var i = 0;
+        while (i < sides.length) {
+            var side1 = box1[sides[i]];
+            var ii = 0;
+            while (ii < sides.length) {
+                console.log(i, ii);
+                var side2 = box2[sides[ii]];
+
+                // console.log({
+                //     x1: sides[i].includes('x') ? 'side1' : 'box1.cx',
+                //     y1: sides[i].includes('y') ? 'side1' : 'box1.cy',
+                //     x2: sides[ii].includes('x') ? 'side2' : 'box2.cx',
+                //     y2: sides[ii].includes('y') ? 'side2' : 'box2.cy',
+                // });
+
+                var temp = {
+                    x1: sides[i].includes('x') ? side1 : box1.cx,
+                    y1: sides[i].includes('y') ? side1 : box1.cy,
+                    x2: sides[ii].includes('x') ? side2 : box2.cx,
+                    y2: sides[ii].includes('y') ? side2 : box2.cy,
+                }
+
+                var distance = Syntree.Lib.distance(temp);
+                if (distance < leastDistance) {
+                    leastDistance = distance;
+                    closestSides.s1 = sides[i];
+                    closestSides.s2 = sides[ii];
+                }
+                ii++;
+            }
+            i++;
+        }
+        return closestSides;
+    }
 }

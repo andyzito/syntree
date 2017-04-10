@@ -97,7 +97,7 @@ Syntree.workspace_constructor.prototype._attachEventListeners = function() {
     // Store 'this' as local variable to avoid conflicts in callback scope
     var W = this;
     // Basic events, funneled to event functions below
-    $(document).on('click', '.node-label', function() {W._eventNodeClick(this);});
+    $(document).on('click', '.node-label', function(e) {W._eventNodeClick(e);});
     $(document).on('click', '.delete_button', function() {W._eventDel();});
     $(document).on('click', '#page-background', function(e) {W._eventBGClick(e);});
     $(document).on('dblclick', '.node-label', function() {W._eventEnter();});
@@ -207,9 +207,14 @@ Syntree.workspace_constructor.prototype._eventUpload = function() {
     $('#temp-choose-file').click();
 }
 
-Syntree.workspace_constructor.prototype._eventNodeClick = function(clickedNode) {
-    clickedNode = Syntree.Lib.checkArg(clickedNode, 'svgtextelement');
-    var node = this.page.allNodes[$(clickedNode).attr('id').split('-')[1]];
+Syntree.workspace_constructor.prototype._eventNodeClick = function(e) {
+    // clickedNode = Syntree.Lib.checkArg(clickedNode, 'svgtextelement');
+    var node = this.page.allNodes[$(e.currentTarget).attr('id').split('-')[1]];
+    if (e.ctrlKey && !this.page.drawingMovementArrow) {
+        this.page.startMovementArrow(node);
+    } else if (e.ctrlKey) {
+        this.page.endMovementArrow(node);
+    }
     this.page.nodeSelect(node);
 }
 
