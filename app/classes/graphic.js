@@ -16,7 +16,7 @@ Syntree.Graphic.prototype.config_map = {
 		default: '#undefined',
 	},
 	data_object: {
-		type: ['node', 'arrow'],
+		type: ['node', 'arrow', 'branch'],
 	},
 }
 
@@ -34,10 +34,13 @@ Syntree.Graphic.prototype.unsync = function(state_name) {
 
 Syntree.Graphic.prototype.update = function() {
 	for (state in this.states_synced) {
-		if (!this.states_synced[state]) {
+		if (Syntree.Lib.checkType(this.states_synced[state], 'boolean') && !this.states_synced[state]) {
 			this.update_functions[state](this.data_object, this);
 			this.states_synced[state] = true;
 		}
+	}
+	if (Syntree.Lib.checkType(this.update_functions['#default'], 'function')) {
+		this.update_functions['#default'](this.data_object, this);
 	}
 }
 

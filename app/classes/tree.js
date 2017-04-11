@@ -380,6 +380,7 @@ Syntree.Tree.prototype.distribute = function(angle) {
             this.root.getPosition().x,
             this.root.getPosition().y+this.rowHeight
         );
+        children[0].updateGraphics();
         return;
     } else if (children.length > 1) {
         var pos = this.root.getPosition();

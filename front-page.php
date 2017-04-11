@@ -8,7 +8,7 @@
             upload_enabled: false,
             tutorial_enabled: true,
         }
-        new Workspace(init);
+        new Syntree.workspace_constructor(init);
     });
     </script>
 

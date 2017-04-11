@@ -277,15 +277,21 @@ Syntree.page_constructor.prototype.nodeDelete = function(node, silent) {
         root:node
     });
     if (!silent) {
-        new ActionDelete(tree,parent,parent.getChildren().indexOf(tree.root));
+        new ActionDelete(
+            tree,
+            parent,
+            parent.getChildren().indexOf(tree.root)
+        );
     }
     tree.delete();
     if (Syntree.Lib.checkType(parent, 'node')) {
-        tree = new Syntree.Tree({root:parent});
+        tree = new Syntree.Tree({
+            root:parent
+        });
         tree.distribute();
     }
     if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
-        this.nodeSelect(this.tree.getRoot());
+        // this.nodeSelect(this.tree.getRoot());
     }
 }
 

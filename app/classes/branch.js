@@ -1,41 +1,60 @@
 Syntree.Branch = function(parent,child) {
-    Syntree.selectableElement.call(this);
-
     parent = Syntree.Lib.checkArg(parent, 'node');
     child = Syntree.Lib.checkArg(child, 'node');
-
-    this.startPoint = parent.getPosition();
-    this.endPoint = child.getPosition();
-
-    this.line = Syntree.snap.line(this.startPoint.x,this.startPoint.y,this.endPoint.x,this.endPoint.y);
-    this.line.attr({
-        stroke:'black'
-    });
     child.parentBranch = this;
     parent.childBranches.push(this);
-
     this.parent = parent;
     this.child = child;
+
+    Syntree.selectableElement.call(this);
+}
+
+Syntree.Branch.prototype.createGraphic = function() {
+    this.startPoint = this.parent.getPosition();
+    this.endPoint = this.child.getPosition();
+
+    var line = Syntree.snap.line(
+        this.startPoint.x,
+        this.startPoint.y,
+        this.endPoint.x,
+        this.endPoint.y
+    );
+
+    line.attr({
+        stroke:'black',
+    });
+
+    var config_matrix = {
+        elements: {
+            line: line,
+        },
+        states_synced: {
+
+        },
+        data_object: this,
+        update_functions: {
+            '#default': function(d,g) {
+                d.startPoint = d.parent.getPosition();
+                d.endPoint = d.child.getPosition();
+
+                g.getEl('line').attr({
+                    x1: d.startPoint.x,
+                    y1: d.parent.getLabelBBox().y2 + 5,
+                    x2: d.endPoint.x,
+                    y2: d.child.getLabelBBox().y - 5,
+                });
+            }
+        }
+    }
+
+    this.graphic = new Syntree.Graphic(config_matrix);
 }
 
 Syntree.Branch.prototype.toString = function() {
     return "[object Branch]"
 }
 
-Syntree.Branch.prototype.updateGraphics = function() {
-    this.startPoint = this.parent.getPosition();
-    this.endPoint = this.child.getPosition();
-
-    this.line.attr({
-        x1: this.startPoint.x,
-        y1: this.parent.getLabelBBox().y2 + 5,
-        x2: this.endPoint.x,
-        y2: this.child.getLabelBBox().y - 5,
-    });
-}
-
-Syntree.Branch.prototype.delete = function() {
-    this.line.remove();
+Syntree.Branch.prototype.__delete = function() {
     this.parent.childBranches.splice(this.parent.childBranches.indexOf(this.parentBranch), 1);
 }
 

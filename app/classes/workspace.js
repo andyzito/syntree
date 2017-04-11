@@ -174,7 +174,7 @@ Syntree.workspace_constructor.prototype._eventArrowClick = function(e) {
     var clicked = e.currentTarget;
     var clickedId = $(clicked).attr('id');
     var id = Number(clickedId.substr(clickedId.lastIndexOf('-')+1, clickedId.length));
-    Syntree.Page.allArrows[id].select();
+    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
 }
 
 Syntree.workspace_constructor.prototype._eventRewatchTutorial = function() {
@@ -218,7 +218,7 @@ Syntree.workspace_constructor.prototype._eventUpload = function() {
 
 Syntree.workspace_constructor.prototype._eventNodeClick = function(e) {
     // clickedNode = Syntree.Lib.checkArg(clickedNode, 'svgtextelement');
-    var node = this.page.allNodes[$(e.currentTarget).attr('id').split('-')[1]];
+    var node = Syntree.ElementsManager.allElements[$(e.currentTarget).attr('id').split('-')[1]];
     if (e.ctrlKey && !this.page.drawingMovementArrow) {
         this.page.startMovementArrow(node);
     } else if (e.ctrlKey) {

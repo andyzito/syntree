@@ -44,7 +44,7 @@ function ActionDelete(tree,parent,index) {
     var descendants = tree.getDescendantsOf(tree.root,'id',true,true);
     var i = 0;
     while (i < descendants.length) {
-        this.nodes[String(descendants[i])] = Syntree.Workspace.page.allNodes[String(descendants[i])];
+        this.nodes[String(descendants[i])] = Syntree.ElementsManager.allElements[String(descendants[i])];
         i++;
     }
 

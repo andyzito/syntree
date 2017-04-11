@@ -1,6 +1,4 @@
 Syntree.Arrow = function(parent,child) {
-    Syntree.element.call(this);
-
     parent = Syntree.Lib.checkArg(parent, 'node');
     child = Syntree.Lib.checkArg(child, 'node');
 
@@ -13,12 +11,12 @@ Syntree.Arrow = function(parent,child) {
     this.parent = parent;
     this.child = child;
 
-    Syntree.Lib.makeSelectable(this);
-    this.createGraphic();
+    Syntree.selectableElement.call(this);
     this.updateGraphics();
 }
 
 Syntree.Arrow.prototype.createGraphic = function() {
+    console.log(this);
     var path = "M " + this.startPoint.x + " " + this.startPoint.y +
             ", C " + this.startPoint.x + " " + this.startPoint.y +
             ", " + this.endPoint.x + " " + this.endPoint.y +
@@ -26,7 +24,7 @@ Syntree.Arrow.prototype.createGraphic = function() {
 
     var shadowLine = Syntree.snap.path(path);
     shadowLine.attr({
-        stroke: 'grey',
+        stroke: 'lightgrey',
         strokeWidth: '5px',
         class: 'arrow-shadow',
         id: 'arrow-shadow-' + this.id,
@@ -53,7 +51,9 @@ Syntree.Arrow.prototype.createGraphic = function() {
         data_object: this,
         update_functions: {
             selected: function(d,g) {
+                console.log('inside selected function thingy')
                 if (d.selected) {
+                    console.log("is selected");
                     g.getEl('shadowLine').attr({
                         opacity: 100,
                     });
@@ -64,6 +64,7 @@ Syntree.Arrow.prototype.createGraphic = function() {
                         r: 3,
                     })
                 } else {
+                    console.log('is not selected');
                     g.getEl('shadowLine').attr({
                         opacity: 0,
                     });

@@ -284,20 +284,14 @@ Syntree.Node.prototype.move = function(x,y,propagate) {
     }
 }
 
-// Syntree.Node.prototype.delete = function() {
-//     this.graphic.getEl('label').remove();
-//     this.graphic.getEl('editor').remove();
-//     this.graphic.getEl('highlight').remove();
-//     this.graphic.getEl('deleteButton').remove();
-//     delete Syntree.Page.allNodes[this.id];
-//     if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
-//         this.parentBranch.delete();
-//     }
-//     if (Syntree.Lib.checkType(this.parent, 'node')) {
-//         this.parent.children.splice(this.parent.children.indexOf(this), 1);
-//     }
-//     this.deleted = true;
-// }
+Syntree.Node.prototype.__delete = function() {
+    if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
+        this.parentBranch.delete();
+    }
+    if (Syntree.Lib.checkType(this.parent, 'node')) {
+        this.parent.children.splice(this.parent.children.indexOf(this), 1);
+    }
+}
 
 // Syntree.Node.prototype.select = function() {
 //     this.selected = true;
@@ -360,13 +354,11 @@ Syntree.Node.prototype.editingAction = function(action) {
     }
 }
 
-Syntree.Node.prototype.updateGraphics = function(propagate) {
+Syntree.Node.prototype.__updateGraphics = function(propagate) {
     propagate = Syntree.Lib.checkArg(propagate, 'boolean', false);
     if (this.positionUnsynced) {
         propagate = true;
     }
-
-    this.graphic.update();
 
     // Branches
     if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
