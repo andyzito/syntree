@@ -1,9 +1,6 @@
 Syntree.page_constructor = function() {
     Syntree.Page = this;
 
-    this.allNodes = {}; // so we can always get a node by its id
-    this.selectedNode = undefined; // will keep track of the selected node
-
     // Page background
     this.background = Syntree.snap.rect(
         -100,
@@ -34,10 +31,14 @@ Syntree.page_constructor.prototype.endMovementArrow = function(node) {
     console.log('end arrow');
 }
 
-Syntree.page_constructor.prototype.registerNode = function(node) {
-    node = Syntree.Lib.checkArg(node, 'node');
-    this.allNodes[node.id] = node;
-}
+// Syntree.page_constructor.prototype.register = function(element) {
+//     element = Syntree.Lib.checkArg(element, ['node', 'arrow']);
+//     if (Syntree.Lib.checkType(element, 'node')) {
+//         this.allNodes[element.id] = element;
+//     } else if (Syntree.Lib.checkType(element, 'arrow')) {
+//         this.allArrows[element.id] = element;
+//     }
+// }
 
 Syntree.page_constructor.prototype.addTree = function(tree,parent,index) {
     if (!Syntree.Lib.checkType(tree, 'tree')) {
@@ -48,6 +49,7 @@ Syntree.page_constructor.prototype.addTree = function(tree,parent,index) {
             labelContent: "S",
         });
         this.tree = new Syntree.Tree({
+            // build_treestring: "id:612|children:40,266|parent:undefined|labelContent:S|;id:40|children:undefined|parent:612|labelContent:Q|;id:266|children:460,170|parent:612|labelContent:Q|;id:460|children:911,884|parent:266|labelContent:Qlsfdksdfasdf|;id:911|children:undefined|parent:460|labelContent:Q|;id:884|children:undefined|parent:460|labelContent:Q|;id:170|children:undefined|parent:266|labelContent:Q|;",
             // build_treestring: "id:47|children:336,250|parent:undefined|labelContent:S|;id:336|children:570,175|parent:47|labelContent:Q|;id:570|children:838,146|parent:336|labelContent:O|;id:838|children:126,716|parent:570|labelContent:C|;id:126|children:538|parent:838|labelContent:E|;id:538|children:undefined|parent:126|labelContent:B|;id:716|children:undefined|parent:838|labelContent:X|;id:146|children:911,337|parent:570|labelContent:V|;id:911|children:undefined|parent:146|labelContent:G|;id:337|children:undefined|parent:146|labelContent:H|;id:175|children:883,866|parent:336|labelContent:A|;id:883|children:956,748|parent:175|labelContent:R|;id:956|children:undefined|parent:883|labelContent:S|;id:748|children:undefined|parent:883|labelContent:U|;id:866|children:391,578|parent:175|labelContent:T|;id:391|children:undefined|parent:866|labelContent:K|;id:578|children:undefined|parent:866|labelContent:N|;id:250|children:8,863|parent:47|labelContent:Z|;id:8|children:483,514|parent:250|labelContent:x|;id:483|children:109,271|parent:8|labelContent:Z|;id:109|children:undefined|parent:483|labelContent:Y|;id:271|children:undefined|parent:483|labelContent:I|;id:514|children:378,168|parent:8|labelContent:P|;id:378|children:undefined|parent:514|labelContent:B|;id:168|children:undefined|parent:514|labelContent:V|;id:863|children:564,746|parent:250|labelContent:L|;id:564|children:300,349|parent:863|labelContent:K|;id:300|children:undefined|parent:564|labelContent:J|;id:349|children:undefined|parent:564|labelContent:F|;id:746|children:766,805|parent:863|labelContent:M|;id:766|children:undefined|parent:746|labelContent:W|;id:805|children:undefined|parent:746|labelContent:Q|;",
             root: root,
         });
@@ -79,13 +81,13 @@ Syntree.page_constructor.prototype.openTree = function(treestring,parent,index) 
     this.addTree(newTree,parent,index);
 }
 
-Syntree.page_constructor.prototype.getSelectedNode = function() {
-    return this.selectedNode;
-}
+// Syntree.page_constructor.prototype.getSelectedNode = function() {
+//     return Syntree.ElementsManager.getSelected();
+// }
 
 Syntree.page_constructor.prototype.getSVGString = function() {
-    if (!this.selectedNode.getState('real')) {
-        this.nodeDelete(this.selectedNode);
+    if (!Syntree.ElementsManager.getSelected().getState('real')) {
+        this.nodeDelete(Syntree.ElementsManager.getSelected());
     }
     var bgsvg = this.background.node.outerHTML;
     var treesvg = this.tree.getSVGString();
@@ -138,22 +140,22 @@ Syntree.page_constructor.prototype.navigateHorizontal = function(direction,fcrea
         return;
     }
 
-    if (Syntree.Lib.checkType(this.selectedNode, 'node') && Syntree.Lib.checkType(this.selectedNode.getParent(), 'node')) {
-        // if (this.selectedNode.getState('editing') && this.selectedNode.getState('real')) {
+    if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node') && Syntree.Lib.checkType(Syntree.ElementsManager.getSelected().getParent(), 'node')) {
+        // if (Syntree.ElementsManager.getSelected().getState('editing') && Syntree.ElementsManager.getSelected().getState('real')) {
         //     return;
         // }
-        var off = this.tree.getNodeOffset(this.tree.getRoot(),this.selectedNode);
+        var off = this.tree.getNodeOffset(this.tree.getRoot(),Syntree.ElementsManager.getSelected());
         var rowNodes = this.tree.getNodesByOffset(this.tree.getRoot(),off);
-        var selectedIndex = rowNodes.indexOf(this.selectedNode);
-        var real = this.selectedNode.getState('real');
+        var selectedIndex = rowNodes.indexOf(Syntree.ElementsManager.getSelected());
+        var real = Syntree.ElementsManager.getSelected().getState('real');
 
         if (right) {
             if (selectedIndex === rowNodes.length-1 || fcreate) {
                 if (real) {
-                    var siblingIndex = this.selectedNode.getParent().getChildren().indexOf(this.selectedNode);
+                    var siblingIndex = Syntree.ElementsManager.getSelected().getParent().getChildren().indexOf(Syntree.ElementsManager.getSelected());
                     var newNode = new Syntree.Node({});
-                    this.selectedNode.getParent().addChild(newNode,siblingIndex+1);
-                    var tree = new Syntree.Tree({root:this.selectedNode.getParent()});
+                    Syntree.ElementsManager.getSelected().getParent().addChild(newNode,siblingIndex+1);
+                    var tree = new Syntree.Tree({root:Syntree.ElementsManager.getSelected().getParent()});
                     tree.distribute();
                     this.nodeSelect(newNode);
                     this.nodeEditing('init');
@@ -166,10 +168,10 @@ Syntree.page_constructor.prototype.navigateHorizontal = function(direction,fcrea
         } else {
             if (selectedIndex === 0 || fcreate) {
                 if (real) {
-                    var siblingIndex = this.selectedNode.getParent().getChildren().indexOf(this.selectedNode);
+                    var siblingIndex = Syntree.ElementsManager.getSelected().getParent().getChildren().indexOf(Syntree.ElementsManager.getSelected());
                     var newNode = new Syntree.Node({});
-                    this.selectedNode.getParent().addChild(newNode,siblingIndex);
-                    var tree = new Syntree.Tree({root:this.selectedNode.getParent()});
+                    Syntree.ElementsManager.getSelected().getParent().addChild(newNode,siblingIndex);
+                    var tree = new Syntree.Tree({root:Syntree.ElementsManager.getSelected().getParent()});
                     tree.distribute();
                     this.nodeSelect(newNode);
                     this.nodeEditing('init');
@@ -185,32 +187,32 @@ Syntree.page_constructor.prototype.navigateHorizontal = function(direction,fcrea
 }
 
 Syntree.page_constructor.prototype.navigateUp = function() {
-    if (Syntree.Lib.checkType(this.selectedNode, 'node') && Syntree.Lib.checkType(this.selectedNode.getParent(), 'node')) {
-        this.nodeSelect(this.selectedNode.getParent());
+    if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node') && Syntree.Lib.checkType(Syntree.ElementsManager.getSelected().getParent(), 'node')) {
+        this.nodeSelect(Syntree.ElementsManager.getSelected().getParent());
     }
 }
 
 Syntree.page_constructor.prototype.navigateDown = function(fcreate) {
     fcreate = Syntree.Lib.checkArg(fcreate, 'boolean', false);
 
-    if (Syntree.Lib.checkType(this.selectedNode, 'node')) {
-        if (this.selectedNode.getChildren().length > 0 && !fcreate) {
-            var possibleSelects = this.selectedNode.getChildren().map(function(c){return c.id});
+    if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
+        if (Syntree.ElementsManager.getSelected().getChildren().length > 0 && !fcreate) {
+            var possibleSelects = Syntree.ElementsManager.getSelected().getChildren().map(function(c){return c.id});
             var selectHistory = Syntree.History.getAllByType('select');
             for (i=0; i<selectHistory.length; i++) {
                 if (possibleSelects.indexOf(selectHistory[i].node.id) >= 0) {
-                    this.nodeSelect(Syntree.Page.allNodes[selectHistory[i].node.id]);
+                    this.nodeSelect(Syntree.ElementsManager.allElements[selectHistory[i].node.id]);
                     return;
                 }
             }
-            this.nodeSelect(this.selectedNode.getChildren()[0]);
-        } else if (this.selectedNode.getState('real')) {
+            this.nodeSelect(Syntree.ElementsManager.getSelected().getChildren()[0]);
+        } else if (Syntree.ElementsManager.getSelected().getState('real')) {
             var newNode = new Syntree.Node({
                 x:0,
                 y:0,
                 labelContent:""});
-            this.selectedNode.addChild(newNode);
-            var tree = new Syntree.Tree({root:this.selectedNode});
+            Syntree.ElementsManager.getSelected().addChild(newNode);
+            var tree = new Syntree.Tree({root:Syntree.ElementsManager.getSelected()});
             tree.distribute();
             this.nodeSelect(newNode);
             this.nodeEditing('init');
@@ -220,7 +222,7 @@ Syntree.page_constructor.prototype.navigateDown = function(fcreate) {
 
 Syntree.page_constructor.prototype.nodeEditing = function(type,node, silent) {
     type = Syntree.Lib.checkArg(type, 'string');
-    node = Syntree.Lib.checkArg(node, 'node', this.selectedNode);
+    node = Syntree.Lib.checkArg(node, 'node', Syntree.ElementsManager.getSelected());
     node = Syntree.Lib.checkArg(node, 'node');
     silent = Syntree.Lib.checkArg(silent, 'boolean', false);
 
@@ -247,8 +249,8 @@ Syntree.page_constructor.prototype.nodeEditing = function(type,node, silent) {
             }
         }
         node.editingAction('save');
-        if (this.selectedNode.getParent()) {
-            var tree = new Syntree.Tree({root:this.selectedNode.getParent()});
+        if (Syntree.ElementsManager.getSelected().getParent()) {
+            var tree = new Syntree.Tree({root:Syntree.ElementsManager.getSelected().getParent()});
             tree.distribute();
         }
     } else if (type === 'cancel') {
@@ -262,7 +264,7 @@ Syntree.page_constructor.prototype.nodeEditing = function(type,node, silent) {
 }
 
 Syntree.page_constructor.prototype.nodeDelete = function(node, silent) {
-    node = Syntree.Lib.checkArg(node, 'node', this.selectedNode);
+    node = Syntree.Lib.checkArg(node, 'node', Syntree.ElementsManager.getSelected());
     node = Syntree.Lib.checkArg(node, 'node');
     silent = Syntree.Lib.checkArg(silent, 'boolean', false);
 
@@ -282,7 +284,7 @@ Syntree.page_constructor.prototype.nodeDelete = function(node, silent) {
         tree = new Syntree.Tree({root:parent});
         tree.distribute();
     }
-    if (Syntree.Lib.checkType(this.selectedNode, 'node')) {
+    if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
         this.nodeSelect(this.tree.getRoot());
     }
 }
@@ -291,25 +293,28 @@ Syntree.page_constructor.prototype.nodeSelect = function(node, silent) {
     node = Syntree.Lib.checkArg(node, 'node');
     silent = Syntree.Lib.checkArg(silent, 'boolean', false);
 
-    if (Syntree.Lib.checkType(this.selectedNode, 'node')) {
-        this.nodeDeselect(this.selectedNode);
-    }
-    this.selectedNode = node;
-    this.selectedNode.select();
+    var nodeToDeselect = Syntree.ElementsManager.getSelected();
+    Syntree.ElementsManager.select(node);
+    this.nodeDeselect(nodeToDeselect);
+    // if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
+    //     this.nodeDeselect(Syntree.ElementsManager.getSelected());
+    // }
+    // Syntree.ElementsManager.getSelected() = node;
+    // Syntree.ElementsManager.getSelected().select();
     if (!silent) {
         new ActionSelect(node);
     }
 }
 
 Syntree.page_constructor.prototype.nodeDeselect = function(node) {
-    node = Syntree.Lib.checkArg(node, 'node');
+    node = Syntree.Lib.checkArg(node, 'node', '#undefined');
 
-    this.selectedNode = undefined;
-    node.deselect();
-    if (node.getState('real')) {
-        this.nodeEditing('cancel',node);
-    } else {
-        this.nodeDelete(node, true);
+    if (Syntree.Lib.checkType(node, 'node')) {
+        if (node.getState('real')) {
+            this.nodeEditing('cancel',node);
+        } else {
+            this.nodeDelete(node, true);
+        }
     }
 }
 

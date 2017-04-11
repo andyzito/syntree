@@ -1,4 +1,6 @@
 Syntree.Branch = function(parent,child) {
+    Syntree.selectableElement.call(this);
+
     parent = Syntree.Lib.checkArg(parent, 'node');
     child = Syntree.Lib.checkArg(child, 'node');
 

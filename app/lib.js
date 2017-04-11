@@ -173,4 +173,24 @@ Syntree.Lib = {
         }
         return closestSides;
     },
+
+    makeSelectable: function(obj) {
+        obj.selected = false;
+        obj.select = function() {
+            this.selected = true;
+            this.graphic.unsync('selected');
+            this.updateGraphics(false);
+        }
+        obj.deselect = function() {
+            this.selected = false;
+            this.graphic.unsync('selected');
+            this.updateGraphics(false);
+        }
+        if (!Syntree.Lib.checkType(this.id, 'number')) {
+            this.id = Syntree.Lib.genId();
+        }
+        if (!Syntree.Page.isRegistered(this)) {
+            Syntree.Page.register(this);
+        }
+    }
 }

@@ -96,6 +96,8 @@ Syntree.workspace_constructor = function(config_matrix) {
 Syntree.workspace_constructor.prototype._attachEventListeners = function() {
     // Store 'this' as local variable to avoid conflicts in callback scope
     var W = this;
+
+    $(document).on('click', '.arrow, .arrow-shadow', function(e) {W._eventArrowClick(e);});
     // Basic events, funneled to event functions below
     $(document).on('click', '.node-label', function(e) {W._eventNodeClick(e);});
     $(document).on('click', '.delete_button', function() {W._eventDel();});
@@ -166,6 +168,13 @@ Syntree.workspace_constructor.prototype._attachEventListeners = function() {
             });
         });
     }
+}
+
+Syntree.workspace_constructor.prototype._eventArrowClick = function(e) {
+    var clicked = e.currentTarget;
+    var clickedId = $(clicked).attr('id');
+    var id = Number(clickedId.substr(clickedId.lastIndexOf('-')+1, clickedId.length));
+    Syntree.Page.allArrows[id].select();
 }
 
 Syntree.workspace_constructor.prototype._eventRewatchTutorial = function() {

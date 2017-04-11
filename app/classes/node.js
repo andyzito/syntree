@@ -1,9 +1,6 @@
 Syntree.Node = function(config_matrix) {
+    Syntree.selectableElement.call(this); // Extends
     Syntree.Lib.config(config_matrix,this);
-    if (!Syntree.Lib.checkType(this.id, 'number')) {
-        this.id = Syntree.Lib.genId();
-    }
-    Syntree.Page.registerNode(this); // register with master list of nodes
 
     // Relationships
     this.parent = undefined;
@@ -15,13 +12,9 @@ Syntree.Node = function(config_matrix) {
 
     // States
     this.editing = false;
-    this.selected = false;
     this.real = false;
-    this.deleted = false;
 
     this._labelbbox;
-    this.positionUnsynced = true;
-    this.selectStateUnsynced = true;
 
     this.createGraphic();
     this.updateGraphics();
@@ -148,9 +141,9 @@ Syntree.Node.prototype.createGraphic = function() {
     this.graphic = new Syntree.Graphic(config_matrix)
 }
 
-Syntree.Node.prototype.getId = function() {
-    return this.id;
-}
+// Syntree.Node.prototype.getId = function() {
+//     return this.id;
+// }
 
 Syntree.Node.prototype.getPosition = function() {
     return {
@@ -219,11 +212,12 @@ Syntree.Node.prototype.getChildren = function() {
 
 Syntree.Node.prototype.getPath = function() {
     var bbox = this.getLabelBBox();
-    var s = "M " + bbox.x + " " + bbox.y + ", ";
-    s += "L " + bbox.x2 + " " + bbox.y + ", ";
-    s += "L " + bbox.x2 + " " + bbox.y2 + ", ";
-    s += "L " + bbox.x + " " + bbox.y2 + ", ";
-    s += "L " + bbox.x + " " + bbox.y + ", ";
+    var p = 10;
+    var s = "M " + (bbox.x-p) + " " + (bbox.y-p) + ", ";
+    s += "H " + (bbox.x2+p) + ", ";
+    s += "V " + (bbox.y2+p) + ", ";
+    s += "H " + (bbox.x-p) + ", ";
+    s += "V " + (bbox.y-p) + ", ";
     return s;
 }
 
@@ -290,32 +284,32 @@ Syntree.Node.prototype.move = function(x,y,propagate) {
     }
 }
 
-Syntree.Node.prototype.delete = function() {
-    this.graphic.getEl('label').remove();
-    this.graphic.getEl('editor').remove();
-    this.graphic.getEl('highlight').remove();
-    this.graphic.getEl('deleteButton').remove();
-    delete Syntree.Page.allNodes[this.id];
-    if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
-        this.parentBranch.delete();
-    }
-    if (Syntree.Lib.checkType(this.parent, 'node')) {
-        this.parent.children.splice(this.parent.children.indexOf(this), 1);
-    }
-    this.deleted = true;
-}
+// Syntree.Node.prototype.delete = function() {
+//     this.graphic.getEl('label').remove();
+//     this.graphic.getEl('editor').remove();
+//     this.graphic.getEl('highlight').remove();
+//     this.graphic.getEl('deleteButton').remove();
+//     delete Syntree.Page.allNodes[this.id];
+//     if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
+//         this.parentBranch.delete();
+//     }
+//     if (Syntree.Lib.checkType(this.parent, 'node')) {
+//         this.parent.children.splice(this.parent.children.indexOf(this), 1);
+//     }
+//     this.deleted = true;
+// }
 
-Syntree.Node.prototype.select = function() {
-    this.selected = true;
-    this.graphic.unsync('selected');
-    this.updateGraphics(false);
-}
+// Syntree.Node.prototype.select = function() {
+//     this.selected = true;
+//     this.graphic.unsync('selected');
+//     this.updateGraphics(false);
+// }
 
-Syntree.Node.prototype.deselect = function() {
-    this.selected = false;
-    this.graphic.unsync('selected');
-    this.updateGraphics(false);
-}
+// Syntree.Node.prototype.deselect = function() {
+//     this.selected = false;
+//     this.graphic.unsync('selected');
+//     this.updateGraphics(false);
+// }
 
 Syntree.Node.prototype.editingAction = function(action) {
     switch(action) {

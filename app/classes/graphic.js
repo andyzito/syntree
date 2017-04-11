@@ -16,7 +16,7 @@ Syntree.Graphic.prototype.config_map = {
 		default: '#undefined',
 	},
 	data_object: {
-		type: 'node',
+		type: ['node', 'arrow'],
 	},
 }
 
@@ -38,5 +38,11 @@ Syntree.Graphic.prototype.update = function() {
 			this.update_functions[state](this.data_object, this);
 			this.states_synced[state] = true;
 		}
+	}
+}
+
+Syntree.Graphic.prototype.delete = function() {
+	for (name in this.elements) {
+		this.elements[name].remove();
 	}
 }
