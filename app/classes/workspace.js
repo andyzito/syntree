@@ -59,6 +59,7 @@ Syntree.workspace_constructor = function(config_matrix) {
             'click',
             '.toolbar_button__tutorial',
             function() {
+                console.log('rewatch tutorial')
                 Syntree.Workspace._eventRewatchTutorial();
             });
     }
@@ -98,6 +99,8 @@ Syntree.workspace_constructor.prototype._attachEventListeners = function() {
     var W = this;
 
     $(document).on('click', '.arrow, .arrow-shadow', function(e) {W._eventArrowClick(e);});
+    $(document).on('click', '.branch, .branch-shadow, .triangle', function(e) {W._eventBranchClick(e);});
+    $(document).on('click', '.triangle-button', function(e) {W._eventTriangleButtonClick(e);});
     // Basic events, funneled to event functions below
     $(document).on('click', '.node-label', function(e) {W._eventNodeClick(e);});
     $(document).on('click', '.delete_button', function() {W._eventDel();});
@@ -168,6 +171,20 @@ Syntree.workspace_constructor.prototype._attachEventListeners = function() {
             });
         });
     }
+}
+
+Syntree.workspace_constructor.prototype._eventTriangleButtonClick = function(e) {
+    var clicked = e.currentTarget;
+    var clickedId = $(clicked).attr('id');
+    var id = Number(clickedId.substr(clickedId.lastIndexOf('-')+1, clickedId.length));
+    Syntree.ElementsManager.allElements[id].triangleToggle();
+}
+
+Syntree.workspace_constructor.prototype._eventBranchClick = function(e) {
+    var clicked = e.currentTarget;
+    var clickedId = $(clicked).attr('id');
+    var id = Number(clickedId.substr(clickedId.lastIndexOf('-')+1, clickedId.length));
+    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
 }
 
 Syntree.workspace_constructor.prototype._eventArrowClick = function(e) {
@@ -262,7 +279,7 @@ Syntree.workspace_constructor.prototype._eventDown = function(e) {
 }
 
 Syntree.workspace_constructor.prototype._eventDel = function() {
-    this.page.nodeDelete();
+    Syntree.ElementsManager.deleteSelected();
 }
 
 Syntree.workspace_constructor.prototype._eventEsc = function() {

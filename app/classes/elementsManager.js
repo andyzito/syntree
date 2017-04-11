@@ -20,6 +20,7 @@ Syntree.ElementsManager = {
 	},
 
 	select: function(obj) {
+		console.log('inside elm.select')
 		if (!Syntree.Lib.checkType(this.selectedElement, 'undefined')) {
 			this.deselect();
 		}
@@ -39,5 +40,9 @@ Syntree.ElementsManager = {
 
 	getSelected: function() {
 		return this.selectedElement;
+	},
+
+	deleteSelected: function() {
+		this.selectedElement.delete();
 	}
 }

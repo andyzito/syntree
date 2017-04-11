@@ -70,7 +70,8 @@ function ActionSave(node,pre,post) {
         this.undo = function() {
             this.node.labelContent = this.preSaveLabelContent;
             this.node._labelbbox = undefined;
-            this.node.positionUnsynced = true;
+            this.node.graphic.unsync('labelContent');
+            this.node.graphic.unsync('position');
             this.node.updateGraphics();
         }
     }

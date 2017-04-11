@@ -16,7 +16,6 @@ Syntree.Arrow = function(parent,child) {
 }
 
 Syntree.Arrow.prototype.createGraphic = function() {
-    console.log(this);
     var path = "M " + this.startPoint.x + " " + this.startPoint.y +
             ", C " + this.startPoint.x + " " + this.startPoint.y +
             ", " + this.endPoint.x + " " + this.endPoint.y +
@@ -28,6 +27,7 @@ Syntree.Arrow.prototype.createGraphic = function() {
         strokeWidth: '5px',
         class: 'arrow-shadow',
         id: 'arrow-shadow-' + this.id,
+        fill: 'none',
     })
 
     var line = Syntree.snap.path(path);
@@ -58,10 +58,10 @@ Syntree.Arrow.prototype.createGraphic = function() {
                         opacity: 100,
                     });
                     g.getEl('handle1').attr({
-                        r: 3,
+                        r: 5,
                     })
                     g.getEl('handle2').attr({
-                        r: 3,
+                        r: 5,
                     })
                 } else {
                     console.log('is not selected');
@@ -83,23 +83,78 @@ Syntree.Arrow.prototype.createGraphic = function() {
 
     var scp = this.getStartCtrlPoint();
     var ecp = this.getEndCtrlPoint();
-    var handle1 = Syntree.snap.circle(scp.x, scp.y, 3);
-    var handle2 = Syntree.snap.circle(ecp.x, ecp.y, 3);
+    var handle1 = Syntree.snap.circle(scp.x, scp.y, 5);
+    var handle2 = Syntree.snap.circle(ecp.x, ecp.y, 5);
     handle1.attr({
-        fill: 'blue',
-        stroke: 'blue',
+        fill: 'lightblue',
+        stroke: 'darkblue',
         class: 'handle1',
         id: 'handle1-' + this.id,
     });
     handle2.attr({
-        fill: 'red',
+        fill: 'pink',
         stroke: 'red',
         class: 'handle2',
         id: 'handle2-' + this.id,
     });
 
+    var customDrag1 = function(dx, dy, posx, posy) {
+        this.attr({
+            cx: posx,
+            cy: posy,
+        });
+        var id = this.attr('id')
+        id = id.substr(id.lastIndexOf('-')+1, id.length);
+        var arrow = Syntree.ElementsManager.allElements[id];
+        arrow.setStartCtrlPoint(this.attr('cx'), this.attr('cy'));
+        arrow.updateGraphics();
+    }
+
+    var customDrag2 = function(dx, dy, posx, posy) {
+        this.attr({
+            cx: posx,
+            cy: posy,
+        });
+        var id = this.attr('id')
+        id = id.substr(id.lastIndexOf('-')+1, id.length);
+        var arrow = Syntree.ElementsManager.allElements[id];
+        arrow.setEndCtrlPoint(this.attr('cx'), this.attr('cy'));
+        arrow.updateGraphics();
+    }
+
+    var customEnd1 = function() {
+        var id = this.attr('id')
+        id = id.substr(id.lastIndexOf('-')+1, id.length);
+        var arrow = Syntree.ElementsManager.allElements[id];
+        arrow.setStartCtrlPoint(this.attr('cx'), this.attr('cy'));
+        arrow.updateGraphics();
+    }
+
+    var customEnd2 = function() {
+        var id = this.attr('id')
+        id = id.substr(id.lastIndexOf('-')+1, id.length);
+        var arrow = Syntree.ElementsManager.allElements[id];
+        arrow.setEndCtrlPoint(this.attr('cx'), this.attr('cy'));
+        arrow.updateGraphics();
+    }
+
+    handle1.drag(customDrag1,undefined,customEnd1);
+    handle2.drag(customDrag2,undefined,customEnd2);
+
     this.graphic.addElement('handle1', handle1);
     this.graphic.addElement('handle2', handle2);
+
+    var path = this.graphic.getEl('line').attr('path');
+    var pInter = Snap.path.intersection(path, this.parent.getPath());
+    pInter = pInter[pInter.length-1];
+    var cInter = Snap.path.intersection(path, this.child.getPath());
+    cInter = cInter[cInter.length-1];
+    this.setStartPoint(pInter.x, pInter.y);
+    this.setEndPoint(cInter.x, cInter.y);
+    var xsmooth1 = pInter.x > cInter.x ? -10 : 10;
+    var xsmooth2 = pInter.x > cInter.x ? 10 : -10;
+    this.setStartCtrlPoint(pInter.x+xsmooth1, pInter.y+30);
+    this.setEndCtrlPoint(cInter.x+xsmooth2, cInter.y+30);
 }
 
 Syntree.Arrow.prototype.select = function() {
@@ -155,12 +210,34 @@ Syntree.Arrow.prototype.toString = function() {
     return "[object Arrow]"
 }
 
-Syntree.Arrow.prototype.updateGraphics = function() {
+Syntree.Arrow.prototype.__updateGraphics = function() {
     var pBBox = this.parent.getLabelBBox();
     var cBBox = this.child.getLabelBBox();
     this.setStartPoint(pBBox.cx, pBBox.cy);
     this.setEndPoint(cBBox.cx, cBBox.cy);
-    this.graphic.update();
+
+    var scp = this.getStartCtrlPoint();
+    var ecp = this.getEndCtrlPoint();
+    this.graphic.getEl('handle1').attr({
+        cx: scp.x,
+        cy: scp.y,
+    });
+    this.graphic.getEl('handle2').attr({
+        cx: ecp.x,
+        cy: ecp.y,
+    });
+
+    var path = this.graphic.getEl('line').attr('path');
+    var pInter = Snap.path.intersection(path, this.parent.getPath())[0];
+    var cInter = Snap.path.intersection(path, this.child.getPath())[0];
+    this.setStartPoint(pInter.x, pInter.y);
+    this.setEndPoint(cInter.x, cInter.y);
+    // console.log(Snap.path.intersection(path, this.parent.getPath()));
+
+    this.graphic.getEl('shadowLine').attr({
+        path: this.graphic.getEl('line').attr('path'),
+    })
+    // this.graphic.update();
     // this.setCurve();
 
     // var cS = Syntree.Lib.getClosestSides(
