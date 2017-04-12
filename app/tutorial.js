@@ -43,20 +43,16 @@ Syntree.Tutorial = {
         {
             message: "Now give this new node a name (just type!)",
             gateway: {
-                event_type: "keydown",
+                event_type: "keypress",
                 condition: function(e) {
-                    return e.keyCode === 40;
-                },
-                // event_type: "keypress",
-                // condition: function(e) {
-                //     if (e.key.length === 1) {
-                //         Syntree.Tutorial.data['node_naming_1'] += 1;
-                //     }
-                //     if (Syntree.Tutorial.data['node_naming_1'] > 2) {
-                //         return true;
-                //     }
-                //     return true;
-                // }
+                    if (e.key.length === 1) {
+                        Syntree.Tutorial.data['node_naming_1'] += 1;
+                    }
+                    if (Syntree.Tutorial.data['node_naming_1'] > 2) {
+                        return true;
+                    }
+                    return true;
+                }
             },
         },
         {

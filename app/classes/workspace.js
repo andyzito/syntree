@@ -62,6 +62,8 @@ Syntree.workspace_constructor = function(config_matrix) {
                 console.log('rewatch tutorial')
                 Syntree.Workspace._eventRewatchTutorial();
             });
+    } else {
+        $('.toolbar_button__tutorial').remove();
     }
 
     if (!this.upload_enabled) {
@@ -106,7 +108,7 @@ Syntree.workspace_constructor.prototype._attachEventListeners = function() {
     $(document).on('click', '.delete_button', function() {W._eventDel();});
     $(document).on('click', '#page-background', function(e) {W._eventBGClick(e);});
     $(document).on('dblclick', '.node-label', function() {W._eventEnter();});
-    $(document).on('input', '.editor', function() {W._eventEditorTyping();});
+    $(document).on('input', '.editor', function() {console.log('editor typing');W._eventEditorTyping();});
     // Keyboard stuff
     $(document).on('keydown', function(e) {
         if ((W.focus_checking_enabled && W.focused) || !W.focus_checking_enabled) {
@@ -279,7 +281,11 @@ Syntree.workspace_constructor.prototype._eventDown = function(e) {
 }
 
 Syntree.workspace_constructor.prototype._eventDel = function() {
-    Syntree.ElementsManager.deleteSelected();
+    if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
+        this.page.nodeDelete();
+    } else {
+        Syntree.ElementsManager.deleteSelected();
+    }
 }
 
 Syntree.workspace_constructor.prototype._eventEsc = function() {

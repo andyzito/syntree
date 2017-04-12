@@ -20,7 +20,6 @@ Syntree.ElementsManager = {
 	},
 
 	select: function(obj) {
-		console.log('inside elm.select')
 		if (!Syntree.Lib.checkType(this.selectedElement, 'undefined')) {
 			this.deselect();
 		}
@@ -43,6 +42,8 @@ Syntree.ElementsManager = {
 	},
 
 	deleteSelected: function() {
-		this.selectedElement.delete();
+		if (!Syntree.Lib.checkType(this.selectedElement, 'branch')) {
+			this.selectedElement.delete();
+		}
 	}
 }

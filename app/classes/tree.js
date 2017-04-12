@@ -494,12 +494,12 @@ Syntree.Tree.prototype._buildFromTreestring = function(treestring) {
             var childIds = entry.children.split(',');
             var c = 0;
             while (c < childIds.length) {
-                Syntree.Page.allNodes[entry.id].addChild(Syntree.Page.allNodes[childIds[c]]);
+                Syntree.ElementsManager.allElements[entry.id].addChild(Syntree.ElementsManager.allElements[childIds[c]]);
                 c++;
             }
         }
         var temp = new Syntree.Tree({
-            root:Syntree.Page.allNodes[entry.id]
+            root:Syntree.ElementsManager.allElements[entry.id],
         })
         temp.distribute();
         n++;

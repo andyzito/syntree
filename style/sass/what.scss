@@ -34,10 +34,14 @@ body.what {
             margin-bottom: 1.5rem;
             line-height: 1.4rem;
 
-            span {
+            span.faq-q, span.how-to-title {
                 font-size: 1.1rem;
                 font-weight: bold;
                 letter-spacing: 0.05rem;
+            }
+
+            p {
+                white-space: pre-line;
             }
         }
     }

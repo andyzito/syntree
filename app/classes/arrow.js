@@ -13,6 +13,8 @@ Syntree.Arrow = function(parent,child) {
 
     Syntree.selectableElement.call(this);
     this.updateGraphics();
+
+    new ActionCreateArrow(this);
 }
 
 Syntree.Arrow.prototype.createGraphic = function() {
@@ -51,9 +53,7 @@ Syntree.Arrow.prototype.createGraphic = function() {
         data_object: this,
         update_functions: {
             selected: function(d,g) {
-                console.log('inside selected function thingy')
                 if (d.selected) {
-                    console.log("is selected");
                     g.getEl('shadowLine').attr({
                         opacity: 100,
                     });
@@ -64,7 +64,6 @@ Syntree.Arrow.prototype.createGraphic = function() {
                         r: 5,
                     })
                 } else {
-                    console.log('is not selected');
                     g.getEl('shadowLine').attr({
                         opacity: 0,
                     });
@@ -193,12 +192,9 @@ Syntree.Arrow.prototype.setEndPoint = function(x,y) {
 
 Syntree.Arrow.prototype.getEndPoint = function() {
     var path = this.graphic.getEl('line').attr('path');
-    console.log(path)
     path = path.split(',');
-    console.log(path);
     var end = path[path.length-1];
     end = end.split(' ');
-    console.log(end);
     end = {
         x: Number(end[1].trim()),
         y: Number(end[2].trim()),
@@ -228,17 +224,20 @@ Syntree.Arrow.prototype.__updateGraphics = function() {
     });
 
     var path = this.graphic.getEl('line').attr('path');
-    var pInter = Snap.path.intersection(path, this.parent.getPath())[0];
-    var cInter = Snap.path.intersection(path, this.child.getPath())[0];
+    var pInter = Snap.path.intersection(path, this.parent.getPath());
+    pInter = pInter.reduce(function(l, e) {
+        return e.t1 < l.t1 ? e : l;
+    });
+    var cInter = Snap.path.intersection(path, this.child.getPath());
+    cInter = cInter.reduce(function(l, e) {
+        return e.t1 > l.t1 ? e : l;
+    });
     this.setStartPoint(pInter.x, pInter.y);
     this.setEndPoint(cInter.x, cInter.y);
-    // console.log(Snap.path.intersection(path, this.parent.getPath()));
 
     this.graphic.getEl('shadowLine').attr({
         path: this.graphic.getEl('line').attr('path'),
     })
-    // this.graphic.update();
-    // this.setCurve();
 
     // var cS = Syntree.Lib.getClosestSides(
     //     pBBox,
@@ -256,9 +255,17 @@ Syntree.Arrow.prototype.__updateGraphics = function() {
     // this.setEndPoint(endPoints.x2, endPoints.y2);
 }
 
-Syntree.Arrow.prototype.delete = function() {
-    this.graphic.getEl('line').remove();
+Syntree.Arrow.prototype.__delete = function(silent) {
+    silent = Syntree.Lib.checkArg(silent, 'boolean', false);
+    console.log('deleting arrow');
+
     this.parent.fromArrow = undefined;
+    this.child.toArrow = undefined;
+
+    if (!silent) {
+        console.log('arrow deleted');
+        new ActionDeleteArrow(this);
+    }
 }
 
 Syntree.Arrow.prototype.getStartCtrlPoint = function() {
@@ -319,8 +326,6 @@ Syntree.Arrow.prototype.setCurve = function() {
     } else {
         var pInter = Snap.path.intersection(path, this.parent.getPath())[0];
         var cInter = Snap.path.intersection(path, this.child.getPath())[0];
-        console.log(pInter);
-        console.log(cInter);
         this.setStartPoint(pInter.x, pInter.y);
         this.setEndPoint(cInter.x, cInter.y);
         // console.log(Snap.path.intersection(path, this.parent.getPath()));

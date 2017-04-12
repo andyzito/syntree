@@ -3,10 +3,14 @@ function History() {
     // To outsiders, it is returned as an array with the most recent action at the front (index 0)
     this.actions = [];
 
+    this.silent = false //while silent, no actions can be added
+
     this.addAction = function(action) {
         action = Syntree.Lib.checkArg(action, 'action');
 
-        this.actions.push(action);
+        if (!this.silent) {
+            this.actions.push(action);
+        }
     }
 
     this.popAction = function() {
@@ -46,14 +50,17 @@ function History() {
     }
 
     this.undo = function() {
+        this.silent = true;
         var all = this.getAll();
         for (i=0; i<all.length; i++) {
             if (typeof all[i].undo !== 'undefined') {
                 this.removeAction(all[i]);
                 all[i].undo();
+                this.silent = false;
                 return;
             }
         }
+        this.silent = false;
     }
 
     this.removeAction = function(a) {

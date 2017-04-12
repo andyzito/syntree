@@ -1,0 +1,15 @@
+@mixin key($name) {
+	&:after {
+		content: $name;
+	}
+}
+
+.key {
+	&.key-ctrl {
+		@include key('CTRL');
+	}
+
+	&.key-left {
+		@include key('Left');
+	}
+}

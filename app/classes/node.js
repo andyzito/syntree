@@ -1,4 +1,5 @@
 Syntree.Node = function(config_matrix) {
+    this.id = config_matrix.id;
     Syntree.selectableElement.call(this); // Extends
     Syntree.Lib.config(config_matrix,this);
 
@@ -100,12 +101,12 @@ Syntree.Node.prototype.createGraphic = function() {
                 }
             },
             labelContent: function(d,g) {
-                if (d.labelContent.match(/\s|^$/)) {
-                    g.getEl('label').node.textContent = "Oalsdnfkabsfjhbdsfj";
-                    g.getEl('label').attr({
-                        color: 'transparent',
-                    });
-                }
+                // if (d.labelContent.match(/\s|^$/)) {
+                //     g.getEl('label').node.textContent = "Oalsdnfkabsfjhbdsfj";
+                //     g.getEl('label').attr({
+                //         color: 'transparent',
+                //     });
+                // }
                 g.getEl('label').node.textContent = d.labelContent;
                     // g.getEl('label').attr({
                     //     color: 'transparent',
@@ -293,17 +294,21 @@ Syntree.Node.prototype.__delete = function() {
     }
 }
 
-// Syntree.Node.prototype.select = function() {
-//     this.selected = true;
-//     this.graphic.unsync('selected');
-//     this.updateGraphics(false);
-// }
+Syntree.Node.prototype.__select = function() {
+    // var nodeToDeselect = Syntree.ElementsManager.getSelected();
+    // Syntree.ElementsManager.select(node);
+    // this.nodeDeselect(nodeToDeselect);
 
-// Syntree.Node.prototype.deselect = function() {
-//     this.selected = false;
-//     this.graphic.unsync('selected');
-//     this.updateGraphics(false);
-// }
+    // if (!silent) {
+    //     new ActionSelect(node);
+    // }
+}
+
+Syntree.Node.prototype.__deselect = function() {
+    this.selected = false;
+    this.graphic.unsync('selected');
+    this.updateGraphics(false);
+}
 
 Syntree.Node.prototype.editingAction = function(action) {
     switch(action) {
@@ -366,6 +371,12 @@ Syntree.Node.prototype.__updateGraphics = function(propagate) {
     }
     for (i=0;i<this.childBranches.length;i++) {
         this.childBranches[i].updateGraphics();
+    }
+    if (Syntree.Lib.checkType(this.fromArrow, 'arrow')) {
+        this.fromArrow.updateGraphics();
+    }
+    if (Syntree.Lib.checkType(this.toArrow, 'arrow')) {
+        this.toArrow.updateGraphics();
     }
 
     if (propagate) {

@@ -29,6 +29,39 @@ function ActionCreate(node) {
     Syntree.History.addAction(this);
 }
 
+function ActionCreateArrow(arrow) {
+    arrow = Syntree.Lib.checkArg(arrow, 'arrow');
+
+    this.id = Syntree.Lib.genId();
+    this.type = 'createArrow';
+    this.arrow = arrow;
+
+    this.undo = function() {
+        this.arrow.delete(true);
+    }
+
+    Syntree.History.addAction(this);
+}
+
+function ActionDeleteArrow(arrow) {
+    arrow = Syntree.Lib.checkArg(arrow, 'arrow');
+
+    this.id = Syntree.Lib.genId();
+    this.type = 'deleteArrow';
+    this.arrow = arrow;
+    this.path = arrow.graphic.getEl('line').attr('path');
+
+    this.undo = function() {
+        var arrow = new Syntree.Arrow(this.arrow.parent, this.arrow.child);
+        arrow.graphic.getEl('line').attr({
+            path: this.path,
+        });
+        arrow.updateGraphics();
+    }
+
+    Syntree.History.addAction(this);
+}
+
 function ActionDelete(tree,parent,index) {
     tree = Syntree.Lib.checkArg(tree, 'tree');
     parent = Syntree.Lib.checkArg(parent, 'node', '#undefined');
@@ -88,4 +121,6 @@ ActionSave.prototype.toString = actionToString;
 ActionDelete.prototype.toString = actionToString;
 ActionSelect.prototype.toString = actionToString;
 ActionCreate.prototype.toString = actionToString;
+ActionCreateArrow.prototype.toString = actionToString;
+ActionDeleteArrow.prototype.toString = actionToString;
 })()

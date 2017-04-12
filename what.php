@@ -17,11 +17,27 @@
             <h4>FAQ</h4>
             <ul class="faq-list">
                 <li><span class="faq-q">What is Syntree?</span>
-                    <p class="faq-a">Syntree is a JavaScript based web application designed to allow users to draw syntax trees digitally. It is the Division III (thesis) of Andrew Zito, a student at Hampshire college. While it is very much a work in progress at this time, it is intended to be a fully functional product within the next few months.</p></li>
+                    <p class="faq-a">Syntree is a JavaScript based web application designed to allow users to draw syntax trees digitally. It is the Division III (thesis) of Andrew Zito, a student at Hampshire College. While it is very much a work in progress at this time, it is intended to be a fully functional product within the next few months.</p></li>
+                <li><span class="faq-q">Why did you make Syntree?</span>
+                    <p class="faq-a">There are quite a few tools that allow the user to input "bracket notation", and use that notation to generate a visual tree. However, many people do not wish to learn bracket notation. Additionally, using bracket notation has disadvantages -- it is more difficult to keep a complex tree organized, and it is easy to forget to close a bracket, resulting in syntax errors.
+
+                    The alternative is either to draw the tree manually (either by hand or with a general purpose graphics program), or to use a tool specifically designed for building syntrax trees with a dynamic GUI interface (as opposed to generating the tree from bracket notation). There are very few tools of this kind, and the ones that do exist are clunky and difficult to use. Syntree is intended to be an intuitive, easy-to-use alternative to bracket notation, hand drawing, and clunky GUI apps. </p></li>
                 <li><span class="faq-q">What is a "syntax tree"?</span>
-                    <p class="faq-a">Syntax trees are a tool used by linguists to analyze sentences. "Syntax" is distinguished from "semantics", syntax being the structure of the language (the order words placed in) and semantics being the meaning/content of the words (roughly speaking). Linguists use tree diagrams to split sentences up into parts. For example, you may have learned in elementary school about the subject, predicate, and/or object of sentences. These are ways of splitting sentences into pieces. Linguists do something similar, only with far more categories. Additionally, these categories are hierarchical and nested, meaning that the "subject", for example, can be split up into sub-categories like "article" (the, a, an) and noun. (Please bear in mind that "subject" is only an exampe here, and not a category used in actual syntax tree construction under the dominant theory).</p></li>
+                    <p class="faq-a">Syntax trees are a tool used by linguists to analyze sentences. "Syntax" is distinguished from "semantics", syntax being the structure of the language (the order words are placed in) and semantics being the meaning/content of the words (roughly speaking). Linguists use tree diagrams to split sentences up into parts.
+
+                    For example, you may have learned in elementary school about the subject, predicate, and/or object of sentences. These are ways of splitting sentences into pieces. Linguists do something similar, only with far more categories. Additionally, these categories are hierarchical and nested, meaning that the "subject", for example, can be split up into sub-categories like "article" (the, a, an) and "noun". That's how you end with a tree diagram -- each category is a node, and it has child nodes representing the categories it can be decomposed into. This process is continued until the category maps directly to the actual word.
+
+                    <span class='note'>Note: "subject" here is just an example category, and not used in actual syntax tree construction under modern theories</p></li>
                 <li><span class="faq-q">Can Syntree take a sentence and make a syntrax trees <em>for</em> me?</span>
                     <p class="faq-a">No. Do your own homework.</p></li>
+
+                <li><span class="faq-q">Why are some of the keyboard shortcuts so weird? <span class="key key-ctrl"></span><span class="key key-comma"></span>? Like, what?</span>
+                    <p class="faq-a">Unfortunately, many common/simple keyboard shortcuts (for example, CTRL + Arrow Key) are used by operating systems and/or browsers as default shortcuts. For example, in Google Chrome on Mac computers, <span class="key key-ctrl"></span><span class="key key-left"></span> is the default shortcut for "Back".
+
+                    Syntree (and any other web-based application) is fundamentally unable to override these kinds of keyboard shortcuts. Therefore, I've opted to use shortcuts unlikely to already be in use (even if this makes them slightly exotic), rather than leave some users unable to use the keyboard interface.
+
+                    <span class="note">Coming soon: customizable keyboard shortcuts</span></p></li>
+
                 <li><span class="faq-q">I think this is awesomesauce/think this sucks. How can I let the creator know?</span>
                     <p class="faq-a">You can use the <a href="https://docs.google.com/forms/d/e/1FAIpQLScOwQnMioOwo0dfZXEo0DQPK-TdmMnRfYzuYS_Zf9sg-jbnkw/viewform">feedback form.</a></p></li>
             </ul>

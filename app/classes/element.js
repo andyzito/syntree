@@ -1,6 +1,8 @@
 // Right now, elements are Node, Branch, and Arrow
 Syntree.element = function() {
-	this.id = Syntree.Lib.genId();
+	if (!Syntree.Lib.checkType(this.id, 'number')) {
+		this.id = Syntree.Lib.genId();
+	}
 
 	this.getId = function() {
 		return this.id;
