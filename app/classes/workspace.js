@@ -107,13 +107,13 @@ Syntree.workspace_constructor.prototype._attachEventListeners = function() {
     $(document).on('click', '.node-label', function(e) {W._eventNodeClick(e);});
     $(document).on('click', '.delete_button', function() {W._eventDel();});
     $(document).on('click', '#page-background', function(e) {W._eventBGClick(e);});
-    $(document).on('dblclick', '.node-label', function() {W._eventEnter();});
+    $(document).on('dblclick', '.node-label', function(e) {W._eventEnter(e);});
     $(document).on('input', '.editor', function() {W._eventEditorTyping();});
     // Keyboard stuff
     $(document).on('keydown', function(e) {
         if ((W.focus_checking_enabled && W.focused) || !W.focus_checking_enabled) {
             if (e.keyCode === 13) { // Enter
-                W._eventEnter();
+                W._eventEnter(e);
             } else if (e.keyCode === 37) { // Left arrow key
                 W._eventLeft(e);
                 // return false;
@@ -238,10 +238,12 @@ Syntree.workspace_constructor.prototype._eventUpload = function() {
 Syntree.workspace_constructor.prototype._eventNodeClick = function(e) {
     // clickedNode = Syntree.Lib.checkArg(clickedNode, 'svgtextelement');
     var node = Syntree.ElementsManager.allElements[$(e.currentTarget).attr('id').split('-')[1]];
-    if (e.ctrlKey && !this.page.drawingMovementArrow) {
-        this.page.startMovementArrow(node);
-    } else if (e.ctrlKey) {
-        this.page.endMovementArrow(node);
+    if (e.ctrlKey) {
+        var a = this.page.createMovementArrow(node);
+        if (Syntree.Lib.checkType(a, 'arrow')) {
+            Syntree.ElementsManager.select(a);
+            return false;
+        }
     }
     Syntree.ElementsManager.select(node);
 }
@@ -441,6 +443,8 @@ Syntree.workspace_constructor.prototype._eventUnfocus = function() {
     this.focused = false;
 }
 
-Syntree.workspace_constructor.prototype._eventEnter = function() {
-    this.page.nodeEditing('toggle');
+Syntree.workspace_constructor.prototype._eventEnter = function(e) {
+    if (!e.shiftKey) {
+        this.page.nodeEditing('toggle');
+    }
 }

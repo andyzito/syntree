@@ -25,6 +25,15 @@ Syntree.element = function() {
         this.deleted = true;
     }
 
+    this.recreate = function() {
+        this.deleted = false;
+        if (Syntree.Lib.checkType(this.__recreate, 'function')) {
+            this.__recreate();
+        }
+        this.graphic.recreate();
+        Syntree.ElementsManager.register(this);
+    }
+
     this.updateGraphics = function() {
         this.graphic.update();
         if (Syntree.Lib.checkType(this.__updateGraphics, 'function')) {

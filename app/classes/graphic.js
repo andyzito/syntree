@@ -46,6 +46,18 @@ Syntree.Graphic.prototype.update = function() {
 
 Syntree.Graphic.prototype.delete = function() {
     for (name in this.elements) {
-        this.elements[name].remove();
+        if (this.elements[name].node) {
+            this.elements[name].node.remove();
+        } else {
+            this.elements[name].remove();
+        }
+    }
+}
+
+Syntree.Graphic.prototype.recreate = function() {
+    for (name in this.elements) {
+        console.log(name)
+        console.log(this.elements[name])
+        $("#workspace").append(this.elements[name].node);
     }
 }

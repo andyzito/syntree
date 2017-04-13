@@ -87,11 +87,12 @@ Syntree._ActionDelete = function(data) {
         this.path = Syntree.Lib.checkArg(data.path, 'string');
 
         this.undo = function() {
-            new Syntree.Arrow({
-                fromNode: this.fromNode,
-                toNode: this.toNode,
-                path: this.path,
-            });
+            this.deleted_obj.recreate();
+            // new Syntree.Arrow({
+            //     fromNode: this.fromNode,
+            //     toNode: this.toNode,
+            //     path: this.path,
+            // });
         }
     }
 

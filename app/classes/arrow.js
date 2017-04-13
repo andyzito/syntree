@@ -25,6 +25,10 @@ Syntree.Arrow.prototype.config_map = {
     },
 }
 
+Syntree.Arrow.prototype.__recreate = function() {
+
+}
+
 Syntree.Arrow.prototype.createGraphic = function() {
     var startPoint = this.fromNode.getPosition();
     var endPoint = this.toNode.getPosition();
@@ -58,8 +62,8 @@ Syntree.Arrow.prototype.createGraphic = function() {
 
     var config_matrix = {
         elements: {
-            line: line,
             shadowLine: shadowLine,
+            line: line,
         },
         states_synced: {
             selected: false,

@@ -3,14 +3,36 @@
     border-bottom: 1px solid black;
     width: 100%;
     background-color: white;
+    height: 51px;
 
     .toolbar_button {
         @extend .button;
+        padding: 0 1rem;
         border: none;
         border-radius: 0;
+        height: 100%;
+        line-height: 300%;
     }
 
     .toolbar_area_right {
         float: right;
+        height: 100%;
+    }
+
+    .toolbar_button__settings {
+        padding: 0 2rem;
+        background-color: white;
+        background-image: url("/resources/gear.svg");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position:center;
+
+        &:hover {
+            background-color: white;
+            background-image: url("/resources/gear.svg");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position:center;
+        }
     }
 }
