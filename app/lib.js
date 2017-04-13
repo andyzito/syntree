@@ -6,7 +6,7 @@ time_function = function(f,o) {
 }
 
 time_make_child = function(id,n) {
-    Syntree.Page.nodeSelect(Syntree.Page.allNodes[id]);
+    Syntree.ElementsManager.select(Syntree.Page.allNodes[id]);
     var times = [];
     var i = 0;
     while (i < n) {
@@ -20,7 +20,7 @@ time_make_child = function(id,n) {
 }
 
 time_make_sibling = function(id,n) {
-    Syntree.Page.nodeSelect(Syntree.Page.allNodes[id]);
+    Syntree.ElementsManager.select(Syntree.Page.allNodes[id]);
     var times = [];
     var i = 0;
     while (i < n) {
@@ -114,19 +114,42 @@ Syntree.Lib = {
         }
     },
 
-    checkArg: function(passed, required_type, default_value) {
-        if (this.checkType(passed, required_type)) {
-            return passed;
-        } else {
-            if (!this.checkType(default_value, 'undefined')) {
-                if (default_value === '#undefined') {
-                    return;
+    checkArg: function(passed, require, default_value) {
+        if (this.checkType(require, ['string', 'array'])) {
+            if (this.checkType(passed, require)) {
+                return passed;
+            } else {
+                if (!this.checkType(default_value, 'undefined')) {
+                    if (default_value === '#undefined') {
+                        return;
+                    } else {
+                        return default_value;
+                    }
                 } else {
-                    return default_value;
+                    throw new TypeError('Argument is required to be type ' + String(require).replace(',', ' or ') + ', was type ' + this.typeOf(passed));
+                }
+            }
+        } else if (this.checkType(require, 'function')) {
+            var r = require();
+            if (Syntree.Lib.checkType(r, 'boolean')) {
+                if (r) {
+                    return passed;
+                } else {
+                    if (!this.checkType(default_value, 'undefined')) {
+                        if (default_value === '#undefined') {
+                            return;
+                        } else {
+                            return default_value;
+                        }
+                    } else {
+                        throw new TypeError('Argument is the wrong type, per ' + require);
+                    }
                 }
             } else {
-                throw new TypeError('Argument is required to be type ' + String(required_type).replace(',', ' or ') + ', was type ' + this.typeOf(passed));
+                throw new Error("Require function must return true or false");
             }
+        } else {
+            throw new TypeError("Argument 'require' is required to be either a type string/array or a function");
         }
     },
 
@@ -137,6 +160,10 @@ Syntree.Lib = {
         y2 = Syntree.Lib.checkArg(args.y2, 'number');
 
         return Math.sqrt(Math.pow((x2 - x1),2)+Math.pow((y2 - y1),2));
+    },
+
+    capitalize: function(string) {
+        return string[0].toUpperCase() + string.slice(1,string.length);
     },
 
     getClosestSides: function(box1, box2) {
@@ -173,24 +200,4 @@ Syntree.Lib = {
         }
         return closestSides;
     },
-
-    makeSelectable: function(obj) {
-        obj.selected = false;
-        obj.select = function() {
-            this.selected = true;
-            this.graphic.unsync('selected');
-            this.updateGraphics(false);
-        }
-        obj.deselect = function() {
-            this.selected = false;
-            this.graphic.unsync('selected');
-            this.updateGraphics(false);
-        }
-        if (!Syntree.Lib.checkType(this.id, 'number')) {
-            this.id = Syntree.Lib.genId();
-        }
-        if (!Syntree.Page.isRegistered(this)) {
-            Syntree.Page.register(this);
-        }
-    }
 }

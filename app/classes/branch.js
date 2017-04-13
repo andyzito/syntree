@@ -47,7 +47,7 @@ Syntree.Branch.prototype.createGraphic = function() {
 
     var mid = this.getMidPoint();
     var triangleButton = Syntree.snap.image(
-        '/triangle_button_triangle.png',
+        '/resources/triangle_button_triangle.png',
         mid.x,
         mid.y,
         15,
@@ -83,7 +83,7 @@ Syntree.Branch.prototype.createGraphic = function() {
                         strokeWidth: 0,
                     });
                     g.getEl('triangleButton').attr({
-                        href: '/triangle_button_triangle.png',
+                        href: '/resources/triangle_button_triangle.png',
                     });
                 } else {
                     g.getEl('triangle').attr({
@@ -96,7 +96,7 @@ Syntree.Branch.prototype.createGraphic = function() {
                         strokeWidth: 10,
                     });
                     g.getEl('triangleButton').attr({
-                        href: '/triangle_button_branch.png',
+                        href: '/resources/triangle_button_branch.png',
                     });
                 }
             },

@@ -14,11 +14,14 @@ Syntree.element = function() {
 
     this.deleted = false;
 	this.delete = function() {
-		this.graphic.delete();
-		Syntree.ElementsManager.deregister(this);
+		if (this.deleted) {
+			return;
+		}
 		if (Syntree.Lib.checkType(this.__delete, 'function')) {
 			this.__delete();
 		}
+		this.graphic.delete();
+		Syntree.ElementsManager.deregister(this);
 		this.deleted = true;
 	}
 
@@ -27,6 +30,18 @@ Syntree.element = function() {
 	    if (Syntree.Lib.checkType(this.__updateGraphics, 'function')) {
 	        this.__updateGraphics(true);
 	    }
+	}
+
+	this.isSelectable = function() {
+		return false;
+	}
+
+	this.isElement = function() {
+		return true;
+	}
+
+	this.isDeletable = function() {
+		return true;
 	}
 
 	Syntree.ElementsManager.register(this);

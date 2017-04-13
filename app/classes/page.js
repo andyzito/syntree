@@ -141,7 +141,7 @@ Syntree.page_constructor.prototype.navigateHorizontal = function(direction,fcrea
     }
 
     if (!Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
-        this.nodeSelect(this.tree.root);
+        Syntree.ElementsManager.select(this.tree.root);
     }
 
     if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node') && Syntree.Lib.checkType(Syntree.ElementsManager.getSelected().getParent(), 'node')) {
@@ -161,13 +161,13 @@ Syntree.page_constructor.prototype.navigateHorizontal = function(direction,fcrea
                     Syntree.ElementsManager.getSelected().getParent().addChild(newNode,siblingIndex+1);
                     var tree = new Syntree.Tree({root:Syntree.ElementsManager.getSelected().getParent()});
                     tree.distribute();
-                    this.nodeSelect(newNode);
+                    Syntree.ElementsManager.select(newNode);
                     this.nodeEditing('init');
                 } else {
                     return;
                 }
             } else {
-                this.nodeSelect(rowNodes[selectedIndex+1]);
+                Syntree.ElementsManager.select(rowNodes[selectedIndex+1]);
             }
         } else {
             if (selectedIndex === 0 || fcreate) {
@@ -177,13 +177,13 @@ Syntree.page_constructor.prototype.navigateHorizontal = function(direction,fcrea
                     Syntree.ElementsManager.getSelected().getParent().addChild(newNode,siblingIndex);
                     var tree = new Syntree.Tree({root:Syntree.ElementsManager.getSelected().getParent()});
                     tree.distribute();
-                    this.nodeSelect(newNode);
+                    Syntree.ElementsManager.select(newNode);
                     this.nodeEditing('init');
                 } else {
                     return;
                 }
             } else {
-                this.nodeSelect(rowNodes[selectedIndex-1]);
+                Syntree.ElementsManager.select(rowNodes[selectedIndex-1]);
             }
         }
 
@@ -192,11 +192,11 @@ Syntree.page_constructor.prototype.navigateHorizontal = function(direction,fcrea
 
 Syntree.page_constructor.prototype.navigateUp = function() {
     if (!Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
-        this.nodeSelect(this.tree.root);
+        Syntree.ElementsManager.select(this.tree.root);
     }
 
     if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node') && Syntree.Lib.checkType(Syntree.ElementsManager.getSelected().getParent(), 'node')) {
-        this.nodeSelect(Syntree.ElementsManager.getSelected().getParent());
+        Syntree.ElementsManager.select(Syntree.ElementsManager.getSelected().getParent());
     }
 }
 
@@ -204,20 +204,20 @@ Syntree.page_constructor.prototype.navigateDown = function(fcreate) {
     fcreate = Syntree.Lib.checkArg(fcreate, 'boolean', false);
 
     if (!Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
-        this.nodeSelect(this.tree.root);
+        Syntree.ElementsManager.select(this.tree.root);
     }
 
     if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
         if (Syntree.ElementsManager.getSelected().getChildren().length > 0 && !fcreate) {
-            var possibleSelects = Syntree.ElementsManager.getSelected().getChildren().map(function(c){return c.id});
-            var selectHistory = Syntree.History.getAllByType('select');
+            var possibleSelects = Syntree.ElementsManager.getSelected().getChildren();
+            var selectHistory = Syntree.History.getNodeSelects();
             for (i=0; i<selectHistory.length; i++) {
-                if (possibleSelects.indexOf(selectHistory[i].node.id) >= 0) {
-                    this.nodeSelect(Syntree.ElementsManager.allElements[selectHistory[i].node.id]);
+                if (possibleSelects.indexOf(selectHistory[i].selected_obj) >= 0) {
+                    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[selectHistory[i].selected_obj.id]);
                     return;
                 }
             }
-            this.nodeSelect(Syntree.ElementsManager.getSelected().getChildren()[0]);
+            Syntree.ElementsManager.select(Syntree.ElementsManager.getSelected().getChildren()[0]);
         } else if (Syntree.ElementsManager.getSelected().getState('real')) {
             var newNode = new Syntree.Node({
                 x:0,
@@ -226,7 +226,7 @@ Syntree.page_constructor.prototype.navigateDown = function(fcreate) {
             Syntree.ElementsManager.getSelected().addChild(newNode);
             var tree = new Syntree.Tree({root:Syntree.ElementsManager.getSelected()});
             tree.distribute();
-            this.nodeSelect(newNode);
+            Syntree.ElementsManager.select(newNode);
             this.nodeEditing('init');
         }
     }
@@ -253,11 +253,17 @@ Syntree.page_constructor.prototype.nodeEditing = function(type,node, silent) {
             var pre = node.beforeEditLabelContent;
             var post = node.getLabelContent();
             if (!silent) {
-                new ActionSave(node,pre,post);
+                new Syntree.Action('save', {
+                    node: node,
+                    pre: pre,
+                    post: post
+                });
             }
         } else {
             if (!silent) {
-                new ActionCreate(node);
+                new Syntree.Action('create', {
+                    created_obj: node,
+                });
             }
         }
         node.editingAction('save');
@@ -275,80 +281,81 @@ Syntree.page_constructor.prototype.nodeEditing = function(type,node, silent) {
     }
 }
 
-Syntree.page_constructor.prototype.nodeDelete = function(node, silent) {
-    node = Syntree.Lib.checkArg(node, 'node', Syntree.ElementsManager.getSelected());
-    node = Syntree.Lib.checkArg(node, 'node');
-    silent = Syntree.Lib.checkArg(silent, 'boolean', false);
+// Syntree.page_constructor.prototype.nodeDelete = function(node, silent) {
+    // node = Syntree.Lib.checkArg(node, 'node', Syntree.ElementsManager.getSelected());
+    // node = Syntree.Lib.checkArg(node, 'node');
+    // silent = Syntree.Lib.checkArg(silent, 'boolean', false);
 
-    if (node.getState('deleted')) {
-        return;
-    }
-
-    if (node === this.tree.root) {
-        var children = this.tree.root.getChildren().slice();
-        var c = 0;
-        while (c < children.length) {
-            this.nodeDelete(children[c]);
-            c++;
-        }
-    } else {
-        var parent = node.getParent();
-        var tree = new Syntree.Tree({
-            root:node
-        });
-        if (!silent) {
-            new ActionDelete(
-                tree,
-                parent,
-                parent.getChildren().indexOf(tree.root)
-            );
-        }
-        tree.delete();
-        if (Syntree.Lib.checkType(parent, 'node')) {
-            tree = new Syntree.Tree({
-                root:parent
-            });
-            tree.distribute();
-        }
-        node.real = false;
-
-        if (Syntree.ElementsManager.getSelected() === node) {
-            Syntree.ElementsManager.deselect();
-        }
-        if (!Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
-            this.nodeSelect(this.tree.getRoot());
-        }
-    }
-}
-
-Syntree.page_constructor.prototype.nodeSelect = function(node, silent) {
-    node = Syntree.Lib.checkArg(node, 'node');
-    silent = Syntree.Lib.checkArg(silent, 'boolean', false);
-
-    var nodeToDeselect = Syntree.ElementsManager.getSelected();
-    Syntree.ElementsManager.select(node);
-    this.nodeDeselect(nodeToDeselect);
-    // if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
-    //     this.nodeDeselect(Syntree.ElementsManager.getSelected());
+    // if (node.getState('deleted')) {
+    //     return;
     // }
-    // Syntree.ElementsManager.getSelected() = node;
-    // Syntree.ElementsManager.getSelected().select();
-    if (!silent) {
-        new ActionSelect(node);
-    }
-}
 
-Syntree.page_constructor.prototype.nodeDeselect = function(node) {
-    node = Syntree.Lib.checkArg(node, 'node', '#undefined');
+    // if (node === this.tree.root) {
+    //     var children = this.tree.root.getChildren().slice();
+    //     var c = 0;
+    //     while (c < children.length) {
+    //         this.nodeDelete(children[c]);
+    //         c++;
+    //     }
+    // }
+    // else {
+    //     var parent = node.getParent();
+    //     var tree = new Syntree.Tree({
+    //         root:node
+    //     });
+    //     if (!silent) {
+    //         new Syntree.ActionDelete(
+    //             tree,
+    //             parent,
+    //             parent.getChildren().indexOf(tree.root)
+    //         );
+    //     }
+    //     tree.delete();
+    //     if (Syntree.Lib.checkType(parent, 'node')) {
+    //         tree = new Syntree.Tree({
+    //             root:parent
+    //         });
+    //         tree.distribute();
+    //     }
+    //     node.real = false;
 
-    if (Syntree.Lib.checkType(node, 'node')) {
-        if (node.getState('real')) {
-            this.nodeEditing('cancel',node);
-        } else {
-            this.nodeDelete(node, true);
-        }
-    }
-}
+    //     if (Syntree.ElementsManager.getSelected() === node) {
+    //         Syntree.ElementsManager.deselect();
+    //     }
+    //     if (!Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
+    //         Syntree.ElementsManager.select(this.tree.getRoot());
+    //     }
+    // }
+// }
+
+// Syntree.page_constructor.prototype.nodeSelect = function(node, silent) {
+//     node = Syntree.Lib.checkArg(node, 'node');
+//     silent = Syntree.Lib.checkArg(silent, 'boolean', false);
+
+//     var nodeToDeselect = Syntree.ElementsManager.getSelected();
+//     Syntree.ElementsManager.select(node);
+//     this.nodeDeselect(nodeToDeselect);
+//     // if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
+//     //     this.nodeDeselect(Syntree.ElementsManager.getSelected());
+//     // }
+//     // Syntree.ElementsManager.getSelected() = node;
+//     // Syntree.ElementsManager.getSelected().select();
+//     if (!silent) {
+//         new Syntree.ActionSelect(node);
+//     }
+// }
+
+// Syntree.page_constructor.prototype.nodeDeselect = function(node) {
+//     node = Syntree.Lib.checkArg(node, 'node', '#undefined');
+
+//     if (Syntree.Lib.checkType(node, 'node')) {
+//         if (node.getState('real')) {
+//             this.nodeEditing('cancel',node);
+//         } else {
+//             this.nodeDelete(node, true);
+//         }
+//     }
+// }
 
 Syntree.page_constructor.prototype.toString = function() {
     return "[object Page]"

@@ -70,6 +70,14 @@ function History() {
             this.actions.splice(this.actions.indexOf(a),1);
         }
     }
+
+    this.getNodeSelects = function() {
+        var res = this.getAllByType('select');
+        res = res.filter(function(x) {
+            return Syntree.Lib.checkType(x.selected_obj, 'node');
+        });
+        return res;
+    }
 }
 
 History.prototype.toString = function() {

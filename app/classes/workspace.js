@@ -92,7 +92,7 @@ Syntree.workspace_constructor = function(config_matrix) {
     // Make the page
     this.page = new Syntree.page_constructor();
     this.page.addTree();
-    this.page.nodeSelect(this.page.tree.getRoot());
+    Syntree.ElementsManager.select(this.page.tree.getRoot());
 }
 
 
@@ -108,7 +108,7 @@ Syntree.workspace_constructor.prototype._attachEventListeners = function() {
     $(document).on('click', '.delete_button', function() {W._eventDel();});
     $(document).on('click', '#page-background', function(e) {W._eventBGClick(e);});
     $(document).on('dblclick', '.node-label', function() {W._eventEnter();});
-    $(document).on('input', '.editor', function() {console.log('editor typing');W._eventEditorTyping();});
+    $(document).on('input', '.editor', function() {W._eventEditorTyping();});
     // Keyboard stuff
     $(document).on('keydown', function(e) {
         if ((W.focus_checking_enabled && W.focused) || !W.focus_checking_enabled) {
@@ -206,7 +206,7 @@ Syntree.workspace_constructor.prototype._eventRewatchTutorial = function() {
     if (check) {
         Syntree.Page.tree.delete();
         Syntree.Page.addTree();
-        Syntree.Page.nodeSelect(Syntree.Page.tree.getRoot());
+        Syntree.ElementsManager.select(Syntree.Page.tree.getRoot());
         Syntree.Tutorial.start();
     }
 }
@@ -243,7 +243,7 @@ Syntree.workspace_constructor.prototype._eventNodeClick = function(e) {
     } else if (e.ctrlKey) {
         this.page.endMovementArrow(node);
     }
-    this.page.nodeSelect(node);
+    Syntree.ElementsManager.select(node);
 }
 
 Syntree.workspace_constructor.prototype._eventLeft = function(e) {
@@ -281,10 +281,30 @@ Syntree.workspace_constructor.prototype._eventDown = function(e) {
 }
 
 Syntree.workspace_constructor.prototype._eventDel = function() {
-    if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
-        this.page.nodeDelete();
+    var selected = Syntree.ElementsManager.getSelected();
+    if (Syntree.Lib.checkType(selected, 'node')) {
+        if (Syntree.Page.tree.root === selected) {
+            var children = Syntree.Page.tree.root.getChildren().slice();
+            var c = 0;
+            while (c < children.length) {
+                var tree = new Syntree.Tree({
+                    root: children[c],
+                })
+                tree.delete();
+                c++;
+            }
+        } else {
+            var tree = new Syntree.Tree({
+                root: selected,
+            })
+            tree.delete();
+        }
+        Syntree.ElementsManager.deselect();
+        if (!Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
+            Syntree.ElementsManager.select(Syntree.Page.tree.getRoot());
+        }
     } else {
-        Syntree.ElementsManager.deleteSelected();
+        select.delete();
     }
 }
 

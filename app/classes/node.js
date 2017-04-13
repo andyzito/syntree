@@ -86,7 +86,8 @@ Syntree.Node.prototype.createGraphic = function() {
                     });
 
                     g.getEl('deleteButton').attr({
-                        opacity: 100,
+                        width: 10,
+                        height: 10,
                         class: "delete_button"
                     });
                 } else {
@@ -95,7 +96,8 @@ Syntree.Node.prototype.createGraphic = function() {
                     });
 
                     g.getEl('deleteButton').attr({
-                        opacity: 0,
+                        width: 0,
+                        height: 0,
                         class: "delete_button invisible",
                     });
                 }
@@ -286,28 +288,34 @@ Syntree.Node.prototype.move = function(x,y,propagate) {
 }
 
 Syntree.Node.prototype.__delete = function() {
+    this.real = false;
     if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
         this.parentBranch.delete();
     }
     if (Syntree.Lib.checkType(this.parent, 'node')) {
         this.parent.children.splice(this.parent.children.indexOf(this), 1);
+        var tree = new Syntree.Tree({
+            root: this.parent,
+        })
+        tree.distribute();
     }
 }
 
-Syntree.Node.prototype.__select = function() {
-    // var nodeToDeselect = Syntree.ElementsManager.getSelected();
-    // Syntree.ElementsManager.select(node);
-    // this.nodeDeselect(nodeToDeselect);
+// Syntree.Node.prototype.__select = function() {
+//     // var nodeToDeselect = Syntree.ElementsManager.getSelected();
+//     // Syntree.ElementsManager.select(node);
+//     // this.nodeDeselect(nodeToDeselect);
 
-    // if (!silent) {
-    //     new ActionSelect(node);
-    // }
-}
+//     // if (!silent) {
+//     //     new Syntree.ActionSelect(node);
+//     // }
+// }
 
 Syntree.Node.prototype.__deselect = function() {
-    this.selected = false;
-    this.graphic.unsync('selected');
-    this.updateGraphics(false);
+    this.editingAction('cancel');
+    if (!this.real) {
+        this.delete();
+    }
 }
 
 Syntree.Node.prototype.editingAction = function(action) {

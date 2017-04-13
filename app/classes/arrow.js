@@ -1,20 +1,28 @@
-Syntree.Arrow = function(parent,child) {
-    parent = Syntree.Lib.checkArg(parent, 'node');
-    child = Syntree.Lib.checkArg(child, 'node');
-
-    this.startPoint = parent.getPosition();
-    this.endPoint = child.getPosition();
-
-    child.toArrow = this;
-    parent.fromArrow = this;
-
-    this.parent = parent;
-    this.child = child;
-
+Syntree.Arrow = function(config_matrix) {
     Syntree.selectableElement.call(this);
+    Syntree.Lib.config(config_matrix, this);
+
+    this.toNode.toArrow = this;
+    this.fromNode.fromArrow = this;
+
     this.updateGraphics();
 
-    new ActionCreateArrow(this);
+    new Syntree.Action('create', {
+        created_obj: this,
+    });
+}
+
+Syntree.Arrow.prototype.config_map = {
+    fromNode: {
+        type: 'node',
+    },
+    toNode: {
+        type: 'node',
+    },
+    path: {
+        type: 'string',
+        default: '#undefined',
+    },
 }
 
 Syntree.Arrow.prototype.createGraphic = function() {
@@ -144,16 +152,16 @@ Syntree.Arrow.prototype.createGraphic = function() {
     this.graphic.addElement('handle2', handle2);
 
     var path = this.graphic.getEl('line').attr('path');
-    var pInter = Snap.path.intersection(path, this.parent.getPath());
-    pInter = pInter[pInter.length-1];
-    var cInter = Snap.path.intersection(path, this.child.getPath());
-    cInter = cInter[cInter.length-1];
-    this.setStartPoint(pInter.x, pInter.y);
-    this.setEndPoint(cInter.x, cInter.y);
-    var xsmooth1 = pInter.x > cInter.x ? -10 : 10;
-    var xsmooth2 = pInter.x > cInter.x ? 10 : -10;
-    this.setStartCtrlPoint(pInter.x+xsmooth1, pInter.y+30);
-    this.setEndCtrlPoint(cInter.x+xsmooth2, cInter.y+30);
+    var fInter = Snap.path.intersection(path, this.fromNode.getPath());
+    fInter = fInter[fInter.length-1];
+    var tInter = Snap.path.intersection(path, this.toNode.getPath());
+    tInter = tInter[tInter.length-1];
+    this.setStartPoint(fInter.x, fInter.y);
+    this.setEndPoint(tInter.x, tInter.y);
+    var xsmooth1 = fInter.x > tInter.x ? -10 : 10;
+    var xsmooth2 = fInter.x > tInter.x ? 10 : -10;
+    this.setStartCtrlPoint(fInter.x+xsmooth1, fInter.y+30);
+    this.setEndCtrlPoint(tInter.x+xsmooth2, tInter.y+30);
 }
 
 Syntree.Arrow.prototype.select = function() {
@@ -207,10 +215,10 @@ Syntree.Arrow.prototype.toString = function() {
 }
 
 Syntree.Arrow.prototype.__updateGraphics = function() {
-    var pBBox = this.parent.getLabelBBox();
-    var cBBox = this.child.getLabelBBox();
-    this.setStartPoint(pBBox.cx, pBBox.cy);
-    this.setEndPoint(cBBox.cx, cBBox.cy);
+    var fBBox = this.fromNode.getLabelBBox();
+    var tBBox = this.toNode.getLabelBBox();
+    this.setStartPoint(fBBox.cx, fBBox.cy);
+    this.setEndPoint(tBBox.cx, tBBox.cy);
 
     var scp = this.getStartCtrlPoint();
     var ecp = this.getEndCtrlPoint();
@@ -224,32 +232,32 @@ Syntree.Arrow.prototype.__updateGraphics = function() {
     });
 
     var path = this.graphic.getEl('line').attr('path');
-    var pInter = Snap.path.intersection(path, this.parent.getPath());
-    pInter = pInter.reduce(function(l, e) {
+    var fInter = Snap.path.intersection(path, this.fromNode.getPath());
+    fInter = fInter.reduce(function(l, e) {
         return e.t1 < l.t1 ? e : l;
     });
-    var cInter = Snap.path.intersection(path, this.child.getPath());
-    cInter = cInter.reduce(function(l, e) {
+    var tInter = Snap.path.intersection(path, this.toNode.getPath());
+    tInter = tInter.reduce(function(l, e) {
         return e.t1 > l.t1 ? e : l;
     });
-    this.setStartPoint(pInter.x, pInter.y);
-    this.setEndPoint(cInter.x, cInter.y);
+    this.setStartPoint(fInter.x, fInter.y);
+    this.setEndPoint(tInter.x, tInter.y);
 
     this.graphic.getEl('shadowLine').attr({
         path: this.graphic.getEl('line').attr('path'),
     })
 
     // var cS = Syntree.Lib.getClosestSides(
-    //     pBBox,
-    //     cBBox
+    //     fBBox,
+    //     tBBox
     // );
     // var p1 = cS.s1.includes('2') ? 5 : -5;
     // var p2 = cS.s2.includes('2') ? 5 : -5;
     // var endPoints = {
-    //     x1: cS.s1.includes('x') ? pBBox[cS.s1]+p1 : pBBox.cx,
-    //     y1: cS.s1.includes('y') ? pBBox[cS.s1]+p1 : pBBox.cy,
-    //     x2: cS.s2.includes('x') ? cBBox[cS.s2]+p2 : cBBox.cx,
-    //     y2: cS.s2.includes('y') ? cBBox[cS.s2]+p2 : cBBox.cy,
+    //     x1: cS.s1.includes('x') ? fBBox[cS.s1]+p1 : fBBox.cx,
+    //     y1: cS.s1.includes('y') ? fBBox[cS.s1]+p1 : fBBox.cy,
+    //     x2: cS.s2.includes('x') ? tBBox[cS.s2]+p2 : tBBox.cx,
+    //     y2: cS.s2.includes('y') ? tBBox[cS.s2]+p2 : tBBox.cy,
     // };
     // this.setStartPoint(endPoints.x1, endPoints.y1);
     // this.setEndPoint(endPoints.x2, endPoints.y2);
@@ -259,12 +267,14 @@ Syntree.Arrow.prototype.__delete = function(silent) {
     silent = Syntree.Lib.checkArg(silent, 'boolean', false);
     console.log('deleting arrow');
 
-    this.parent.fromArrow = undefined;
-    this.child.toArrow = undefined;
+    this.fromNode.fromArrow = undefined;
+    this.toNode.toArrow = undefined;
 
     if (!silent) {
         console.log('arrow deleted');
-        new ActionDeleteArrow(this);
+        new Syntree.Action('delete', {
+            deleted_obj: this,
+        });
     }
 }
 
@@ -311,7 +321,7 @@ Syntree.Arrow.prototype.setCurve = function() {
     var intersect = false;
     for (id in Syntree.Page.allNodes) {
         var node = Syntree.Page.allNodes[id];
-        if (node === this.parent || node === this.child) {
+        if (node === this.fromNode || node === this.toNode) {
             continue;
         }
         var nodePath = node.getPath();
@@ -324,11 +334,11 @@ Syntree.Arrow.prototype.setCurve = function() {
         this.setEndCtrlPoint(endCtrlPoint.x-10,endCtrlPoint.y);
         this.setCurve();
     } else {
-        var pInter = Snap.path.intersection(path, this.parent.getPath())[0];
-        var cInter = Snap.path.intersection(path, this.child.getPath())[0];
-        this.setStartPoint(pInter.x, pInter.y);
-        this.setEndPoint(cInter.x, cInter.y);
-        // console.log(Snap.path.intersection(path, this.parent.getPath()));
+        var fInter = Snap.path.intersection(path, this.fromNode.getPath())[0];
+        var tInter = Snap.path.intersection(path, this.toNode.getPath())[0];
+        this.setStartPoint(fInter.x, fInter.y);
+        this.setEndPoint(tInter.x, tInter.y);
+        // console.log(Snap.path.intersection(path, this.fromNode.getPath()));
         return;
     }
 }
