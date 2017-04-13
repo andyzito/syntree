@@ -93,4 +93,16 @@ Syntree.ElementsManager = {
     getSelected: function() {
         return this.selectedElement;
     },
+
+    getElementsByType(type) {
+        type = Syntree.Lib.checkArg(type,'string');
+
+        var res = {};
+        for (id in this.allElements) {
+            if (Syntree.Lib.checkType(this.allElements[id], type)) {
+                res[id] = this.allElements[id];
+            }
+        }
+        return res;
+    }
 }

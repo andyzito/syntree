@@ -369,8 +369,9 @@ Syntree.Tree.prototype.getRightMostNode = function() {
     }
 }
 
-Syntree.Tree.prototype.distribute = function(angle) {
+Syntree.Tree.prototype.distribute = function(angle,force_check_all) {
     angle = Syntree.Lib.checkArg(angle, 'number', 60);
+    force_check_all = Syntree.Lib.checkArg(force_check_all, 'boolean', false);
 
     var children = this.root.getChildren();
     if (children.length === 0) {
@@ -381,7 +382,9 @@ Syntree.Tree.prototype.distribute = function(angle) {
             this.root.getPosition().y+this.rowHeight
         );
         children[0].updateGraphics();
-        return;
+        if (!force_check_all) {
+            return;
+        }
     } else if (children.length > 1) {
         var pos = this.root.getPosition();
         var leftBound = pos.x - (this.rowHeight * Math.tan((angle/2) * (Math.PI / 180)));
@@ -389,7 +392,9 @@ Syntree.Tree.prototype.distribute = function(angle) {
         var width = rightBound - leftBound;
         var interval = width/(children.length-1);
         var i = 0;
+        var targetY = this.root.getPosition().y + this.rowHeight;
         while (i < children.length) {
+            var targetX = leftBound+(interval*i);
             children[i].move(leftBound+(interval*i),this.root.getPosition().y+this.rowHeight);
             i++;
         }
@@ -419,16 +424,18 @@ Syntree.Tree.prototype.distribute = function(angle) {
         if (intersect) {
             var newAngle = 2 * ((180/Math.PI) * (Math.atan(newWidth/(2*this.rowHeight))));
             var oldAngle = 2 * ((180/Math.PI) * (Math.atan(width/(2*this.rowHeight))));
-            this.distribute(newAngle);
+            this.distribute(newAngle,force_check_all);
         }
-
     }
 
     if (Syntree.Lib.checkType(this.root.getParent(), 'node')) {
+        // if (!intersect && !force_check_all) {
+        //     return;
+        // }
         var tree = new Syntree.Tree({
             root:this.root.getParent()
         });
-        tree.distribute();
+        tree.distribute(undefined,force_check_all);
     } else {
         this.root.updateGraphics(true);
     }
@@ -482,8 +489,9 @@ Syntree.Tree.prototype._buildFromTreestring = function(treestring) {
         var entry = node_entry_list[n];
         var newnode = new Syntree.Node({
             labelContent:entry.labelContent,
-            id:Number(entry.id)
+            id:Number(entry.id),
         });
+        Syntree.Lib.allIds.push(newnode.id);
         newnode.editingAction('save');
         n++;
     }

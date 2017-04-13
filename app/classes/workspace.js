@@ -59,7 +59,6 @@ Syntree.workspace_constructor = function(config_matrix) {
             'click',
             '.toolbar_button__tutorial',
             function() {
-                console.log('rewatch tutorial')
                 Syntree.Workspace._eventRewatchTutorial();
             });
     } else {
@@ -107,13 +106,13 @@ Syntree.workspace_constructor.prototype._attachEventListeners = function() {
     $(document).on('click', '.node-label', function(e) {W._eventNodeClick(e);});
     $(document).on('click', '.delete_button', function() {W._eventDel();});
     $(document).on('click', '#page-background', function(e) {W._eventBGClick(e);});
-    $(document).on('dblclick', '.node-label', function(e) {W._eventEnter(e);});
+    $(document).on('dblclick', '.node-label', function() {W._eventEnter();});
     $(document).on('input', '.editor', function() {W._eventEditorTyping();});
     // Keyboard stuff
     $(document).on('keydown', function(e) {
         if ((W.focus_checking_enabled && W.focused) || !W.focus_checking_enabled) {
             if (e.keyCode === 13) { // Enter
-                W._eventEnter(e);
+                W._eventEnter();
             } else if (e.keyCode === 37) { // Left arrow key
                 W._eventLeft(e);
                 // return false;
@@ -362,7 +361,6 @@ Syntree.workspace_constructor.prototype._eventExportImage = function() {
     var offsetY = (-1*path.topBound + 25);
 
     var svgstring = '<svg>'+this.page.getSVGString()+'</svg>';
-    console.log($(svgstring).children('text'));
     // $('#export-image-canvas').attr('width', (width+100));
     // $('#export-image-canvas').attr('height', (height+50));
     canvg('export-image-canvas', svgstring, {
@@ -443,8 +441,6 @@ Syntree.workspace_constructor.prototype._eventUnfocus = function() {
     this.focused = false;
 }
 
-Syntree.workspace_constructor.prototype._eventEnter = function(e) {
-    if (!e.shiftKey) {
-        this.page.nodeEditing('toggle');
-    }
+Syntree.workspace_constructor.prototype._eventEnter = function() {
+    this.page.nodeEditing('toggle');
 }

@@ -1,3 +1,14 @@
+test_genId = function(n) {
+    var gend = [];
+    for (i=0; i<=n; i++) {
+        var id = Syntree.Lib.genId();
+        if (gend.indexOf(id) > -1) {
+            console.log('duplicate: ' + id);
+        }
+        gend.push(id);
+    }
+    console.log(gend)
+}
 time_function = function(f,o) {
     var start_time = new Date().getTime();
     o[f]();
@@ -6,7 +17,7 @@ time_function = function(f,o) {
 }
 
 time_make_child = function(id,n) {
-    Syntree.ElementsManager.select(Syntree.Page.allNodes[id]);
+    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
     var times = [];
     var i = 0;
     while (i < n) {
@@ -20,13 +31,16 @@ time_make_child = function(id,n) {
 }
 
 time_make_sibling = function(id,n) {
-    Syntree.ElementsManager.select(Syntree.Page.allNodes[id]);
+    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
     var times = [];
     var i = 0;
     while (i < n) {
         console.log('timing');
         times.push(time_function('_eventLeft', Syntree.Workspace));
-        Syntree.Workspace._eventRight();
+        e = {
+            ctrlKey: false,
+        };
+        Syntree.Workspace._eventRight(e);
         i++;
     }
     var sum = times.reduce(function(a, b) { return a + b; });
@@ -74,12 +88,13 @@ Syntree.Lib = {
     idN: 1000,
 
     genId: function() {
-        if (this.allIds.length === this.idN) {
+        if (this.allIds.length === this.idN/2) {
             this.idN += 1000;
         }
         while (true) {
-            var x = Math.floor(Math.random()*1000);
+            var x = Math.floor(Math.random()*this.idN);
             if (this.allIds.indexOf(x) === -1) {
+                this.allIds.push(x)
                 return x;
             }
         }

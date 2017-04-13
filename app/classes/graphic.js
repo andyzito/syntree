@@ -32,6 +32,10 @@ Syntree.Graphic.prototype.unsync = function(state_name) {
     this.states_synced[state_name] = false;
 }
 
+Syntree.Graphic.prototype.sync = function(state_name) {
+    this.states_synced[state_name] = true;
+}
+
 Syntree.Graphic.prototype.update = function() {
     for (state in this.states_synced) {
         if (Syntree.Lib.checkType(this.states_synced[state], 'boolean') && !this.states_synced[state]) {
@@ -56,8 +60,6 @@ Syntree.Graphic.prototype.delete = function() {
 
 Syntree.Graphic.prototype.recreate = function() {
     for (name in this.elements) {
-        console.log(name)
-        console.log(this.elements[name])
         $("#workspace").append(this.elements[name].node);
     }
 }

@@ -68,6 +68,8 @@ Syntree.Branch.prototype.createGraphic = function() {
         states_synced: {
             selected: false,
             triangle: false,
+            parentPosition: false,
+            childPosition: false,
         },
         data_object: this,
         update_functions: {
@@ -124,28 +126,40 @@ Syntree.Branch.prototype.createGraphic = function() {
                 }
             },
 
-            '#default': function(d,g) {
+            parentPosition: function(d,g) {
                 d.startPoint = d.parent.getPosition();
-                d.endPoint = d.child.getPosition();
-
+                var pBBox = d.parent.getLabelBBox();
                 g.getEl('line').attr({
                     x1: d.startPoint.x,
-                    y1: d.parent.getLabelBBox().y2 + 5,
-                    x2: d.endPoint.x,
-                    y2: d.child.getLabelBBox().y - 5,
+                    y1: pBBox.y2 + 5,
                 });
                 g.getEl('shadowLine').attr({
                     x1: d.startPoint.x,
-                    y1: d.parent.getLabelBBox().y2 + 5,
-                    x2: d.endPoint.x,
-                    y2: d.child.getLabelBBox().y - 5,
+                    y1: pBBox.y2 + 5,
                 });
+            },
 
-                var mid = d.getMidPoint();
-                g.getEl('triangleButton').attr({
-                    x: mid.x-7.5,
-                    y: mid.y-7.5,
-                })
+            childPosition: function(d,g) {
+                d.endPoint = d.child.getPosition();
+                var cBBox = d.child.getLabelBBox();
+                g.getEl('line').attr({
+                    x2: d.endPoint.x,
+                    y2: cBBox.y - 5,
+                });
+                g.getEl('shadowLine').attr({
+                    x2: d.endPoint.x,
+                    y2: cBBox.y - 5,
+                });
+            },
+
+            '#default': function(d,g) {
+                if (d.selected) {
+                    var mid = d.getMidPoint();
+                    g.getEl('triangleButton').attr({
+                        x: mid.x-7.5,
+                        y: mid.y-7.5,
+                    })
+                }
 
                 if (d.triangle) {
                     g.getEl('triangle').attr({

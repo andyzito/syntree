@@ -3,6 +3,8 @@ Syntree.Node = function(config_matrix) {
     Syntree.selectableElement.call(this); // Extends
     Syntree.Lib.config(config_matrix,this);
 
+    this.lastSyncedPosition = undefined;
+
     // Relationships
     this.parent = undefined;
     this.children = [];
@@ -87,8 +89,6 @@ Syntree.Node.prototype.createGraphic = function() {
 
                     g.getEl('deleteButton').attr({
                         width: 10,
-                        height: 10,
-                        class: "delete_button"
                     });
                 } else {
                     g.getEl('highlight').attr({
@@ -97,8 +97,6 @@ Syntree.Node.prototype.createGraphic = function() {
 
                     g.getEl('deleteButton').attr({
                         width: 0,
-                        height: 0,
-                        class: "delete_button invisible",
                     });
                 }
             },
@@ -110,6 +108,15 @@ Syntree.Node.prototype.createGraphic = function() {
                 //     });
                 // }
                 g.getEl('label').node.textContent = d.labelContent;
+                var bbox = d.getLabelBBox();
+                g.getEl('highlight').attr({
+                    width: bbox.w + 10,
+                    height: bbox.h + 10,
+                });
+                g.getEl('editor').css({
+                    'width': bbox.w,
+                    'height': bbox.h,
+                });
                     // g.getEl('label').attr({
                     //     color: 'transparent',
                     // });
@@ -125,8 +132,6 @@ Syntree.Node.prototype.createGraphic = function() {
                 g.getEl('highlight').attr({
                     x: bbox.x - 5,
                     y: bbox.y - 5,
-                    width: bbox.w + 10,
-                    height: bbox.h + 10,
                 });
                 g.getEl('deleteButton').attr({
                     x: bbox.x2,
@@ -135,12 +140,79 @@ Syntree.Node.prototype.createGraphic = function() {
                 g.getEl('editor').css({
                     'left': bbox.x,// + groupXOffset,
                     'top': bbox.y,// + groupYOffset,
-                    'width': bbox.w,
-                    'height': bbox.h,
                 });
+                d.lastSyncedPosition = {
+                    x: d.getPosition().x,
+                    y: d.getPosition().y
+                };
             }
         }
     }
+
+    var customDrag = function(dx, dy, posx, posy) {
+        var id = this.attr('id');
+        id = id.substr(id.lastIndexOf('-')+1, id.length);
+        var node = Syntree.ElementsManager.allElements[id];
+        node.move(posx, posy);
+
+        nearestNode = Syntree.Page.getNearestNode(node,undefined,function(x,y,n) {
+            return y > n.getPosition().y;
+        });
+        if (nearestNode.dist < 100 && nearestNode.node.getChildren().indexOf(node) < 0 && nearestNode.deltaY > 10) {
+            if (node.parent !== undefined) {
+                var parent = node.parent;
+                parent.detachChild(node);
+                var tree = new Syntree.Tree({
+                    root: parent,
+                });
+                tree.distribute();
+            }
+            nearestNode.node.addChild(node);
+            var tree = new Syntree.Tree({
+                root: nearestNode.node,
+            });
+            // tree.distribute();
+        } else if (node.parent !== undefined) {
+            var parent = node.parent;
+            var ppos = parent.getPosition();
+            var distance = Syntree.Lib.distance({
+                x1: ppos.x,
+                y1: ppos.y,
+                x2: posx,
+                y2: posy,
+            })
+            if (distance > 70 || ppos.y > posy) {
+                parent.detachChild(node);
+                var tree = new Syntree.Tree({
+                    root: parent,
+                });
+                tree.distribute();
+            }
+        }
+
+        nearestNode.node.updateGraphics();
+        node.updateGraphics(true);
+    }
+
+    var customEnd = function(dx,dy,posx,posy) {
+        if (dx < 2 && dy < 2) {
+            return;
+        }
+        var id = this.attr('id');
+        id = id.substr(id.lastIndexOf('-')+1, id.length);
+        var node = Syntree.ElementsManager.allElements[id];
+
+        var parent = node.parent;
+        if (parent) {
+            var tree = new Syntree.Tree({
+                root: parent,
+            });
+            tree.distribute(undefined,true);
+        }
+    }
+
+    label.drag(customDrag,undefined,customEnd);
+
     this.graphic = new Syntree.Graphic(config_matrix)
 }
 
@@ -254,9 +326,7 @@ Syntree.Node.prototype.getSVGString = function(offsetX,offsetY) {
 
     var label = this.graphic.getEl('label').node.outerHTML;
     label = $(label).attr('x', Number($(label).attr('x')) + offsetX);
-    console.log(label[0].outerHTML);
     s = label[0].outerHTML;
-    console.log(label.outerHTML);
     if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
         // if (!this.parentBranch.triangle) {
         //     s += this.parentBranch.graphic.getEl('line').node.outerHTML;
@@ -268,7 +338,6 @@ Syntree.Node.prototype.getSVGString = function(offsetX,offsetY) {
 }
 
 Syntree.Node.prototype.move = function(x,y,propagate) {
-    this.graphic.unsync('position');
     x = Syntree.Lib.checkArg(x, 'number');
     y = Syntree.Lib.checkArg(y, 'number');
     propagate = Syntree.Lib.checkArg(propagate, 'boolean', true);
@@ -278,8 +347,30 @@ Syntree.Node.prototype.move = function(x,y,propagate) {
 
     this.x = x;
     this.y = y;
+
+    if (this.lastSyncedPosition.x != x || this.lastSyncedPosition.y != y) {
+        this.graphic.unsync('position');
+        if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
+            this.parentBranch.graphic.unsync('childPosition');
+        }
+        if (this.childBranches.length > 0) {
+            this.childBranches.map(function(b) {
+                b.graphic.unsync('parentPosition');
+            })
+        }
+    } else {
+        this.graphic.sync('position');
+        if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
+            // this.parentBranch.graphic.sync('childPosition');
+        }
+        if (this.childBranches.length > 0) {
+            this.childBranches.map(function(b) {
+                // b.graphic.sync('parentPosition');
+            })
+        }
+    }
+
     this._labelbbox = undefined;
-    this.positionUnsynced = true;
     if (propagate) {
         var c = 0;
         while (c < this.children.length) {
@@ -291,7 +382,6 @@ Syntree.Node.prototype.move = function(x,y,propagate) {
             c++;
         }
     }
-    // this.positionUnsynced = true;
     return {
         x: this.x,
         y: this.y,
@@ -426,6 +516,14 @@ Syntree.Node.prototype.addChild = function(newNode,index) {
     this.children.splice(index,0,newNode);
 
     var branch = new Syntree.Branch(this,newNode);
+}
+
+Syntree.Node.prototype.detachChild = function(node) {
+    var childIndex = this.children.indexOf(node);
+    var child = this.children[childIndex];
+    child.parentBranch.delete();
+    child.parent = undefined;
+    this.children.splice(childIndex, 1);
 }
 
 Syntree.Node.prototype.toString = function() {
