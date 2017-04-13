@@ -270,12 +270,9 @@ Syntree.Arrow.prototype.__delete = function(silent) {
     this.fromNode.fromArrow = undefined;
     this.toNode.toArrow = undefined;
 
-    if (!silent) {
-        console.log('arrow deleted');
-        new Syntree.Action('delete', {
-            deleted_obj: this,
-        });
-    }
+    new Syntree.Action('delete', {
+        deleted_obj: this,
+    });
 }
 
 Syntree.Arrow.prototype.getStartCtrlPoint = function() {

@@ -26,6 +26,7 @@ Syntree._ActionCreate = function(data) {
 
     if (Syntree.Lib.checkType(this.created_obj, 'node')) {
         this.undo = function() {
+            console.log('undoing create')
             Syntree.ElementsManager.deleteTree(this.created_obj);
         }
     } else if (Syntree.Lib.checkType(this.created_obj, 'arrow')) {
@@ -70,7 +71,6 @@ Syntree._ActionCreate = function(data) {
 
 Syntree._ActionDelete = function(data) {
     data = Syntree.Lib.checkArg(data, 'object', '#undefined');
-    console.log(data.deleted_obj.isElement);
     this.deleted_obj = Syntree.Lib.checkArg(data.deleted_obj, ['node', 'tree', 'arrow']);
 
     if (Syntree.Lib.checkType(this.deleted_obj, 'tree')) {

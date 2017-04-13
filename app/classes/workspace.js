@@ -290,14 +290,14 @@ Syntree.workspace_constructor.prototype._eventDel = function() {
                 var tree = new Syntree.Tree({
                     root: children[c],
                 })
-                tree.delete();
+                Syntree.ElementsManager.deleteTree(tree);
                 c++;
             }
         } else {
             var tree = new Syntree.Tree({
                 root: selected,
             })
-            tree.delete();
+            Syntree.ElementsManager.deleteTree(tree);
         }
         Syntree.ElementsManager.deselect();
         if (!Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {

@@ -48,15 +48,25 @@
                 <li><span class="how-to-title">Select nodes:</span>
                     <p>By default you will start with a single node called "S". It will be highlighted in grey, indicating that it is the selected node. Once you have more nodes (see below), you can select them by navigating to them with the arrow keys or by clicking on them directly.</p></li>
                 <li><span class="how-to-title">Make nodes:</span>
-                    <p>Use arrow keys to create new nodes. Your starting point is always the currently selected node. Pressing the down arrow key will result in a new child node being create. Pressing left or right on any non-root node will result in a new sibling node. If there is already a node in the specified direction, you will navigate to that node instead of creating a new one.</p></li>
+                    <p>Use arrow keys to create new nodes. Your starting point is always the currently selected node. Pressing the down arrow key will result in a new child node being create. Pressing left or right on any non-root node will result in a new sibling node. If there is already a node in the specified direction, you will navigate to that node instead of creating a new one.
+
+                    <span class="note">Currently navigation spans subtrees -- i.e., if you press left and the nearest node to the left is attached to a different parent, you will still navigate to it instead of creating a new node.
+
+                    Coming soon: a setting to change this behavior to navigate only within a group of siblings -- i.e., to get to nodes attached to a different parent, you'd have to go up and over.</span></p></li>
                 <li><span class="how-to-title">Force a new node to be created:</span>
-                    <p>Hold down CTRL and press an arrow key. Even if there is a node in that direction already, a new node will be created (directly adjacent to the selected node, in the case of creating a sibling; defaulting to the far left in the case of creating a child). Note: does not work on the up arrow key.</p></li>
+                    <p>Hold down CTRL and press an arrow key. Even if there is a node in that direction already, a new node will be created (directly adjacent to the selected node, in the case of creating a sibling; defaulting to the far left in the case of creating a child).
+
+                    <span cass="note">Does not work on the up arrow key.</span></p></li>
                 <li><span class="how-to-title">Edit nodes:</span>
-                    <p>Pressing Enter will begin editing mode on the selected node. You can also double-click on any node to edit it. You will be provided with a text-box, in which you can input any node label you would like. Press Enter to save the change. If you navigate away from the node (by pressing an arrow key or clicking on another node) the node label will revert to its pre-editing state.</p></li>
+                    <p>Pressing Enter will begin editing mode on the selected node. You can also double-click on any node to edit it. You will be provided with a text-box, in which you can input any node label you would like. Press Enter to save the change. If you navigate away from the node (by pressing an arrow key or clicking on another node) the node label will revert to its pre-editing state.
+
+                    <span class="note">Coming soon: a setting to change this behavior so that new and existing nodes will automatically be create/save label changes when you navigate away without pressing Enter.</span></p></li>
                 <li><span class="how-to-title">Delete nodes:</span>
-                    <p>Select a node and either press the Delete key or click the small (x) button above and to the right of the selected node. This node and all of its descendants will be removed from your tree.</p></li>
+                    <p>Select a node and either press the Delete key or click the small (x) button above and to the right of the selected node. This node and all of its descendants will be removed from the tree.
+
+                    <span class="note">Deleting the root node will delete the rest of the tree, but not the root node itself.</span></p></li>
                 <li><span class="how-to-title">Undo actions:</span>
-                    <p>If you messed up (like if you accidentally deleted half your tree, for example) never fear! Just press CTRL+Z and everything should be ok. Currently you can undo node creation, node deletion, and node edits.</p></li>
+                    <p>If you messed up (like if you accidentally deleted half your tree, for example) never fear! Just press CTRL+Z and everything should be ok.</p></li>
             </ul>
         </div>
         <div id="section-keys" class="help_section help_section__keyboard-shortcuts">
@@ -86,11 +96,11 @@
                     <td>Escape</td>
                     <td>Exit current edit, without saving changes</td>
                 <tr>
-                <tr>
+<!--                 <tr>
                     <td>CTRL + arrow key</td>
                     <td>Force node creation in the specified direction (except up)</td>
                 <tr>
-            </table>
+ -->            </table>
         </div>
     </body>
 </html>

@@ -16,19 +16,19 @@
     }
 
     .loading_screen {
-    	display: block;
-    	position: absolute;
-    	width: 200%;
-    	height: 200%;
-    	left: 0;
-    	top: 0;
-    	z-index: 6000;
-    	background-color: white;
+        display: block;
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        left: 0;
+        top: 0;
+        z-index: 6000;
+        background-color: white;
 
-    	img {
-    		margin-top: 11%;
-    		margin-left: 22%;
-    		@include animation(spin, 1s, 5)
-    	}
+        img {
+            margin-top: 11%;
+            margin-left: 22%;
+            @include animation(spin, 1s, 5)
+        }
     }
 }

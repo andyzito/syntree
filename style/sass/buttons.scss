@@ -8,18 +8,18 @@
     cursor: pointer;
 
     &:hover {
-	    background: black;
-	    color: white;
+        background: black;
+        color: white;
     }
 
     &_big {
-	    font-size: 1.3em;
+        font-size: 1.3em;
         padding: 1.5rem 3rem;
     }
 
     &_small {
-		padding: 0.8rem 1rem;
-		font-size: 1rem;
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
     }
 
     &.loading {
