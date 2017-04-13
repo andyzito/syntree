@@ -304,7 +304,7 @@ Syntree.workspace_constructor.prototype._eventDel = function() {
             Syntree.ElementsManager.select(Syntree.Page.tree.getRoot());
         }
     } else {
-        select.delete();
+        selected.delete();
     }
 }
 

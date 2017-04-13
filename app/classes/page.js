@@ -25,7 +25,10 @@ Syntree.page_constructor.prototype.startMovementArrow = function(node) {
 }
 
 Syntree.page_constructor.prototype.endMovementArrow = function(node) {
-    new Syntree.Arrow(this.movementArrowStartNode,node);
+    new Syntree.Arrow({
+        fromNode: this.movementArrowStartNode,
+        toNode: node,
+    });
     this.drawingMovementArrow = false;
     this.movementArrowStartNode = undefined;
     // console.log('end arrow');

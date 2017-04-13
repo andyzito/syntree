@@ -68,19 +68,22 @@ Syntree.ElementsManager = {
             });
         }
 
+        var treestring = tree.getTreeString();
         var parent = tree.root.getParent();
-        new Syntree.Action('delete', {
-            deleted_obj: tree,
-            parent: parent,
-            index: parent.getChildren().indexOf(tree.root),
-        });
+        var index = parent.getChildren().indexOf(tree.root);
         tree.delete();
         if (Syntree.Lib.checkType(parent, 'node')) {
-            tree = new Syntree.Tree({
+            temptree = new Syntree.Tree({
                 root:parent
             });
-            tree.distribute();
+            temptree.distribute();
         }
+        new Syntree.Action('delete', {
+            deleted_obj: tree,
+            treestring: treestring,
+            parent: parent,
+            index: index,
+        });
     },
 
     isRegistered: function(obj) {

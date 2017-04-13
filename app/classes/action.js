@@ -74,7 +74,7 @@ Syntree._ActionDelete = function(data) {
     this.deleted_obj = Syntree.Lib.checkArg(data.deleted_obj, ['node', 'tree', 'arrow']);
 
     if (Syntree.Lib.checkType(this.deleted_obj, 'tree')) {
-        this.treestring = this.deleted_obj.getTreeString();
+        this.treestring = Syntree.Lib.checkArg(data.treestring, 'string');
         this.parent = Syntree.Lib.checkArg(data.parent, 'node', '#undefined');
         this.index = Syntree.Lib.checkArg(data.index, 'number', 0);
 

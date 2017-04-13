@@ -303,6 +303,12 @@ Syntree.Node.prototype.__delete = function() {
     if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
         this.parentBranch.delete();
     }
+    if (Syntree.Lib.checkType(this.fromArrow, 'arrow')) {
+        this.fromArrow.delete();
+    }
+    if (Syntree.Lib.checkType(this.toArrow, 'arrow')) {
+        this.toArrow.delete();
+    }
     if (Syntree.Lib.checkType(this.parent, 'node')) {
         this.parent.children.splice(this.parent.children.indexOf(this), 1);
         var tree = new Syntree.Tree({
