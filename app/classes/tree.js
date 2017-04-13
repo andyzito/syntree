@@ -336,12 +336,12 @@ Syntree.Tree.prototype.getBracketNotation = function(node) {
     return string;
 }
 
-Syntree.Tree.prototype.getSVGString = function() {
+Syntree.Tree.prototype.getSVGString = function(offsetX,offsetY) {
     var s = "";
     var nodes = this.getDescendantsOf(this.root,'',true,true);
     var i = 0;
     while (i<nodes.length) {
-        s += nodes[i].getSVGString();
+        s += nodes[i].getSVGString(offsetX,offsetY);
         i++;
     }
     return s;

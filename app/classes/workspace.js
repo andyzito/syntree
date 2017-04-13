@@ -353,13 +353,22 @@ Syntree.workspace_constructor.prototype._eventFiletypeLabelClick = function(e) {
 }
 
 Syntree.workspace_constructor.prototype._eventExportImage = function() {
-    var svgstring = '<svg>'+this.page.getSVGString()+'</svg>';
     var path = Syntree.Page.tree._getPath();
-    $('#export-image-canvas').attr('width', (path.rightBound - path.leftBound)+20);
-    $('#export-image-canvas').attr('height', (path.bottomBound - path.topBound)+20);
+    var width = path.rightBound = path.leftBound;
+    var height = path.bottomBound - path.topBound;
+    var offsetX = (-1*path.leftBound + 25);
+    var offsetY = (-1*path.topBound + 25);
+
+    var svgstring = '<svg>'+this.page.getSVGString()+'</svg>';
+    console.log($(svgstring).children('text'));
+    // $('#export-image-canvas').attr('width', (width+100));
+    // $('#export-image-canvas').attr('height', (height+50));
     canvg('export-image-canvas', svgstring, {
-        offsetX: (-1*path.leftBound) + 10,
-        offsetY: (-1*path.topBound) + 10,
+        // ignoreDimensions: false,
+        // offsetX: (-1*path.leftBound+25),
+        // offsetY: (-1*path.topBound+25),
+        // scaleWidth: 5,
+        // scaleHeight: 5,
     });
     var canvas = document.getElementById('export-image-canvas');
     var imgd = canvas.toDataURL("image/png");

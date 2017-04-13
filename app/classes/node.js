@@ -248,10 +248,21 @@ Syntree.Node.prototype.getState = function(which) {
     }
 }
 
-Syntree.Node.prototype.getSVGString = function() {
-    s = this.graphic.getEl('label').node.outerHTML;
+Syntree.Node.prototype.getSVGString = function(offsetX,offsetY) {
+    offsetX = Syntree.Lib.checkArg(offsetX, 'number', 0);
+    offsety = Syntree.Lib.checkArg(offsetY, 'number', 0);
+
+    var label = this.graphic.getEl('label').node.outerHTML;
+    label = $(label).attr('x', Number($(label).attr('x')) + offsetX);
+    console.log(label[0].outerHTML);
+    s = label[0].outerHTML;
+    console.log(label.outerHTML);
     if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
-        s += this.parentBranch.line.node.outerHTML;
+        // if (!this.parentBranch.triangle) {
+        //     s += this.parentBranch.graphic.getEl('line').node.outerHTML;
+        // } else {
+        //     s += this.parentBranch.graphic.getEl('triangle').node.outerHTML;
+        // }
     }
     return s;
 }
