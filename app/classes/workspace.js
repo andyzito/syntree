@@ -363,8 +363,11 @@ Syntree.workspace_constructor.prototype._eventExportImage = function() {
     var svgstring = '<svg>'+this.page.getSVGString()+'</svg>';
     // $('#export-image-canvas').attr('width', (width+100));
     // $('#export-image-canvas').attr('height', (height+50));
+    $('#export-image-canvas').attr('width', $('#workspace').width());
+    $('#export-image-canvas').attr('height', $('#workspace').height());
+    // console.log(svgstring);
     canvg('export-image-canvas', svgstring, {
-        // ignoreDimensions: false,
+        ignoreDimensions: false,
         // offsetX: (-1*path.leftBound+25),
         // offsetY: (-1*path.topBound+25),
         // scaleWidth: 5,

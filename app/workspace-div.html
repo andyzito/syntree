@@ -8,27 +8,27 @@
 
             <span class="option_wrapper">
                 <span class="option_wrapper_radio">
+                    <div class="modal_option modal_option__png option_radio">
+                        <label class="modal_label">
+                            <input type="radio" name="filetype" value="png" checked="checked">
+                            <span></span>Image <span class="note">PNG</span>
+                        </label>
+                    </div>
                     <div class="modal_option modal_option__bracket-file option_radio">
                         <label class="modal_label">
-                            <input type="radio" name="filetype" value="bracket-file" checked="checked">
-                            <span></span>Bracket notation (text file)
+                            <input type="radio" name="filetype" value="bracket-file">
+                            <span></span>Bracket notation
                         </label>
                     </div>
                     <div class="modal_option modal_option__tree-file option_radio">
                         <label class="modal_label">
                             <input type="radio" name="filetype" value="tree-file">
-                            <span></span>Tree File
-                        </label>
-                    </div>
-                    <div class="modal_option modal_option__png option_radio">
-                        <label class="modal_label">
-                            <input type="radio" name="filetype" value="png">
-                            <span></span>PNG
+                            <span></span>Tree File <br><span class="note">Upload later to continue your work</span>
                         </label>
                     </div>
                 </span>
                 <div class="modal_option modal_option__fname">
-                    <input type="text" value="mytree"><span>.txt</span>
+                    <input type="text" value="mytree"><span>.png</span>
                 </div>
             </span>
         </div>
@@ -70,5 +70,5 @@
           <path d="M 0 0 L 10 5 L 0 10 z" />
         </marker>
     </svg>
-    <canvas id="export-image-canvas" width="1000px" height="600px"></canvas>
+    <canvas id="export-image-canvas"></canvas>
 </div>

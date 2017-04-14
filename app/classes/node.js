@@ -328,12 +328,19 @@ Syntree.Node.prototype.getSVGString = function(offsetX,offsetY) {
     label = $(label).attr('x', Number($(label).attr('x')) + offsetX);
     s = label[0].outerHTML;
     if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
-        // if (!this.parentBranch.triangle) {
-        //     s += this.parentBranch.graphic.getEl('line').node.outerHTML;
-        // } else {
-        //     s += this.parentBranch.graphic.getEl('triangle').node.outerHTML;
-        // }
+        if (!this.parentBranch.triangle) {
+            s += this.parentBranch.graphic.getEl('line').node.outerHTML;
+        } else {
+            s += this.parentBranch.graphic.getEl('triangle').node.outerHTML;
+        }
     }
+    if (Syntree.Lib.checkType(this.fromArrow, 'arrow')) {
+        var arrow = this.fromArrow.graphic.getEl('line').node.outerHTML;
+        arrow = $(arrow).attr('marker-end','');
+        console.log(arrow[0].outerHTML)
+        s += arrow[0].outerHTML;
+    }
+    // console.log(s);
     return s;
 }
 
