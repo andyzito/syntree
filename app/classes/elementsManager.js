@@ -37,29 +37,6 @@ Syntree.ElementsManager = {
         this.selectedElement = undefined;
     },
 
-    // delete: function(obj) {
-    //     obj = Syntree.Lib.checkArg(obj, ['node', 'arrow'], this.getSelected());
-
-    //     if (obj.deleted) {
-    //         return;
-    //     }
-
-    //     if (Syntree.Lib.checkType(obj, 'node')) {
-    //         if (obj === Syntree.Page.tree.root) {
-    //             var children = Syntree.Page.tree.root.getChildren().slice();
-    //             var c = 0;
-    //             while (c < children.length) {
-    //                 this.delete(children[c]);
-    //                 c++;
-    //             }
-    //         }
-    //     }
-
-    //     if (!Syntree.Lib.checkType(obj, 'branch')) {
-    //         this.selectedElement.delete();
-    //     }
-    // },
-
     deleteTree: function(tree) {
         tree = Syntree.Lib.checkArg(tree, ['tree', 'node']);
         if (Syntree.Lib.checkType(tree, 'node')) {

@@ -3,36 +3,40 @@
     border-bottom: 1px solid black;
     width: 100%;
     background-color: white;
-    height: 51px;
 
     .toolbar_button {
         @extend .button;
-        padding: 0 1rem;
+        padding: 1rem;
         border: none;
         border-radius: 0;
-        height: 100%;
-        line-height: 300%;
     }
 
     .toolbar_area_right {
         float: right;
-        height: 100%;
+        margin-right: 2rem;
     }
 
     .toolbar_button__settings {
-        padding: 0 2rem;
-        background-color: white;
-        background-image: url("/resources/gear.svg");
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position:center;
+        position: relative;
 
-        &:hover {
-            background-color: white;
+        &:after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
             background-image: url("/resources/gear.svg");
             background-size: contain;
             background-repeat: no-repeat;
             background-position:center;
+        }
+
+        &:hover {
+            &:after {
+                @include animation(spin,0.5s,1);
+            }
+            background-color: white;
         }
     }
 }

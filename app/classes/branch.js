@@ -177,7 +177,7 @@ Syntree.Branch.prototype.toString = function() {
 }
 
 Syntree.Branch.prototype.__delete = function() {
-    this.parent.childBranches.splice(this.parent.childBranches.indexOf(this.parentBranch), 1);
+    this.parent.childBranches.splice(this.parent.childBranches.indexOf(this), 1);
 }
 
 Syntree.Branch.prototype.getMidPoint = function() {
