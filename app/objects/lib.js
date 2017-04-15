@@ -104,7 +104,12 @@ Syntree.Lib = {
         // Modified from http://stackoverflow.com/questions/13926213/checking-the-types-of-function-arguments-in-javascript
         var type = ({}).toString.call(a).match(/\s(\w+)/)[1].toLowerCase();
         if (type === 'object') {
-            return a.toString().match(/\s(\w+)/)[1].toLowerCase();
+            var t = a.toString().match(/\s(\w+)/)[1].toLowerCase();
+            if (a.toString().match(/\[\w+\s\w+\]/)) {
+                return t;
+            } else {
+                return type;
+            }
         } else if (type === 'number' && a !== a) {
             return 'NaN';
         } else {

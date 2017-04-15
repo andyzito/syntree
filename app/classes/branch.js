@@ -8,6 +8,8 @@ Syntree.Branch = function(parent,child) {
     this.triangle = false;
 
     Syntree.selectableElement.call(this);
+
+    console.log(this.graphic);
 }
 
 Syntree.Branch.prototype.createGraphic = function() {
@@ -59,11 +61,19 @@ Syntree.Branch.prototype.createGraphic = function() {
     })
 
     var config_matrix = {
-        elements: {
-            line: line,
-            shadowLine: shadowLine,
-            triangleButton: triangleButton,
-            triangle: triangle,
+        elements_to_add: {
+            line: {
+                el_obj: line,
+            },
+            shadowLine: {
+                el_obj: shadowLine,
+            },
+            triangleButton: {
+                el_obj: triangleButton,
+            },
+            triangle: {
+                el_obj: triangle,
+            },
         },
         states_synced: {
             selected: false,
@@ -72,86 +82,99 @@ Syntree.Branch.prototype.createGraphic = function() {
             childPosition: false,
         },
         data_object: this,
-        update_functions: {
-            triangle: function(d,g) {
-                if (d.triangle) {
-                    g.getEl('triangle').attr({
-                        path: d.getTrianglePath(),
-                    });
+        update_map: {
+            triangle: {
+                state_name: 'triangle',
+                handler: function(d,g) {
+                    if (d.triangle) {
+                        g.getEl('triangle').attr({
+                            path: d.getTrianglePath(),
+                        });
+                        g.getEl('line').attr({
+                            strokeWidth: 0,
+                        });
+                        g.getEl('shadowLine').attr({
+                            strokeWidth: 0,
+                        });
+                        g.getEl('triangleButton').attr({
+                            href: '/resources/triangle_button_triangle.png',
+                        });
+                    } else {
+                        g.getEl('triangle').attr({
+                            path: '',
+                        });
+                        g.getEl('line').attr({
+                            strokeWidth: 1,
+                        });
+                        g.getEl('shadowLine').attr({
+                            strokeWidth: 10,
+                        });
+                        g.getEl('triangleButton').attr({
+                            href: '/resources/triangle_button_branch.png',
+                        });
+                    }
+                }
+            },
+            selected: {
+                state_name: 'selected',
+                handler: 'boolean',
+                elements: {
+                    shadowLine: {
+                        stateTrueAttrs: {
+                            opacity: 1,
+                        },
+                        stateFalseAttrs: {
+                            opacity: 0,
+                        },
+                    },
+                    triangleButton: {
+                        stateTrueAttrs: {
+                            visibility: 'visible',
+                        },
+                        stateFalseAttrs: {
+                            visibility: 'hidden',
+                        },
+                    },
+                    triangle: {
+                        stateTrueAttrs: {
+                            fill: 'lightgrey',
+                        },
+                        stateFalseAttrs: {
+                            fill: 'white',
+                        }
+                    },
+                }
+            },
+            parentPosition: {
+                state_name: 'parentPosition',
+                handler: function(d,g) {
+                    d.startPoint = d.parent.getPosition();
+                    var pBBox = d.parent.getLabelBBox();
                     g.getEl('line').attr({
-                        strokeWidth: 0,
+                        x1: d.startPoint.x,
+                        y1: pBBox.y2 + 5,
                     });
                     g.getEl('shadowLine').attr({
-                        strokeWidth: 0,
-                    });
-                    g.getEl('triangleButton').attr({
-                        href: '/resources/triangle_button_triangle.png',
-                    });
-                } else {
-                    g.getEl('triangle').attr({
-                        path: '',
-                    });
-                    g.getEl('line').attr({
-                        strokeWidth: 1,
-                    });
-                    g.getEl('shadowLine').attr({
-                        strokeWidth: 10,
-                    });
-                    g.getEl('triangleButton').attr({
-                        href: '/resources/triangle_button_branch.png',
+                        x1: d.startPoint.x,
+                        y1: pBBox.y2 + 5,
                     });
                 }
             },
-            'selected': function(d,g) {
-                if (d.selected) {
+            childPosition: {
+                state_name: 'childPosition',
+                handler: function(d,g) {
+                    d.endPoint = d.child.getPosition();
+                    var cBBox = d.child.getLabelBBox();
+                    g.getEl('line').attr({
+                        x2: d.endPoint.x,
+                        y2: cBBox.y - 5,
+                    });
                     g.getEl('shadowLine').attr({
-                        opacity: 1,
+                        x2: d.endPoint.x,
+                        y2: cBBox.y - 5,
                     });
-                    g.getEl('triangleButton').attr({
-                        visibility: 'visible',
-                    });
-                    g.getEl('triangle').attr({
-                        fill: 'lightgrey',
-                    })
-                } else {
-                    g.getEl('shadowLine').attr({
-                        opacity: 0,
-                    })
-                    g.getEl('triangleButton').attr({
-                        visibility: 'hidden',
-                    });
-                    g.getEl('triangle').attr({
-                        fill: 'white',
-                    })
                 }
             },
-
-            parentPosition: function(d,g) {
-                d.startPoint = d.parent.getPosition();
-                var pBBox = d.parent.getLabelBBox();
-                g.getEl('line').attr({
-                    x1: d.startPoint.x,
-                    y1: pBBox.y2 + 5,
-                });
-                g.getEl('shadowLine').attr({
-                    x1: d.startPoint.x,
-                    y1: pBBox.y2 + 5,
-                });
-            },
-
-            childPosition: function(d,g) {
-                d.endPoint = d.child.getPosition();
-                var cBBox = d.child.getLabelBBox();
-                g.getEl('line').attr({
-                    x2: d.endPoint.x,
-                    y2: cBBox.y - 5,
-                });
-                g.getEl('shadowLine').attr({
-                    x2: d.endPoint.x,
-                    y2: cBBox.y - 5,
-                });
-            },
-
             '#default': function(d,g) {
                 if (d.selected) {
                     var mid = d.getMidPoint();

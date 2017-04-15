@@ -68,11 +68,22 @@ Syntree.Node.prototype.createGraphic = function() {
     });
 
     var config_matrix = {
-        elements: {
-            label: label,
-            highlight: highlight,
-            deleteButton: deleteButton,
-            editor: editor,
+        elements_to_add: {
+            label: {
+                el_obj: label,
+            },
+            highlight: {
+                el_obj: highlight,
+            },
+            deleteButton: {
+                el_obj: deleteButton,
+            },
+            editor: {
+                el_obj: editor,
+                attr_handler: function(el,attrs) {
+                    el.css(attrs);
+                }
+            },
         },
         states_synced: {
             selected: false,
@@ -80,71 +91,69 @@ Syntree.Node.prototype.createGraphic = function() {
             position: false,
         },
         data_object: this,
-        update_functions: {
-            selected: function(d,g) {
-                if (d.selected) {
+        update_map: {
+            selected: {
+                handler: 'boolean',
+                state_name: 'selected',
+                elements: {
+                    highlight: {
+                        stateTrueAttrs: {
+                            fill: "rgba(0,0,0,0.2)",
+                        },
+                        stateFalseAttrs: {
+                            fill: "none",
+                        },
+                    },
+                    deleteButton: {
+                        stateTrueAttrs: {
+                            width: 10,
+                        },
+                        stateFalseAttrs: {
+                            width: 0,
+                        },
+                    },
+                },
+            },
+            labelContent: {
+                handler: function(d,g) {
+                    g.getEl('label').node.textContent = d.labelContent;
+                    var bbox = d.getLabelBBox();
                     g.getEl('highlight').attr({
-                        fill:"rgba(0,0,0,0.2)",
+                        width: bbox.w + 10,
+                        height: bbox.h + 10,
                     });
-
-                    g.getEl('deleteButton').attr({
-                        width: 10,
-                    });
-                } else {
-                    g.getEl('highlight').attr({
-                        fill:"none"
-                    });
-
-                    g.getEl('deleteButton').attr({
-                        width: 0,
+                    g.getEl('editor').css({
+                        'width': bbox.w,
+                        'height': bbox.h,
                     });
                 }
             },
-            labelContent: function(d,g) {
-                // if (d.labelContent.match(/\s|^$/)) {
-                //     g.getEl('label').node.textContent = "Oalsdnfkabsfjhbdsfj";
-                //     g.getEl('label').attr({
-                //         color: 'transparent',
-                //     });
-                // }
-                g.getEl('label').node.textContent = d.labelContent;
-                var bbox = d.getLabelBBox();
-                g.getEl('highlight').attr({
-                    width: bbox.w + 10,
-                    height: bbox.h + 10,
-                });
-                g.getEl('editor').css({
-                    'width': bbox.w,
-                    'height': bbox.h,
-                });
-                    // g.getEl('label').attr({
-                    //     color: 'transparent',
-                    // });
-            },
-            position: function(d,g) {
-                var bbox = d.getLabelBBox();
-                g.getEl('label').attr({
-                    x: d.x-(bbox.w/2),
-                    y: d.y+(bbox.h/2),
-                });
-                d._labelbbox = undefined;
-                bbox = d.getLabelBBox();
-                g.getEl('highlight').attr({
-                    x: bbox.x - 5,
-                    y: bbox.y - 5,
-                });
-                g.getEl('deleteButton').attr({
-                    x: bbox.x2,
-                    y: bbox.y - 10,
-                });
-                g.getEl('editor').css({
-                    'left': bbox.x,// + groupXOffset,
-                    'top': bbox.y,// + groupYOffset,
-                });
-                d.lastSyncedPosition = {
-                    x: d.getPosition().x,
-                    y: d.getPosition().y
-                };
+            position: {
+                handler: function(d,g) {
+                    var bbox = d.getLabelBBox();
+                    g.getEl('label').attr({
+                        x: d.x-(bbox.w/2),
+                        y: d.y+(bbox.h/2),
+                    });
+                    d._labelbbox = undefined;
+                    bbox = d.getLabelBBox();
+                    g.getEl('highlight').attr({
+                        x: bbox.x - 5,
+                        y: bbox.y - 5,
+                    });
+                    g.getEl('deleteButton').attr({
+                        x: bbox.x2,
+                        y: bbox.y - 10,
+                    });
+                    g.getEl('editor').css({
+                        'left': bbox.x,// + groupXOffset,
+                        'top': bbox.y,// + groupYOffset,
+                    });
+                    d.lastSyncedPosition = {
+                        x: d.getPosition().x,
+                        y: d.getPosition().y
+                    };
+                }
             }
         }
     }
