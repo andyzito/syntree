@@ -1,6 +1,7 @@
 Syntree.Arrow = function(config_matrix) {
-    Syntree.Lib.config(config_matrix, this);
-    Syntree.selectableElement.call(this);
+    this.id = config_matrix.id;
+    Syntree.Lib.config(config_matrix,this);
+    Syntree.selectableElement.call(this); // Extends
 
     this.toNode.toArrow = this;
     this.fromNode.fromArrow = this;
@@ -13,6 +14,10 @@ Syntree.Arrow = function(config_matrix) {
 }
 
 Syntree.Arrow.prototype.config_map = {
+    id: {
+        type: 'number',
+        default_value: 'undefined',
+    },
     fromNode: {
         type: 'node',
     },
@@ -61,36 +66,47 @@ Syntree.Arrow.prototype.createGraphic = function() {
     $(line.node).attr('marker-end', 'url(#Triangle)');
 
     var config_matrix = {
-        elements: {
-            shadowLine: shadowLine,
-            line: line,
+        elements_to_add: {
+            shadowLine: {
+                el_obj: shadowLine,
+            },
+            line: {
+                el_obj: line,
+            }
         },
         states_synced: {
             selected: false,
         },
         data_object: this,
-        update_functions: {
-            selected: function(d,g) {
-                if (d.selected) {
-                    g.getEl('shadowLine').attr({
-                        opacity: 100,
-                    });
-                    g.getEl('handle1').attr({
-                        r: 5,
-                    })
-                    g.getEl('handle2').attr({
-                        r: 5,
-                    })
-                } else {
-                    g.getEl('shadowLine').attr({
-                        opacity: 0,
-                    });
-                    g.getEl('handle1').attr({
-                        r: 0,
-                    })
-                    g.getEl('handle2').attr({
-                        r: 0,
-                    })
+        update_map: {
+            selected: {
+                state_name: 'selected',
+                handler: 'boolean',
+                elements: {
+                    shadowLine: {
+                        stateTrueAttrs: {
+                            opacity: 1,
+                        },
+                        stateFalseAttrs: {
+                            opacity: 0,
+                        },
+                    },
+                    handle1: {
+                        stateTrueAttrs: {
+                            r: 5,
+                        },
+                        stateFalseAttrs: {
+                            r: 0,
+                        },
+                    },
+                    handle2: {
+                        stateTrueAttrs: {
+                            r: 5,
+                        },
+                        stateFalseAttrs: {
+                            r: 0,
+                        },
+                    },
                 }
             }
         }
@@ -158,8 +174,12 @@ Syntree.Arrow.prototype.createGraphic = function() {
     handle1.drag(customDrag1,undefined,customEnd1);
     handle2.drag(customDrag2,undefined,customEnd2);
 
-    this.graphic.addElement('handle1', handle1);
-    this.graphic.addElement('handle2', handle2);
+    this.graphic.addElement('handle1', {
+        el_obj: handle1,
+    });
+    this.graphic.addElement('handle2', {
+        el_obj: handle2,
+    });
 
     if (!Syntree.Lib.checkType(this.path, 'string')) {
         var path = this.graphic.getEl('line').attr('path');

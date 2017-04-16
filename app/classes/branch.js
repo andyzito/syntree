@@ -8,8 +8,6 @@ Syntree.Branch = function(parent,child) {
     this.triangle = false;
 
     Syntree.selectableElement.call(this);
-
-    console.log(this.graphic);
 }
 
 Syntree.Branch.prototype.createGraphic = function() {
@@ -152,11 +150,11 @@ Syntree.Branch.prototype.createGraphic = function() {
                     var pBBox = d.parent.getLabelBBox();
                     g.getEl('line').attr({
                         x1: d.startPoint.x,
-                        y1: pBBox.y2 + 5,
+                        y1: d.startPoint.y + 10,
                     });
                     g.getEl('shadowLine').attr({
                         x1: d.startPoint.x,
-                        y1: pBBox.y2 + 5,
+                        y1: d.startPoint.y + 10,
                     });
                 }
             },
@@ -167,11 +165,11 @@ Syntree.Branch.prototype.createGraphic = function() {
                     var cBBox = d.child.getLabelBBox();
                     g.getEl('line').attr({
                         x2: d.endPoint.x,
-                        y2: cBBox.y - 5,
+                        y2: d.endPoint.y - 5,
                     });
                     g.getEl('shadowLine').attr({
                         x2: d.endPoint.x,
-                        y2: cBBox.y - 5,
+                        y2: d.endPoint.y - 5,
                     });
                 }
             },

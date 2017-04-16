@@ -26,12 +26,11 @@ Syntree._ActionCreate = function(data) {
 
     if (Syntree.Lib.checkType(this.created_obj, 'node')) {
         this.undo = function() {
-            console.log('undoing create')
             Syntree.ElementsManager.deleteTree(this.created_obj);
         }
     } else if (Syntree.Lib.checkType(this.created_obj, 'arrow')) {
         this.undo = function() {
-            this.created_obj.delete();
+            Syntree.ElementsManager.allElements[this.created_obj.id].delete();
         }
     }
 }
@@ -79,7 +78,11 @@ Syntree._ActionDelete = function(data) {
         this.index = Syntree.Lib.checkArg(data.index, 'number', 0);
 
         this.undo = function() {
-            Syntree.Page.openTree(this.treestring,this.parent,this.index);
+            Syntree.Page.openTree(
+                this.treestring,
+                Syntree.ElementsManager.allElements[this.parent.id],
+                this.index
+                );
         }
     } else if (Syntree.Lib.checkType(this.deleted_obj, 'arrow')) {
         this.fromNode = Syntree.Lib.checkArg(data.fromNode, 'node');
@@ -87,12 +90,12 @@ Syntree._ActionDelete = function(data) {
         this.path = Syntree.Lib.checkArg(data.path, 'string');
 
         this.undo = function() {
-            this.deleted_obj.recreate();
-            // new Syntree.Arrow({
-            //     fromNode: this.fromNode,
-            //     toNode: this.toNode,
-            //     path: this.path,
-            // });
+            new Syntree.Arrow({
+                id: this.deleted_obj.id,
+                fromNode: this.fromNode,
+                toNode: this.toNode,
+                path: this.path,
+            });
         }
     }
 

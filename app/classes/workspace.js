@@ -99,6 +99,23 @@ Syntree.workspace_constructor.prototype._attachEventListeners = function() {
     // Store 'this' as local variable to avoid conflicts in callback scope
     var W = this;
 
+    // This stuff is to fix dragging, which as default triggers on right click
+    // We want it to NOT trigger on right click, so we maintain Workspace.rightClick
+    // for the drag functions to check
+    $(document).on('mousedown', function(e) {
+        if (e.which === 3) {
+            W.rightClick = true;
+        }
+    });
+    $(document).on('mouseup', function(e) {
+        if (e.which === 3) {
+            W.rightClick = false;
+        }
+    });
+    window.onblur = function() {
+        W.rightClick = false;
+    }
+    // --------------------------------------------------------------------------
     $(document).on('click', '.arrow, .arrow-shadow', function(e) {W._eventArrowClick(e);});
     $(document).on('click', '.branch, .branch-shadow, .triangle', function(e) {W._eventBranchClick(e);});
     $(document).on('click', '.triangle-button', function(e) {W._eventTriangleButtonClick(e);});

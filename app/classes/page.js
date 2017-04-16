@@ -25,6 +25,10 @@ Syntree.page_constructor.prototype.createMovementArrow = function(node) {
 }
 
 Syntree.page_constructor.prototype.addTree = function(tree,parent,index) {
+    tree = Syntree.Lib.checkArg(tree, 'tree', '#undefined');
+    parent = Syntree.Lib.checkArg(parent, 'node', '#undefined');
+    index = Syntree.Lib.checkArg(index, 'number', 0);
+
     if (!Syntree.Lib.checkType(tree, 'tree')) {
         // Default tree
         var root = new Syntree.Node({
@@ -34,12 +38,13 @@ Syntree.page_constructor.prototype.addTree = function(tree,parent,index) {
         });
         this.tree = new Syntree.Tree({
             // build_treestring: "id:612|children:40,266|parent:undefined|labelContent:S|;id:40|children:undefined|parent:612|labelContent:Q|;id:266|children:460,170|parent:612|labelContent:Q|;id:460|children:911,884|parent:266|labelContent:Qlsfdksdfasdf|;id:911|children:undefined|parent:460|labelContent:Q|;id:884|children:undefined|parent:460|labelContent:Q|;id:170|children:undefined|parent:266|labelContent:Q|;",
-            build_treestring: "id:47|children:336,250|parent:undefined|labelContent:S|;id:336|children:570,175|parent:47|labelContent:Q|;id:570|children:838,146|parent:336|labelContent:O|;id:838|children:126,716|parent:570|labelContent:C|;id:126|children:538|parent:838|labelContent:E|;id:538|children:undefined|parent:126|labelContent:B|;id:716|children:undefined|parent:838|labelContent:X|;id:146|children:911,337|parent:570|labelContent:V|;id:911|children:undefined|parent:146|labelContent:G|;id:337|children:undefined|parent:146|labelContent:H|;id:175|children:883,866|parent:336|labelContent:A|;id:883|children:956,748|parent:175|labelContent:R|;id:956|children:undefined|parent:883|labelContent:S|;id:748|children:undefined|parent:883|labelContent:U|;id:866|children:391,578|parent:175|labelContent:T|;id:391|children:undefined|parent:866|labelContent:K|;id:578|children:undefined|parent:866|labelContent:N|;id:250|children:8,863|parent:47|labelContent:Z|;id:8|children:483,514|parent:250|labelContent:x|;id:483|children:109,271|parent:8|labelContent:Z|;id:109|children:undefined|parent:483|labelContent:Y|;id:271|children:undefined|parent:483|labelContent:I|;id:514|children:378,168|parent:8|labelContent:P|;id:378|children:undefined|parent:514|labelContent:B|;id:168|children:undefined|parent:514|labelContent:V|;id:863|children:564,746|parent:250|labelContent:L|;id:564|children:300,349|parent:863|labelContent:K|;id:300|children:undefined|parent:564|labelContent:J|;id:349|children:undefined|parent:564|labelContent:F|;id:746|children:766,805|parent:863|labelContent:M|;id:766|children:undefined|parent:746|labelContent:W|;id:805|children:undefined|parent:746|labelContent:Q|;",
+            // build_treestring: "id:47|children:336,250|parent:undefined|labelContent:S|;id:336|children:570,175|parent:47|labelContent:Q|;id:570|children:838,146|parent:336|labelContent:O|;id:838|children:126,716|parent:570|labelContent:C|;id:126|children:538|parent:838|labelContent:E|;id:538|children:undefined|parent:126|labelContent:B|;id:716|children:undefined|parent:838|labelContent:X|;id:146|children:911,337|parent:570|labelContent:V|;id:911|children:undefined|parent:146|labelContent:G|;id:337|children:undefined|parent:146|labelContent:H|;id:175|children:883,866|parent:336|labelContent:A|;id:883|children:956,748|parent:175|labelContent:R|;id:956|children:undefined|parent:883|labelContent:S|;id:748|children:undefined|parent:883|labelContent:U|;id:866|children:391,578|parent:175|labelContent:T|;id:391|children:undefined|parent:866|labelContent:K|;id:578|children:undefined|parent:866|labelContent:N|;id:250|children:8,863|parent:47|labelContent:Z|;id:8|children:483,514|parent:250|labelContent:x|;id:483|children:109,271|parent:8|labelContent:Z|;id:109|children:undefined|parent:483|labelContent:Y|;id:271|children:undefined|parent:483|labelContent:I|;id:514|children:378,168|parent:8|labelContent:P|;id:378|children:undefined|parent:514|labelContent:B|;id:168|children:undefined|parent:514|labelContent:V|;id:863|children:564,746|parent:250|labelContent:L|;id:564|children:300,349|parent:863|labelContent:K|;id:300|children:undefined|parent:564|labelContent:J|;id:349|children:undefined|parent:564|labelContent:F|;id:746|children:766,805|parent:863|labelContent:M|;id:766|children:undefined|parent:746|labelContent:W|;id:805|children:undefined|parent:746|labelContent:Q|;",
             // build_treestring: "id:432|children:67,741|parent:undefined|labelContent:S|;id:67|children:undefined|parent:432|labelContent:Q|;id:741|children:578|parent:432|labelContent:Q|;id:578|children:737|parent:741|labelContent:Q|;id:737|children:0|parent:578|labelContent:Q|;id:0|children:61|parent:737|labelContent:Q|;id:61|children:134|parent:0|labelContent:Q|;id:134|children:undefined|parent:61|labelContent:[OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO]|;",
-            // root: root,
+            root: root,
         });
         this.tree.root.editingAction('save');
     } else {
+        // parent = Syntree.ElementsManager.allElements[parent.id];
         if (!Syntree.Lib.checkType(parent, 'node')) {
             this.tree.delete();
             this.tree = tree;
@@ -110,11 +115,15 @@ Syntree.page_constructor.prototype.getNearestNode = function(a,b,condition) {
             nearestNode = node;
         }
     }
-    return {
-        node: nearestNode,
-        dist: leastDist,
-        deltaX: x - nearestNode.getPosition().x,
-        deltaY: y - nearestNode.getPosition().y,
+    if (Syntree.Lib.checkType(nearestNode, 'node')) {
+        return {
+            node: nearestNode,
+            dist: leastDist,
+            deltaX: x - nearestNode.getPosition().x,
+            deltaY: y - nearestNode.getPosition().y,
+        }
+    } else {
+        return false;
     }
 }
 

@@ -1,7 +1,6 @@
 Syntree.Node = function(config_matrix) {
-    this.id = config_matrix.id;
-    Syntree.selectableElement.call(this); // Extends
     Syntree.Lib.config(config_matrix,this);
+    Syntree.selectableElement.call(this); // Extends
 
     this.lastSyncedPosition = undefined;
 
@@ -19,7 +18,6 @@ Syntree.Node = function(config_matrix) {
 
     this._labelbbox;
 
-    this.createGraphic();
     this.updateGraphics();
 }
 
@@ -116,7 +114,11 @@ Syntree.Node.prototype.createGraphic = function() {
             },
             labelContent: {
                 handler: function(d,g) {
-                    g.getEl('label').node.textContent = d.labelContent;
+                    if (d.labelContent === '') {
+                        g.getEl('label').node.textContent = "   ";
+                    } else {
+                        g.getEl('label').node.textContent = d.labelContent;
+                    }
                     var bbox = d.getLabelBBox();
                     g.getEl('highlight').attr({
                         width: bbox.w + 10,
@@ -159,6 +161,9 @@ Syntree.Node.prototype.createGraphic = function() {
     }
 
     var customDrag = function(dx, dy, posx, posy) {
+        if (Syntree.Workspace.rightClick) {
+            return false;
+        }
         var id = this.attr('id');
         id = id.substr(id.lastIndexOf('-')+1, id.length);
         var node = Syntree.ElementsManager.allElements[id];
@@ -203,6 +208,12 @@ Syntree.Node.prototype.createGraphic = function() {
         node.updateGraphics(true);
     }
 
+    var customStart = function() {
+        if (Syntree.Workspace.rightClick) {
+            return false;
+        }
+    }
+
     var customEnd = function(dx,dy,posx,posy) {
         if (dx < 2 && dy < 2) {
             return;
@@ -220,7 +231,7 @@ Syntree.Node.prototype.createGraphic = function() {
         }
     }
 
-    label.drag(customDrag,undefined,customEnd);
+    label.drag(customDrag,customStart,customEnd);
 
     this.graphic = new Syntree.Graphic(config_matrix)
 }
