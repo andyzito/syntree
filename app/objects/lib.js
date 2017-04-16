@@ -220,4 +220,23 @@ Syntree.Lib = {
         }
         return closestSides;
     },
+
+    getMidPoint: function(x1_or_obj,y1,x2,y2) {
+        if (this.checkType(x1_or_obj, 'object')) {
+            x1 = Syntree.Lib.checkArg(x1_or_obj.x1, 'number');
+            y1 = Syntree.Lib.checkArg(x1_or_obj.y1, 'number');
+            x2 = Syntree.Lib.checkArg(x1_or_obj.x2, 'number');
+            y2 = Syntree.Lib.checkArg(x1_or_obj.y2, 'number');
+        } else {
+            x1 = Syntree.Lib.checkArg(x1_or_obj, 'number');
+            y1 = Syntree.Lib.checkArg(y1, 'number');
+            x2 = Syntree.Lib.checkArg(x2, 'number');
+            y2 = Syntree.Lib.checkArg(y2, 'number');
+        }
+
+        return {
+            x: (x1 + x2)/2,
+            y: (y1 + y2)/2,
+        }
+    }
 }

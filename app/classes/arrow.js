@@ -65,6 +65,14 @@ Syntree.Arrow.prototype.createGraphic = function() {
     });
     $(line.node).attr('marker-end', 'url(#Triangle)');
 
+    var mid = Syntree.Lib.getMidPoint({
+        x1: startPoint.x,
+        y1: startPoint.y,
+        x2: endPoint.x,
+        y2: endPoint.y,
+    })
+    var lockButton = Syntree.snap.image('/resources/lock.svg', mid.x, mid.y, 10, 10);
+
     var config_matrix = {
         elements_to_add: {
             shadowLine: {
@@ -72,6 +80,9 @@ Syntree.Arrow.prototype.createGraphic = function() {
             },
             line: {
                 el_obj: line,
+            },
+            lockButton: {
+                el_obj: lockButton,
             }
         },
         states_synced: {
@@ -272,8 +283,20 @@ Syntree.Arrow.prototype.__updateGraphics = function() {
     tInter = tInter.reduce(function(l, e) {
         return e.t1 > l.t1 ? e : l;
     });
-    this.setStartPoint(fInter.x, fInter.y);
-    this.setEndPoint(tInter.x, tInter.y);
+    if (this.fromNode.getLabelContent().match(/^\s.*$|^$/)) {
+        var pos = this.fromNode.getPosition();
+        this.setStartPoint(pos.x, pos.y);
+    } else {
+        this.setStartPoint(fInter.x, fInter.y);
+    }
+    if (this.toNode.getLabelContent().match(/^\s.*$|^$/)) {
+        var pos = this.toNode.getPosition();
+        this.setEndPoint(pos.x, pos.y);
+    } else {
+        this.setEndPoint(tInter.x, tInter.y);
+    }
+    // this.setStartPoint(fInter.x, fInter.y);
+    // this.setEndPoint(tInter.x, tInter.y);
 
     this.graphic.getEl('shadowLine').attr({
         path: this.graphic.getEl('line').attr('path'),
