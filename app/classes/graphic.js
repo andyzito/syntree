@@ -30,6 +30,17 @@ Syntree.Graphic.prototype.addElement = function(name, element) {
     this.elements[name] = {};
     this.elements[name].el_obj = Syntree.Lib.checkArg(element.el_obj, 'object');
     this.elements[name].attr_handler = Syntree.Lib.checkArg(element.attr_handler, 'function', this._defaultAttrHandler);
+    this.elements[name].include_in_svg_string = Syntree.Lib.checkArg(element.include_in_svg_string, 'boolean', false);
+}
+
+Syntree.Graphic.prototype.getSVGString = function() {
+    var s = "";
+    for (name in this.elements) {
+        if (this.elements[name].include_in_svg_string) {
+            s += this.getEl(name).node.outerHTML;
+        }
+    }
+    return s;
 }
 
 Syntree.Graphic.prototype._defaultAttrHandler = function(element, attrs) {

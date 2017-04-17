@@ -80,6 +80,7 @@ Syntree.Arrow.prototype.createGraphic = function() {
             },
             line: {
                 el_obj: line,
+                include_in_svg_string: true,
             },
             lockButton: {
                 el_obj: lockButton,

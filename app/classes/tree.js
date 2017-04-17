@@ -383,7 +383,7 @@ Syntree.Tree.prototype.distribute = function(angle,force_check_all) {
         );
         children[0].updateGraphics();
         if (!force_check_all) {
-            return;
+            // return;
         }
     } else if (children.length > 1) {
         var pos = this.root.getPosition();

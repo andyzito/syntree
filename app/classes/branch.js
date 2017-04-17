@@ -62,6 +62,7 @@ Syntree.Branch.prototype.createGraphic = function() {
         elements_to_add: {
             line: {
                 el_obj: line,
+                include_in_svg_string: true,
             },
             shadowLine: {
                 el_obj: shadowLine,

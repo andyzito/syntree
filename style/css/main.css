@@ -162,7 +162,7 @@ input[type=text] {
     font-size: 1rem; }
   .button.loading, #workspace_container #toolbar .loading.toolbar_button {
     color: transparent;
-    background-image: url("/hourglass.gif");
+    background-image: url("/resources/hourglass.gif");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain; }

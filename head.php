@@ -1,12 +1,14 @@
-<!-- Head included on every page
-    Imports $DB, all app scripts, modal.js, and all stylesheets -->
+<!--
+@@file head.php Head.php
+Included on every page. Imports external libraries, all app scripts, and styles.
+##end
+-->
 <head>
-<script src="external_libs/jquery-3.2.0.min.js"></script>
-<script src="external_libs/rgbcolor.js"></script>
-<script src="external_libs/StackBlur.js"></script>
-<script src="external_libs/canvg.js"></script>
-<script src="external_libs/snap.js"></script>
+<script src="/external_libs/jquery-3.2.0.min.js"></script>
+<script src="/external_libs/rgbcolor.js"></script>
+<script src="/external_libs/StackBlur.js"></script>
+<script src="/external_libs/canvg.js"></script>
+<script src="/external_libs/snap.js"></script>
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/app/scripts.html'; ?>
-<script src="modal.js"></script>
-<link rel="stylesheet" href="style/css/main.css">
+<link rel="stylesheet" href="/style/css/main.css">
 </head>

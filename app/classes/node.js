@@ -53,7 +53,7 @@ Syntree.Node.prototype.createGraphic = function() {
     });
 
     // Delete button
-    var deleteButton = Syntree.snap.image('/app/resources/delete_button.png',this.x,this.y,10,10);
+    var deleteButton = Syntree.snap.image('/resources/delete_button.png',this.x,this.y,10,10);
     deleteButton.attr({
         class: 'delete_button delete_button-' + this.id,
     });
@@ -69,6 +69,7 @@ Syntree.Node.prototype.createGraphic = function() {
         elements_to_add: {
             label: {
                 el_obj: label,
+                include_in_svg_string: true,
             },
             highlight: {
                 el_obj: highlight,
