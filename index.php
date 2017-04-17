@@ -1,3 +1,8 @@
+<!--
+@@file,index.php,Splash Page
+The splash page of the Syntree website
+##end
+-->
 <!DOCTYPE html>
 
 <html>

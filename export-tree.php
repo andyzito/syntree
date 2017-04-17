@@ -1,8 +1,10 @@
 <?php
-// This is a script for the app
-// It receives a filetype, a filename, and some data
-// It creates a temporary file with this data and returns a download link
- 
+
+/**
+@@file,export-tree.php,Export Tree
+This is a script which takes a string identifying the type of file to export, and a filename to use. It returns a link to the generated file.
+##end
+**/
 $type = $_POST['type'];
 $fname = $_POST['fname'];
 

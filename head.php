@@ -1,5 +1,5 @@
 <!--
-@@file head.php Head.php
+@@file,head.php,Head
 Included on every page. Imports external libraries, all app scripts, and styles.
 ##end
 -->
