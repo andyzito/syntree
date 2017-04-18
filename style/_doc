@@ -1,3 +1,5 @@
+@has_own_docs
+
 @title Style
 
 @description Contains SCSS, gulpfile for generating CSS.

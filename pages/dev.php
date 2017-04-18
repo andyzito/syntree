@@ -16,7 +16,7 @@
             export_tree_script: '/export-tree.php',
             tutorial_enabled: false,
         }
-        new Syntree.workspace_constructor(init);
+        new Syntree.Workspace(init);
     });
     </script>
 

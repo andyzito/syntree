@@ -6,22 +6,27 @@
 
 ##end
 -->
+<script src="/app/external_libs/jquery-3.2.0.min.js"></script>
+<script src="/app/external_libs/rgbcolor.js"></script>
+<script src="/app/external_libs/StackBlur.js"></script>
+<script src="/app/external_libs/canvg.js"></script>
+<script src="/app/external_libs/snap.js"></script>
 <script src="/app/modal.js"></script>
-<script src="/app/objects/lib.js"></script>
-<script src="/app/objects/tutorial.js"></script>
-<script src="/app/objects/toolbar.js"></script>
-<script src="/app/classes/elementsManager.js"></script>
-<script src="/app/classes/element.js"></script>
-<script src="/app/classes/selectableElement.js"></script>
-<script src="/app/classes/graphic.js"></script>
-<script src="/app/classes/history.js"></script>
+<script src="/app/singletons/lib.js"></script>
+<script src="/app/singletons/tutorial.js"></script>
+<script src="/app/singletons/toolbar.js"></script>
+<script src="/app/singletons/elementsManager.js"></script>
+<script src="/app/singletons/history.js"></script>
+<script src="/app/singletons/workspace.js"></script>
 <script src="/app/classes/action.js"></script>
-<script src="/app/classes/workspace.js"></script>
 <script src="/app/classes/page.js"></script>
 <script src="/app/classes/tree.js"></script>
-<script src="/app/classes/node.js"></script>
-<script src="/app/classes/branch.js"></script>
-<script src="/app/classes/arrow.js"></script>
+<script src="/app/classes/elements/node.js"></script>
+<script src="/app/classes/elements/branch.js"></script>
+<script src="/app/classes/elements/arrow.js"></script>
+<script src="/app/classes/elements/element.js"></script>
+<script src="/app/classes/elements/selectableElement.js"></script>
+<script src="/app/classes/elements/graphic.js"></script>
 <script>
     $(document).ready(function() {
         $("#workspace_container .loading_screen").remove();

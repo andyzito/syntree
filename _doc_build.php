@@ -9,7 +9,7 @@ function build_head($path) {
 	$res .= str_repeat("=", 50);
 	$res .= "\n";
 	$res .= $head['description'] . "\n\n";
-	$res .= $head['more_description'];
+	$res .= $head['more'];
 	return $res;
 }
 
@@ -62,15 +62,29 @@ function parse_head($p) {
 	$res = [];
 	if (file_exists($p)) {
 		$f = fopen($p . "/" . HEAD_FILE, "r");
+		$more = "";
+		$add_to_more = false;
 		if ($f) {
 			while (($line = fgets($f)) !== FALSE) {
+				if ($add_to_more) {
+					$more .= $line;
+				}
 				if (strpos($line, "@") !== FALSE) {
+					if (strpos($line, "@more") !== FALSE) {
+						$add_to_more = true;
+					} else {
+						$add_to_more = false;
+					}
+
 					$name = substr(explode(' ', $line)[0], 1);
 					$val = preg_replace("/@\w+\s/", '', $line);
 					$res[$name] = trim($val);
 				}
 			}
 			fclose($f);
+		}
+		if ($more !== "") {
+			$res['more'] = $more;
 		}
 	} else {
 		foreach(preg_split("/((\r?\n)|(\r\n?))/", $p) as $line){

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: SelectableElement</title>
+    <title>JSDoc: Class: Node</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: SelectableElement</h1>
+    <h1 class="page-title">Class: Node</h1>
 
     
 
@@ -29,9 +29,9 @@
 <header>
     
         <h2>
-            <span class="ancestors"><a href="Syntree.html">Syntree</a>.</span>SelectableElement</h2>
+            <span class="ancestors"><a href="Syntree.html">Syntree</a>.</span>Node</h2>
         
-            <div class="class-description">An element that the user can click on and select. Selectable elements are Syntree.Node, Syntree.Branch, and Syntree.Arrow.</div>
+            <div class="class-description">Nodes are the meat of Syntree.</div>
         
     
 </header>
@@ -45,7 +45,7 @@
     <h2>Constructor</h2>
     
 
-    <h4 class="name" id="SelectableElement"><span class="type-signature"></span>new SelectableElement<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Node"><span class="type-signature"></span>new Node<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
@@ -92,7 +92,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_elements_selectableElement.js.html">classes/elements/selectableElement.js</a>, <a href="classes_elements_selectableElement.js.html#line6">line 6</a>
+        <a href="classes_elements_node.js.html">classes/elements/node.js</a>, <a href="classes_elements_node.js.html#line7">line 7</a>
     </li></ul></dd>
     
 
@@ -129,6 +129,8 @@
 
     <ul>
         <li><a href="Syntree.Element.html">Syntree.Element</a></li>
+    
+        <li><a href="Syntree.SelectableElement.html">Syntree.SelectableElement</a></li>
     </ul>
 
 
@@ -180,12 +182,12 @@ Needed to avoid double deletion.
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Syntree.Element.html#deleted">Syntree.Element#deleted</a>
-    </li></ul></dd>
-    
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Syntree.SelectableElement.html#deleted">Syntree.SelectableElement#deleted</a>
+    </li></ul></dd>
     
 
     
@@ -257,12 +259,12 @@ Needed to avoid double deletion.
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Syntree.Element.html#id">Syntree.Element#id</a>
-    </li></ul></dd>
-    
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Syntree.SelectableElement.html#id">Syntree.SelectableElement#id</a>
+    </li></ul></dd>
     
 
     
@@ -329,7 +331,7 @@ Selectable elements are Syntree.Node, Syntree.Branch, Syntree.Arrow.
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="Syntree.Element.html#selectable">Syntree.Element#selectable</a>
+        <a href="Syntree.SelectableElement.html#selectable">Syntree.SelectableElement#selectable</a>
     </li></ul></dd>
     
 
@@ -408,6 +410,11 @@ Selectable elements are Syntree.Node, Syntree.Branch, Syntree.Arrow.
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Syntree.SelectableElement.html#selected">Syntree.SelectableElement#selected</a>
+    </li></ul></dd>
     
 
     
@@ -498,12 +505,12 @@ Extend in sub-classes with '__delete()'.
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Syntree.Element.html#delete">Syntree.Element#delete</a>
-    </li></ul></dd>
-    
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Syntree.SelectableElement.html#delete">Syntree.SelectableElement#delete</a>
+    </li></ul></dd>
     
 
     
@@ -595,6 +602,11 @@ Other overarching management is handled by Syntree.ElementsManager.
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Syntree.SelectableElement.html#deselect">Syntree.SelectableElement#deselect</a>
+    </li></ul></dd>
     
 
     
@@ -689,12 +701,12 @@ Other overarching management is handled by Syntree.ElementsManager.
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Syntree.Element.html#getId">Syntree.Element#getId</a>
-    </li></ul></dd>
-    
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Syntree.SelectableElement.html#getId">Syntree.SelectableElement#getId</a>
+    </li></ul></dd>
     
 
     
@@ -808,12 +820,12 @@ Branches should only be deleted automatically when their child node is deleted.
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Syntree.Element.html#isDeletable">Syntree.Element#isDeletable</a>
-    </li></ul></dd>
-    
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Syntree.SelectableElement.html#isDeletable">Syntree.SelectableElement#isDeletable</a>
+    </li></ul></dd>
     
 
     
@@ -920,12 +932,12 @@ Branches should only be deleted automatically when their child node is deleted.
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Syntree.Element.html#isDeleted">Syntree.Element#isDeleted</a>
-    </li></ul></dd>
-    
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Syntree.SelectableElement.html#isDeleted">Syntree.SelectableElement#isDeleted</a>
+    </li></ul></dd>
     
 
     
@@ -1037,12 +1049,12 @@ Elements are Syntree.Node, Syntree.Branch, Syntree.Arrow.
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Syntree.Element.html#isElement">Syntree.Element#isElement</a>
-    </li></ul></dd>
-    
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Syntree.SelectableElement.html#isElement">Syntree.SelectableElement#isElement</a>
+    </li></ul></dd>
     
 
     
@@ -1142,12 +1154,12 @@ Elements are Syntree.Node, Syntree.Branch, Syntree.Arrow.
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Syntree.Element.html#isSelectable">Syntree.Element#isSelectable</a>
-    </li></ul></dd>
-    
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Syntree.SelectableElement.html#isSelectable">Syntree.SelectableElement#isSelectable</a>
+    </li></ul></dd>
     
 
     
@@ -1260,6 +1272,11 @@ Deselecting previously selected element and other overarching management is hand
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Syntree.SelectableElement.html#select">Syntree.SelectableElement#select</a>
+    </li></ul></dd>
+    
 
     
 
@@ -1355,12 +1372,12 @@ Extend in sub-classes with '__updateGraphics()'.
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Syntree.Element.html#updateGraphics">Syntree.Element#updateGraphics</a>
-    </li></ul></dd>
-    
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Syntree.SelectableElement.html#updateGraphics">Syntree.SelectableElement#updateGraphics</a>
+    </li></ul></dd>
     
 
     

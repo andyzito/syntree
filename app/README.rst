@@ -4,6 +4,12 @@ This directory contains the JavaScript code for the application itself (as oppos
 
 For the most part, the application itself is separable from the website instance (meaning that it could, in theory, be embedded in another web-page). The exceptions to this are the `resources` folder, and the `export-tree.php` script.
 
+`External Libraries <./app/external_libs/README.rst>`_
+--------------------------------------------------
+`./app/external_libs <./app/external_libs>`_
+
+External libraries required by Syntree.
+
 Scripts
 --------------------------------------------------
 `./app/scripts.html <./app/scripts.html>`_

@@ -16,7 +16,7 @@
             upload_enabled: false,
             tutorial_enabled: true,
         }
-        new Syntree.workspace_constructor(init);
+        new Syntree.Workspace(init);
     });
     </script>
 

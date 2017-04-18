@@ -1,0 +1,12 @@
+External Libraries
+==================================================
+External libraries required by Syntree.
+
+- `Snap.svg, a JS SVG manipulation library <http://snapsvg.io/>`_
+- `jQuery version 3.2.0 <https://jquery.com/>`_
+- `Canvg, a library that draws SVG onto a \<canvas\> <https://github.com/canvg/canvg>`_, requires:
+   - `StackBlur.js <https://github.com/flozz/StackBlur>`_
+   - `rgbcolor.js <https://www.npmjs.com/package/rgbcolor>`_
+
+
+

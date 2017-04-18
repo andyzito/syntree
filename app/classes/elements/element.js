@@ -4,6 +4,7 @@
  */
 Syntree.Element = function() {
 
+    // Properties/Members------------------
     if (!Syntree.Lib.checkType(this.id, 'number')) {
         /**
          * A session-unique id.
@@ -12,7 +13,24 @@ Syntree.Element = function() {
         this.id = Syntree.Lib.genId();
     }
 
-    // Accessor functions
+    /**
+     * Whether or not this element is selectable.
+     * Selectable elements are Syntree.Node, Syntree.Branch, Syntree.Arrow.
+     *
+     * @see Syntree.Element#isSelectable
+     */
+    this.selectable = false;
+
+    /**
+     * Whether or not this element has been deleted.
+     * Needed to avoid double deletion.
+     *
+     * @type {boolean}
+     */
+    this.deleted = false;
+    // -------------------------------------
+
+    // Accessor functions -------------------
 
     /**
      * Accessor function for property id.
@@ -32,15 +50,17 @@ Syntree.Element = function() {
     this.isDeleted = function() {
         return this.deleted;
     }
-    // -------------------
 
     /**
-     * Whether or not this element has been deleted.
-     * Needed to avoid double deletion.
+     * Accessor function for property selectable.
      *
-     * @type {boolean}
+     * @returns {boolean} whether or not the element is selectable
+     * @see Syntree.Element#selectable
      */
-    this.deleted = false;
+    this.isSelectable = function() {
+        return this.selectable;
+    }
+    // ------------------------------------
 
     /**
      * Delete the element.
@@ -74,16 +94,6 @@ Syntree.Element = function() {
         if (Syntree.Lib.checkType(this.__updateGraphics, 'function')) {
             this.__updateGraphics(true);
         }
-    }
-
-    /**
-     * Whether or not this element is selectable.
-     * Selectable elements are Syntree.Node, Syntree.Branch, Syntree.Arrow.
-     *
-     * @returns {boolean}
-     */
-    this.isSelectable = function() {
-        return false;
     }
 
     /**

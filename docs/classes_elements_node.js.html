@@ -1,6 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/elements/node.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/elements/node.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @class
+ * @classdesc Nodes are the meat of Syntree.
+ * @extends Syntree.Element
+ * @extends Syntree.SelectableElement
+ */
 Syntree.Node = function(config_matrix) {
     Syntree.Lib.config(config_matrix,this);
-    Syntree.SelectableElement.call(this); // Extends
+    Syntree.SelectableElement.call(this); // Extend
 
     this.lastSyncedPosition = undefined;
 
@@ -42,7 +76,7 @@ Syntree.Node.prototype.config_map = {
 
 Syntree.Node.prototype.createGraphic = function() {
     var editorid = "editor-" + this.id;
-    $("#workspace_container").append('<input id="' + editorid + '" class="editor">');
+    $("#workspace_container").append('&lt;input id="' + editorid + '" class="editor">');
     var editor = $("#" + editorid);
     editor.hide();
 
@@ -162,7 +196,7 @@ Syntree.Node.prototype.createGraphic = function() {
     }
 
     var customDrag = function(dx, dy, posx, posy) {
-        if (Syntree.Workspace.rightClick) {
+        if (Syntree.W.rightClick) {
             return false;
         }
         var id = this.attr('id');
@@ -173,7 +207,7 @@ Syntree.Node.prototype.createGraphic = function() {
         nearestNode = Syntree.Page.getNearestNode(node,undefined,function(x,y,n) {
             return y > n.getPosition().y;
         });
-        if (nearestNode.dist < 100 && nearestNode.node.getChildren().indexOf(node) < 0 && nearestNode.deltaY > 10) {
+        if (nearestNode.dist &lt; 100 &amp;&amp; nearestNode.node.getChildren().indexOf(node) &lt; 0 &amp;&amp; nearestNode.deltaY > 10) {
             if (node.parent !== undefined) {
                 var parent = node.parent;
                 parent.detachChild(node);
@@ -210,13 +244,13 @@ Syntree.Node.prototype.createGraphic = function() {
     }
 
     var customStart = function() {
-        if (Syntree.Workspace.rightClick) {
+        if (Syntree.W.rightClick) {
             return false;
         }
     }
 
     var customEnd = function(dx,dy,posx,posy) {
-        if (dx < 2 && dy < 2) {
+        if (dx &lt; 2 &amp;&amp; dy &lt; 2) {
             return;
         }
         var id = this.attr('id');
@@ -401,7 +435,7 @@ Syntree.Node.prototype.move = function(x,y,propagate) {
     this._labelbbox = undefined;
     if (propagate) {
         var c = 0;
-        while (c < this.children.length) {
+        while (c &lt; this.children.length) {
             var deltaX = this.x - oldX;
             var deltaY = this.y - oldY;
             var thisChild = this.children[c];
@@ -512,7 +546,7 @@ Syntree.Node.prototype.__updateGraphics = function(propagate) {
     if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
         this.parentBranch.updateGraphics();
     }
-    for (i=0;i<this.childBranches.length;i++) {
+    for (i=0;i&lt;this.childBranches.length;i++) {
         this.childBranches[i].updateGraphics();
     }
     if (Syntree.Lib.checkType(this.fromArrow, 'arrow')) {
@@ -524,7 +558,7 @@ Syntree.Node.prototype.__updateGraphics = function(propagate) {
 
     if (propagate) {
         var c = 0;
-        while (c < this.children.length) {
+        while (c &lt; this.children.length) {
             this.children[c].updateGraphics();
             c++;
         }
@@ -557,3 +591,26 @@ Syntree.Node.prototype.detachChild = function(node) {
 Syntree.Node.prototype.toString = function() {
     return "[object Node]";
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Syntree.Action.html">Action</a></li><li><a href="Syntree.Arrow.html">Arrow</a></li><li><a href="Syntree.Branch.html">Branch</a></li><li><a href="Syntree.Element.html">Element</a></li><li><a href="Syntree.Graphic.html">Graphic</a></li><li><a href="Syntree.History.html">History</a></li><li><a href="Syntree.Lib.html">Lib</a></li><li><a href="Syntree.Node.html">Node</a></li><li><a href="Syntree.page_constructor.html">page_constructor</a></li><li><a href="Syntree.SelectableElement.html">SelectableElement</a></li><li><a href="Syntree.Tree.html">Tree</a></li><li><a href="Syntree.Tutorial.html">Tutorial</a></li><li><a href="Syntree.Workspace.html">Workspace</a></li></ul><h3>Namespaces</h3><ul><li><a href="Syntree.html">Syntree</a></li></ul><h3>Global</h3><ul><li><a href="global.html#modal_close">modal_close</a></li><li><a href="global.html#modal_open">modal_open</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Apr 18 2017 16:01:25 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/tree.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/tree.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @class
  * @classdesc Analogous to a linked list class, Tree is actually just a wrapper around some nodes which are linked to one another internally. Tree only stores a reference to the root node, and access all descendants through that link.
  */
@@ -24,7 +52,7 @@ Syntree.Tree = function(config_matrix) {
 
     Syntree.Lib.config(config_matrix,this);
 
-    if (!Syntree.Lib.checkType(this.build_treestring, 'string') && !Syntree.Lib.checkType(this.root, 'node')) {
+    if (!Syntree.Lib.checkType(this.build_treestring, 'string') &amp;&amp; !Syntree.Lib.checkType(this.root, 'node')) {
         throw new Error ('You must provide a root node or a treestring when making a new Tree instance');
     }
 
@@ -123,7 +151,7 @@ Syntree.Tree.prototype._getPath = function(which) {
             var rBBox = rNode.getLabelBBox();
             var newRX = rPos.x + (rBBox.w/2);
 
-            if (newRX < rX) {
+            if (newRX &lt; rX) {
                 rPathString += "V" + (rPos.y - (rBBox.h/2));
                 rPathString += "H" + (rPos.x + (rBBox.w/2));
             } else {
@@ -153,7 +181,7 @@ Syntree.Tree.prototype._getPath = function(which) {
             }
 
             lX = newLX;
-            if (lX < lBound) {
+            if (lX &lt; lBound) {
                 lBound = lX;
             }
             var lBotBound = (lPos.y + (lBBox.h/2));
@@ -178,7 +206,7 @@ Syntree.Tree.prototype._getPath = function(which) {
         lPathString += "H" + (rPos.x + (rBBox.w/2));
     }
 
-    if (Left && Right) {
+    if (Left &amp;&amp; Right) {
         toReturn.pathString = lPathString + rPathString;
         toReturn.rightBound = rBound;
         toReturn.leftBound = lBound;
@@ -227,7 +255,7 @@ Syntree.Tree.prototype.getDescendantsOf = function(node,attr,inclusive,flat) {
     var len = node.getChildren().length;
     var i = 0;
 
-    while (i < len) {
+    while (i &lt; len) {
         var thisChild = node.getChildren()[i];
         if (!flat) {
             var toAdd = {};
@@ -292,7 +320,7 @@ Syntree.Tree.prototype.getNodesByOffset = function(node,off) {
     var children = node.getChildren();
     var c = 0;
 
-    while(c < children.length) {
+    while(c &lt; children.length) {
         if (off === 0) {
             result.push(children[c]);
         } else {
@@ -307,7 +335,7 @@ Syntree.Tree.prototype.getTreeString = function() {
     var s = "";
     var nodes = this.getDescendantsOf(this.root,'',true,true);
     var i = 0;
-    while (i < nodes.length) {
+    while (i &lt; nodes.length) {
         var node = nodes[i];
         for (p in this.node_properties_to_save) {
             s += p;
@@ -329,7 +357,7 @@ Syntree.Tree.prototype.getBracketNotation = function(node) {
     var children = node.getChildren();
     if (children.length > 0) {
         var c = 0;
-        while (c < children.length) {
+        while (c &lt; children.length) {
             var thisChild = children[c];
             var add = this.getBracketNotation(thisChild);
             string += " " + add;
@@ -344,7 +372,7 @@ Syntree.Tree.prototype.getSVGString = function(offsetX,offsetY) {
     var s = "";
     var nodes = this.getDescendantsOf(this.root,'',true,true);
     var i = 0;
-    while (i<nodes.length) {
+    while (i&lt;nodes.length) {
         s += nodes[i].getSVGString(offsetX,offsetY);
         i++;
     }
@@ -397,7 +425,7 @@ Syntree.Tree.prototype.distribute = function(angle,force_check_all) {
         var interval = width/(children.length-1);
         var i = 0;
         var targetY = this.root.getPosition().y + this.rowHeight;
-        while (i < children.length) {
+        while (i &lt; children.length) {
             var targetX = leftBound+(interval*i);
             children[i].move(leftBound+(interval*i),this.root.getPosition().y+this.rowHeight);
             i++;
@@ -406,7 +434,7 @@ Syntree.Tree.prototype.distribute = function(angle,force_check_all) {
         var c = 0;
         var intersect = false;
         var newWidth = width;
-        while (c < children.length-1) {
+        while (c &lt; children.length-1) {
             var lChild = children[c];
             var rChild = children[c+1];
             var lNode = new Syntree.Tree({root:rChild}).getLeftMostNode();
@@ -433,7 +461,7 @@ Syntree.Tree.prototype.distribute = function(angle,force_check_all) {
     }
 
     if (Syntree.Lib.checkType(this.root.getParent(), 'node')) {
-        // if (!intersect && !force_check_all) {
+        // if (!intersect &amp;&amp; !force_check_all) {
         //     return;
         // }
         var tree = new Syntree.Tree({
@@ -448,7 +476,7 @@ Syntree.Tree.prototype.distribute = function(angle,force_check_all) {
 Syntree.Tree.prototype.delete = function() {
     var nodes = this.getDescendantsOf(this.root,"",true,true);
     var i = 0;
-    while (i < nodes.length) {
+    while (i &lt; nodes.length) {
         nodes[i].delete();
         i++;
     }
@@ -466,11 +494,11 @@ Syntree.Tree.prototype._buildFromTreestring = function(treestring) {
     node_entries.pop(); // remove trailing item from split
     var node_entry_list = [];
     var i = 0;
-    while (i < node_entries.length) {
+    while (i &lt; node_entries.length) {
         var node_config = {};
         var attrs = node_entries[i].split('|');
         var ii = 0;
-        while (ii < attrs.length) {
+        while (ii &lt; attrs.length) {
             var name = attrs[ii].split(':')[0];
             var val = attrs[ii].split(':')[1];
             node_config[name] = val;
@@ -489,7 +517,7 @@ Syntree.Tree.prototype._buildFromTreestring = function(treestring) {
     this.root.editingAction('save');
 
     var n = 1;
-    while (n < node_entry_list.length) {
+    while (n &lt; node_entry_list.length) {
         var entry = node_entry_list[n];
         var newnode = new Syntree.Node({
             labelContent:entry.labelContent,
@@ -500,12 +528,12 @@ Syntree.Tree.prototype._buildFromTreestring = function(treestring) {
         n++;
     }
     n = 0;
-    while (n < node_entry_list.length) {
+    while (n &lt; node_entry_list.length) {
         var entry = node_entry_list[n];
         if (entry.children !== 'undefined') {
             var childIds = entry.children.split(',');
             var c = 0;
-            while (c < childIds.length) {
+            while (c &lt; childIds.length) {
                 Syntree.ElementsManager.allElements[entry.id].addChild(Syntree.ElementsManager.allElements[childIds[c]]);
                 c++;
             }
@@ -517,3 +545,26 @@ Syntree.Tree.prototype._buildFromTreestring = function(treestring) {
         n++;
     }
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Syntree.Action.html">Action</a></li><li><a href="Syntree.Arrow.html">Arrow</a></li><li><a href="Syntree.Branch.html">Branch</a></li><li><a href="Syntree.Element.html">Element</a></li><li><a href="Syntree.Graphic.html">Graphic</a></li><li><a href="Syntree.History.html">History</a></li><li><a href="Syntree.Lib.html">Lib</a></li><li><a href="Syntree.Node.html">Node</a></li><li><a href="Syntree.page_constructor.html">page_constructor</a></li><li><a href="Syntree.SelectableElement.html">SelectableElement</a></li><li><a href="Syntree.Tree.html">Tree</a></li><li><a href="Syntree.Tutorial.html">Tutorial</a></li><li><a href="Syntree.Workspace.html">Workspace</a></li></ul><h3>Namespaces</h3><ul><li><a href="Syntree.html">Syntree</a></li></ul><h3>Global</h3><ul><li><a href="global.html#modal_close">modal_close</a></li><li><a href="global.html#modal_open">modal_open</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Apr 18 2017 16:01:25 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,12 +1,39 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/page.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/page.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @class
  * @classdesc Acts as an intermediate controller between [Workspace]{@link Syntree.Workspace} and elements of the tree.
  */
 Syntree.page_constructor = function() {
+    Syntree.Page = this;
 
-    /**
-     * The <rect> which is the background of the page.
-     */
+    // Page background
     this.background = Syntree.snap.rect(
         -100,
         -100,
@@ -19,11 +46,6 @@ Syntree.page_constructor = function() {
     );
 }
 
-/**
- * Create a movement arrow from the selected [Node]{@link Syntree.Node} to the clicked [Node]{@link Syntree.Node}.
- *
- * @param {Syntree.Node} node - the node that was clicked
- */
 Syntree.page_constructor.prototype.createMovementArrow = function(node) {
     if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
         var a = new Syntree.Arrow({
@@ -34,14 +56,6 @@ Syntree.page_constructor.prototype.createMovementArrow = function(node) {
     }
 }
 
-/**
- * Add a tree to the page.
- * If you do not provide a parent [Node]{@link Syntree.Node}, the main tree will be replaced.
- *
- * @param {Syntree.Tree} tree - the Tree object to add.
- * @param {Syntree.Node} [parent] - the Node to which the root of the Tree will be added
- * @param {number} [index] - the index at which to add the root of Tree
- */
 Syntree.page_constructor.prototype.addTree = function(tree,parent,index) {
     tree = Syntree.Lib.checkArg(tree, 'tree', '#undefined');
     parent = Syntree.Lib.checkArg(parent, 'node', '#undefined');
@@ -76,14 +90,6 @@ Syntree.page_constructor.prototype.addTree = function(tree,parent,index) {
     }
 }
 
-/**
- * Create a [Tree]{@link Syntree.Tree} from a treestring, and then add it to the page.
- * If you do not provide a parent [Node]{@link Syntree.Node}, the main tree will be replaced.
- *
- * @param {Syntree.Tree} treestring - the treestring which the Tree will build from
- * @param {Syntree.Node} [parent] - the Node to which the root of the Tree will be added
- * @param {number} [index] - the index at which to add the root of Tree
- */
 Syntree.page_constructor.prototype.openTree = function(treestring,parent,index) {
     treestring = Syntree.Lib.checkArg(treestring, 'string');
     parent = Syntree.Lib.checkArg(parent, 'node', '#undefined');
@@ -95,11 +101,6 @@ Syntree.page_constructor.prototype.openTree = function(treestring,parent,index) 
     this.addTree(newTree,parent,index);
 }
 
-/**
- * Get a string of SVG markup representing all marked objects on the page.
- *
- * @returns {string}
- */
 Syntree.page_constructor.prototype.getSVGString = function(offsetX,offsetY) {
     var selected = Syntree.ElementsManager.getSelected();
     Syntree.ElementsManager.deselect();
@@ -110,7 +111,7 @@ Syntree.page_constructor.prototype.getSVGString = function(offsetX,offsetY) {
     for (id in elements) {
         elementssvg += elements[id].graphic.getSVGString();
     }
-    var style = '<style type="text/css">text{font-family:sans-serif;font-size:14px;}</style>';
+    var style = '&lt;style type="text/css">text{font-family:sans-serif;font-size:14px;}&lt;/style>';
     // var marker = $('marker')[0].outerHTML;
     Syntree.ElementsManager.select(selected);
     return style+bgsvg+elementssvg;
@@ -135,7 +136,7 @@ Syntree.page_constructor.prototype.getNearestNode = function(a,b,condition) {
     var leastDist = Number.POSITIVE_INFINITY;
     for (id in allNodes) {
         var node = allNodes[id];
-        if (ignoreNode && node === ignoreNode) {
+        if (ignoreNode &amp;&amp; node === ignoreNode) {
             continue;
         }
         var pos = node.getPosition();
@@ -146,7 +147,7 @@ Syntree.page_constructor.prototype.getNearestNode = function(a,b,condition) {
             x2: x,
             y2: y,
         })
-        if (distance < leastDist && condition(x,y,node)) {
+        if (distance &lt; leastDist &amp;&amp; condition(x,y,node)) {
             leastDist = distance;
             nearestNode = node;
         }
@@ -186,8 +187,8 @@ Syntree.page_constructor.prototype.navigateHorizontal = function(direction,fcrea
         Syntree.ElementsManager.select(this.tree.root);
     }
 
-    if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node') && Syntree.Lib.checkType(Syntree.ElementsManager.getSelected().getParent(), 'node')) {
-        // if (Syntree.ElementsManager.getSelected().getState('editing') && Syntree.ElementsManager.getSelected().getState('real')) {
+    if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node') &amp;&amp; Syntree.Lib.checkType(Syntree.ElementsManager.getSelected().getParent(), 'node')) {
+        // if (Syntree.ElementsManager.getSelected().getState('editing') &amp;&amp; Syntree.ElementsManager.getSelected().getState('real')) {
         //     return;
         // }
         var off = this.tree.getNodeOffset(this.tree.getRoot(),Syntree.ElementsManager.getSelected());
@@ -237,7 +238,7 @@ Syntree.page_constructor.prototype.navigateUp = function() {
         Syntree.ElementsManager.select(this.tree.root);
     }
 
-    if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node') && Syntree.Lib.checkType(Syntree.ElementsManager.getSelected().getParent(), 'node')) {
+    if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node') &amp;&amp; Syntree.Lib.checkType(Syntree.ElementsManager.getSelected().getParent(), 'node')) {
         Syntree.ElementsManager.select(Syntree.ElementsManager.getSelected().getParent());
     }
 }
@@ -250,10 +251,10 @@ Syntree.page_constructor.prototype.navigateDown = function(fcreate) {
     }
 
     if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
-        if (Syntree.ElementsManager.getSelected().getChildren().length > 0 && !fcreate) {
+        if (Syntree.ElementsManager.getSelected().getChildren().length > 0 &amp;&amp; !fcreate) {
             var possibleSelects = Syntree.ElementsManager.getSelected().getChildren();
             var selectHistory = Syntree.History.getNodeSelects();
-            for (i=0; i<selectHistory.length; i++) {
+            for (i=0; i&lt;selectHistory.length; i++) {
                 if (possibleSelects.indexOf(selectHistory[i].selected_obj) >= 0) {
                     Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[selectHistory[i].selected_obj.id]);
                     return;
@@ -330,10 +331,10 @@ Syntree.page_constructor.prototype.toString = function() {
     //     var move = function(dx,dy) {
     //         var offleft = $("#page-background").offset().left - $("#workspace_container").offset().left;
     //         var offtop = $("#page-background").offset().top - $("#workspace_container").offset().top;
-    //         if ((offleft > 100 && this.data('oldDX') < dx) || (offleft < -100 && this.data('oldDX') > dx)) {
+    //         if ((offleft > 100 &amp;&amp; this.data('oldDX') &lt; dx) || (offleft &lt; -100 &amp;&amp; this.data('oldDX') > dx)) {
     //             dx = this.data('oldDX');
     //         }
-    //         if ((offtop > 100 && this.data('oldDY') < dy) || (offtop < -100 && this.data('oldDY') > dy)) {
+    //         if ((offtop > 100 &amp;&amp; this.data('oldDY') &lt; dy) || (offtop &lt; -100 &amp;&amp; this.data('oldDY') > dy)) {
     //             dy = this.data('oldDY');
     //         }
 
@@ -354,4 +355,26 @@ Syntree.page_constructor.prototype.toString = function() {
     //     }
 
     //     this.background.drag(move,start);
-    // }
+    // }</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Syntree.Action.html">Action</a></li><li><a href="Syntree.Arrow.html">Arrow</a></li><li><a href="Syntree.Branch.html">Branch</a></li><li><a href="Syntree.Element.html">Element</a></li><li><a href="Syntree.Graphic.html">Graphic</a></li><li><a href="Syntree.History.html">History</a></li><li><a href="Syntree.Lib.html">Lib</a></li><li><a href="Syntree.Node.html">Node</a></li><li><a href="Syntree.page_constructor.html">page_constructor</a></li><li><a href="Syntree.SelectableElement.html">SelectableElement</a></li><li><a href="Syntree.Tree.html">Tree</a></li><li><a href="Syntree.Tutorial.html">Tutorial</a></li><li><a href="Syntree.Workspace.html">Workspace</a></li></ul><h3>Namespaces</h3><ul><li><a href="Syntree.html">Syntree</a></li></ul><h3>Global</h3><ul><li><a href="global.html#modal_close">modal_close</a></li><li><a href="global.html#modal_open">modal_open</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Apr 18 2017 16:01:25 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

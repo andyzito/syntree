@@ -1,6 +1,10 @@
 /*
-@@file,gulpfile.js,Gulp File
+##file_doc
 
+@title Gulpfile
+@description Config for gulp. Basically just says to take the SCSS in the directory ./sass/ and compile it down into a single CSS file in ./css/
+
+##end
 */
 
 'use strict'

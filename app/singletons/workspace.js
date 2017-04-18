@@ -1,47 +1,23 @@
-Syntree.workspace_constructor = function(config_matrix) {
+/**
+ * @constructor
+ * @classdesc Workspace is in charge of taking user input, sanitizing it, and sending it to the appropriate lower-level control structure.
+ */
+Syntree.Workspace = function(config_matrix) {
+    /**
+     * The snap object tied to our svg workspace.
+     *
+     * @memberof Syntree
+     */
     Syntree.snap = Snap("#workspace"); // Ensure that the snap variable exists
-    Syntree.Workspace = this; // Ensure that workspace is available to objects created from within this constructor
-    Syntree.History = new History();
 
-    // Config map provides information about configurable properties passed in from the constructor
-    this.accept_unmapped_config = false; // Accept config properties that are not in the map below?
-    this.config_map = {
-        goal_sentence: {
-            type: 'string',
-            default_value: '#undefined',
-        },
-        tutorial_enabled: {
-            type: 'boolean',
-            default_value: false,
-        },
-        upload_enabled: {
-            type: 'boolean',
-            default_value: true,
-        },
-        save_tree_script: {
-            // The path to the script for saving a tree; see this._eventSave below
-            // This script should return the tree's id on success, false on failure
-            type: 'string',
-            default_value: '#undefined',
-        },
-        get_trees_script: {
-            // The path to the script for retrieving saved trees
-            // This script should return some HTML on success and false on failure
-            type: 'string',
-            default_value: '#undefined',
-        },
-        export_tree_script: {
-            // The path to the php script for exporting a tree; see this._eventExport below
-            // This script should return a download link for the export file on success, false on failure
-            type: 'string',
-            default_value: '#undefined',
-        },
-        focus_checking_enabled: {
-            // Should we do focus checking? Set to 'true' if embedded, 'false' for full page
-            type: 'boolean',
-            default_value: false,
-        },
-    }
+    /**
+     * The instance of Workspace.
+     *
+     * @memberof Syntree
+     * @see Syntree.Workspace
+     */
+    Syntree.W = this; // Ensure that workspace is available to objects created from within this constructor
+
     Syntree.Lib.config(config_matrix, this); // use config matrix to set up some properties
 
     if (this.tutorial_enabled) {
@@ -59,7 +35,7 @@ Syntree.workspace_constructor = function(config_matrix) {
             'click',
             '.toolbar_button__tutorial',
             function() {
-                Syntree.Workspace._eventRewatchTutorial();
+                Syntree.W._eventRewatchTutorial();
             });
     } else {
         $('.toolbar_button__tutorial').remove();
@@ -88,14 +64,69 @@ Syntree.workspace_constructor = function(config_matrix) {
 
     this._attachEventListeners();
 
-    // Make the page
-    this.page = new Syntree.page_constructor();
-    this.page.addTree();
+    Syntree.P = new Syntree.Page();
+    Syntree.P.addTree();
     Syntree.ElementsManager.select(this.page.tree.getRoot());
 }
 
+/**
+ * Should this constructor accept config properties not listed in its config_map?
+ *
+ * @type {boolean}
+ * @see Syntree.Workspace#config_map
+ * @see Syntree.Lib.config
+ */
+Syntree.Workspace.prototype.accept_unmapped_config = false;
 
-Syntree.workspace_constructor.prototype._attachEventListeners = function() {
+/**
+ * An object representing possible arguments to this constructor, what types they need to be, and what default value to use if the passed value is not of the correct type.
+ *
+ * @type {object}
+ * @see Syntree.Workspace#accept_unmapped_config
+ * @see Syntree.Lib.config
+ */
+Syntree.Workspace.prototype.config_map = {
+    goal_sentence: {
+        type: 'string',
+        default_value: '#undefined',
+    },
+    tutorial_enabled: {
+        type: 'boolean',
+        default_value: false,
+    },
+    upload_enabled: {
+        type: 'boolean',
+        default_value: true,
+    },
+    save_tree_script: {
+        // The path to the script for saving a tree; see this._eventSave below
+        // This script should return the tree's id on success, false on failure
+        type: 'string',
+        default_value: '#undefined',
+    },
+    get_trees_script: {
+        // The path to the script for retrieving saved trees
+        // This script should return some HTML on success and false on failure
+        type: 'string',
+        default_value: '#undefined',
+    },
+    export_tree_script: {
+        // The path to the php script for exporting a tree; see this._eventExport below
+        // This script should return a download link for the export file on success, false on failure
+        type: 'string',
+        default_value: '#undefined',
+    },
+    focus_checking_enabled: {
+        // Should we do focus checking? Set to 'true' if embedded, 'false' for full page
+        type: 'boolean',
+        default_value: false,
+    },
+}
+
+/**
+ * Attach various event listeners needed for processing user input. This function is a convenience only, used so that the constructor of Workspace is not over burdened.
+ */
+Syntree.Workspace.prototype._attachEventListeners = function() {
     // Store 'this' as local variable to avoid conflicts in callback scope
     var W = this;
 
@@ -191,28 +222,50 @@ Syntree.workspace_constructor.prototype._attachEventListeners = function() {
     }
 }
 
-Syntree.workspace_constructor.prototype._eventTriangleButtonClick = function(e) {
+/**
+ * Code to run when a branch's triangle button is clicked.
+ *
+ * @see Syntree.Branch
+ */
+Syntree.Workspace.prototype._eventTriangleButtonClick = function(e) {
     var clicked = e.currentTarget;
     var clickedId = $(clicked).attr('id');
     var id = Number(clickedId.substr(clickedId.lastIndexOf('-')+1, clickedId.length));
     Syntree.ElementsManager.allElements[id].triangleToggle();
 }
 
-Syntree.workspace_constructor.prototype._eventBranchClick = function(e) {
+/**
+ * Code to run when a branch is clicked.
+ *
+ * @see Syntree.Branch
+ * @see Syntree.ElementsManager.select
+ */
+Syntree.Workspace.prototype._eventBranchClick = function(e) {
     var clicked = e.currentTarget;
     var clickedId = $(clicked).attr('id');
     var id = Number(clickedId.substr(clickedId.lastIndexOf('-')+1, clickedId.length));
     Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
 }
 
-Syntree.workspace_constructor.prototype._eventArrowClick = function(e) {
+/**
+ * Code to run when an arrow is clicked.
+ *
+ * @see Syntree.Arrow
+ * @see Syntree.ElementsManager.select
+ */
+Syntree.Workspace.prototype._eventArrowClick = function(e) {
     var clicked = e.currentTarget;
     var clickedId = $(clicked).attr('id');
     var id = Number(clickedId.substr(clickedId.lastIndexOf('-')+1, clickedId.length));
     Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
 }
 
-Syntree.workspace_constructor.prototype._eventRewatchTutorial = function() {
+/**
+ * Code to run when a user requests a tutorial restart/rewatch.
+ *
+ * @see Syntree.Tutorial
+ */
+Syntree.Workspace.prototype._eventRewatchTutorial = function() {
     var check;
     if (Syntree.Tutorial.running) {
         check = confirm("Restart tutorial?");
@@ -227,11 +280,17 @@ Syntree.workspace_constructor.prototype._eventRewatchTutorial = function() {
     }
 }
 
-Syntree.workspace_constructor.prototype._eventUndo = function() {
+/**
+ * Code to run when a user attempts to undo an action.
+ *
+ * @see Syntree.History.undo
+ * @see Syntree.Action
+ */
+Syntree.Workspace.prototype._eventUndo = function() {
     Syntree.History.undo();
 }
 
-Syntree.workspace_constructor.prototype._eventUpload = function() {
+Syntree.Workspace.prototype._eventUpload = function() {
     var W = this;
     $('body').append('<input type="file" id="temp-choose-file">');
     $('#temp-choose-file').change(function() {
@@ -251,7 +310,12 @@ Syntree.workspace_constructor.prototype._eventUpload = function() {
     $('#temp-choose-file').click();
 }
 
-Syntree.workspace_constructor.prototype._eventNodeClick = function(e) {
+/**
+ * Code to run when a Node is clicked.
+ *
+ * @see Syntree.Node
+ */
+Syntree.Workspace.prototype._eventNodeClick = function(e) {
     // clickedNode = Syntree.Lib.checkArg(clickedNode, 'svgtextelement');
     var node = Syntree.ElementsManager.allElements[$(e.currentTarget).attr('id').split('-')[1]];
     if (e.ctrlKey) {
@@ -264,7 +328,12 @@ Syntree.workspace_constructor.prototype._eventNodeClick = function(e) {
     Syntree.ElementsManager.select(node);
 }
 
-Syntree.workspace_constructor.prototype._eventLeft = function(e) {
+/**
+ * Code to run when the user presses the left arrow key.
+ *
+ * @see Syntree.Page#navigateHorizontal
+ */
+Syntree.Workspace.prototype._eventLeft = function(e) {
     if ($(document.activeElement).hasClass('editor') && $(document.activeElement).val() !== '') {
         return;
     }
@@ -275,7 +344,12 @@ Syntree.workspace_constructor.prototype._eventLeft = function(e) {
     }
 }
 
-Syntree.workspace_constructor.prototype._eventRight = function(e) {
+/**
+ * Code to run when the user presses the right arrow key.
+ *
+ * @see Syntree.Page#navigateHorizontal
+ */
+Syntree.Workspace.prototype._eventRight = function(e) {
     if ($(document.activeElement).hasClass('editor') && $(document.activeElement).val() !== '') {
         return;
     }
@@ -286,11 +360,21 @@ Syntree.workspace_constructor.prototype._eventRight = function(e) {
     }
 }
 
-Syntree.workspace_constructor.prototype._eventUp = function() {
+/**
+ * Code to run when the user presses the up arrow key.
+ *
+ * @see Syntree.Page#navigateUp
+ */
+Syntree.Workspace.prototype._eventUp = function() {
     this.page.navigateUp();
 }
 
-Syntree.workspace_constructor.prototype._eventDown = function(e) {
+/**
+ * Code to run when the user presses the down arrow key.
+ *
+ * @see Syntree.Page#navigateDown
+ */
+Syntree.Workspace.prototype._eventDown = function(e) {
     if (Syntree.Lib.checkType(e, 'object') && Syntree.Lib.checkType(e.ctrlKey, 'boolean') && e.ctrlKey) {
         this.page.navigateDown(true);
     } else {
@@ -298,7 +382,10 @@ Syntree.workspace_constructor.prototype._eventDown = function(e) {
     }
 }
 
-Syntree.workspace_constructor.prototype._eventDel = function() {
+/**
+ * Code to run when the user tries to delete an [Element]{@link Syntree.Element}.
+ */
+Syntree.Workspace.prototype._eventDel = function() {
     var selected = Syntree.ElementsManager.getSelected();
     if (Syntree.Lib.checkType(selected, 'node')) {
         if (Syntree.Page.tree.root === selected) {
@@ -326,15 +413,21 @@ Syntree.workspace_constructor.prototype._eventDel = function() {
     }
 }
 
-Syntree.workspace_constructor.prototype._eventEsc = function() {
+/**
+ * Code to run when the user presses the ESC key.
+ */
+Syntree.Workspace.prototype._eventEsc = function() {
     this.page.nodeEditing('cancel');
 }
 
-Syntree.workspace_constructor.prototype._eventEditorTyping = function() {
+/**
+ * Code to run when the user types in a [Node]{@link Syntree.Node} editor.
+ */
+Syntree.Workspace.prototype._eventEditorTyping = function() {
     this.page.nodeEditing('update');
 }
 
-Syntree.workspace_constructor.prototype._eventBGClick = function(e) {
+Syntree.Workspace.prototype._eventBGClick = function(e) {
     return; //temporary
     var x = e.pageX - $("#workspace").offset().left;
     var y = e.pageY - $("#workspace").offset().top;
@@ -359,7 +452,7 @@ Syntree.workspace_constructor.prototype._eventBGClick = function(e) {
     }
 }
 
-Syntree.workspace_constructor.prototype._eventFiletypeLabelClick = function(e) {
+Syntree.Workspace.prototype._eventFiletypeLabelClick = function(e) {
     var clicked = $(e.currentTarget).children('input');
     if ($(clicked).val() == 'bracket-file') {
         $('.modal_option__fname span').text('.txt');
@@ -370,7 +463,7 @@ Syntree.workspace_constructor.prototype._eventFiletypeLabelClick = function(e) {
     }
 }
 
-Syntree.workspace_constructor.prototype._eventExportImage = function() {
+Syntree.Workspace.prototype._eventExportImage = function() {
     var path = Syntree.Page.tree._getPath();
     var width = path.rightBound = path.leftBound;
     var height = path.bottomBound - path.topBound;
@@ -397,7 +490,7 @@ Syntree.workspace_constructor.prototype._eventExportImage = function() {
     $(link)[0].click();
 }
 
-Syntree.workspace_constructor.prototype._eventExportTreeFile = function() {
+Syntree.Workspace.prototype._eventExportTreeFile = function() {
     var fname = $('.modal_option__fname input').val();
     var treestring = this.page.tree.getTreeString();
     if (Syntree.Lib.checkType(this.export_tree_script, 'string')) {
@@ -410,7 +503,7 @@ Syntree.workspace_constructor.prototype._eventExportTreeFile = function() {
     }
 }
 
-Syntree.workspace_constructor.prototype._eventExportBrackets = function() {
+Syntree.Workspace.prototype._eventExportBrackets = function() {
     $('.loading-icon').show();
     // Get fname
     var fname = $('.modal_option__fname input').val();
@@ -427,7 +520,7 @@ Syntree.workspace_constructor.prototype._eventExportBrackets = function() {
     }
 }
 
-Syntree.workspace_constructor.prototype._eventSave = function() {
+Syntree.Workspace.prototype._eventSave = function() {
     var treestring = this.page.tree.getTreeString();
     var W = this;
     if (Syntree.Lib.checkType(this.save_tree_script, 'string')) {
@@ -444,7 +537,7 @@ Syntree.workspace_constructor.prototype._eventSave = function() {
     }
 }
 
-Syntree.workspace_constructor.prototype._eventFocus = function() {
+Syntree.Workspace.prototype._eventFocus = function() {
     $(".focus_check_overlay").hide();
     $(".focus_check_underlay").show();
     window.scrollTo($("#workspace").offset().left,$("#workspace").offset().top);
@@ -453,7 +546,7 @@ Syntree.workspace_constructor.prototype._eventFocus = function() {
     this.focused = true;
 }
 
-Syntree.workspace_constructor.prototype._eventUnfocus = function() {
+Syntree.Workspace.prototype._eventUnfocus = function() {
     $(".focus_check_overlay").show();
     $(".focus_check_underlay").hide();
     $('body').css('overflow','initial');
@@ -461,6 +554,9 @@ Syntree.workspace_constructor.prototype._eventUnfocus = function() {
     this.focused = false;
 }
 
-Syntree.workspace_constructor.prototype._eventEnter = function() {
+/**
+ * Code to run when the user presses Enter.
+ */
+Syntree.Workspace.prototype._eventEnter = function() {
     this.page.nodeEditing('toggle');
 }

@@ -5,6 +5,7 @@
  */
 Syntree.SelectableElement = function() {
     Syntree.Element.call(this);
+    this.selectable = true; // Override Element, because obviously we want this to be selectable
 
     /**
      * Whether or not this element is selected.
@@ -49,9 +50,5 @@ Syntree.SelectableElement = function() {
         this.selected = false;
         this.graphic.unsync('selected');
         this.updateGraphics(false);
-    }
-
-    this.isSelectable = function() {
-        return true;
     }
 }
