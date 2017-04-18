@@ -1,8 +1,8 @@
 <!--
-##file_doc_head
+##file_doc
 
-@@title Splash Page
-@@description The splash page of the Syntree website
+@title Splash Page
+@description The splash page of the Syntree website
 
 ##end
 -->

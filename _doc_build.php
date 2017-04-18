@@ -1,7 +1,7 @@
 <?php
 
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
-define("HEAD_FILE", "_doctemplate");
+define("HEAD_FILE", "_doc");
 
 function build_head($path) {
 	$head = parse_head($path);
@@ -20,7 +20,7 @@ function parse_file($p) {
 	$add_to_chunk = FALSE;
 	if ($f) {
 		while (($line = fgets($f)) !== FALSE) {
-			if (strpos($line, "##file_doc_head") !== FALSE) {
+			if (strpos($line, "##file_doc") !== FALSE) {
 				$add_to_chunk = TRUE;
 			} else if (strpos($line, "##end") !== FALSE) {
 				$res['head'] = parse_head($chunk);
@@ -39,7 +39,7 @@ function parse_file($p) {
 function has_docs($p) {
 	if (is_dir($p) && file_exists($p . "/" . HEAD_FILE)) {
 		return TRUE;
-	} else if (!is_dir($p) && strpos(file_get_contents($p), "##file_doc_head") !== FALSE) {
+	} else if (!is_dir($p) && strpos(file_get_contents($p), "##file_doc") !== FALSE) {
 		return TRUE;
 	}
 	return FALSE;
@@ -47,7 +47,7 @@ function has_docs($p) {
 
 function has_own_docs($p) {
 	if (is_dir($p) && file_exists($p . "/" . HEAD_FILE)) {
-		if (strpos(file_get_contents($p . "/" . HEAD_FILE), "@@has_own_docs") !== FALSE) {
+		if (strpos(file_get_contents($p . "/" . HEAD_FILE), "@has_own_docs") !== FALSE) {
 			return true;
 		} else {
 			return false;
@@ -64,9 +64,9 @@ function parse_head($p) {
 		$f = fopen($p . "/" . HEAD_FILE, "r");
 		if ($f) {
 			while (($line = fgets($f)) !== FALSE) {
-				if (strpos($line, "@@") !== FALSE) {
-					$name = substr(explode(' ', $line)[0], 2);
-					$val = preg_replace("/@@\w+\s/", '', $line);
+				if (strpos($line, "@") !== FALSE) {
+					$name = substr(explode(' ', $line)[0], 1);
+					$val = preg_replace("/@\w+\s/", '', $line);
 					$res[$name] = trim($val);
 				}
 			}
@@ -74,9 +74,9 @@ function parse_head($p) {
 		}
 	} else {
 		foreach(preg_split("/((\r?\n)|(\r\n?))/", $p) as $line){
-			if (strpos($line, "@@") !== FALSE) {
-				$name = substr(explode(' ', $line)[0], 2);
-				$val = preg_replace("/@@\w+\s/", '', $line);
+			if (strpos($line, "@") !== FALSE) {
+				$name = substr(explode(' ', $line)[0], 1);
+				$val = preg_replace("/@\w+\s/", '', $line);
 				$res[$name] = trim($val);
 			}
 		}
@@ -87,30 +87,31 @@ function parse_head($p) {
 function build_dir_summary($p) {
 	$props = parse_head($p);
 
-	$res = "Directory: ";
+	$res = "";
 	if (has_own_docs($p)) {
-		$res .= "[" . $props['title'] . "](" . $p . "/README.rst" . ")\n";
+		$res .= "`" . $props['title'] . " <" . $p . "/README.rst" . ">`_\n";
 	} else {
 		$res .= $props['title'] . "\n";
 	}
-	$res .= str_repeat("=", 50);
+	$res .= str_repeat("-", 50);
 	$res .= "\n";
-	$res .= "[" . $p . "](" . $p . ")\n\n";
+	// $res .= "(directory)";
+	$res .= "`" . $p . " <" . $p . ">`_\n\n";
 	$res .= $props['description'];
 	return $res;
 }
 
 function build_file_summary($p) {
 	$props = parse_file($p)['head'];
-	$res = "File: ";
 	if (has_own_docs($p)) {
-		$res .= "[" . $props['title'] . "](" . $p . "_readme.rst)\n";
+		$res .= "`" . $props['title'] . " <" . $p . "_readme.rst>`_\n";
 	} else {
 		$res .= $props['title'] . "\n";
 	}
-	$res .= str_repeat("=", 50);
+	$res .= str_repeat("-", 50);
 	$res .= "\n";
-	$res .= "[" . $p . "](" . $p . ")\n\n";
+	// $res .= "(file)";
+	$res .= "`" . $p . " <" . $p . ">`_\n\n";
 	$res .= $props['description'];
 	return $res;
 }

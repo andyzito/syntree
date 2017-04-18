@@ -1,11 +1,10 @@
 <?php
 
 /**
-##file_doc_head
+##file_doc
 
-@@fname export-tree.php
-@@title Export Tree
-@@description This is a script which takes a string identifying the type of file to export, and a filename to use. It returns a link to the generated file.
+@title Export Tree
+@description This is a script which takes a string identifying the type of file to export, and a filename to use. It returns a link to the generated file.
 
 ##end
 **/

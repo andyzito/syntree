@@ -1,3 +1,11 @@
+<!--
+##file_doc
+
+@title App Page
+@description The main page for the app itself.
+
+##end
+-->
 <!DOCTYPE html>
 
 <html>
@@ -13,12 +21,6 @@
     </script>
 
     <body class="page_make">
-
-        <!-- <a href="index.php">
-            <div class="button button_back">
-            << Back
-            </div>
-        </a> -->
 
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/app/workspace-div.html' ?>
 

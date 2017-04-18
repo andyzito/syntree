@@ -1,3 +1,11 @@
+<!--
+##file_doc
+
+@title Dev Page
+@description Page for development purposes. Same as app-page.php. Separated so that the settings for the app can be fiddled with safely.
+
+##end
+-->
 <!DOCTYPE html>
 
 <html>

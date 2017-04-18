@@ -1,8 +1,8 @@
 <!--
-##file_doc_head
+##file_doc
 
-@@title Head
-@@description Included on every page. Imports external libraries, all app scripts, and styles.
+@title Head
+@description Included on every page. Imports external libraries, all app scripts, and styles.
 
 ##end
 -->

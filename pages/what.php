@@ -1,3 +1,11 @@
+<!--
+##file_doc
+
+@title What Page
+@description FAQ's and Help.
+
+##end
+-->
 <!DOCTYPE html>
 
 <html>

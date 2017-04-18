@@ -4,15 +4,15 @@ This directory contains the JavaScript code for the application itself (as oppos
 
 For the most part, the application itself is separable from the website instance (meaning that it could, in theory, be embedded in another web-page). The exceptions to this are the `resources` folder, and the `export-tree.php` script.
 
-File: Scripts
-==================================================
-[./app/scripts.html](./app/scripts.html)
+Scripts
+--------------------------------------------------
+`./app/scripts.html <./app/scripts.html>`_
 
 All the scripts for the app, imported in the right order.
 
-File: Workspace Container
-==================================================
-[./app/workspace-div.html](./app/workspace-div.html)
+Workspace Container
+--------------------------------------------------
+`./app/workspace-div.html <./app/workspace-div.html>`_
 
 This html file is the markup on which the app hangs. All the JavaScript classes and objects rely on this markup. It contains things like the SVG element, the <canvas> used for image exporting, and many of the modals.
 
