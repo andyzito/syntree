@@ -1,0 +1,7 @@
+@@has_own_docs
+
+@@title App
+
+@@description This directory contains the JavaScript code for the application itself (as opposed to the website that hosts it).
+
+@@more_description For the most part, the application itself is separable from the website instance (meaning that it could, in theory, be embedded in another web-page). The exceptions to this are the `resources` folder, and the `export-tree.php` script.

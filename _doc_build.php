@@ -1,10 +1,13 @@
 <?php
 
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+define("HEAD_FILE", "_doctemplate");
 
 function build_head($path) {
 	$head = parse_head($path);
-	$res = "# " . $head['title'] . "\n";
+	$res = $head['title'] . "\n";
+	$res .= str_repeat("=", 50);
+	$res .= "\n";
 	$res .= $head['description'] . "\n\n";
 	$res .= $head['more_description'];
 	return $res;
@@ -34,7 +37,7 @@ function parse_file($p) {
 }
 
 function has_docs($p) {
-	if (is_dir($p) && file_exists($p . "/_doc_head")) {
+	if (is_dir($p) && file_exists($p . "/" . HEAD_FILE)) {
 		return TRUE;
 	} else if (!is_dir($p) && strpos(file_get_contents($p), "##file_doc_head") !== FALSE) {
 		return TRUE;
@@ -43,8 +46,8 @@ function has_docs($p) {
 }
 
 function has_own_docs($p) {
-	if (is_dir($p) && file_exists($p . "/_doc_head")) {
-		if (strpos(file_get_contents($p . "/_doc_head"), "@@has_own_docs") !== FALSE) {
+	if (is_dir($p) && file_exists($p . "/" . HEAD_FILE)) {
+		if (strpos(file_get_contents($p . "/" . HEAD_FILE), "@@has_own_docs") !== FALSE) {
 			return true;
 		} else {
 			return false;
@@ -58,7 +61,7 @@ function has_own_docs($p) {
 function parse_head($p) {
 	$res = [];
 	if (file_exists($p)) {
-		$f = fopen($p . "/_doc_head", "r");
+		$f = fopen($p . "/" . HEAD_FILE, "r");
 		if ($f) {
 			while (($line = fgets($f)) !== FALSE) {
 				if (strpos($line, "@@") !== FALSE) {
@@ -84,12 +87,14 @@ function parse_head($p) {
 function build_dir_summary($p) {
 	$props = parse_head($p);
 
-	$res = "### Directory: ";
+	$res = "Directory: ";
 	if (has_own_docs($p)) {
-		$res .= "[" . $props['title'] . "](" . $p . "/README.md" . ")\n";
+		$res .= "[" . $props['title'] . "](" . $p . "/README.rst" . ")\n";
 	} else {
 		$res .= $props['title'] . "\n";
 	}
+	$res .= str_repeat("=", 50);
+	$res .= "\n";
 	$res .= "[" . $p . "](" . $p . ")\n\n";
 	$res .= $props['description'];
 	return $res;
@@ -97,12 +102,14 @@ function build_dir_summary($p) {
 
 function build_file_summary($p) {
 	$props = parse_file($p)['head'];
-	$res = "### File: ";
+	$res = "File: ";
 	if (has_own_docs($p)) {
-		$res .= "[" . $props['title'] . "](" . $p . "_readme.md)\n";
+		$res .= "[" . $props['title'] . "](" . $p . "_readme.rst)\n";
 	} else {
 		$res .= $props['title'] . "\n";
 	}
+	$res .= str_repeat("=", 50);
+	$res .= "\n";
 	$res .= "[" . $p . "](" . $p . ")\n\n";
 	$res .= $props['description'];
 	return $res;
@@ -110,7 +117,7 @@ function build_file_summary($p) {
 
 function build_readme($path) {
 	// Make the README for this directory
-	$f = fopen($path . "/README.md", "w");
+	$f = fopen($path . "/README.rst", "w");
 	// Title and description of this directory
 	$head = build_head($path);
 	fwrite($f, $head);
@@ -125,7 +132,7 @@ function build_readme($path) {
 	    	$fname = $fileinfo->getFilename();
 	    	$p = $fileinfo->getPathname();
 	    	// Only use if not hidden (filename starts with '.') and not a _doc_ file
-	    	if (strpos($p, "_doc_") === FALSE && strpos($fname, ".") !== 0) {
+	    	if (strpos($p, "_doc") === FALSE && strpos($fname, ".") !== 0) {
 	    		if (!is_dir($p) && has_docs($p)) {
 	    			$summary = build_file_summary($p);
 	    		} else if (is_dir($p) && has_docs($p)) {
@@ -142,8 +149,8 @@ function build_readme($path) {
 	fwrite($f, $s);
 	fclose($f);
 	// Remove any empty README's (just in case)
-	if (!has_own_docs($path) || !preg_match("/\S/", file_get_contents($path . "/README.md"))) {
-		unlink($path . "/README.md");
+	if (!has_own_docs($path) || !preg_match("/\S/", file_get_contents($path . "/README.rst"))) {
+		unlink($path . "/README.rst");
 	} else {
 		echo "Built README for " . $path . "\n";
 	}
@@ -154,7 +161,7 @@ function build_readme($path) {
 	    if (!$fileinfo->isDot()) {
 	    	$fname = $fileinfo->getFilename();
 	    	$p = $fileinfo->getPathname();
-	    	if (is_dir($p) && strpos($p, "_doc_") === FALSE && strpos($fname, '.') !== 0) {
+	    	if (is_dir($p) && strpos($p, "_doc") === FALSE && strpos($fname, '.') !== 0) {
 				build_readme($fileinfo->getPathname());
 	    	}
 	    }

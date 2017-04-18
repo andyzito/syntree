@@ -47,27 +47,19 @@ time_make_sibling = function(id,n) {
     return sum / times.length;
 }
 
-window.Syntree = {}; // Single global object, append any other 'globals' to this
+/** @namespace */
+Syntree = {}; // Single global object, append any other 'globals' to this
 
-/*
-###object
-
-@title Lib
-@description The Lib object contains what you would expect: various utility and class-crossing functions.
-
-##end
-*/
+/** @class
+ * @memberof Syntree
+ */
 Syntree.Lib = {
-    /*
-    ###function
-
-    Add properties to a given object, using that objects config_map property to check types and apply defaults.
-
-    @param {object} matrix - An object of properties to be appended to the target
-    @param {object} target - The object to be 'configured'
-
-    ##end
-    */
+    /**
+     * Add properties to a given object, using that object's config_map property to check types and apply defaults.
+     *
+     * @param {object} matrix - An object of properties to be appended to the target
+     * @param {object} target - The object to be 'configured'
+     */
     config: function(matrix, target) {
         for (property_name in target.config_map) {
             var required_type = target.config_map[property_name].type;
@@ -95,16 +87,37 @@ Syntree.Lib = {
         }
     },
 
+    /**
+     * Just a function that allows us to focus an element without auto-scrolling to it.
+     * Useful if the app is embedded in a larger page.
+     *
+     * @param {jQuery_Object} elem - A page element to scroll to
+     */
     focusNoScroll: function(elem) {
       var x = window.scrollX, y = window.scrollY;
       elem.focus();
       window.scrollTo(x, y);
     },
 
+    /**
+     * Keeps track of ids that have been generated.
+     * @see Syntree.Lib.genId
+     */
     allIds: [],
 
+    /**
+     * The upper bound of random number generation for ids.
+     * Increases if we get too close.
+     * @see Syntree.Lib.genId
+     */
     idN: 1000,
 
+    /**
+     * Generates a unique id (unique within this session).
+     * @see Syntree.Lib.allIds
+     * @see Syntree.Lib.idN
+     * @returns {number} a session-unique id
+     */
     genId: function() {
         if (this.allIds.length === this.idN/2) {
             this.idN += 1000;
@@ -118,6 +131,12 @@ Syntree.Lib = {
         }
     },
 
+    /**
+     * Get the type of anything, taking into account all kinds of JS type weirdness.
+     * Returns undefined for NaN and null. Returns specific object type if available, 'object' otherwise.
+     * @param {} a - any value
+     * @returns {string} the type of the passed value
+     */
     typeOf: function(a) {
         // Modified from http://stackoverflow.com/questions/13926213/checking-the-types-of-function-arguments-in-javascript
         var type = ({}).toString.call(a).match(/\s(\w+)/)[1].toLowerCase();
@@ -135,6 +154,12 @@ Syntree.Lib = {
         }
     },
 
+    /**
+     * Check a value against any given type(s).
+     * @param {} a - any value
+     * @param {string|string[]} required_type - a string representing the required type, or an array of such strings
+     * @returns {boolean} whether the passed value matched the required type(s)
+     */
     checkType: function(a, required_type) {
         if (this.typeOf(required_type) === 'string') {
             return this.typeOf(a) === required_type;
@@ -152,6 +177,16 @@ Syntree.Lib = {
         }
     },
 
+    /**
+     * Ideal for checking argument types. Checks the passed value against the required type,
+     * and returns the default value instead if the check doesn't pass.
+     * A default value of '#undefined' will permit the type check to fail, and return nothing.
+     * Otherwise (if default_value is actually undefined), will throw an error on type check failure.
+     *
+     * @param {} passed - any value
+     * @param {string|string[]} require - a string representing the required type, or an array of such strings
+     * @param {} default_value - any value, to be returned if the type check fails
+     */
     checkArg: function(passed, require, default_value) {
         if (this.checkType(require, ['string', 'array'])) {
             if (this.checkType(passed, require)) {
