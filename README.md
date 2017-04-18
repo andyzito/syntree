@@ -2,7 +2,9 @@
 
 Syntree is a web app that allows the user to draw syntax trees using a GUI interface, as opposed to bracket notation.
 
-### Directory:[external_libs](external_libs/README.md)
+### Directory: [External Libraries](./external_libs/README.md)
+[./external_libs](./external_libs)
+
 External libraries used by Syntree.
 
 ### File: Export Tree
@@ -20,15 +22,18 @@ The splash page of the Syntree website
 
 Included on every page. Imports external libraries, all app scripts, and styles.
 
+### Directory: [Pages](./pages/README.md)
+[./pages](./pages)
 
+All pages of the Syntree website.
 
+### Directory: [Style](./style/README.md)
+[./style](./style)
 
+Contains SCSS, gulpfile for generating CSS.
 
+### Directory: [Resources](./resources/README.md)
+[./resources](./resources)
 
-
-
-
-
-
-
+Images or any other media resource required by Syntree.
 

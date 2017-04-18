@@ -3,7 +3,9 @@
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 
 function parse_head($head, $path) {
-	return preg_replace("/@@description/", file_get_contents($path . "/_doc_dir_descrip"), $head);
+	$res = preg_replace("/@@description/", file_get_contents($path . "/_doc_dir_descrip"), $head);
+	$res = preg_replace("/@@title/", file_get_contents($path . "/_doc_dir_title"), $res);
+	return $res;
 }
 
 function parse_chunk($chunk) {
@@ -29,9 +31,12 @@ function parse_chunk($chunk) {
 
 function parse_dir($path, $name) {
 	if (file_exists($path . "/_doc_dir_descrip")) {
-		$s = "### Directory:";
-		$s .= "[" . $name . "](" . $name . "/README.md)\n";
-		$s .= file_get_contents($path . "/_doc_dir_descrip");
+		$title = file_get_contents($path . "/_doc_dir_title");
+		$descrip = file_get_contents($path . "/_doc_dir_descrip");
+		$s = "### Directory: ";
+		$s .= "[" . $title . "](" . $path . "/README.md)\n";
+		$s .= "[" . $path . "](" . $path . ")\n\n";
+		$s .= $descrip;
 		return $s;
 	}
 }
@@ -86,11 +91,14 @@ function build_dir($path) {
 	    	// Only use if not hidden (filename starts with '.') and not ignored
 	    	if (strpos($p, "_doc_") === FALSE && strpos($fname, ".") !== 0) {
 	    		if (!is_dir($p)) {
-		    		$s .= parse_file($p);
+	    			$parsed = parse_file($p);
 	    		} else {
-	    			$s .= parse_dir($p, $fname);
+	    			$parsed = parse_dir($p);
 	    		}
-	    		$s .= "\n\n";
+	    		if (preg_match("/\S/", $parsed)) {
+	    			$s .= $parsed;
+	    			$s .= "\n\n";
+	    		}
 	    	}
 	    }
 	}
