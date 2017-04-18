@@ -1,6 +1,6 @@
 Syntree.Node = function(config_matrix) {
     Syntree.Lib.config(config_matrix,this);
-    Syntree.selectableElement.call(this); // Extends
+    Syntree.SelectableElement.call(this); // Extends
 
     this.lastSyncedPosition = undefined;
 

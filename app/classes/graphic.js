@@ -103,7 +103,7 @@ Syntree.Graphic.prototype._handlerBoolean = function(state_obj) {
         // console.log(name);
         // console.log(el);
         var state_el_data = state_obj.elements[name];
-        if (d.get(state_obj.state_name)) {
+        if (d[state_obj.state_name]) {
             el.attr_handler(el.el_obj, state_el_data.stateTrueAttrs);
         } else {
             el.attr_handler(el.el_obj, state_el_data.stateFalseAttrs);

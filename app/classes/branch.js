@@ -7,7 +7,7 @@ Syntree.Branch = function(parent,child) {
     this.child = child;
     this.triangle = false;
 
-    Syntree.selectableElement.call(this);
+    Syntree.SelectableElement.call(this);
 }
 
 Syntree.Branch.prototype.createGraphic = function() {

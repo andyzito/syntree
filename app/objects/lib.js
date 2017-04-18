@@ -51,7 +51,7 @@ time_make_sibling = function(id,n) {
 Syntree = {}; // Single global object, append any other 'globals' to this
 
 /** @class
- * @memberof Syntree
+ * @classdesc What you'd expect -- various utility and cross-class functions.
  */
 Syntree.Lib = {
     /**
@@ -184,13 +184,13 @@ Syntree.Lib = {
      * Otherwise (if default_value is actually undefined), will throw an error on type check failure.
      *
      * @param {} passed - any value
-     * @param {string|string[]} require - a string representing the required type, or an array of such strings
+     * @param {string|string[]|function} require - a string representing the required type, an array of such strings, or a function returning true/false
      * @param {} default_value - any value, to be returned if the type check fails
      */
-    checkArg: function(passed, require, default_value) {
+    checkArg: function(a, require, default_value) {
         if (this.checkType(require, ['string', 'array'])) {
-            if (this.checkType(passed, require)) {
-                return passed;
+            if (this.checkType(a, require)) {
+                return a;
             } else {
                 if (!this.checkType(default_value, 'undefined')) {
                     if (default_value === '#undefined') {
@@ -199,14 +199,14 @@ Syntree.Lib = {
                         return default_value;
                     }
                 } else {
-                    throw new TypeError('Argument is required to be type ' + String(require).replace(',', ' or ') + ', was type ' + this.typeOf(passed));
+                    throw new TypeError('Argument is required to be type ' + String(require).replace(',', ' or ') + ', was type ' + this.typeOf(a));
                 }
             }
         } else if (this.checkType(require, 'function')) {
             var r = require();
             if (Syntree.Lib.checkType(r, 'boolean')) {
                 if (r) {
-                    return passed;
+                    return a;
                 } else {
                     if (!this.checkType(default_value, 'undefined')) {
                         if (default_value === '#undefined') {
@@ -226,54 +226,51 @@ Syntree.Lib = {
         }
     },
 
-    distance: function(args) {
-        x1 = Syntree.Lib.checkArg(args.x1, 'number');
-        x2 = Syntree.Lib.checkArg(args.x2, 'number');
-        y1 = Syntree.Lib.checkArg(args.y1, 'number');
-        y2 = Syntree.Lib.checkArg(args.y2, 'number');
+    /**
+     * Get the distance between two points.
+     *
+     * @param {number|object} x1_or_obj - either the x coordinate of point 1, or an object representing all four coordinates
+     * @param {number} [y1] - the y coordinate of point 1
+     * @param {number} [x2] - the x coordinate of point 2
+     * @param {number} [y2] - the y coordinate of point 2
+     * @returns {number} the distance between the two points
+     */
+    distance: function(x1_or_obj,y1,x2,y2) {
+        if (this.checkType(x1_or_obj, 'object')) {
+            x1 = Syntree.Lib.checkArg(x1_or_obj.x1, 'number');
+            y1 = Syntree.Lib.checkArg(x1_or_obj.y1, 'number');
+            x2 = Syntree.Lib.checkArg(x1_or_obj.x2, 'number');
+            y2 = Syntree.Lib.checkArg(x1_or_obj.y2, 'number');
+        } else {
+            x1 = Syntree.Lib.checkArg(x1_or_obj, 'number');
+            y1 = Syntree.Lib.checkArg(y1, 'number');
+            x2 = Syntree.Lib.checkArg(x2, 'number');
+            y2 = Syntree.Lib.checkArg(y2, 'number');
+        }
 
         return Math.sqrt(Math.pow((x2 - x1),2)+Math.pow((y2 - y1),2));
     },
 
+    /**
+     * Capitalize the first letter of a string.
+     * Often used for converting types into corresponding constructor function identifiers.
+     *
+     * @param {string} string - any string
+     * @returns {string} the passed string, with the first letter capitalized
+     */
     capitalize: function(string) {
         return string[0].toUpperCase() + string.slice(1,string.length);
     },
 
-    getClosestSides: function(box1, box2) {
-        var sides = ['x', 'x2', 'y', 'y2'];
-
-        var leastDistance = Number.POSITIVE_INFINITY;
-        var closestSides = {
-            s1: '',
-            s2: '',
-        }
-        var i = 0;
-        while (i < sides.length) {
-            var side1 = box1[sides[i]];
-            var ii = 0;
-            while (ii < sides.length) {
-                var side2 = box2[sides[ii]];
-
-                var temp = {
-                    x1: sides[i].includes('x') ? side1 : box1.cx,
-                    y1: sides[i].includes('y') ? side1 : box1.cy,
-                    x2: sides[ii].includes('x') ? side2 : box2.cx,
-                    y2: sides[ii].includes('y') ? side2 : box2.cy,
-                }
-
-                var distance = Syntree.Lib.distance(temp);
-                if (distance < leastDistance) {
-                    leastDistance = distance;
-                    closestSides.s1 = sides[i];
-                    closestSides.s2 = sides[ii];
-                }
-                ii++;
-            }
-            i++;
-        }
-        return closestSides;
-    },
-
+    /**
+     * Get the mid point of a line spanning two points
+     *
+     * @param {number|object} x1_or_obj - either the x coordinate of point 1, or an object representing all four coordinates
+     * @param {number} [y1] - the y coordinate of point 1
+     * @param {number} [x2] - the x coordinate of point 2
+     * @param {number} [y2] - the y coordinate of point 2
+     * @returns {object} - the x/y coordinates of the mid point
+     */
     getMidPoint: function(x1_or_obj,y1,x2,y2) {
         if (this.checkType(x1_or_obj, 'object')) {
             x1 = Syntree.Lib.checkArg(x1_or_obj.x1, 'number');

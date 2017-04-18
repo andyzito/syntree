@@ -1,7 +1,7 @@
 Syntree.Arrow = function(config_matrix) {
     this.id = config_matrix.id;
     Syntree.Lib.config(config_matrix,this);
-    Syntree.selectableElement.call(this); // Extends
+    Syntree.SelectableElement.call(this); // Extends
 
     this.toNode.toArrow = this;
     this.fromNode.fromArrow = this;
