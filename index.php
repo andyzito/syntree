@@ -1,6 +1,9 @@
 <!--
-@@file,index.php,Splash Page
-The splash page of the Syntree website
+##file_doc_head
+
+@@title Splash Page
+@@description The splash page of the Syntree website
+
 ##end
 -->
 <!DOCTYPE html>

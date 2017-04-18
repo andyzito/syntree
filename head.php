@@ -1,6 +1,9 @@
 <!--
-@@file,head.php,Head
-Included on every page. Imports external libraries, all app scripts, and styles.
+##file_doc_head
+
+@@title Head
+@@description Included on every page. Imports external libraries, all app scripts, and styles.
+
 ##end
 -->
 <head>

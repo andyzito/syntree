@@ -1,3 +1,8 @@
+/*
+@@file,gulpfile.js,Gulp File
+
+*/
+
 'use strict'
 
 var gulp = require('gulp');

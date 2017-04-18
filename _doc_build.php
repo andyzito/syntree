@@ -1,58 +1,26 @@
 <?php
-// Credit to http://stackoverflow.com/questions/4202175/php-script-to-loop-through-all-of-the-files-in-a-directory
+
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 
-function parse_head($head, $path) {
-	$res = preg_replace("/@@description/", file_get_contents($path . "/_doc_dir_descrip"), $head);
-	$res = preg_replace("/@@title/", file_get_contents($path . "/_doc_dir_title"), $res);
+function build_head($path) {
+	$head = parse_head($path);
+	$res = "# " . $head['title'] . "\n";
+	$res .= $head['description'] . "\n\n";
+	$res .= $head['more_description'];
 	return $res;
 }
 
-function parse_chunk($chunk) {
-	$res = "";
-	$headline = substr(preg_split("/((\r?\n)|(\r\n?))/", $chunk)[0], 2);
-	$rest = preg_replace("/^.+\n/", '', $chunk);
-	$hpieces = explode(",", $headline);
-	$type = $hpieces[0];
-	$name = $hpieces[1];
-	if (count($hpieces) > 2) {
-		$title = $hpieces[2];
-	} else {
-		$title = $name;
-	}
-
-	if ($type === 'file') {
-		$res .= "### File: " . $title . "\n";
-		$res .= "[" . $name . "](" . $name . ")\n\n";
-		$res .= $rest;
-	}
-	return $res;
-}
-
-function parse_dir($path, $name) {
-	if (file_exists($path . "/_doc_dir_descrip")) {
-		$title = file_get_contents($path . "/_doc_dir_title");
-		$descrip = file_get_contents($path . "/_doc_dir_descrip");
-		$s = "### Directory: ";
-		$s .= "[" . $title . "](" . $path . "/README.md)\n";
-		$s .= "[" . $path . "](" . $path . ")\n\n";
-		$s .= $descrip;
-		return $s;
-	}
-}
-
-function parse_file($path) {
-	$f = fopen($path, "r");
-	$res = "";
+function parse_file($p) {
+	$f = fopen($p, "r");
+	$res = [];
 	$chunk = "";
 	$add_to_chunk = FALSE;
 	if ($f) {
 		while (($line = fgets($f)) !== FALSE) {
-			if (strpos($line, "@@") !== FALSE) {
+			if (strpos($line, "##file_doc_head") !== FALSE) {
 				$add_to_chunk = TRUE;
 			} else if (strpos($line, "##end") !== FALSE) {
-				$res .= parse_chunk($chunk);
-				$res .= "\n";
+				$res['head'] = parse_head($chunk);
 				$chunk = "";
 				$add_to_chunk = FALSE;
 			}
@@ -61,51 +29,123 @@ function parse_file($path) {
 			}
 		}
 		fclose($f);
-		return trim($res);
+		return $res;
 	}
 }
 
-function build_dir($path) {
+function has_docs($p) {
+	if (is_dir($p) && file_exists($p . "/_doc_head")) {
+		return TRUE;
+	} else if (!is_dir($p) && strpos(file_get_contents($p), "##file_doc_head") !== FALSE) {
+		return TRUE;
+	}
+	return FALSE;
+}
+
+function has_own_docs($p) {
+	if (is_dir($p) && file_exists($p . "/_doc_head")) {
+		if (strpos(file_get_contents($p . "/_doc_head"), "@@has_own_docs") !== FALSE) {
+			return true;
+		} else {
+			return false;
+		}
+	} else if (!is_dir($p) && strpos(file_get_contents($p), '@@@') !== FALSE) {
+		return true;
+	}
+	return FALSE;
+}
+
+function parse_head($p) {
+	$res = [];
+	if (file_exists($p)) {
+		$f = fopen($p . "/_doc_head", "r");
+		if ($f) {
+			while (($line = fgets($f)) !== FALSE) {
+				if (strpos($line, "@@") !== FALSE) {
+					$name = substr(explode(' ', $line)[0], 2);
+					$val = preg_replace("/@@\w+\s/", '', $line);
+					$res[$name] = trim($val);
+				}
+			}
+			fclose($f);
+		}
+	} else {
+		foreach(preg_split("/((\r?\n)|(\r\n?))/", $p) as $line){
+			if (strpos($line, "@@") !== FALSE) {
+				$name = substr(explode(' ', $line)[0], 2);
+				$val = preg_replace("/@@\w+\s/", '', $line);
+				$res[$name] = trim($val);
+			}
+		}
+	}
+	return $res;
+}
+
+function build_dir_summary($p) {
+	$props = parse_head($p);
+
+	$res = "### Directory: ";
+	if (has_own_docs($p)) {
+		$res .= "[" . $props['title'] . "](" . $p . "/README.md" . ")\n";
+	} else {
+		$res .= $props['title'] . "\n";
+	}
+	$res .= "[" . $p . "](" . $p . ")\n\n";
+	$res .= $props['description'];
+	return $res;
+}
+
+function build_file_summary($p) {
+	$props = parse_file($p)['head'];
+	$res = "### File: ";
+	if (has_own_docs($p)) {
+		$res .= "[" . $props['title'] . "](" . $p . "_readme.md)\n";
+	} else {
+		$res .= $props['title'] . "\n";
+	}
+	$res .= "[" . $p . "](" . $p . ")\n\n";
+	$res .= $props['description'];
+	return $res;
+}
+
+function build_readme($path) {
 	// Make the README for this directory
-	echo "Building " . $path . "\n";
-
 	$f = fopen($path . "/README.md", "w");
-	// Default, non-generated text we want at the top
-	$head = parse_head(file_get_contents($path . "/_doc_head"), $path);
-	// Description of the directory
-	$descrip = file_get_contents($path . "/_doc_dir_descrip");
-	// Any config, e.g. whether or not to make separate doc files for each file
-	$cfg = file_get_contents($path . "/_doc_cfg");
-	// Any directories/files we want to ignore
-	$ignore = file_get_contents($path . "/_doc_ignore");
-
+	// Title and description of this directory
+	$head = build_head($path);
 	fwrite($f, $head);
 
 	// Iterate through all files/directories
+	// We're going to build a summary for each one
 	$s = "\n\n";
 	$dir = new DirectoryIterator($path);
 	foreach ($dir as $fileinfo) {
+		$summary = "";
 	    if (!$fileinfo->isDot()) {
 	    	$fname = $fileinfo->getFilename();
 	    	$p = $fileinfo->getPathname();
-	    	// Only use if not hidden (filename starts with '.') and not ignored
+	    	// Only use if not hidden (filename starts with '.') and not a _doc_ file
 	    	if (strpos($p, "_doc_") === FALSE && strpos($fname, ".") !== 0) {
-	    		if (!is_dir($p)) {
-	    			$parsed = parse_file($p);
-	    		} else {
-	    			$parsed = parse_dir($p);
+	    		if (!is_dir($p) && has_docs($p)) {
+	    			$summary = build_file_summary($p);
+	    		} else if (is_dir($p) && has_docs($p)) {
+	    			$summary = build_dir_summary($p);
 	    		}
-	    		if (preg_match("/\S/", $parsed)) {
-	    			$s .= $parsed;
+	    		if (preg_match("/\S/", $summary)) { // Only use if the summary is not empty
+	    			$s .= $summary;
 	    			$s .= "\n\n";
+	    			echo "Added summary for " . $p . "\n";
 	    		}
 	    	}
 	    }
 	}
 	fwrite($f, $s);
 	fclose($f);
-	if (!preg_match("/\S/", file_get_contents($path . "/README.md"))) {
+	// Remove any empty README's (just in case)
+	if (!has_own_docs($path) || !preg_match("/\S/", file_get_contents($path . "/README.md"))) {
 		unlink($path . "/README.md");
+	} else {
+		echo "Built README for " . $path . "\n";
 	}
 
 	// And now recurse:
@@ -115,10 +155,10 @@ function build_dir($path) {
 	    	$fname = $fileinfo->getFilename();
 	    	$p = $fileinfo->getPathname();
 	    	if (is_dir($p) && strpos($p, "_doc_") === FALSE && strpos($fname, '.') !== 0) {
-				build_dir($fileinfo->getPathname());
+				build_readme($fileinfo->getPathname());
 	    	}
 	    }
 	}
 }
 
-build_dir('./');
+build_readme("./");

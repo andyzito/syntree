@@ -49,7 +49,25 @@ time_make_sibling = function(id,n) {
 
 window.Syntree = {}; // Single global object, append any other 'globals' to this
 
+/*
+###object
+
+@title Lib
+@description The Lib object contains what you would expect: various utility and class-crossing functions.
+
+##end
+*/
 Syntree.Lib = {
+    /*
+    ###function
+
+    Add properties to a given object, using that objects config_map property to check types and apply defaults.
+
+    @param {object} matrix - An object of properties to be appended to the target
+    @param {object} target - The object to be 'configured'
+
+    ##end
+    */
     config: function(matrix, target) {
         for (property_name in target.config_map) {
             var required_type = target.config_map[property_name].type;
