@@ -176,7 +176,7 @@ Syntree.Node.prototype.createGraphic = function() {
         var node = Syntree.ElementsManager.allElements[id];
         node.move(posx, posy);
 
-        nearestNode = Syntree.Page.getNearestNode(node,undefined,function(x,y,n) {
+        nearestNode = Syntree.Workspace.page.getNearestNode(node,undefined,function(x,y,n) {
             return y > n.getPosition().y;
         });
         if (nearestNode.dist < 100 && nearestNode.node.getChildren().indexOf(node) < 0 && nearestNode.deltaY > 10) {

@@ -83,7 +83,7 @@ Syntree._ActionDelete = function(data) {
         this.index = Syntree.Lib.checkArg(data.index, 'number', 0);
 
         this.undo = function() {
-            Syntree.Page.openTree(
+            Syntree.Workspace.page.openTree(
                 this.treestring,
                 Syntree.ElementsManager.allElements[this.parent.id],
                 this.index
@@ -113,7 +113,7 @@ Syntree._ActionDelete = function(data) {
     // }
 
     // this.undo = function() {
-    //     Syntree.Page.openTree(this.tree,this.parent,this.index);
+    //     Syntree.Workspace.page.openTree(this.tree,this.parent,this.index);
     // }
 }
 

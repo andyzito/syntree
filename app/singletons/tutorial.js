@@ -17,9 +17,9 @@ Syntree.Tutorial = {
             message: "Right now there is one node, called S",
             // arrows: [
             //     (function() {
-            //         var id = Syntree.Page.tree.getRoot().getId();
+            //         var id = Syntree.Workspace.page.tree.getRoot().getId();
             //         var pos = $("#label-" + id).position();
-            //         var bbox = Syntree.Page.tree.getRoot().getLabelBBox();
+            //         var bbox = Syntree.Workspace.page.tree.getRoot().getLabelBBox();
             //         return {
             //             x: pos.left + 30,
             //             y: pos.top + (bbox.h / 2),
@@ -100,7 +100,7 @@ Syntree.Tutorial = {
             gateway: {
                 event_type: "keydown",
                 condition: function() {
-                    return Syntree.Page.tree.root.getState('selected');
+                    return Syntree.Workspace.page.tree.root.getState('selected');
                 },
             },
         },
@@ -116,7 +116,7 @@ Syntree.Tutorial = {
                     "dblclick",
                     ],
                 condition: function() {
-                    return Syntree.Page.tree.getRoot().getState('editing');
+                    return Syntree.Workspace.page.tree.getRoot().getState('editing');
                 }
             },
         },
@@ -152,7 +152,7 @@ Syntree.Tutorial = {
             gateway: {
                 event_type: "keydown",
                 condition: function() {
-                    return Syntree.Page.tree.getRoot().getChildren().length === 0;
+                    return Syntree.Workspace.page.tree.getRoot().getChildren().length === 0;
                 },
             }
         },

@@ -375,32 +375,3 @@ Syntree.Arrow.prototype.getEndCtrlPoint = function() {
       y: Number(path[1]),
     }
 }
-
-Syntree.Arrow.prototype.setCurve = function() {
-    var path = this.graphic.getEl('line').attr('path');
-    var startCtrlPoint = this.getStartCtrlPoint();
-    var endCtrlPoint = this.getEndCtrlPoint();
-    var intersect = false;
-    for (id in Syntree.Page.allNodes) {
-        var node = Syntree.Page.allNodes[id];
-        if (node === this.fromNode || node === this.toNode) {
-            continue;
-        }
-        var nodePath = node.getPath();
-        if (Snap.path.intersection(nodePath, path).length > 0) {
-            intersect = true;
-        }
-    }
-    if (intersect) {
-        this.setStartCtrlPoint(startCtrlPoint.x-10,startCtrlPoint.y);
-        this.setEndCtrlPoint(endCtrlPoint.x-10,endCtrlPoint.y);
-        this.setCurve();
-    } else {
-        var fInter = Snap.path.intersection(path, this.fromNode.getPath())[0];
-        var tInter = Snap.path.intersection(path, this.toNode.getPath())[0];
-        this.setStartPoint(fInter.x, fInter.y);
-        this.setEndPoint(tInter.x, tInter.y);
-        // console.log(Snap.path.intersection(path, this.fromNode.getPath()));
-        return;
-    }
-}

@@ -1,54 +1,25 @@
-test_genId = function(n) {
-    var gend = [];
-    for (i=0; i<=n; i++) {
-        var id = Syntree.Lib.genId();
-        if (gend.indexOf(id) > -1) {
-            console.log('duplicate: ' + id);
-        }
-        gend.push(id);
-    }
-    console.log(gend)
-}
-time_function = function(f,o) {
-    var start_time = new Date().getTime();
-    o[f]();
-    var end_time = new Date().getTime();
-    return end_time - start_time;
-}
-
-time_make_child = function(id,n) {
-    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
-    var times = [];
-    var i = 0;
-    while (i < n) {
-        console.log('timing');
-        times.push(time_function('_eventDown', Syntree.W));
-        Syntree.W._eventUp();
-        i++;
-    }
-    var sum = times.reduce(function(a, b) { return a + b; });
-    return sum / times.length;
-}
-
-time_make_sibling = function(id,n) {
-    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
-    var times = [];
-    var i = 0;
-    while (i < n) {
-        console.log('timing');
-        times.push(time_function('_eventLeft', Syntree.W));
-        e = {
-            ctrlKey: false,
-        };
-        Syntree.W._eventRight(e);
-        i++;
-    }
-    var sum = times.reduce(function(a, b) { return a + b; });
-    return sum / times.length;
-}
-
 /** @namespace */
 Syntree = {}; // Single global object, append any other 'globals' to this
+
+/**
+ * Data on what properties can be configured onto given object types.
+ *
+ * @property [classname].accept_unmapped_config {boolean} - whether or not accept configuration properties that are not represented in the config map
+ * @property [classname].map {object} - an object representing the possible configuration properties, their required types, and the default values to provide if the type check is not passed
+ * @type {object}
+ * @see Syntree.Lib.config
+ */
+Syntree.config_maps = {};
+
+Syntree.initialize = function(initial_matrix) {
+    /**
+     * The snap object tied to our svg workspace.
+     *
+     * @memberof Syntree
+     */
+    Syntree.snap = Snap("#workspace");
+    Syntree.Workspace.initialize(initial_matrix);
+}
 
 /** @class
  * @classdesc What you'd expect -- various utility and cross-class functions.
@@ -291,4 +262,53 @@ Syntree.Lib = {
             y: (y1 + y2)/2,
         }
     }
+}
+
+test_genId = function(n) {
+    var gend = [];
+    for (i=0; i<=n; i++) {
+        var id = Syntree.Lib.genId();
+        if (gend.indexOf(id) > -1) {
+            console.log('duplicate: ' + id);
+        }
+        gend.push(id);
+    }
+    console.log(gend)
+}
+time_function = function(f,o) {
+    var start_time = new Date().getTime();
+    o[f]();
+    var end_time = new Date().getTime();
+    return end_time - start_time;
+}
+
+time_make_child = function(id,n) {
+    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
+    var times = [];
+    var i = 0;
+    while (i < n) {
+        console.log('timing');
+        times.push(time_function('_eventDown', Syntree.W));
+        Syntree.W._eventUp();
+        i++;
+    }
+    var sum = times.reduce(function(a, b) { return a + b; });
+    return sum / times.length;
+}
+
+time_make_sibling = function(id,n) {
+    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
+    var times = [];
+    var i = 0;
+    while (i < n) {
+        console.log('timing');
+        times.push(time_function('_eventLeft', Syntree.W));
+        e = {
+            ctrlKey: false,
+        };
+        Syntree.W._eventRight(e);
+        i++;
+    }
+    var sum = times.reduce(function(a, b) { return a + b; });
+    return sum / times.length;
 }

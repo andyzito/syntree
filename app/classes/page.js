@@ -2,7 +2,7 @@
  * @class
  * @classdesc Acts as an intermediate controller between [Workspace]{@link Syntree.Workspace} and elements of the tree.
  */
-Syntree.page_constructor = function() {
+Syntree.Page = function() {
 
     /**
      * The <rect> which is the background of the page.
@@ -24,7 +24,7 @@ Syntree.page_constructor = function() {
  *
  * @param {Syntree.Node} node - the node that was clicked
  */
-Syntree.page_constructor.prototype.createMovementArrow = function(node) {
+Syntree.Page.prototype.createMovementArrow = function(node) {
     if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
         var a = new Syntree.Arrow({
             fromNode: Syntree.ElementsManager.getSelected(),
@@ -42,7 +42,7 @@ Syntree.page_constructor.prototype.createMovementArrow = function(node) {
  * @param {Syntree.Node} [parent] - the Node to which the root of the Tree will be added
  * @param {number} [index] - the index at which to add the root of Tree
  */
-Syntree.page_constructor.prototype.addTree = function(tree,parent,index) {
+Syntree.Page.prototype.addTree = function(tree,parent,index) {
     tree = Syntree.Lib.checkArg(tree, 'tree', '#undefined');
     parent = Syntree.Lib.checkArg(parent, 'node', '#undefined');
     index = Syntree.Lib.checkArg(index, 'number', 0);
@@ -84,7 +84,7 @@ Syntree.page_constructor.prototype.addTree = function(tree,parent,index) {
  * @param {Syntree.Node} [parent] - the Node to which the root of the Tree will be added
  * @param {number} [index] - the index at which to add the root of Tree
  */
-Syntree.page_constructor.prototype.openTree = function(treestring,parent,index) {
+Syntree.Page.prototype.openTree = function(treestring,parent,index) {
     treestring = Syntree.Lib.checkArg(treestring, 'string');
     parent = Syntree.Lib.checkArg(parent, 'node', '#undefined');
     index = Syntree.Lib.checkArg(index, 'number', 0);
@@ -100,7 +100,7 @@ Syntree.page_constructor.prototype.openTree = function(treestring,parent,index) 
  *
  * @returns {string}
  */
-Syntree.page_constructor.prototype.getSVGString = function(offsetX,offsetY) {
+Syntree.Page.prototype.getSVGString = function(offsetX,offsetY) {
     var selected = Syntree.ElementsManager.getSelected();
     Syntree.ElementsManager.deselect();
     var bgsvg = this.background.node.outerHTML;
@@ -117,7 +117,7 @@ Syntree.page_constructor.prototype.getSVGString = function(offsetX,offsetY) {
     // return style+treesvg;
 }
 
-Syntree.page_constructor.prototype.getNearestNode = function(a,b,condition) {
+Syntree.Page.prototype.getNearestNode = function(a,b,condition) {
     condition = Syntree.Lib.checkArg(condition, 'function', function(){return true});
 
     if (Syntree.Lib.checkType(a, 'number')) {
@@ -163,7 +163,7 @@ Syntree.page_constructor.prototype.getNearestNode = function(a,b,condition) {
     }
 }
 
-Syntree.page_constructor.prototype.navigateHorizontal = function(direction,fcreate) {
+Syntree.Page.prototype.navigateHorizontal = function(direction,fcreate) {
     direct = Syntree.Lib.checkArg(direction, 'string');
     fcreate = Syntree.Lib.checkArg(fcreate, 'boolean', false);
 
@@ -232,7 +232,7 @@ Syntree.page_constructor.prototype.navigateHorizontal = function(direction,fcrea
     }
 }
 
-Syntree.page_constructor.prototype.navigateUp = function() {
+Syntree.Page.prototype.navigateUp = function() {
     if (!Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
         Syntree.ElementsManager.select(this.tree.root);
     }
@@ -242,7 +242,7 @@ Syntree.page_constructor.prototype.navigateUp = function() {
     }
 }
 
-Syntree.page_constructor.prototype.navigateDown = function(fcreate) {
+Syntree.Page.prototype.navigateDown = function(fcreate) {
     fcreate = Syntree.Lib.checkArg(fcreate, 'boolean', false);
 
     if (!Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
@@ -274,7 +274,7 @@ Syntree.page_constructor.prototype.navigateDown = function(fcreate) {
     }
 }
 
-Syntree.page_constructor.prototype.nodeEditing = function(type,node, silent) {
+Syntree.Page.prototype.nodeEditing = function(type,node, silent) {
     type = Syntree.Lib.checkArg(type, 'string');
     node = Syntree.Lib.checkArg(node, 'node', Syntree.ElementsManager.getSelected());
     node = Syntree.Lib.checkArg(node, 'node');
@@ -322,7 +322,7 @@ Syntree.page_constructor.prototype.nodeEditing = function(type,node, silent) {
         }
     }
 }
-Syntree.page_constructor.prototype.toString = function() {
+Syntree.Page.prototype.toString = function() {
     return "[object Page]"
 }
     // this._enablePanning = function() {
