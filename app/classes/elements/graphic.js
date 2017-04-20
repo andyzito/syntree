@@ -1,3 +1,23 @@
+Syntree.config_maps.graphic = {};
+Syntree.config_maps.graphic.accept_unmapped_config = false;
+Syntree.config_maps.graphic.map = {
+    elements_to_add: {
+        require: 'object',
+        default_value: {},
+    },
+    states_synced: {
+        require: 'object',
+        default_value: {},
+    },
+    update_map: {
+        require: 'object',
+        default_value: '#undefined',
+    },
+    data_object: {
+        require: ['node', 'branch', 'arrow'],
+    },
+}
+
 /**
  * @class
  * @classdesc Instantiated for each new [Element]{@link Syntree.Element}. Manages all graphical representation.
@@ -10,24 +30,6 @@ Syntree.Graphic = function(config_matrix) {
         this.addElement(name, this.elements_to_add[name]);
     }
     delete this.elements_to_add;
-}
-
-Syntree.Graphic.prototype.config_map = {
-    elements_to_add: {
-        type: 'object',
-        default_value: {},
-    },
-    states_synced: {
-        type: 'object',
-        default_value: {},
-    },
-    update_map: {
-        type: 'object',
-        default_value: '#undefined',
-    },
-    data_object: {
-        type: ['node', 'branch', 'arrow'],
-    },
 }
 
 Syntree.Graphic.prototype.addElement = function(name, element) {
@@ -113,4 +115,8 @@ Syntree.Graphic.prototype._handlerBoolean = function(state_obj) {
             el.attr_handler(el.el_obj, state_el_data.stateFalseAttrs);
         }
     }
+}
+
+Syntree.Graphic.prototype.toString = function() {
+    return "[object Graphic]"
 }

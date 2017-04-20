@@ -1,3 +1,24 @@
+Syntree.config_maps.node = {};
+Syntree.config_maps.node.accept_unmapped_config = false;
+Syntree.config_maps.node.map = {
+    id: {
+        require: 'number',
+        default_value: '#undefined',
+    },
+    x: {
+        require: 'number',
+        default_value: 0,
+    },
+    y: {
+        require: 'number',
+        default_value: 0,
+    },
+    labelContent: {
+        require: 'string',
+        default_value: '',
+    },
+}
+
 /**
  * @class
  * @classdesc Nodes are the meat of Syntree.
@@ -25,25 +46,6 @@ Syntree.Node = function(config_matrix) {
     this._labelbbox;
 
     this.updateGraphics();
-}
-
-Syntree.Node.prototype.config_map = {
-    id: {
-        type: 'number',
-        default_value: '#undefined',
-    },
-    x: {
-        type: 'number',
-        default_value: 0,
-    },
-    y: {
-        type: 'number',
-        default_value: 0,
-    },
-    labelContent: {
-        type: 'string',
-        default_value: '',
-    },
 }
 
 Syntree.Node.prototype.createGraphic = function() {

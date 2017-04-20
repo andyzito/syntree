@@ -1,27 +1,30 @@
+Syntree.config_maps.tree = {};
+Syntree.config_maps.tree.accept_unmapped_config = false;
+Syntree.config_maps.tree.map = {
+    id: {
+        require: 'number',
+        default_value: '#undefined',
+    },
+    rowHeight: {
+        require: 'number',
+        default_value: 70,
+    },
+    root: {
+        require: 'node',
+        default_value: '#undefined',
+    },
+    build_treestring: {
+        require: 'string',
+        default_value: '#undefined',
+    },
+}
+
+
 /**
  * @class
  * @classdesc Analogous to a linked list class, Tree is actually just a wrapper around some nodes which are linked to one another internally. Tree only stores a reference to the root node, and access all descendants through that link.
  */
 Syntree.Tree = function(config_matrix) {
-    this.config_map = {
-        id: {
-            type: 'number',
-            default_value: '#undefined',
-        },
-        rowHeight: {
-            type: 'number',
-            default_value: 70,
-        },
-        root: {
-            type: 'node',
-            default_value: '#undefined',
-        },
-        build_treestring: {
-            type: 'string',
-            default_value: '#undefined',
-        },
-    }
-
     Syntree.Lib.config(config_matrix,this);
 
     if (!Syntree.Lib.checkType(this.build_treestring, 'string') && !Syntree.Lib.checkType(this.root, 'node')) {

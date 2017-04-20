@@ -4,8 +4,9 @@ Syntree = {}; // Single global object, append any other 'globals' to this
 /**
  * Data on what properties can be configured onto given object types.
  *
- * @property [classname].accept_unmapped_config {boolean} - whether or not accept configuration properties that are not represented in the config map
- * @property [classname].map {object} - an object representing the possible configuration properties, their required types, and the default values to provide if the type check is not passed
+ * @property classname {object} - the data for each class
+ * @property classname.accept_unmapped_config {boolean} - whether or not accept configuration properties that are not represented in the config map
+ * @property classname.map {object} - an object representing the possible configuration properties, their required types, and the default values to provide if the type check is not passed
  * @type {object}
  * @see Syntree.Lib.config
  */
@@ -32,14 +33,25 @@ Syntree.Lib = {
      * @param {object} target - The object to be 'configured'
      */
     config: function(matrix, target) {
-        for (property_name in target.config_map) {
-            var required_type = target.config_map[property_name].type;
-            var default_value = target.config_map[property_name].default_value;
+        var targetType = Syntree.Lib.typeOf(target);
+        console.log(Syntree.config_maps);
+        console.log(targetType);
+        console.log(target);
+        console.log('------------------------------------')
+        var map = Syntree.config_maps[targetType].map;
+        var accept_unmapped_config = Syntree.config_maps[targetType].accept_unmapped_config;
 
-            if (!this.checkType(matrix[property_name], required_type)) {
+        for (property_name in map) {
+            var require = map[property_name].require;
+            var default_value = map[property_name].default_value;
+
+            if (!this.checkType(matrix[property_name], require)) {
                 if (this.checkType(default_value, 'undefined')) {
+                    // If default_value is undefined, we assume that the property is required.
                     throw new Error('You must provide a value for "' + property_name + '"');
                 } else {
+                    // If default_value is the special string '#undefined', we assume that it should be allowed to remain undefined.
+                    // Otherwise, we use the default_value.
                     if (default_value !== '#undefined') {
                         target[property_name] = default_value;
                     }
@@ -49,9 +61,9 @@ Syntree.Lib = {
             }
         }
 
-        if (target.accept_unmapped_config && typeof target.accept_unmapped_config === 'boolean') {
+        if (typeof accept_unmapped_config === 'boolean' && accept_unmapped_config) {
             for (property_name in matrix) {
-                if (typeof target.config_map[property_name] === 'undefined') {
+                if (typeof map[property_name] === 'undefined') {
                     target[property_name] = matrix[property_name];
                 }
             }
@@ -133,20 +145,28 @@ Syntree.Lib = {
      * @param {string|string[]} required_type - a string representing the required type, or an array of such strings
      * @returns {boolean} whether the passed value matched the required type(s)
      */
-    checkType: function(a, required_type) {
-        if (this.typeOf(required_type) === 'string') {
-            return this.typeOf(a) === required_type;
-        } else if (this.typeOf(required_type) === 'array') {
+    checkType: function(a, require) {
+        if (this.typeOf(require) === 'string') {
+            return this.typeOf(a) === require;
+        } else if (this.typeOf(require) === 'array') {
             var i = 0;
-            while (i < required_type.length) {
-                if (this.typeOf(a) === required_type[i]) {
+            while (i < require.length) {
+                if (this.typeOf(a) === require[i]) {
                     return true;
                 }
                 i++;
             }
             return false;
+        } else if (this.typeOf(require) === 'function') {
+            // We assume that a require function is a method of the argument, because otherwise what would be the point?
+            var r = require.call(a);
+            if (this.typeOf(r) === 'boolean') {
+                return r;
+            } else {
+                throw new TypeError("The require function must return true or false");
+            }
         } else {
-            throw new TypeError("Please pass checkType a type string or an array of type strings for the second argument");
+            throw new TypeError("Please pass checkType a type string, array of type strings, or a function that returns true/false (for the second argument)");
         }
     },
 
@@ -161,7 +181,7 @@ Syntree.Lib = {
      * @param {} default_value - any value, to be returned if the type check fails
      */
     checkArg: function(a, require, default_value) {
-        if (this.checkType(require, ['string', 'array'])) {
+        if (this.checkType(require, ['string', 'array', 'function'])) {
             if (this.checkType(a, require)) {
                 return a;
             } else {
@@ -175,27 +195,26 @@ Syntree.Lib = {
                     throw new TypeError('Argument is required to be type ' + String(require).replace(',', ' or ') + ', was type ' + this.typeOf(a));
                 }
             }
-        } else if (this.checkType(require, 'function')) {
-            var r = require.call(a);
-            if (Syntree.Lib.checkType(r, 'boolean')) {
-                if (r) {
-                    return a;
-                } else {
-                    if (!this.checkType(default_value, 'undefined')) {
-                        if (default_value === '#undefined') {
-                            return;
-                        } else {
-                            return default_value;
-                        }
-                    } else {
-                        throw new TypeError('Argument is the wrong type, per ' + require);
-                    }
-                }
-            } else {
-                throw new Error("Require function must return true or false, returned " + require());
-            }
+        // } else if (this.checkType(require, 'function')) {
+        //     if (Syntree.Lib.checkType(, 'boolean')) {
+        //         if (r) {
+        //             return a;
+        //         } else {
+        //             if (!this.checkType(default_value, 'undefined')) {
+        //                 if (default_value === '#undefined') {
+        //                     return;
+        //                 } else {
+        //                     return default_value;
+        //                 }
+        //             } else {
+        //                 throw new TypeError('Argument is the wrong type, per ' + require);
+        //             }
+        //         }
+        //     } else {
+        //         throw new Error("Require function must return true or false, returned " + require());
+        //     }
         } else {
-            throw new TypeError("Argument 'require' is required to be either a type string/array or a function");
+            throw new TypeError("Please pass checkArg a type string, array of type strings, or a function that returns true/false (for the second argument)");
         }
     },
 

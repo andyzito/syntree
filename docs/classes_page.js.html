@@ -30,10 +30,11 @@
  * @class
  * @classdesc Acts as an intermediate controller between [Workspace]{@link Syntree.Workspace} and elements of the tree.
  */
-Syntree.page_constructor = function() {
-    Syntree.Page = this;
+Syntree.Page = function() {
 
-    // Page background
+    /**
+     * The &lt;rect> which is the background of the page.
+     */
     this.background = Syntree.snap.rect(
         -100,
         -100,
@@ -46,7 +47,12 @@ Syntree.page_constructor = function() {
     );
 }
 
-Syntree.page_constructor.prototype.createMovementArrow = function(node) {
+/**
+ * Create a movement arrow from the selected [Node]{@link Syntree.Node} to the clicked [Node]{@link Syntree.Node}.
+ *
+ * @param {Syntree.Node} node - the node that was clicked
+ */
+Syntree.Page.prototype.createMovementArrow = function(node) {
     if (Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
         var a = new Syntree.Arrow({
             fromNode: Syntree.ElementsManager.getSelected(),
@@ -56,7 +62,15 @@ Syntree.page_constructor.prototype.createMovementArrow = function(node) {
     }
 }
 
-Syntree.page_constructor.prototype.addTree = function(tree,parent,index) {
+/**
+ * Add a tree to the page.
+ * If you do not provide a parent [Node]{@link Syntree.Node}, the main tree will be replaced.
+ *
+ * @param {Syntree.Tree} tree - the Tree object to add.
+ * @param {Syntree.Node} [parent] - the Node to which the root of the Tree will be added
+ * @param {number} [index] - the index at which to add the root of Tree
+ */
+Syntree.Page.prototype.addTree = function(tree,parent,index) {
     tree = Syntree.Lib.checkArg(tree, 'tree', '#undefined');
     parent = Syntree.Lib.checkArg(parent, 'node', '#undefined');
     index = Syntree.Lib.checkArg(index, 'number', 0);
@@ -90,7 +104,15 @@ Syntree.page_constructor.prototype.addTree = function(tree,parent,index) {
     }
 }
 
-Syntree.page_constructor.prototype.openTree = function(treestring,parent,index) {
+/**
+ * Create a [Tree]{@link Syntree.Tree} from a treestring, and then add it to the page.
+ * If you do not provide a parent [Node]{@link Syntree.Node}, the main tree will be replaced.
+ *
+ * @param {Syntree.Tree} treestring - the treestring which the Tree will build from
+ * @param {Syntree.Node} [parent] - the Node to which the root of the Tree will be added
+ * @param {number} [index] - the index at which to add the root of Tree
+ */
+Syntree.Page.prototype.openTree = function(treestring,parent,index) {
     treestring = Syntree.Lib.checkArg(treestring, 'string');
     parent = Syntree.Lib.checkArg(parent, 'node', '#undefined');
     index = Syntree.Lib.checkArg(index, 'number', 0);
@@ -101,7 +123,12 @@ Syntree.page_constructor.prototype.openTree = function(treestring,parent,index) 
     this.addTree(newTree,parent,index);
 }
 
-Syntree.page_constructor.prototype.getSVGString = function(offsetX,offsetY) {
+/**
+ * Get a string of SVG markup representing all marked objects on the page.
+ *
+ * @returns {string}
+ */
+Syntree.Page.prototype.getSVGString = function(offsetX,offsetY) {
     var selected = Syntree.ElementsManager.getSelected();
     Syntree.ElementsManager.deselect();
     var bgsvg = this.background.node.outerHTML;
@@ -118,7 +145,7 @@ Syntree.page_constructor.prototype.getSVGString = function(offsetX,offsetY) {
     // return style+treesvg;
 }
 
-Syntree.page_constructor.prototype.getNearestNode = function(a,b,condition) {
+Syntree.Page.prototype.getNearestNode = function(a,b,condition) {
     condition = Syntree.Lib.checkArg(condition, 'function', function(){return true});
 
     if (Syntree.Lib.checkType(a, 'number')) {
@@ -164,7 +191,7 @@ Syntree.page_constructor.prototype.getNearestNode = function(a,b,condition) {
     }
 }
 
-Syntree.page_constructor.prototype.navigateHorizontal = function(direction,fcreate) {
+Syntree.Page.prototype.navigateHorizontal = function(direction,fcreate) {
     direct = Syntree.Lib.checkArg(direction, 'string');
     fcreate = Syntree.Lib.checkArg(fcreate, 'boolean', false);
 
@@ -233,7 +260,7 @@ Syntree.page_constructor.prototype.navigateHorizontal = function(direction,fcrea
     }
 }
 
-Syntree.page_constructor.prototype.navigateUp = function() {
+Syntree.Page.prototype.navigateUp = function() {
     if (!Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
         Syntree.ElementsManager.select(this.tree.root);
     }
@@ -243,7 +270,7 @@ Syntree.page_constructor.prototype.navigateUp = function() {
     }
 }
 
-Syntree.page_constructor.prototype.navigateDown = function(fcreate) {
+Syntree.Page.prototype.navigateDown = function(fcreate) {
     fcreate = Syntree.Lib.checkArg(fcreate, 'boolean', false);
 
     if (!Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
@@ -275,7 +302,7 @@ Syntree.page_constructor.prototype.navigateDown = function(fcreate) {
     }
 }
 
-Syntree.page_constructor.prototype.nodeEditing = function(type,node, silent) {
+Syntree.Page.prototype.nodeEditing = function(type,node, silent) {
     type = Syntree.Lib.checkArg(type, 'string');
     node = Syntree.Lib.checkArg(node, 'node', Syntree.ElementsManager.getSelected());
     node = Syntree.Lib.checkArg(node, 'node');
@@ -323,7 +350,7 @@ Syntree.page_constructor.prototype.nodeEditing = function(type,node, silent) {
         }
     }
 }
-Syntree.page_constructor.prototype.toString = function() {
+Syntree.Page.prototype.toString = function() {
     return "[object Page]"
 }
     // this._enablePanning = function() {
@@ -365,13 +392,13 @@ Syntree.page_constructor.prototype.toString = function() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Syntree.Action.html">Action</a></li><li><a href="Syntree.Arrow.html">Arrow</a></li><li><a href="Syntree.Branch.html">Branch</a></li><li><a href="Syntree.Element.html">Element</a></li><li><a href="Syntree.Graphic.html">Graphic</a></li><li><a href="Syntree.History.html">History</a></li><li><a href="Syntree.Lib.html">Lib</a></li><li><a href="Syntree.Node.html">Node</a></li><li><a href="Syntree.page_constructor.html">page_constructor</a></li><li><a href="Syntree.SelectableElement.html">SelectableElement</a></li><li><a href="Syntree.Tree.html">Tree</a></li><li><a href="Syntree.Tutorial.html">Tutorial</a></li><li><a href="Syntree.Workspace.html">Workspace</a></li></ul><h3>Namespaces</h3><ul><li><a href="Syntree.html">Syntree</a></li></ul><h3>Global</h3><ul><li><a href="global.html#modal_close">modal_close</a></li><li><a href="global.html#modal_open">modal_open</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Syntree.Action.html">Action</a></li><li><a href="Syntree.Arrow.html">Arrow</a></li><li><a href="Syntree.Branch.html">Branch</a></li><li><a href="Syntree.Element.html">Element</a></li><li><a href="Syntree.Graphic.html">Graphic</a></li><li><a href="Syntree.History.html">History</a></li><li><a href="Syntree.Lib.html">Lib</a></li><li><a href="Syntree.Node.html">Node</a></li><li><a href="Syntree.Page.html">Page</a></li><li><a href="Syntree.SelectableElement.html">SelectableElement</a></li><li><a href="Syntree.Tree.html">Tree</a></li><li><a href="Syntree.Tutorial.html">Tutorial</a></li><li><a href="Syntree.Workspace.html">Workspace</a></li></ul><h3>Namespaces</h3><ul><li><a href="Syntree.html">Syntree</a></li></ul><h3>Global</h3><ul><li><a href="global.html#modal_close">modal_close</a></li><li><a href="global.html#modal_open">modal_open</a></li><li><a href="global.html#RGBColor">RGBColor</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Apr 18 2017 16:01:25 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Apr 19 2017 23:26:12 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

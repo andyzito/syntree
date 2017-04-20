@@ -26,57 +26,29 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>test_genId = function(n) {
-    var gend = [];
-    for (i=0; i&lt;=n; i++) {
-        var id = Syntree.Lib.genId();
-        if (gend.indexOf(id) > -1) {
-            console.log('duplicate: ' + id);
-        }
-        gend.push(id);
-    }
-    console.log(gend)
-}
-time_function = function(f,o) {
-    var start_time = new Date().getTime();
-    o[f]();
-    var end_time = new Date().getTime();
-    return end_time - start_time;
-}
-
-time_make_child = function(id,n) {
-    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
-    var times = [];
-    var i = 0;
-    while (i &lt; n) {
-        console.log('timing');
-        times.push(time_function('_eventDown', Syntree.W));
-        Syntree.W._eventUp();
-        i++;
-    }
-    var sum = times.reduce(function(a, b) { return a + b; });
-    return sum / times.length;
-}
-
-time_make_sibling = function(id,n) {
-    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
-    var times = [];
-    var i = 0;
-    while (i &lt; n) {
-        console.log('timing');
-        times.push(time_function('_eventLeft', Syntree.W));
-        e = {
-            ctrlKey: false,
-        };
-        Syntree.W._eventRight(e);
-        i++;
-    }
-    var sum = times.reduce(function(a, b) { return a + b; });
-    return sum / times.length;
-}
-
-/** @namespace */
+            <pre class="prettyprint source linenums"><code>/** @namespace */
 Syntree = {}; // Single global object, append any other 'globals' to this
+
+/**
+ * Data on what properties can be configured onto given object types.
+ *
+ * @property Classname {object} - the data for each class
+ * @property Classname.accept_unmapped_config {boolean} - whether or not accept configuration properties that are not represented in the config map
+ * @property Classname.map {object} - an object representing the possible configuration properties, their required types, and the default values to provide if the type check is not passed
+ * @type {object}
+ * @see Syntree.Lib.config
+ */
+Syntree.config_maps = {};
+
+Syntree.initialize = function(initial_matrix) {
+    /**
+     * The snap object tied to our svg workspace.
+     *
+     * @memberof Syntree
+     */
+    Syntree.snap = Snap("#workspace");
+    Syntree.Workspace.initialize(initial_matrix);
+}
 
 /** @class
  * @classdesc What you'd expect -- various utility and cross-class functions.
@@ -233,7 +205,7 @@ Syntree.Lib = {
                 }
             }
         } else if (this.checkType(require, 'function')) {
-            var r = require();
+            var r = require.call(a);
             if (Syntree.Lib.checkType(r, 'boolean')) {
                 if (r) {
                     return a;
@@ -249,7 +221,7 @@ Syntree.Lib = {
                     }
                 }
             } else {
-                throw new Error("Require function must return true or false");
+                throw new Error("Require function must return true or false, returned " + require());
             }
         } else {
             throw new TypeError("Argument 'require' is required to be either a type string/array or a function");
@@ -319,7 +291,57 @@ Syntree.Lib = {
             y: (y1 + y2)/2,
         }
     }
-}</code></pre>
+}
+
+test_genId = function(n) {
+    var gend = [];
+    for (i=0; i&lt;=n; i++) {
+        var id = Syntree.Lib.genId();
+        if (gend.indexOf(id) > -1) {
+            console.log('duplicate: ' + id);
+        }
+        gend.push(id);
+    }
+    console.log(gend)
+}
+time_function = function(f,o) {
+    var start_time = new Date().getTime();
+    o[f]();
+    var end_time = new Date().getTime();
+    return end_time - start_time;
+}
+
+time_make_child = function(id,n) {
+    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
+    var times = [];
+    var i = 0;
+    while (i &lt; n) {
+        console.log('timing');
+        times.push(time_function('_eventDown', Syntree.W));
+        Syntree.W._eventUp();
+        i++;
+    }
+    var sum = times.reduce(function(a, b) { return a + b; });
+    return sum / times.length;
+}
+
+time_make_sibling = function(id,n) {
+    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
+    var times = [];
+    var i = 0;
+    while (i &lt; n) {
+        console.log('timing');
+        times.push(time_function('_eventLeft', Syntree.W));
+        e = {
+            ctrlKey: false,
+        };
+        Syntree.W._eventRight(e);
+        i++;
+    }
+    var sum = times.reduce(function(a, b) { return a + b; });
+    return sum / times.length;
+}
+</code></pre>
         </article>
     </section>
 
@@ -329,13 +351,13 @@ Syntree.Lib = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Syntree.Action.html">Action</a></li><li><a href="Syntree.Arrow.html">Arrow</a></li><li><a href="Syntree.Branch.html">Branch</a></li><li><a href="Syntree.Element.html">Element</a></li><li><a href="Syntree.Graphic.html">Graphic</a></li><li><a href="Syntree.History.html">History</a></li><li><a href="Syntree.Lib.html">Lib</a></li><li><a href="Syntree.Node.html">Node</a></li><li><a href="Syntree.page_constructor.html">page_constructor</a></li><li><a href="Syntree.SelectableElement.html">SelectableElement</a></li><li><a href="Syntree.Tree.html">Tree</a></li><li><a href="Syntree.Tutorial.html">Tutorial</a></li><li><a href="Syntree.Workspace.html">Workspace</a></li></ul><h3>Namespaces</h3><ul><li><a href="Syntree.html">Syntree</a></li></ul><h3>Global</h3><ul><li><a href="global.html#modal_close">modal_close</a></li><li><a href="global.html#modal_open">modal_open</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Syntree.Action.html">Action</a></li><li><a href="Syntree.Arrow.html">Arrow</a></li><li><a href="Syntree.Branch.html">Branch</a></li><li><a href="Syntree.Element.html">Element</a></li><li><a href="Syntree.Graphic.html">Graphic</a></li><li><a href="Syntree.History.html">History</a></li><li><a href="Syntree.Lib.html">Lib</a></li><li><a href="Syntree.Node.html">Node</a></li><li><a href="Syntree.Page.html">Page</a></li><li><a href="Syntree.SelectableElement.html">SelectableElement</a></li><li><a href="Syntree.Tree.html">Tree</a></li><li><a href="Syntree.Tutorial.html">Tutorial</a></li><li><a href="Syntree.Workspace.html">Workspace</a></li></ul><h3>Namespaces</h3><ul><li><a href="Syntree.html">Syntree</a></li></ul><h3>Global</h3><ul><li><a href="global.html#modal_close">modal_close</a></li><li><a href="global.html#modal_open">modal_open</a></li><li><a href="global.html#RGBColor">RGBColor</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Apr 18 2017 16:01:25 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Apr 19 2017 23:26:12 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1,3 +1,22 @@
+Syntree.config_maps.arrow = {};
+Syntree.config_maps.arrow.accept_unmapped_config = false;
+Syntree.config_maps.arrow.map = {
+    id: {
+        type: 'number',
+        default_value: 'undefined',
+    },
+    fromNode: {
+        type: 'node',
+    },
+    toNode: {
+        type: 'node',
+    },
+    path: {
+        type: 'string',
+        default_value: '#undefined',
+    },
+}
+
 /**
  * @class
  * @classdesc Represents a movement arrow.
@@ -17,23 +36,6 @@ Syntree.Arrow = function(config_matrix) {
     new Syntree.Action('create', {
         created_obj: this,
     });
-}
-
-Syntree.Arrow.prototype.config_map = {
-    id: {
-        type: 'number',
-        default_value: 'undefined',
-    },
-    fromNode: {
-        type: 'node',
-    },
-    toNode: {
-        type: 'node',
-    },
-    path: {
-        type: 'string',
-        default_value: '#undefined',
-    },
 }
 
 Syntree.Arrow.prototype.__recreate = function() {

@@ -1,42 +1,42 @@
-Syntree.config_maps.Workspace = {};
-Syntree.config_maps.Workspace.accept_unmapped_config = false;
-Syntree.config_maps.Workspace.map = {
-        goal_sentence: {
-            type: 'string',
-            default_value: '#undefined',
-        },
-        tutorial_enabled: {
-            type: 'boolean',
-            default_value: false,
-        },
-        upload_enabled: {
-            type: 'boolean',
-            default_value: true,
-        },
-        save_tree_script: {
-            // The path to the script for saving a tree; see this._eventSave below
-            // This script should return the tree's id on success, false on failure
-            type: 'string',
-            default_value: '#undefined',
-        },
-        get_trees_script: {
-            // The path to the script for retrieving saved trees
-            // This script should return some HTML on success and false on failure
-            type: 'string',
-            default_value: '#undefined',
-        },
-        export_tree_script: {
-            // The path to the php script for exporting a tree; see this._eventExport below
-            // This script should return a download link for the export file on success, false on failure
-            type: 'string',
-            default_value: '#undefined',
-        },
-        focus_checking_enabled: {
-            // Should we do focus checking? Set to 'true' if embedded, 'false' for full page
-            type: 'boolean',
-            default_value: false,
-        },
+Syntree.config_maps.workspace = {};
+Syntree.config_maps.workspace.accept_unmapped_config = false;
+Syntree.config_maps.workspace.map = {
+    goal_sentence: {
+        require: 'string',
+        default_value: '#undefined',
     },
+    tutorial_enabled: {
+        require: 'boolean',
+        default_value: false,
+    },
+    upload_enabled: {
+        require: 'boolean',
+        default_value: true,
+    },
+    save_tree_script: {
+        // The path to the script for saving a tree; see this._eventSave below
+        // This script should return the tree's id on success, false on failure
+        require: 'string',
+        default_value: '#undefined',
+    },
+    get_trees_script: {
+        // The path to the script for retrieving saved trees
+        // This script should return some HTML on success and false on failure
+        require: 'string',
+        default_value: '#undefined',
+    },
+    export_tree_script: {
+        // The path to the php script for exporting a tree; see this._eventExport below
+        // This script should return a download link for the export file on success, false on failure
+        require: 'string',
+        default_value: '#undefined',
+    },
+    focus_checking_enabled: {
+        // Should we do focus checking? Set to 'true' if embedded, 'false' for full page
+        require: 'boolean',
+        default_value: false,
+    },
+}
 
 
 /**
@@ -534,4 +534,8 @@ Syntree.Workspace = {
     _eventEnter: function() {
         this.page.nodeEditing('toggle');
     },
+
+    toString: function() {
+        return "[object Workspace]";
+    }
 }
