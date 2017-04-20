@@ -94,7 +94,7 @@ Syntree.Workspace = {
 
         this.page = new Syntree.Page();
         this.page.addTree();
-        Syntree.ElementsManager.select(this.page.tree.getRoot());
+        this.page.select(this.page.tree.getRoot());
     },
 
     /**
@@ -205,33 +205,33 @@ Syntree.Workspace = {
         var clicked = e.currentTarget;
         var clickedId = $(clicked).attr('id');
         var id = Number(clickedId.substr(clickedId.lastIndexOf('-')+1, clickedId.length));
-        Syntree.ElementsManager.allElements[id].triangleToggle();
+        Syntree.Workspace.page.allElements[id].triangleToggle();
     },
 
     /**
      * Code to run when a branch is clicked.
      *
      * @see Syntree.Branch
-     * @see Syntree.ElementsManager.select
+     * @see Syntree.Page.select
      */
     _eventBranchClick: function(e) {
         var clicked = e.currentTarget;
         var clickedId = $(clicked).attr('id');
         var id = Number(clickedId.substr(clickedId.lastIndexOf('-')+1, clickedId.length));
-        Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
+        Syntree.Workspace.page.select(Syntree.Workspace.page.allElements[id]);
     },
 
     /**
      * Code to run when an arrow is clicked.
      *
      * @see Syntree.Arrow
-     * @see Syntree.ElementsManager.select
+     * @see Syntree.Page.select
      */
     _eventArrowClick: function(e) {
         var clicked = e.currentTarget;
         var clickedId = $(clicked).attr('id');
         var id = Number(clickedId.substr(clickedId.lastIndexOf('-')+1, clickedId.length));
-        Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
+        Syntree.Workspace.page.select(Syntree.Workspace.page.allElements[id]);
     },
 
     /**
@@ -249,7 +249,7 @@ Syntree.Workspace = {
         if (check) {
             Syntree.Workspace.page.tree.delete();
             Syntree.Workspace.page.addTree();
-            Syntree.ElementsManager.select(Syntree.Workspace.page.tree.getRoot());
+            Syntree.Workspace.page.select(Syntree.Workspace.page.tree.getRoot());
             Syntree.Tutorial.start();
         }
     },
@@ -291,15 +291,15 @@ Syntree.Workspace = {
      */
     _eventNodeClick: function(e) {
         // clickedNode = Syntree.Lib.checkArg(clickedNode, 'svgtextelement');
-        var node = Syntree.ElementsManager.allElements[$(e.currentTarget).attr('id').split('-')[1]];
+        var node = Syntree.Workspace.page.allElements[$(e.currentTarget).attr('id').split('-')[1]];
         if (e.ctrlKey) {
             var a = this.page.createMovementArrow(node);
             if (Syntree.Lib.checkType(a, 'arrow')) {
-                Syntree.ElementsManager.select(a);
+                Syntree.Workspace.page.select(a);
                 return false;
             }
         }
-        Syntree.ElementsManager.select(node);
+        Syntree.Workspace.page.select(node);
     },
 
     /**
@@ -360,7 +360,7 @@ Syntree.Workspace = {
      * Code to run when the user tries to delete an [Element]{@link Syntree.Element}.
      */
     _eventDel: function() {
-        var selected = Syntree.ElementsManager.getSelected();
+        var selected = Syntree.Workspace.page.getSelected();
         if (Syntree.Lib.checkType(selected, 'node')) {
             if (Syntree.Workspace.page.tree.root === selected) {
                 var children = Syntree.Workspace.page.tree.root.getChildren().slice();
@@ -369,18 +369,18 @@ Syntree.Workspace = {
                     var tree = new Syntree.Tree({
                         root: children[c],
                     })
-                    Syntree.ElementsManager.deleteTree(tree);
+                    Syntree.Workspace.page.deleteTree(tree);
                     c++;
                 }
             } else {
                 var tree = new Syntree.Tree({
                     root: selected,
                 })
-                Syntree.ElementsManager.deleteTree(tree);
+                Syntree.Workspace.page.deleteTree(tree);
             }
-            Syntree.ElementsManager.deselect();
-            if (!Syntree.Lib.checkType(Syntree.ElementsManager.getSelected(), 'node')) {
-                Syntree.ElementsManager.select(Syntree.Workspace.page.tree.getRoot());
+            Syntree.Workspace.page.deselect();
+            if (!Syntree.Lib.checkType(Syntree.Workspace.page.getSelected(), 'node')) {
+                Syntree.Workspace.page.select(Syntree.Workspace.page.tree.getRoot());
             }
         } else {
             selected.delete();

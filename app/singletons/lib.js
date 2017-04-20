@@ -302,7 +302,7 @@ time_function = function(f,o) {
 }
 
 time_make_child = function(id,n) {
-    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
+    Syntree.Workspace.page.select(Syntree.Workspace.page.allElements[id]);
     var times = [];
     var i = 0;
     while (i < n) {
@@ -316,7 +316,7 @@ time_make_child = function(id,n) {
 }
 
 time_make_sibling = function(id,n) {
-    Syntree.ElementsManager.select(Syntree.ElementsManager.allElements[id]);
+    Syntree.Workspace.page.select(Syntree.Workspace.page.allElements[id]);
     var times = [];
     var i = 0;
     while (i < n) {

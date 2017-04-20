@@ -19,11 +19,11 @@ Syntree.SelectableElement = function() {
     /**
      * Select the element.
      * Controls the appearance and behavior of <strong>this element only</strong>.
-     * Deselecting previously selected element and other overarching management is handled by Syntree.ElementsManager.
+     * Deselecting previously selected element and other overarching management is handled by Syntree.Page.
      *
      * @see Syntree.SelectableElement#isSelected
      * @see Syntree.SelectableElement#selected
-     * @see Syntree.ElementsManager
+     * @see Syntree.Page
      */
     this.select = function() {
         if (Syntree.Lib.checkType(this.__select, 'function')) {
@@ -37,11 +37,11 @@ Syntree.SelectableElement = function() {
     /**
      * Deselect the element.
      * Controls the appearance and behavior of <strong>this element only</strong>.
-     * Other overarching management is handled by Syntree.ElementsManager.
+     * Other overarching management is handled by Syntree.Page.
      *
      * @see Syntree.SelectableElement#isSelected
      * @see Syntree.SelectableElement#selected
-     * @see Syntree.ElementsManager
+     * @see Syntree.Page
      */
     this.deselect = function() {
         if (Syntree.Lib.checkType(this.__deselect, 'function')) {

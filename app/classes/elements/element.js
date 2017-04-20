@@ -64,7 +64,7 @@ Syntree.Element = function() {
 
     /**
      * Delete the element.
-     * Removes graphical elements, deregisters from Syntree.ElementsManager, and sets deleted property to true.
+     * Removes graphical elements, deregisters from Syntree.Workspace.page, and sets deleted property to true.
      * Extend in sub-classes with '__delete()'.
      *
      * @see Syntree.Element#deleted
@@ -78,7 +78,7 @@ Syntree.Element = function() {
             this.__delete();
         }
         this.graphic.delete();
-        Syntree.ElementsManager.deregister(this);
+        Syntree.Workspace.page.deregister(this);
         this.deleted = true;
     }
 
@@ -119,6 +119,6 @@ Syntree.Element = function() {
         return true;
     }
 
-    Syntree.ElementsManager.register(this);
+    Syntree.Workspace.page.register(this);
     this.createGraphic();
 }

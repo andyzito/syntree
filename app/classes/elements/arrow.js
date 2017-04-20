@@ -158,7 +158,7 @@ Syntree.Arrow.prototype.createGraphic = function() {
         });
         var id = this.attr('id')
         id = id.substr(id.lastIndexOf('-')+1, id.length);
-        var arrow = Syntree.ElementsManager.allElements[id];
+        var arrow = Syntree.Workspace.page.allElements[id];
         arrow.setStartCtrlPoint(this.attr('cx'), this.attr('cy'));
         arrow.updateGraphics();
     }
@@ -170,7 +170,7 @@ Syntree.Arrow.prototype.createGraphic = function() {
         });
         var id = this.attr('id')
         id = id.substr(id.lastIndexOf('-')+1, id.length);
-        var arrow = Syntree.ElementsManager.allElements[id];
+        var arrow = Syntree.Workspace.page.allElements[id];
         arrow.setEndCtrlPoint(this.attr('cx'), this.attr('cy'));
         arrow.updateGraphics();
     }
@@ -178,7 +178,7 @@ Syntree.Arrow.prototype.createGraphic = function() {
     var customEnd1 = function() {
         var id = this.attr('id')
         id = id.substr(id.lastIndexOf('-')+1, id.length);
-        var arrow = Syntree.ElementsManager.allElements[id];
+        var arrow = Syntree.Workspace.page.allElements[id];
         arrow.setStartCtrlPoint(this.attr('cx'), this.attr('cy'));
         arrow.updateGraphics();
     }
@@ -186,7 +186,7 @@ Syntree.Arrow.prototype.createGraphic = function() {
     var customEnd2 = function() {
         var id = this.attr('id')
         id = id.substr(id.lastIndexOf('-')+1, id.length);
-        var arrow = Syntree.ElementsManager.allElements[id];
+        var arrow = Syntree.Workspace.page.allElements[id];
         arrow.setEndCtrlPoint(this.attr('cx'), this.attr('cy'));
         arrow.updateGraphics();
     }

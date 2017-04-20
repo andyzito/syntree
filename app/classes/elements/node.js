@@ -175,7 +175,7 @@ Syntree.Node.prototype.createGraphic = function() {
         }
         var id = this.attr('id');
         id = id.substr(id.lastIndexOf('-')+1, id.length);
-        var node = Syntree.ElementsManager.allElements[id];
+        var node = Syntree.Workspace.page.allElements[id];
         node.move(posx, posy);
 
         nearestNode = Syntree.Workspace.page.getNearestNode(node,undefined,function(x,y,n) {
@@ -229,7 +229,7 @@ Syntree.Node.prototype.createGraphic = function() {
         }
         var id = this.attr('id');
         id = id.substr(id.lastIndexOf('-')+1, id.length);
-        var node = Syntree.ElementsManager.allElements[id];
+        var node = Syntree.Workspace.page.allElements[id];
 
         var parent = node.parent;
         if (parent) {
@@ -445,8 +445,8 @@ Syntree.Node.prototype.__delete = function() {
 }
 
 // Syntree.Node.prototype.__select = function() {
-//     // var nodeToDeselect = Syntree.ElementsManager.getSelected();
-//     // Syntree.ElementsManager.select(node);
+//     // var nodeToDeselect = Syntree.Workspace.page.getSelected();
+//     // Syntree.Workspace.page.select(node);
 //     // this.nodeDeselect(nodeToDeselect);
 
 //     // if (!silent) {

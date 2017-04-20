@@ -509,12 +509,12 @@ Syntree.Tree.prototype._buildFromTreestring = function(treestring) {
             var childIds = entry.children.split(',');
             var c = 0;
             while (c < childIds.length) {
-                Syntree.ElementsManager.allElements[entry.id].addChild(Syntree.ElementsManager.allElements[childIds[c]]);
+                Syntree.Workspace.page.allElements[entry.id].addChild(Syntree.Workspace.page.allElements[childIds[c]]);
                 c++;
             }
         }
         var temp = new Syntree.Tree({
-            root:Syntree.ElementsManager.allElements[entry.id],
+            root:Syntree.Workspace.page.allElements[entry.id],
         })
         temp.distribute();
         n++;
