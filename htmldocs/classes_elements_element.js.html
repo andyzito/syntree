@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/elements/element.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/elements/element.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @constructor
+ * @classdesc An element in Syntree is any object that has a graphical representation and is related to the data of the tree. For example, a Node is an element, but the toolbar is not. Elements are Syntree.Node, Syntree.Branch, and Syntree.Arrow.
+ */
+Syntree.Element = function() {
+
+    // Properties/Members------------------
+    if (!Syntree.Lib.checkType(this.id, 'number')) {
+        /**
+         * A session-unique id.
+         * @type {number}
+         */
+        this.id = Syntree.Lib.genId();
+    }
+
+    /**
+     * Whether or not this element is selectable.
+     * Selectable elements are Syntree.Node, Syntree.Branch, Syntree.Arrow.
+     *
+     * @see Syntree.Element#isSelectable
+     */
+    this.selectable = false;
+
+    /**
+     * Whether or not this element has been deleted.
+     * Needed to avoid double deletion.
+     *
+     * @type {boolean}
+     */
+    this.deleted = false;
+    // -------------------------------------
+
+    // Accessor functions -------------------
+
+    /**
+     * Accessor function for property id.
+     * @returns {number} the id of the element
+     * @see Syntree.Element.id
+     */
+    this.getId = function() {
+        return this.id;
+    }
+
+    /**
+     * Accessor function for property deleted.
+     *
+     * @returns {boolean} whether or not the element is deleted
+     * @see Syntree.Element.deleted;
+     */
+    this.isDeleted = function() {
+        return this.deleted;
+    }
+
+    /**
+     * Accessor function for property selectable.
+     *
+     * @returns {boolean} whether or not the element is selectable
+     * @see Syntree.Element#selectable
+     */
+    this.isSelectable = function() {
+        return this.selectable;
+    }
+    // ------------------------------------
+
+    /**
+     * Delete the element.
+     * Removes graphical elements, deregisters from Syntree.Workspace.page, and sets deleted property to true.
+     * Extend in sub-classes with '__delete()'.
+     *
+     * @see Syntree.Element#deleted
+     * @see Syntree.Element#isDeleted
+     */
+    this.delete = function() {
+        if (this.deleted) {
+            return;
+        }
+        if (Syntree.Lib.checkType(this.__delete, 'function')) {
+            this.__delete();
+        }
+        this.graphic.delete();
+        Syntree.Workspace.page.deregister(this);
+        this.deleted = true;
+    }
+
+    /**
+     * Update the elements graphical representation.
+     * Mostly serves as a wrapper for Syntree.Graphic.update.
+     * Extend in sub-classes with '__updateGraphics()'.
+     *
+     * @see Syntree.Graphic
+     */
+    this.updateGraphics = function() {
+        this.graphic.update();
+        if (Syntree.Lib.checkType(this.__updateGraphics, 'function')) {
+            this.__updateGraphics(true);
+        }
+    }
+
+    /**
+     * Whether or not this object is an element.
+     * Elements are Syntree.Node, Syntree.Branch, Syntree.Arrow.
+     *
+     * @returns {boolean}
+     */
+    this.isElement = function() {
+        return true;
+    }
+
+    /**
+     * Whether or not this element is deletable.
+     * Deletable elements are Syntree.Node, Syntree.Branch, Syntree.Arrow.
+     * Syntree.Branch should never be deletable directly by the user.
+     * Branches should only be deleted automatically when their child node is deleted.
+     *
+     * @see Syntree.Node.__delete
+     * @returns {boolean}
+     */
+    this.isDeletable = function() {
+        return true;
+    }
+
+    Syntree.Workspace.page.register(this);
+    this.createGraphic();
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Syntree.Action.html">Action</a></li><li><a href="Syntree.Arrow.html">Arrow</a></li><li><a href="Syntree.Branch.html">Branch</a></li><li><a href="Syntree.Element.html">Element</a></li><li><a href="Syntree.Graphic.html">Graphic</a></li><li><a href="Syntree.History.html">History</a></li><li><a href="Syntree.Lib.html">Lib</a></li><li><a href="Syntree.Node.html">Node</a></li><li><a href="Syntree.Page.html">Page</a></li><li><a href="Syntree.SelectableElement.html">SelectableElement</a></li><li><a href="Syntree.Tree.html">Tree</a></li><li><a href="Syntree.Tutorial.html">Tutorial</a></li><li><a href="Syntree.Workspace.html">Workspace</a></li></ul><h3>Namespaces</h3><ul><li><a href="Syntree.html">Syntree</a></li></ul><h3>Global</h3><ul><li><a href="global.html#modal_close">modal_close</a></li><li><a href="global.html#modal_open">modal_open</a></li><li><a href="global.html#RGBColor">RGBColor</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Apr 20 2017 00:45:12 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
