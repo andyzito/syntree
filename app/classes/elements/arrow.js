@@ -2,17 +2,17 @@ Syntree.config_maps.arrow = {};
 Syntree.config_maps.arrow.accept_unmapped_config = false;
 Syntree.config_maps.arrow.map = {
     id: {
-        type: 'number',
-        default_value: 'undefined',
+        require: 'number',
+        default_value: '#undefined',
     },
     fromNode: {
-        type: 'node',
+        require: 'node',
     },
     toNode: {
-        type: 'node',
+        require: 'node',
     },
     path: {
-        type: 'string',
+        require: 'string',
         default_value: '#undefined',
     },
 }

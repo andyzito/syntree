@@ -34,10 +34,6 @@ Syntree.Lib = {
      */
     config: function(matrix, target) {
         var targetType = Syntree.Lib.typeOf(target);
-        console.log(Syntree.config_maps);
-        console.log(targetType);
-        console.log(target);
-        console.log('------------------------------------')
         var map = Syntree.config_maps[targetType].map;
         var accept_unmapped_config = Syntree.config_maps[targetType].accept_unmapped_config;
 

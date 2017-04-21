@@ -156,12 +156,14 @@ Syntree.Branch.prototype.createGraphic = function() {
                     d.startPoint = d.parent.getPosition();
                     var pBBox = d.parent.getLabelBBox();
                     g.getEl('line').attr({
-                        x1: d.startPoint.x,
-                        y1: d.startPoint.y + 10,
+                        // x1: d.startPoint.x,
+                        x1: pBBox.cx,
+                        y1: pBBox.y2,
+                        // y1: d.startPoint.y + (pBBox.height/2),
                     });
                     g.getEl('shadowLine').attr({
                         x1: d.startPoint.x,
-                        y1: d.startPoint.y + 10,
+                        y1: d.startPoint.y + (pBBox.height/2),
                     });
                 }
             },
@@ -169,18 +171,22 @@ Syntree.Branch.prototype.createGraphic = function() {
                 state_name: 'childPosition',
                 handler: function(d,g) {
                     d.endPoint = d.child.getPosition();
-                    var cBBox = d.child.getLabelBBox();
-                    g.getEl('line').attr({
-                        x2: d.endPoint.x,
-                        y2: d.endPoint.y - 5,
-                    });
                     g.getEl('shadowLine').attr({
-                        x2: d.endPoint.x,
-                        y2: d.endPoint.y - 5,
+                        // x2: d.endPoint.x,
+                        // x2: cBBox.x,
+                        // y2: d.endPoint.y - (cBBox.height/2),
+                        // y2: cBBox.y,
                     });
                 }
             },
             '#default': function(d,g) {
+                var cBBox = d.child.getLabelBBox();
+                g.getEl('line').attr({
+                    // x2: d.endPoint.x,
+                    x2: cBBox.cx,
+                    y2: cBBox.y,
+                    // y2: d.endPoint.y - (cBBox.height/2),
+                });
                 if (d.selected) {
                     var mid = d.getMidPoint();
                     g.getEl('triangleButton').attr({

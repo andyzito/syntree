@@ -170,7 +170,7 @@ Syntree.Node.prototype.createGraphic = function() {
     }
 
     var customDrag = function(dx, dy, posx, posy) {
-        if (Syntree.W.rightClick) {
+        if (Syntree.Workspace.rightClick) {
             return false;
         }
         var id = this.attr('id');
@@ -218,7 +218,7 @@ Syntree.Node.prototype.createGraphic = function() {
     }
 
     var customStart = function() {
-        if (Syntree.W.rightClick) {
+        if (Syntree.Workspace.rightClick) {
             return false;
         }
     }
@@ -383,12 +383,12 @@ Syntree.Node.prototype.move = function(x,y,propagate) {
 
     this.x = x;
     this.y = y;
+    if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
+        this.parentBranch.graphic.unsync('childPosition');
+    }
 
     if (this.lastSyncedPosition.x != x || this.lastSyncedPosition.y != y) {
         this.graphic.unsync('position');
-        if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
-            this.parentBranch.graphic.unsync('childPosition');
-        }
         if (this.childBranches.length > 0) {
             this.childBranches.map(function(b) {
                 b.graphic.unsync('parentPosition');

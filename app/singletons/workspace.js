@@ -439,21 +439,23 @@ Syntree.Workspace = {
 
     _eventExportImage: function() {
         var path = Syntree.Workspace.page.tree._getPath();
-        var width = path.rightBound = path.leftBound;
+        var width = path.rightBound - path.leftBound;
         var height = path.bottomBound - path.topBound;
+        console.log('width: ' + width);
+        console.log('height: ' + height)
         var offsetX = (-1*path.leftBound + 25);
         var offsetY = (-1*path.topBound + 25);
 
         var svgstring = '<svg>'+this.page.getSVGString()+'</svg>';
-        // $('#export-image-canvas').attr('width', (width+100));
-        // $('#export-image-canvas').attr('height', (height+50));
-        $('#export-image-canvas').attr('width', $('#workspace').width());
-        $('#export-image-canvas').attr('height', $('#workspace').height());
+        $('#export-image-canvas').attr('width', (width+50));
+        $('#export-image-canvas').attr('height', (height+50));
+        // $('#export-image-canvas').attr('width', $('#workspace').width());
+        // $('#export-image-canvas').attr('height', $('#workspace').height());
         // console.log(svgstring);
         canvg('export-image-canvas', svgstring, {
-            ignoreDimensions: false,
-            // offsetX: (-1*path.leftBound+25),
-            // offsetY: (-1*path.topBound+25),
+            // ignoreDimensions: false,
+            offsetX: (-1*(path.leftBound-25)),
+            offsetY: (-1*(path.topBound-25)),
             // scaleWidth: 5,
             // scaleHeight: 5,
         });
