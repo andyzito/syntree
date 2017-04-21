@@ -162,8 +162,10 @@ Syntree.Branch.prototype.createGraphic = function() {
                         // y1: d.startPoint.y + (pBBox.height/2),
                     });
                     g.getEl('shadowLine').attr({
-                        x1: d.startPoint.x,
-                        y1: d.startPoint.y + (pBBox.height/2),
+                        x1: pBBox.cx,
+                        y1: pBBox.y2,
+                        // x1: d.startPoint.x,
+                        // y1: d.startPoint.y + (pBBox.height/2),
                     });
                 }
             },
@@ -186,6 +188,12 @@ Syntree.Branch.prototype.createGraphic = function() {
                     x2: cBBox.cx,
                     y2: cBBox.y,
                     // y2: d.endPoint.y - (cBBox.height/2),
+                });
+                g.getEl('shadowLine').attr({
+                    // x2: d.endPoint.x,
+                    x2: cBBox.cx,
+                    // y2: d.endPoint.y - (cBBox.height/2),
+                    y2: cBBox.y,
                 });
                 if (d.selected) {
                     var mid = d.getMidPoint();

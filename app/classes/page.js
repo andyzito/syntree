@@ -194,7 +194,7 @@ Syntree.Page.prototype.getSVGString = function(offsetX,offsetY) {
     }
     var style = '<style type="text/css">text{font-family:sans-serif;font-size:14px;}</style>';
     var marker = $('marker')[0].outerHTML;
-    console.log(marker);
+    // console.log(marker);
     this.select(selected);
     return style+marker+bgsvg+elementssvg;
     // return style+treesvg;

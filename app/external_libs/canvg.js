@@ -879,7 +879,7 @@
 					}
 				}
 			};
-			
+
 			// Microsoft Edge fix
 			var allUppercase = new RegExp("^[A-Z\-]+$");
 			var normalizeAttributeName = function (name) {
@@ -1700,10 +1700,12 @@
 
 			this.baseRender = this.render;
 			this.render = function(ctx, point, angle) {
-				ctx.translate(point.x, point.y);
-				if (this.attribute('orient').valueOrDefault('auto') == 'auto') ctx.rotate(angle);
-				if (this.attribute('markerUnits').valueOrDefault('strokeWidth') == 'strokeWidth') ctx.scale(ctx.lineWidth, ctx.lineWidth);
-				ctx.save();
+				if (typeof point !== 'undefined') { // FROM SYNTREE
+					ctx.translate(point.x, point.y);
+					if (this.attribute('orient').valueOrDefault('auto') == 'auto') ctx.rotate(angle);
+					if (this.attribute('markerUnits').valueOrDefault('strokeWidth') == 'strokeWidth') ctx.scale(ctx.lineWidth, ctx.lineWidth);
+					ctx.save();
+				}
 
 				// render me using a temporary svg element
 				var tempSvg = new svg.Element.svg();
@@ -1717,10 +1719,12 @@
 				tempSvg.children = this.children;
 				tempSvg.render(ctx);
 
-				ctx.restore();
-				if (this.attribute('markerUnits').valueOrDefault('strokeWidth') == 'strokeWidth') ctx.scale(1/ctx.lineWidth, 1/ctx.lineWidth);
-				if (this.attribute('orient').valueOrDefault('auto') == 'auto') ctx.rotate(-angle);
-				ctx.translate(-point.x, -point.y);
+				if (typeof point !== 'undefined') { // FROM SYNTREE
+					ctx.restore();
+					if (this.attribute('markerUnits').valueOrDefault('strokeWidth') == 'strokeWidth') ctx.scale(1/ctx.lineWidth, 1/ctx.lineWidth);
+					if (this.attribute('orient').valueOrDefault('auto') == 'auto') ctx.rotate(-angle);
+					ctx.translate(-point.x, -point.y);
+				}
 			}
 		}
 		svg.Element.marker.prototype = new svg.Element.ElementBase;
@@ -1750,13 +1754,13 @@
 			this.getGradient = function() {
 				// OVERRIDE ME!
 			}
-			
+
 			this.gradientUnits = function () {
 				return this.attribute('gradientUnits').valueOrDefault('objectBoundingBox');
 			}
-			
+
 			this.attributesToInherit = ['gradientUnits'];
-			
+
 			this.inheritStopContainer = function (stopsContainer) {
 				for (var i=0; i<this.attributesToInherit.length; i++) {
 					var attributeToInherit = this.attributesToInherit[i];
@@ -1826,7 +1830,7 @@
 		svg.Element.linearGradient = function(node) {
 			this.base = svg.Element.GradientBase;
 			this.base(node);
-			
+
 			this.attributesToInherit.push('x1');
 			this.attributesToInherit.push('y1');
 			this.attributesToInherit.push('x2');
@@ -1868,7 +1872,7 @@
 		svg.Element.radialGradient = function(node) {
 			this.base = svg.Element.GradientBase;
 			this.base(node);
-			
+
 			this.attributesToInherit.push('cx');
 			this.attributesToInherit.push('cy');
 			this.attributesToInherit.push('r');
@@ -3086,7 +3090,7 @@
 				scaleWidth: dw,
 				scaleHeight: dh
 			}
-			
+
 			for(var prop in opts) {
 				if(opts.hasOwnProperty(prop)){
 					cOpts[prop] = opts[prop];
