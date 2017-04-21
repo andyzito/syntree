@@ -7,24 +7,46 @@ Syntree.Page = function() {
     /**
      * The <rect> which is the background of the page.
      */
+    var wWidth = $("#workspace").width();
+    var wHeight = $("#workspace").height();
     this.background = Syntree.snap.rect(
-        -100,
-        -100,
-        $("#workspace").width()+200,
-        $("#workspace").height()+200
+        -1 * (wWidth),
+        -1 * (wHeight),
+        wWidth*4,
+        wHeight*4
     );
     this.background.attr({
         fill:'white',
-        id:'page-background'}
-    );
+        id:'page-background',
+    });
 
+    this.group = Syntree.snap.g();
     this.allElements = {};
     this.selectedElement = undefined;
+    this._enablePanning();
+}
+
+Syntree.Page.prototype.getTransform = function() {
+    var t = this.group.transform().globalMatrix;
+    var dx = t.e;
+    var dy = t.f;
+    return {
+        dx: dx,
+        dy: dy,
+        globalMatrix: t,
+    }
 }
 
 Syntree.Page.prototype.register = function(element) {
     element = Syntree.Lib.checkArg(element, element.isElement);
     this.allElements[element.getId()] = element;
+    for (l in element.graphic.elements) {
+        var el = element.graphic.elements[l];
+        var el_obj = el.el_obj;
+        if (typeof el_obj.paper !== 'undefined') {
+            this.group.add(el_obj);
+        }
+    }
 }
 
 Syntree.Page.prototype.deregister = function(element) {
@@ -58,7 +80,7 @@ Syntree.Page.prototype.deleteTree = function(tree) {
     tree = Syntree.Lib.checkArg(tree, ['tree', 'node']);
     if (Syntree.Lib.checkType(tree, 'node')) {
         tree = new Syntree.Tree({
-            root: this.allElements[tree.id],
+            root: this.allElements[tee.id],
         });
     }
 
@@ -175,6 +197,21 @@ Syntree.Page.prototype.openTree = function(treestring,parent,index) {
         build_treestring: treestring,
     });
     this.addTree(newTree,parent,index);
+}
+
+Syntree.Page.prototype.getGroup = function() {
+    var g = Syntree.snap.g();
+    for (L in this.allElements) {
+        var graphic_elements = this.allElements[L].graphic.elements;
+        for (l in graphic_elements) {
+            var el = graphic_elements[l];
+            var el_obj = el.el_obj;
+            if (typeof el_obj.paper !== 'undefined') {
+                g.add(el_obj);
+            }
+        }
+    }
+    return g;
 }
 
 /**
@@ -408,33 +445,43 @@ Syntree.Page.prototype.nodeEditing = function(type,node, silent) {
 Syntree.Page.prototype.toString = function() {
     return "[object Page]"
 }
-    // this._enablePanning = function() {
-    //     // We need a custom move function to implement panning limits
-    //     var move = function(dx,dy) {
-    //         var offleft = $("#page-background").offset().left - $("#workspace_container").offset().left;
-    //         var offtop = $("#page-background").offset().top - $("#workspace_container").offset().top;
-    //         if ((offleft > 100 && this.data('oldDX') < dx) || (offleft < -100 && this.data('oldDX') > dx)) {
-    //             dx = this.data('oldDX');
-    //         }
-    //         if ((offtop > 100 && this.data('oldDY') < dy) || (offtop < -100 && this.data('oldDY') > dy)) {
-    //             dy = this.data('oldDY');
-    //         }
 
-    //         this.attr({
-    //                     transform: this.data('origTransform') + (this.data('origTransform') ? "T" : "t") + [dx, dy]
-    //                 });
-    //         // This allows us to make page elements pan as well, but still make panning happen only on background click
-    //         W.page.group.attr({
-    //                     transform: this.data('origTransform') + (this.data('origTransform') ? "T" : "t") + [dx, dy]
-    //                 });
+Syntree.Page.prototype.pan = function(dx,dy) {
+    this._start.call(this.background);
+    this._move.call(this.background,dx,dy);
+    this._end.call(this.background,dx,dy);
+}
 
-    //         this.data('oldDX', dx);
-    //         this.data('oldDY', dy);
-    //     }
+Syntree.Page.prototype._enablePanning = function() {
+    this._move = function(dx,dy) {
 
-    //     var start = function() {
-    //         this.data('origTransform', this.transform().local);
-    //     }
+        this.attr({
+                    transform: this.data('origTransform') + (this.data('origTransform') ? "T" : "t") + [dx, dy]
+                });
+        // This allows us to make page elements pan as well, but still make panning happen only on background click
+        Syntree.Workspace.page.group.attr({
+                    transform: this.data('origTransform') + (this.data('origTransform') ? "T" : "t") + [dx, dy]
+                });
 
-    //     this.background.drag(move,start);
-    // }
+        this.data('oldDX', dx);
+        this.data('oldDY', dy);
+    }
+
+    this._end = function(dx,dy) {
+        var t = Syntree.Workspace.page.group.transform().globalMatrix;
+        var dx = t.e;
+        var dy = t.f;
+        var top = $('.editor_container').position().top;
+        var left = $('.editor_container').position().left;
+        $('.editor_container').css({
+            'top': dy + "px",
+            'left': dx + "px",
+        });
+    }
+
+    this._start = function() {
+        this.data('origTransform', this.transform().local);
+    }
+
+    this.background.drag(this._move,this._start,this._end);
+}

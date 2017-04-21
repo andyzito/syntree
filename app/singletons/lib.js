@@ -276,7 +276,36 @@ Syntree.Lib = {
             x: (x1 + x2)/2,
             y: (y1 + y2)/2,
         }
-    }
+    },
+
+    /**
+     * Take screen/visual coordinates and convert them to data coordinates based on the current transform matrix (from panning).
+     * Basically, remove the effects of the transform matrix from the coordinates.
+     * We need this because user mouse events give coordinates that include the transform, since that's what the user sees.
+     * But we need to set internal coordinates that are based on a non-transformed coordinate field, since the transform matrix is the final layer of presentation, and shouldn't be contained in the lower level of data.
+     *
+     * @param {number|object} x_or_object - the x coordinate, or an object containing the x and y coordinate
+     * @param {number} [y] - the y coordinate
+     * @returns {object} - x and y coordinates after accounting for transform matrix
+     */
+     visualToActualCoordinates: function(x_or_obj,y) {
+        if (this.checkType(x_or_obj, 'object')) {
+            x = Syntree.Lib.checkArg(x_or_obj.x, 'number');
+            y = Syntree.Lib.checkArg(x_or_obj.y, 'number');
+        } else {
+            x = Syntree.Lib.checkArg(x_or_obj, 'number');
+            y = Syntree.Lib.checkArg(y, 'number');
+        }
+
+        var t = Syntree.Workspace.page.getTransform();
+        x = x - t.dx;
+        y = y - t.dy;
+
+        return {
+            x: x,
+            y: y,
+        }
+     }
 }
 
 test_genId = function(n) {
@@ -303,8 +332,8 @@ time_make_child = function(id,n) {
     var i = 0;
     while (i < n) {
         console.log('timing');
-        times.push(time_function('_eventDown', Syntree.W));
-        Syntree.W._eventUp();
+        times.push(time_function('_eventDown', Syntree.Workspace));
+        Syntree.Workspace._eventUp();
         i++;
     }
     var sum = times.reduce(function(a, b) { return a + b; });
@@ -317,11 +346,11 @@ time_make_sibling = function(id,n) {
     var i = 0;
     while (i < n) {
         console.log('timing');
-        times.push(time_function('_eventLeft', Syntree.W));
+        times.push(time_function('_eventLeft', Syntree.Workspace));
         e = {
             ctrlKey: false,
         };
-        Syntree.W._eventRight(e);
+        Syntree.Workspace._eventRight(e);
         i++;
     }
     var sum = times.reduce(function(a, b) { return a + b; });

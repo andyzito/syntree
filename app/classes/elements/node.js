@@ -50,7 +50,7 @@ Syntree.Node = function(config_matrix) {
 
 Syntree.Node.prototype.createGraphic = function() {
     var editorid = "editor-" + this.id;
-    $("#workspace_container").append('<input id="' + editorid + '" class="editor">');
+    $(".editor_container").append('<input id="' + editorid + '" class="editor">');
     var editor = $("#" + editorid);
     editor.hide();
 

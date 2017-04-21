@@ -21,7 +21,6 @@ Syntree.Action = function(type,data) {
 
 Syntree._ActionSelect = function(data) {
     data = Syntree.Lib.checkArg(data, 'object', '#undefined');
-    console.log(data.selected_obj.isSelectable());
     this.selected_obj = Syntree.Lib.checkArg(data.selected_obj, data.selected_obj.isSelectable);
 }
 

@@ -79,7 +79,7 @@ Syntree.Arrow.prototype.createGraphic = function() {
         x2: endPoint.x,
         y2: endPoint.y,
     })
-    var lockButton = Syntree.snap.image('/resources/lock.svg', mid.x, mid.y, 10, 10);
+    // var lockButton = Syntree.snap.image('/resources/lock.svg', mid.x, mid.y, 10, 10);
 
     var config_matrix = {
         elements_to_add: {
@@ -90,9 +90,9 @@ Syntree.Arrow.prototype.createGraphic = function() {
                 el_obj: line,
                 include_in_svg_string: true,
             },
-            lockButton: {
-                el_obj: lockButton,
-            }
+            // lockButton: {
+            //     el_obj: lockButton,
+            // }
         },
         states_synced: {
             selected: false,
@@ -159,7 +159,14 @@ Syntree.Arrow.prototype.createGraphic = function() {
         var id = this.attr('id')
         id = id.substr(id.lastIndexOf('-')+1, id.length);
         var arrow = Syntree.Workspace.page.allElements[id];
-        arrow.setStartCtrlPoint(this.attr('cx'), this.attr('cy'));
+        var t = Syntree.Lib.visualToActualCoordinates(
+            Number(this.attr('cx')),
+            Number(this.attr('cy'))
+        );
+        arrow.setStartCtrlPoint(
+            t.x,
+            t.y
+        );
         arrow.updateGraphics();
     }
 
@@ -171,24 +178,31 @@ Syntree.Arrow.prototype.createGraphic = function() {
         var id = this.attr('id')
         id = id.substr(id.lastIndexOf('-')+1, id.length);
         var arrow = Syntree.Workspace.page.allElements[id];
-        arrow.setEndCtrlPoint(this.attr('cx'), this.attr('cy'));
+        var t = Syntree.Lib.visualToActualCoordinates(
+            Number(this.attr('cx')),
+            Number(this.attr('cy'))
+        );
+        arrow.setEndCtrlPoint(
+            t.x,
+            t.y
+        );
         arrow.updateGraphics();
     }
 
     var customEnd1 = function() {
-        var id = this.attr('id')
-        id = id.substr(id.lastIndexOf('-')+1, id.length);
-        var arrow = Syntree.Workspace.page.allElements[id];
-        arrow.setStartCtrlPoint(this.attr('cx'), this.attr('cy'));
-        arrow.updateGraphics();
+        // var id = this.attr('id')
+        // id = id.substr(id.lastIndexOf('-')+1, id.length);
+        // var arrow = Syntree.Workspace.page.allElements[id];
+        // arrow.setStartCtrlPoint(this.attr('cx'), this.attr('cy'));
+        // arrow.updateGraphics();
     }
 
     var customEnd2 = function() {
-        var id = this.attr('id')
-        id = id.substr(id.lastIndexOf('-')+1, id.length);
-        var arrow = Syntree.Workspace.page.allElements[id];
-        arrow.setEndCtrlPoint(this.attr('cx'), this.attr('cy'));
-        arrow.updateGraphics();
+        // var id = this.attr('id')
+        // id = id.substr(id.lastIndexOf('-')+1, id.length);
+        // var arrow = Syntree.Workspace.page.allElements[id];
+        // arrow.setEndCtrlPoint(this.attr('cx'), this.attr('cy'));
+        // arrow.updateGraphics();
     }
 
     handle1.drag(customDrag1,undefined,customEnd1);
@@ -284,25 +298,31 @@ Syntree.Arrow.prototype.__updateGraphics = function() {
     });
 
     var path = this.graphic.getEl('line').attr('path');
-    var fInter = Snap.path.intersection(path, this.fromNode.getPath());
-    fInter = fInter.reduce(function(l, e) {
-        return e.t1 < l.t1 ? e : l;
-    });
     var tInter = Snap.path.intersection(path, this.toNode.getPath());
-    tInter = tInter.reduce(function(l, e) {
-        return e.t1 > l.t1 ? e : l;
-    });
+
     if (this.fromNode.getLabelContent().match(/^\s.*$|^$/)) {
         var pos = this.fromNode.getPosition();
         this.setStartPoint(pos.x, pos.y);
     } else {
-        this.setStartPoint(fInter.x, fInter.y);
+        var fInter = Snap.path.intersection(path, this.fromNode.getPath());
+        if (fInter.length > 0) {
+            fInter = fInter.reduce(function(l, e) {
+                return e.t1 < l.t1 ? e : l;
+            });
+            this.setStartPoint(fInter.x, fInter.y);
+        }
     }
+
     if (this.toNode.getLabelContent().match(/^\s.*$|^$/)) {
         var pos = this.toNode.getPosition();
         this.setEndPoint(pos.x, pos.y);
     } else {
-        this.setEndPoint(tInter.x, tInter.y);
+        if (tInter.length > 0) {
+            tInter = tInter.reduce(function(l, e) {
+                return e.t1 > l.t1 ? e : l;
+            });
+            this.setEndPoint(tInter.x, tInter.y);
+        }
     }
     // this.setStartPoint(fInter.x, fInter.y);
     // this.setEndPoint(tInter.x, tInter.y);

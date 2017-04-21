@@ -119,6 +119,6 @@ Syntree.Element = function() {
         return true;
     }
 
-    Syntree.Workspace.page.register(this);
     this.createGraphic();
+    Syntree.Workspace.page.register(this);
 }

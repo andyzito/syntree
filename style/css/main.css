@@ -439,11 +439,15 @@ body.page_make {
       background-size: contain;
       background-position: center; }
   #workspace_container #workspace {
-    background-color: grey; }
+    background-color: white; }
   #workspace_container #export-image-canvas {
     display: none;
     width: 100%;
     height: 100%; }
+  #workspace_container .editor_container {
+    position: absolute;
+    top: 0;
+    left: 0; }
   #workspace_container .loading_screen {
     display: block;
     position: absolute;

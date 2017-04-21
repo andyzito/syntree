@@ -73,11 +73,11 @@ Syntree.Branch.prototype.createGraphic = function() {
             shadowLine: {
                 el_obj: shadowLine,
             },
-            triangleButton: {
-                el_obj: triangleButton,
-            },
             triangle: {
                 el_obj: triangle,
+            },
+            triangleButton: {
+                el_obj: triangleButton,
             },
         },
         states_synced: {
@@ -132,14 +132,6 @@ Syntree.Branch.prototype.createGraphic = function() {
                             opacity: 0,
                         },
                     },
-                    triangleButton: {
-                        stateTrueAttrs: {
-                            visibility: 'visible',
-                        },
-                        stateFalseAttrs: {
-                            visibility: 'hidden',
-                        },
-                    },
                     triangle: {
                         stateTrueAttrs: {
                             fill: 'lightgrey',
@@ -147,6 +139,14 @@ Syntree.Branch.prototype.createGraphic = function() {
                         stateFalseAttrs: {
                             fill: 'white',
                         }
+                    },
+                    triangleButton: {
+                        stateTrueAttrs: {
+                            visibility: 'visible',
+                        },
+                        stateFalseAttrs: {
+                            visibility: 'hidden',
+                        },
                     },
                 }
             },
@@ -158,12 +158,12 @@ Syntree.Branch.prototype.createGraphic = function() {
                     g.getEl('line').attr({
                         // x1: d.startPoint.x,
                         x1: pBBox.cx,
-                        y1: pBBox.y2,
+                        y1: pBBox.y2 + 5,
                         // y1: d.startPoint.y + (pBBox.height/2),
                     });
                     g.getEl('shadowLine').attr({
                         x1: pBBox.cx,
-                        y1: pBBox.y2,
+                        y1: pBBox.y2 + 5,
                         // x1: d.startPoint.x,
                         // y1: d.startPoint.y + (pBBox.height/2),
                     });
@@ -183,30 +183,31 @@ Syntree.Branch.prototype.createGraphic = function() {
             },
             '#default': function(d,g) {
                 var cBBox = d.child.getLabelBBox();
-                g.getEl('line').attr({
-                    // x2: d.endPoint.x,
-                    x2: cBBox.cx,
-                    y2: cBBox.y,
-                    // y2: d.endPoint.y - (cBBox.height/2),
-                });
-                g.getEl('shadowLine').attr({
-                    // x2: d.endPoint.x,
-                    x2: cBBox.cx,
-                    // y2: d.endPoint.y - (cBBox.height/2),
-                    y2: cBBox.y,
-                });
+                if (Syntree.Lib.checkType(cBBox.cx, 'number')) {
+                    g.getEl('line').attr({
+                        // x2: d.endPoint.x,
+                        x2: cBBox.cx,
+                        y2: cBBox.y - 5,
+                        // y2: d.endPoint.y - (cBBox.height/2),
+                    });
+                    g.getEl('shadowLine').attr({
+                        // x2: d.endPoint.x,
+                        x2: cBBox.cx,
+                        // y2: d.endPoint.y - (cBBox.height/2),
+                        y2: cBBox.y - 5,
+                    });
+                }
+                if (d.triangle) {
+                    g.getEl('triangle').attr({
+                        path: d.getTrianglePath(),
+                    });
+                }
                 if (d.selected) {
                     var mid = d.getMidPoint();
                     g.getEl('triangleButton').attr({
                         x: mid.x-7.5,
                         y: mid.y-7.5,
                     })
-                }
-
-                if (d.triangle) {
-                    g.getEl('triangle').attr({
-                        path: d.getTrianglePath(),
-                    });
                 }
             }
         }
