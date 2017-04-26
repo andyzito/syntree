@@ -305,7 +305,13 @@ Syntree.Lib = {
             x: x,
             y: y,
         }
-     }
+    },
+
+    extend: function(parentConstructor,subConstructor,instance) {
+        subConstructor.prototype.__proto__ = parentConstructor.prototype;
+        parentConstructor.call(instance);
+    }
+
 }
 
 test_genId = function(n) {

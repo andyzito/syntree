@@ -30,95 +30,96 @@ Syntree.Element = function() {
     this.deleted = false;
     // -------------------------------------
 
-    // Accessor functions -------------------
-
-    /**
-     * Accessor function for property id.
-     * @returns {number} the id of the element
-     * @see Syntree.Element.id
-     */
-    this.getId = function() {
-        return this.id;
-    }
-
-    /**
-     * Accessor function for property deleted.
-     *
-     * @returns {boolean} whether or not the element is deleted
-     * @see Syntree.Element.deleted;
-     */
-    this.isDeleted = function() {
-        return this.deleted;
-    }
-
-    /**
-     * Accessor function for property selectable.
-     *
-     * @returns {boolean} whether or not the element is selectable
-     * @see Syntree.Element#selectable
-     */
-    this.isSelectable = function() {
-        return this.selectable;
-    }
-    // ------------------------------------
-
-    /**
-     * Delete the element.
-     * Removes graphical elements, deregisters from Syntree.Workspace.page, and sets deleted property to true.
-     * Extend in sub-classes with '__delete()'.
-     *
-     * @see Syntree.Element#deleted
-     * @see Syntree.Element#isDeleted
-     */
-    this.delete = function() {
-        if (this.deleted) {
-            return;
-        }
-        if (Syntree.Lib.checkType(this.__delete, 'function')) {
-            this.__delete();
-        }
-        this.graphic.delete();
-        Syntree.Workspace.page.deregister(this);
-        this.deleted = true;
-    }
-
-    /**
-     * Update the elements graphical representation.
-     * Mostly serves as a wrapper for Syntree.Graphic.update.
-     * Extend in sub-classes with '__updateGraphics()'.
-     *
-     * @see Syntree.Graphic
-     */
-    this.updateGraphics = function() {
-        this.graphic.update();
-        if (Syntree.Lib.checkType(this.__updateGraphics, 'function')) {
-            this.__updateGraphics(true);
-        }
-    }
-
-    /**
-     * Whether or not this object is an element.
-     * Elements are Syntree.Node, Syntree.Branch, Syntree.Arrow.
-     *
-     * @returns {boolean}
-     */
-    this.isElement = function() {
-        return true;
-    }
-
-    /**
-     * Whether or not this element is deletable.
-     * Deletable elements are Syntree.Node, Syntree.Branch, Syntree.Arrow.
-     * Syntree.Branch should never be deletable directly by the user.
-     * Branches should only be deleted automatically when their child node is deleted.
-     *
-     * @see Syntree.Node.__delete
-     * @returns {boolean}
-     */
-    this.isDeletable = function() {
-        return true;
-    }
-
     this.createGraphic();
     Syntree.Workspace.page.register(this);
 }
+
+// Accessor functions -------------------
+
+/**
+ * Accessor function for property deleted.
+ *
+ * @returns {boolean} whether or not the element is deleted
+ * @see Syntree.Element.deleted;
+ */
+Syntree.Element.prototype.isDeleted = function() {
+    return this.deleted;
+}
+
+/**
+ * Accessor function for property selectable.
+ *
+ * @returns {boolean} whether or not the element is selectable
+ * @see Syntree.Element#selectable
+ */
+Syntree.Element.prototype.isSelectable = function() {
+    return this.selectable;
+}
+// ------------------------------------
+
+/**
+ * Delete the element.
+ * Removes graphical elements, deregisters from Syntree.Workspace.page, and sets deleted property to true.
+ * Extend in sub-classes with '__delete()'.
+ *
+ * @see Syntree.Element#deleted
+ * @see Syntree.Element#isDeleted
+ */
+Syntree.Element.prototype.delete = function() {
+    if (this.deleted) {
+        return;
+    }
+    if (Syntree.Lib.checkType(this.__delete, 'function')) {
+        this.__delete();
+    }
+    this.graphic.delete();
+    Syntree.Workspace.page.deregister(this);
+    this.deleted = true;
+}
+
+/**
+ * Update the elements graphical representation.
+ * Mostly serves as a wrapper for Syntree.Graphic.update.
+ * Extend in sub-classes with '__updateGraphics()'.
+ *
+ * @see Syntree.Graphic
+ */
+Syntree.Element.prototype.updateGraphics = function() {
+    this.graphic.update();
+    if (Syntree.Lib.checkType(this.__updateGraphics, 'function')) {
+        this.__updateGraphics(true);
+    }
+}
+
+/**
+ * Whether or not this object is an element.
+ * Elements are Syntree.Node, Syntree.Branch, Syntree.Arrow.
+ *
+ * @returns {boolean}
+ */
+Syntree.Element.prototype.isElement = function() {
+    return true;
+}
+
+/**
+ * Whether or not this element is deletable.
+ * Deletable elements are Syntree.Node, Syntree.Branch, Syntree.Arrow.
+ * Syntree.Branch should never be deletable directly by the user.
+ * Branches should only be deleted automatically when their child node is deleted.
+ *
+ * @see Syntree.Node.__delete
+ * @returns {boolean}
+ */
+Syntree.Element.prototype.isDeletable = function() {
+    return true;
+}
+
+/**
+ * Accessor function for property id.
+ * @returns {number} the id of the element
+ * @see Syntree.Element.id
+ */
+Syntree.Element.prototype.getId = function() {
+    return this.id;
+}
+

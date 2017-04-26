@@ -27,7 +27,8 @@ Syntree.config_maps.node.map = {
  */
 Syntree.Node = function(config_matrix) {
     Syntree.Lib.config(config_matrix,this);
-    Syntree.SelectableElement.call(this); // Extend
+    // Syntree.SelectableElement.call(this); // Extend
+    Syntree.Lib.extend(Syntree.SelectableElement,Syntree.Node,this);
 
     this.lastSyncedPosition = undefined;
 

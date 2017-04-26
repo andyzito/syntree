@@ -13,7 +13,8 @@ Syntree.Branch = function(parent,child) {
     this.child = child;
     this.triangle = false;
 
-    Syntree.SelectableElement.call(this);
+    // Syntree.SelectableElement.call(this);
+    Syntree.Lib.extend(Syntree.SelectableElement,Syntree.Branch,this);
 }
 
 Syntree.Branch.prototype.createGraphic = function() {

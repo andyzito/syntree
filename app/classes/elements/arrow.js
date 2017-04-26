@@ -26,7 +26,8 @@ Syntree.config_maps.arrow.map = {
 Syntree.Arrow = function(config_matrix) {
     this.id = config_matrix.id;
     Syntree.Lib.config(config_matrix,this);
-    Syntree.SelectableElement.call(this); // Extends
+    // Syntree.SelectableElement.call(this); // Extends
+    Syntree.Lib.extend(Syntree.SelectableElement,Syntree.Arrow,this);
 
     this.toNode.toArrow = this;
     this.fromNode.fromArrow = this;
