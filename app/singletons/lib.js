@@ -18,7 +18,7 @@ Syntree.initialize = function(initial_matrix) {
      *
      * @memberof Syntree
      */
-    Syntree.snap = Snap("#workspace");
+    Syntree.snap = Snap('#workspace');
     Syntree.Workspace.initialize(initial_matrix);
 }
 
@@ -159,10 +159,10 @@ Syntree.Lib = {
             if (this.typeOf(r) === 'boolean') {
                 return r;
             } else {
-                throw new TypeError("The require function must return true or false");
+                throw new TypeError('The require function must return true or false');
             }
         } else {
-            throw new TypeError("Please pass checkType a type string, array of type strings, or a function that returns true/false (for the second argument)");
+            throw new TypeError('Please pass checkType a type string, array of type strings, or a function that returns true/false (for the second argument)');
         }
     },
 
@@ -207,10 +207,10 @@ Syntree.Lib = {
         //             }
         //         }
         //     } else {
-        //         throw new Error("Require function must return true or false, returned " + require());
+        //         throw new Error('Require function must return true or false, returned ' + require());
         //     }
         } else {
-            throw new TypeError("Please pass checkArg a type string, array of type strings, or a function that returns true/false (for the second argument)");
+            throw new TypeError('Please pass checkArg a type string, array of type strings, or a function that returns true/false (for the second argument)');
         }
     },
 

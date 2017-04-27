@@ -10,10 +10,10 @@ Syntree.Action = function(type,data) {
     this.type = type;
 
     this.toString = function() {
-        return "[object Action]";
+        return '[object Action]';
     }
 
-    var a = "_Action" + Syntree.Lib.capitalize(type);
+    var a = '_Action' + Syntree.Lib.capitalize(type);
     Syntree[a].call(this,data)
 
     Syntree.History.addAction(this,data);
@@ -135,7 +135,7 @@ Syntree._ActionSave = function(data) {
 
 // (function(){
 // var actionToString = function() {
-//     return "[object Action]";
+//     return '[object Action]';
 // }
 
 // ActionSave.prototype.toString = actionToString;
@@ -147,5 +147,5 @@ Syntree._ActionSave = function(data) {
 // })()
 
 Syntree.Action.prototype.toString = function() {
-    return "[object Action]";
+    return '[object Action]';
 }

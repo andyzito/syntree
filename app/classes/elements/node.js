@@ -50,15 +50,15 @@ Syntree.Node = function(config_matrix) {
 }
 
 Syntree.Node.prototype.createGraphic = function() {
-    var editorid = "editor-" + this.id;
-    $(".editor_container").append('<input id="' + editorid + '" class="editor">');
-    var editor = $("#" + editorid);
+    var editorid = 'editor-' + this.id;
+    $('.editor_container').append('<input id="' + editorid + '" class="editor">');
+    var editor = $('#' + editorid);
     editor.hide();
 
     // Highlight
     var highlight = Syntree.snap.rect(this.x,this.y,0,0);
     highlight.attr({
-        class: "highlight highlight-" + this.id,
+        class: 'highlight highlight-' + this.id,
     });
 
     // Delete button
@@ -70,7 +70,7 @@ Syntree.Node.prototype.createGraphic = function() {
     // Label
     var label = Syntree.snap.text(this.x,this.y,this.labelContent);
     label.attr({
-        'id': "label-"+this.id,
+        'id': 'label-'+this.id,
         'class':'node-label',
     });
 
@@ -106,10 +106,10 @@ Syntree.Node.prototype.createGraphic = function() {
                 elements: {
                     highlight: {
                         stateTrueAttrs: {
-                            fill: "rgba(0,0,0,0.2)",
+                            fill: 'rgba(0,0,0,0.2)',
                         },
                         stateFalseAttrs: {
-                            fill: "none",
+                            fill: 'none',
                         },
                     },
                     deleteButton: {
@@ -125,7 +125,7 @@ Syntree.Node.prototype.createGraphic = function() {
             labelContent: {
                 handler: function(d,g) {
                     if (d.labelContent === '') {
-                        g.getEl('label').node.textContent = "   ";
+                        g.getEl('label').node.textContent = '   ';
                     } else {
                         g.getEl('label').node.textContent = d.labelContent;
                     }
@@ -267,7 +267,7 @@ Syntree.Node.prototype.setLabelContent = function(content) {
 }
 
 Syntree.Node.prototype.getLabelBBox2 = function() {
-    if (this.graphic.getEl('label').node.textContent === "" || $("#" + this.graphic.getEl('label').attr('id')).length === 0) {
+    if (this.graphic.getEl('label').node.textContent === '' || $('#' + this.graphic.getEl('label').attr('id')).length === 0) {
         var fakeHeight = 15;
         var fakeWidth = 10;
         return {
@@ -285,7 +285,7 @@ Syntree.Node.prototype.getLabelBBox2 = function() {
 }
 
 Syntree.Node.prototype.getLabelBBox = function() {
-    if (this.graphic.getEl('label').node.textContent === "" || $("#" + this.graphic.getEl('label').attr('id')).length === 0) {
+    if (this.graphic.getEl('label').node.textContent === '' || $('#' + this.graphic.getEl('label').attr('id')).length === 0) {
         var fakeHeight = 15;
         var fakeWidth = 10;
         return {
@@ -318,11 +318,11 @@ Syntree.Node.prototype.getChildren = function() {
 Syntree.Node.prototype.getPath = function() {
     var bbox = this.getLabelBBox();
     var p = 10;
-    var s = "M " + (bbox.x-p) + " " + (bbox.y-p) + ", ";
-    s += "H " + (bbox.x2+p) + ", ";
-    s += "V " + (bbox.y2+p) + ", ";
-    s += "H " + (bbox.x-p) + ", ";
-    s += "V " + (bbox.y-p) + ", ";
+    var s = 'M ' + (bbox.x-p) + ' ' + (bbox.y-p) + ', ';
+    s += 'H ' + (bbox.x2+p) + ', ';
+    s += 'V ' + (bbox.y2+p) + ', ';
+    s += 'H ' + (bbox.x-p) + ', ';
+    s += 'V ' + (bbox.y-p) + ', ';
     return s;
 }
 
@@ -564,5 +564,5 @@ Syntree.Node.prototype.detachChild = function(node) {
 }
 
 Syntree.Node.prototype.toString = function() {
-    return "[object Node]";
+    return '[object Node]';
 }

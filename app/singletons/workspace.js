@@ -36,7 +36,7 @@ Syntree.config_maps.workspace.map = {
         require: 'boolean',
         default_value: false,
     },
-}
+};
 
 
 /**
@@ -46,46 +46,60 @@ Syntree.config_maps.workspace.map = {
 Syntree.Workspace = {
 
     initialize: function(config_matrix) {
-        Syntree.Lib.config(config_matrix, this); // use config matrix to set up some properties
+        Syntree.Lib.config(config_matrix, this);
 
+        // Make changes to environment based on initialization parameters.
+
+        // Tutorial.
         if (this.tutorial_enabled) {
-            $(document).ready(
-                function() {
-                    modal_open('tutorial')
-                });
-            $(document).on(
-                'click',
-                '.button_modal__begin-tutorial',
-                function() {
-                    Syntree.Tutorial.start()
-                });
-            $(document).on(
-                'click',
-                '.toolbar_button__tutorial',
-                function() {
-                    Syntree.W._eventRewatchTutorial();
-                });
+            $(document)
+                .ready(
+                    function() {
+                        modal_open('tutorial');
+                    })
+                .on(
+                    'click',
+                    '.button_modal__begin-tutorial',
+                    function() {
+                        Syntree.Tutorial.start();
+                    })
+                .on(
+                    'click',
+                    '.toolbar_button__tutorial',
+                    function() {
+                        Syntree.Workspace._eventRewatchTutorial();
+                    }
+                );
         } else {
             $('.toolbar_button__tutorial').remove();
         }
 
-        if (!this.upload_enabled) {
-            $('.toolbar_button__upload').remove();
-        }
-        if (Syntree.Lib.checkType(this.save_tree_script, 'undefined')) {
-            $('.toolbar_button__save').remove();
-        }
-        if (Syntree.Lib.checkType(this.get_trees_script, 'undefined')) {
-            $('.toolbar_button__open').remove();
-            $('.modal_open').remove();
-        }
+        // Export functionality.
         if (Syntree.Lib.checkType(this.export_tree_script, 'undefined')) {
             $('.toolbar_button__export').remove();
             $('.modal_export').remove();
         }
+
+        // Upload functionality.
+        if (!this.upload_enabled) {
+            $('.toolbar_button__upload').remove();
+        }
+
+        // Save functionality.
+        if (Syntree.Lib.checkType(this.save_tree_script, 'undefined')) {
+            $('.toolbar_button__save').remove();
+        }
+
+        // Open functionality.
+        if (Syntree.Lib.checkType(this.get_trees_script, 'undefined')) {
+            $('.toolbar_button__open').remove();
+            $('.modal_open').remove();
+        }
+
+        // Focus checking.
         if (this.focus_checking_enabled) {
-            $("#workspace_container").prepend('<div class="focus_check_overlay"></div>');
-            $("body").prepend('<div class="focus_check_underlay"></div>');
+            $('#workspace_container').prepend('<div class="focus_check_overlay"></div>');
+            $('body').prepend('<div class="focus_check_underlay"></div>');
             $('.focus_check_underlay').hide();
             this.focused = false;
         }
@@ -93,7 +107,7 @@ Syntree.Workspace = {
         this._attachEventListeners();
 
         this.page = new Syntree.Page();
-        this.page.addTree();
+        this.page.addTree(); // Adds the default tree.
         this.page.select(this.page.tree.getRoot());
     },
 
@@ -101,97 +115,183 @@ Syntree.Workspace = {
      * Attach various event listeners needed for processing user input. This function is a convenience only, used so that [initialize()]{@link Workspace.initialize}) is a bit less cluttered.
      */
     _attachEventListeners: function() {
-        // Store 'this' as local variable to avoid conflicts in callback scope
-        var W = this;
-
-        // This stuff is to fix dragging, which as default triggers on right click
+        // This stuff is to fix dragging, which as default triggers on right click.
         // We want it to NOT trigger on right click, so we maintain Workspace.rightClick
-        // for the drag functions to check
-        $(document).on('mousedown', function(e) {
-            if (e.which === 3) {
-                W.rightClick = true;
-            }
-        });
-        $(document).on('mouseup', function(e) {
-            if (e.which === 3) {
-                W.rightClick = false;
-            }
-        });
+        // for the drag functions to check.
+        $(document)
+            .on(
+                'mousedown',
+                function(e) {
+                    if (e.which === 3) {
+                        Syntree.Workspace.rightClick = true;
+                    };
+                })
+            .on(
+                'mouseup',
+                function(e) {
+                    if (e.which === 3) {
+                        Syntree.Workspace.rightClick = false;
+                    };
+                }
+            );
         window.onblur = function() {
-            W.rightClick = false;
+            Syntree.Workspace.rightClick = false;
         }
         // --------------------------------------------------------------------------
-        $(document).on('click', '.arrow, .arrow-shadow', function(e) {W._eventArrowClick(e);});
-        $(document).on('click', '.branch, .branch-shadow, .triangle', function(e) {W._eventBranchClick(e);});
-        $(document).on('click', '.triangle-button', function(e) {W._eventTriangleButtonClick(e);});
+
         // Basic events, funneled to event functions below
-        $(document).on('click', '.node-label', function(e) {W._eventNodeClick(e);});
-        $(document).on('click', '.delete_button', function() {W._eventDel();});
-        $(document).on('click', '#page-background', function(e) {W._eventBGClick(e);});
-        $(document).on('dblclick', '.node-label', function() {W._eventEnter();});
-        $(document).on('input', '.editor', function() {W._eventEditorTyping();});
-        // Keyboard stuff
-        $(document).on('keydown', function(e) {
-            if ((W.focus_checking_enabled && W.focused) || !W.focus_checking_enabled) {
-                if (e.keyCode === 13) { // Enter
-                    W._eventEnter();
-                } else if (e.keyCode === 37) { // Left arrow key
-                    W._eventLeft(e);
-                    // return false;
-                } else if (e.keyCode === 38) { // Up arrow key
-                    W._eventUp();
-                    return false;
-                } else if (e.keyCode === 39) { // Right arrow key
-                    W._eventRight(e);
-                    // return false;
-                } else if (e.keyCode === 40) { // Down arrow key
-                    W._eventDown(e);
-                    return false;
-                } else if (e.keyCode === 46) { // Delete key
-                    W._eventDel();
-                } else if (e.keyCode === 27) { // Esc key
-                    W._eventEsc();
-                } else if (e.keyCode === 90 && e.ctrlKey) { // CTRL + Z
-                    W._eventUndo();
+        $(document)
+            .on(
+                'click',
+                '.arrow, .arrow-shadow',
+                function(e) {
+                    Syntree.Workspace._eventArrowClick(e);
+                })
+            .on(
+                'click',
+                '.branch, .branch-shadow, .triangle',
+                function(e) {
+                    Syntree.Workspace._eventBranchClick(e);
+                })
+            .on(
+                'click',
+                '.triangle-button',
+                function(e) {
+                    Syntree.Workspace._eventTriangleButtonClick(e);
+                })
+            .on(
+                'click',
+                '.node-label',
+                function(e) {
+                    Syntree.Workspace._eventNodeClick(e);
+                })
+            .on(
+                'click',
+                '.delete_button',
+                function() {
+                    Syntree.Workspace._eventDel();
+                })
+            .on(
+                'click',
+                '#page-background',
+                function(e) {
+                    Syntree.Workspace._eventBGClick(e);
+                })
+            .on(
+                'dblclick',
+                '.node-label',
+                function() {
+                    Syntree.Workspace._eventEnter();
+                })
+            .on(
+                'input',
+                '.editor',
+                function() {
+                    Syntree.Workspace._eventEditorTyping();
+                })
+            .on(
+                'keydown',
+                function(e) {
+                    if ((Syntree.Workspace.focus_checking_enabled && Syntree.Workspace.focused) ||
+                        !Syntree.Workspace.focus_checking_enabled) {
+
+                            if (e.keyCode === 13) { // Enter
+                                Syntree.Workspace._eventEnter();
+                            } else if (e.keyCode === 37) { // Left arrow key
+                                Syntree.Workspace._eventLeft(e);
+                            } else if (e.keyCode === 38) { // Up arrow key
+                                Syntree.Workspace._eventUp();
+                                return false;
+                            } else if (e.keyCode === 39) { // Right arrow key
+                                Syntree.Workspace._eventRight(e);
+                            } else if (e.keyCode === 40) { // Down arrow key
+                                Syntree.Workspace._eventDown(e);
+                                return false;
+                            } else if (e.keyCode === 46) { // Delete key
+                                Syntree.Workspace._eventDel();
+                            } else if (e.keyCode === 27) { // Esc key
+                                Syntree.Workspace._eventEsc();
+                            } else if (e.keyCode === 90 && e.ctrlKey) { // CTRL + Z
+                                Syntree.Workspace._eventUndo();
+                            }
+                    }
                 }
-            }
-        });
-        // Focus checking
-        if (W.focus_checking_enabled) {
-            $(document).on('click', '.focus_check_overlay', function(){W._eventFocus()});
-            $(document).on('click', '.focus_check_underlay', function(){W._eventUnfocus()});
+            );
+
+        // Focus checking.
+        if (Syntree.Workspace.focus_checking_enabled) {
+            $(document)
+                .on(
+                    'click',
+                    '.focus_check_overlay',
+                    function() {
+                        Syntree.Workspace._eventFocus();
+                    })
+                .on(
+                    'click',
+                    '.focus_check_underlay',
+                    function() {
+                        Syntree.Workspace._eventUnfocus()
+                    }
+                );
         }
-        if (Syntree.Lib.checkType(this.save_tree_script, 'string')) {
-            $(document).on('click', '.toolbar_button__save', function(){W._eventSave()});
-        }
-        // Modal export
+
+        // Exporting trees.
         if (Syntree.Lib.checkType(this.export_tree_script, 'string')) {
-            $(document).on('click', '.modal_section__filetype .modal_label', function(e) {W._eventFiletypeLabelClick(e)});
-            $(document).on('click', '.button_modal__export', function() {
-                $(this).addClass('loading');
-                var type = $('.modal_section__filetype input:checked').val();
-                if (type === 'bracket-file') {
-                    W._eventExportBrackets();
-                } else if (type === 'tree-file') {
-                    W._eventExportTreeFile();
-                } else if (type === 'png') {
-                    W._eventExportImage();
-                }
-                $(this).removeClass('loading');
-            });
+            $(document)
+                .on(
+                    'click',
+                    '.modal_section__filetype .modal_label',
+                    function(e) {
+                        Syntree.Workspace._eventFiletypeLabelClick(e);
+                    })
+                .on(
+                    'click',
+                    '.button_modal__export',
+                    function() {
+                        $(this).addClass('loading');
+                        var type = $('.modal_section__filetype input:checked').val();
+                        if (type === 'bracket-file') {
+                            Syntree.Workspace._eventExportBrackets();
+                        } else if (type === 'tree-file') {
+                            Syntree.Workspace._eventExportTreeFile();
+                        } else if (type === 'png') {
+                            Syntree.Workspace._eventExportImage();
+                        }
+                        $(this).removeClass('loading');
+                    }
+                );
         }
-        // Upload
+
+        // Uploading trees.
         if (this.upload_enabled) {
-            $(document).on('click', '.toolbar_button__upload', function() {
-                W._eventUpload();
-            });
-        }
-        // Modal open
-        if (Syntree.Lib.checkType(this.get_trees_script, 'string')) {
-            $(document).on('click', '.toolbar_button__open', function() {
-                $.post(W.get_trees_script, {}, function(result) {
-                    $('.modal_section__trees').html(result);
+            $(document).on(
+                'click',
+                '.toolbar_button__upload',
+                function() {
+                    Syntree.Workspace._eventUpload();
                 });
+        }
+
+        // Saving trees.
+        if (Syntree.Lib.checkType(this.save_tree_script, 'string')) {
+            $(document).on(
+                'click',
+                '.toolbar_button__save',
+                function(){
+                    Syntree.Workspace._eventSave();
+                });
+        }
+
+        // Opening trees.
+        if (Syntree.Lib.checkType(this.get_trees_script, 'string')) {
+            $(document).on(
+                'click',
+                '.toolbar_button__open',
+                function() {
+                    $.post(Syntree.Workspace.get_trees_script, {}, function(result) {
+                        $('.modal_section__trees').html(result);
+                    });
             });
         }
     },
@@ -204,7 +304,7 @@ Syntree.Workspace = {
     _eventTriangleButtonClick: function(e) {
         var clicked = e.currentTarget;
         var clickedId = $(clicked).attr('id');
-        var id = Number(clickedId.substr(clickedId.lastIndexOf('-')+1, clickedId.length));
+        var id = Number(clickedId.substr(clickedId.lastIndexOf('-') + 1, clickedId.length));
         Syntree.Workspace.page.allElements[id].triangleToggle();
     },
 
@@ -217,7 +317,7 @@ Syntree.Workspace = {
     _eventBranchClick: function(e) {
         var clicked = e.currentTarget;
         var clickedId = $(clicked).attr('id');
-        var id = Number(clickedId.substr(clickedId.lastIndexOf('-')+1, clickedId.length));
+        var id = Number(clickedId.substr(clickedId.lastIndexOf('-') + 1, clickedId.length));
         Syntree.Workspace.page.select(Syntree.Workspace.page.allElements[id]);
     },
 
@@ -230,7 +330,7 @@ Syntree.Workspace = {
     _eventArrowClick: function(e) {
         var clicked = e.currentTarget;
         var clickedId = $(clicked).attr('id');
-        var id = Number(clickedId.substr(clickedId.lastIndexOf('-')+1, clickedId.length));
+        var id = Number(clickedId.substr(clickedId.lastIndexOf('-') + 1, clickedId.length));
         Syntree.Workspace.page.select(Syntree.Workspace.page.allElements[id]);
     },
 
@@ -242,9 +342,9 @@ Syntree.Workspace = {
     _eventRewatchTutorial: function() {
         var check;
         if (Syntree.Tutorial.running) {
-            check = confirm("Restart tutorial?");
+            check = confirm('Restart tutorial?');
         } else {
-            check = confirm("This will delete any work you have open. Start tutorial anyway?");
+            check = confirm('This will delete any work you have open. Start tutorial anyway?');
         }
         if (check) {
             Syntree.Workspace.page.tree.delete();
@@ -262,26 +362,6 @@ Syntree.Workspace = {
      */
     _eventUndo: function() {
         Syntree.History.undo();
-    },
-
-    _eventUpload: function() {
-        var W = this;
-        $('body').append('<input type="file" id="temp-choose-file">');
-        $('#temp-choose-file').change(function() {
-            var f = document.getElementById("temp-choose-file").files[0];
-            if (f) {
-                var reader = new FileReader();
-                reader.readAsText(f, "UTF-8");
-                reader.onload = function (e) {
-                    W.page.openTree(e.target.result);
-                }
-                reader.onerror = function (e) {
-                    alert('Unable to read file. Please upload a .tree file.')
-                }
-            }
-            $('#temp-choose-file').remove();
-        });
-        $('#temp-choose-file').click();
     },
 
     /**
@@ -314,7 +394,7 @@ Syntree.Workspace = {
         if (Syntree.Lib.checkType(e, 'object') && !e.ctrlKey) {
             this.page.navigateHorizontal('left');
         } else {
-            this.page.navigateHorizontal('left',true);
+            this.page.navigateHorizontal('left', true);
         }
     },
 
@@ -330,7 +410,7 @@ Syntree.Workspace = {
         if (Syntree.Lib.checkType(e, 'object') && !e.ctrlKey) {
             this.page.navigateHorizontal('right');
         } else {
-            this.page.navigateHorizontal('right',true);
+            this.page.navigateHorizontal('right', true);
         }
     },
 
@@ -401,10 +481,125 @@ Syntree.Workspace = {
         this.page.nodeEditing('update');
     },
 
+    /**
+     * Code to run when the user clicks a file type option in the export modal.
+     * Updates the displayed file suffix.
+     */
+    _eventFiletypeLabelClick: function(e) {
+        var clicked = $(e.currentTarget).children('input');
+        if ($(clicked).val() == 'bracket-file') {
+            $('.modal_option__fname span').text('.txt');
+        } else if ($(clicked).val() == 'tree-file') {
+            $('.modal_option__fname span').text('.tree');
+        } else if ($(clicked).val() == 'png') {
+            $('.modal_option__fname span').text('.png');
+        }
+    },
+
+    /**
+     * Code for exporting the current tree as an image (png).
+     */
+    _eventExportImage: function() {
+        // Get the tree's bounding path, and other initial values.
+        var path = Syntree.Workspace.page.tree._getPath();
+
+        var width = path.rightBound - path.leftBound;
+        var height = path.bottomBound - path.topBound;
+
+        var offsetX = (-1 * path.leftBound + 25);
+        var offsetY = (-1 * path.topBound + 25);
+
+        // Get the SVG data.
+        var svgstring = '<svg>' + this.page.getSVGString() + '</svg>';
+
+        // Set up the canvas size.
+        $('#export-image-canvas').attr('width', (width + 50));
+        $('#export-image-canvas').attr('height', (height + 50));
+
+        // Use canvg to paint the SVG data to the canvas.
+        canvg('export-image-canvas', svgstring, {
+            offsetX: (-1 * (path.leftBound - 25)),
+            offsetY: (-1 * (path.topBound - 25)),
+        });
+
+        // Download the image.
+        var canvas = document.getElementById('export-image-canvas');
+        var imgd = canvas.toDataURL('image/png');
+        var link = '<a id="temp-file-download" href="' + imgd + '" download="mytree.png"></a>';
+        $('body').append(link);
+        $(link)[0].click();
+    },
+
+    /**
+     * Code for exporting the current tree as a tree file.
+     */
+    _eventExportTreeFile: function() {
+        var fname = $('.modal_option__fname input').val();
+        var treestring = this.page.tree.getTreeString();
+        if (Syntree.Lib.checkType(this.export_tree_script, 'string')) {
+            $.post(this.export_tree_script, {fname: fname, type: 'tree-file', treestring: treestring}, function(link){
+                $('body').append(link);
+                $('#temp-file-download')[0].click();
+                $('#temp-file-download').remove();
+            })
+
+        }
+    },
+
+    /**
+     * Code for exporting the current tree as bracket notation (.txt file).
+     */
+    _eventExportBrackets: function() {
+        $('.loading-icon').show();
+        // Get fname
+        var fname = $('.modal_option__fname input').val();
+        // Get brackets
+        var brackets = this.page.tree.getBracketNotation();
+        // Post it
+        if (Syntree.Lib.checkType(this.export_tree_script, 'string')) {
+            $.post(this.export_tree_script, {fname: fname, type: 'bracket-file', brackets: brackets}, function(link) {
+                $('body').append(link);
+                $('#temp-file-download')[0].click();
+                $('#temp-file-download').remove();
+                $('.loading-icon').hide();
+            });
+        }
+    },
+
+    /**
+     * Code to run when the user presses Enter.
+     */
+    _eventEnter: function() {
+        this.page.nodeEditing('toggle');
+    },
+
+    toString: function() {
+        return '[object Workspace]';
+    },
+
+    _eventFocus: function() {
+        $('.focus_check_overlay').hide();
+        $('.focus_check_underlay').show();
+        window.scrollTo($('#workspace').offset().left,$('#workspace').offset().top);
+        // $('body').css('overflow','hidden');
+        $('#workspace_container').css('z-index',103);
+        this.focused = true;
+    },
+
+    _eventUnfocus: function() {
+        $('.focus_check_overlay').show();
+        $('.focus_check_underlay').hide();
+        $('body').css('overflow','initial');
+        $('#workspace_container').css('z-index',0);
+        this.focused = false;
+    },
+
+    // IMPORTANT:
+    // All this stuff is on hold. Please ignore it.
     _eventBGClick: function(e) {
         return; //temporary
-        var x = e.pageX - $("#workspace").offset().left;
-        var y = e.pageY - $("#workspace").offset().top;
+        var x = e.pageX - $('#workspace').offset().left;
+        var y = e.pageY - $('#workspace').offset().top;
         var nearest = this.page.getNearestNode(x,y);
         var newNode = new Syntree.Node(0,0);
 
@@ -426,74 +621,24 @@ Syntree.Workspace = {
         }
     },
 
-    _eventFiletypeLabelClick: function(e) {
-        var clicked = $(e.currentTarget).children('input');
-        if ($(clicked).val() == 'bracket-file') {
-            $('.modal_option__fname span').text('.txt');
-        } else if ($(clicked).val() == 'tree-file') {
-            $('.modal_option__fname span').text('.tree');
-        } else if ($(clicked).val() == 'png') {
-            $('.modal_option__fname span').text('.png');
-        }
-    },
-
-    _eventExportImage: function() {
-        var path = Syntree.Workspace.page.tree._getPath();
-        var width = path.rightBound - path.leftBound;
-        var height = path.bottomBound - path.topBound;
-        console.log('width: ' + width);
-        console.log('height: ' + height)
-        var offsetX = (-1*path.leftBound + 25);
-        var offsetY = (-1*path.topBound + 25);
-
-        var svgstring = '<svg>'+this.page.getSVGString()+'</svg>';
-        $('#export-image-canvas').attr('width', (width+50));
-        $('#export-image-canvas').attr('height', (height+50));
-        // $('#export-image-canvas').attr('width', $('#workspace').width());
-        // $('#export-image-canvas').attr('height', $('#workspace').height());
-        // console.log(svgstring);
-        canvg('export-image-canvas', svgstring, {
-            // ignoreDimensions: false,
-            offsetX: (-1*(path.leftBound-25)),
-            offsetY: (-1*(path.topBound-25)),
-            // scaleWidth: 5,
-            // scaleHeight: 5,
+    _eventUpload: function() {
+        var W = this;
+        $('body').append('<input type="file" id="temp-choose-file">');
+        $('#temp-choose-file').change(function() {
+            var f = document.getElementById('temp-choose-file').files[0];
+            if (f) {
+                var reader = new FileReader();
+                reader.readAsText(f, 'UTF-8');
+                reader.onload = function (e) {
+                    W.page.openTree(e.target.result);
+                }
+                reader.onerror = function (e) {
+                    alert('Unable to read file. Please upload a .tree file.')
+                }
+            }
+            $('#temp-choose-file').remove();
         });
-        var canvas = document.getElementById('export-image-canvas');
-        var imgd = canvas.toDataURL("image/png");
-        var link = '<a id="temp-file-download" href="'+imgd+'" download="mytree.png"></a>';
-        $('body').append(link);
-        $(link)[0].click();
-    },
-
-    _eventExportTreeFile: function() {
-        var fname = $('.modal_option__fname input').val();
-        var treestring = this.page.tree.getTreeString();
-        if (Syntree.Lib.checkType(this.export_tree_script, 'string')) {
-            $.post(this.export_tree_script, {fname: fname, type: 'tree-file', treestring: treestring}, function(link){
-                $('body').append(link);
-                $('#temp-file-download')[0].click();
-                $('#temp-file-download').remove();
-            })
-
-        }
-    },
-
-    _eventExportBrackets: function() {
-        $('.loading-icon').show();
-        // Get fname
-        var fname = $('.modal_option__fname input').val();
-        // Get brackets
-        var brackets = this.page.tree.getBracketNotation();
-        // Post it
-        if (Syntree.Lib.checkType(this.export_tree_script, 'string')) {
-            $.post(this.export_tree_script, {fname: fname, type: 'bracket-file', brackets: brackets}, function(link) {
-                $('body').append(link);
-                $('#temp-file-download')[0].click();
-                $('#temp-file-download').remove();
-                $('.loading-icon').hide();
-            });
-        }
+        $('#temp-choose-file').click();
     },
 
     _eventSave: function() {
@@ -513,31 +658,4 @@ Syntree.Workspace = {
         }
     },
 
-    _eventFocus: function() {
-        $(".focus_check_overlay").hide();
-        $(".focus_check_underlay").show();
-        window.scrollTo($("#workspace").offset().left,$("#workspace").offset().top);
-        // $('body').css('overflow','hidden');
-        $('#workspace_container').css('z-index',103);
-        this.focused = true;
-    },
-
-    _eventUnfocus: function() {
-        $(".focus_check_overlay").show();
-        $(".focus_check_underlay").hide();
-        $('body').css('overflow','initial');
-        $('#workspace_container').css('z-index',0);
-        this.focused = false;
-    },
-
-    /**
-     * Code to run when the user presses Enter.
-     */
-    _eventEnter: function() {
-        this.page.nodeEditing('toggle');
-    },
-
-    toString: function() {
-        return "[object Workspace]";
-    }
 }

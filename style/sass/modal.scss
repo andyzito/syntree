@@ -5,6 +5,7 @@
     border-radius: 10px;
     font-family: sans-serif;
     z-index: 101;
+    padding: 1rem;
 
     &.modal_export, &.modal_open {
         width: 45%;
@@ -15,7 +16,6 @@
 
     &.modal_tutorial {
         width: 40%;
-        height: 24%;
         top: 38%;
         left: 30%;
     }

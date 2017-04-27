@@ -3,9 +3,9 @@
 * @param {string} name This is the unique name of the modal
 */
 function modal_open(name) {
-    var modal = $(".modal_body.modal_" + name);
+    var modal = $('.modal_body.modal_' + name);
     modal.show();
-    var overlay = $(".overlay[overlay-id=" + modal.attr('with-overlay') + "]");
+    var overlay = $('.overlay[overlay-id=' + modal.attr('with-overlay') + ']');
     overlay.show();
 }
 
@@ -14,16 +14,16 @@ function modal_open(name) {
 * @param {string} overlay The unique name of the overlay (can group multiple modals)
 */
 function modal_close(overlay) {
-    var modal = $(".modal_body[with-overlay=" + overlay + "]");
+    var modal = $('.modal_body[with-overlay=' + overlay + ']');
     modal.hide();
-    var overlay = $(".overlay[overlay-id=" + overlay + "]");
+    var overlay = $('.overlay[overlay-id=' + overlay + ']');
     overlay.hide();
 }
 
 $(document).ready(function() {
     // Initialize ALL modals and overlays to hidden state
-    $(".modal_body").hide();
-    $(".overlay").hide();
+    $('.modal_body').hide();
+    $('.overlay').hide();
 
     // Fetch any/all modal triggers and add event listeners
     $(document).on('click','.modal_trigger',function(e) {

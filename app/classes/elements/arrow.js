@@ -49,10 +49,10 @@ Syntree.Arrow.prototype.createGraphic = function() {
     if (Syntree.Lib.checkType(this.path, 'string')) {
         var path = this.path;
     } else {
-        var path = "M " + startPoint.x + " " + startPoint.y +
-                ", C " + startPoint.x + " " + startPoint.y +
-                ", " + endPoint.x + " " + endPoint.y +
-                ", " + endPoint.x + " " + endPoint.y;
+        var path = 'M ' + startPoint.x + ' ' + startPoint.y +
+                ', C ' + startPoint.x + ' ' + startPoint.y +
+                ', ' + endPoint.x + ' ' + endPoint.y +
+                ', ' + endPoint.x + ' ' + endPoint.y;
     }
 
     var shadowLine = Syntree.snap.path(path);
@@ -250,7 +250,7 @@ Syntree.Arrow.prototype.getStartPoint = function() {
 }
 
 Syntree.Arrow.prototype.setStartPoint = function(x,y) {
-    var newStart = "M " + x + " " + y + ",";
+    var newStart = 'M ' + x + ' ' + y + ',';
     var path = this.graphic.getEl('line').attr('path');
     path = path.substr(path.indexOf(',')+1, path.length);
     path = newStart + path;
@@ -258,7 +258,7 @@ Syntree.Arrow.prototype.setStartPoint = function(x,y) {
 }
 
 Syntree.Arrow.prototype.setEndPoint = function(x,y) {
-    var newEnd = ", " + x + " " + y;
+    var newEnd = ', ' + x + ' ' + y;
     var path = this.graphic.getEl('line').attr('path');
     path = path.substr(0, path.lastIndexOf(','));
     path = path + newEnd;
@@ -278,7 +278,7 @@ Syntree.Arrow.prototype.getEndPoint = function() {
 }
 
 Syntree.Arrow.prototype.toString = function() {
-    return "[object Arrow]"
+    return '[object Arrow]'
 }
 
 Syntree.Arrow.prototype.__updateGraphics = function() {
@@ -377,7 +377,7 @@ Syntree.Arrow.prototype.setStartCtrlPoint = function(x,y) {
     var path = this.graphic.getEl('line').attr('path');
     var half1 = path.substr(0, path.indexOf('C') + 2);
     var half2 = path.substr(path.lastIndexOf(',', path.lastIndexOf(',')-1));
-    var newPoint = x + " " + y;
+    var newPoint = x + ' ' + y;
     this.graphic.getEl('line').attr('path', half1 + newPoint + half2);
 }
 
@@ -385,7 +385,7 @@ Syntree.Arrow.prototype.setEndCtrlPoint = function(x,y) {
     var path = this.graphic.getEl('line').attr('path');
     var half1 = path.substr(0, path.indexOf(',', path.indexOf('C'))+2);
     var half2 = path.substr(path.lastIndexOf(',', path.length));
-    var newPoint = x + " " + y;
+    var newPoint = x + ' ' + y;
     this.graphic.getEl('line').attr('path', half1 + newPoint + half2);
 }
 

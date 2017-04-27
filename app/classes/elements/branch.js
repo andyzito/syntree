@@ -217,7 +217,7 @@ Syntree.Branch.prototype.createGraphic = function() {
 }
 
 Syntree.Branch.prototype.toString = function() {
-    return "[object Branch]"
+    return '[object Branch]'
 }
 
 Syntree.Branch.prototype.__delete = function() {
@@ -272,9 +272,9 @@ Syntree.Branch.prototype.getTrianglePath = function() {
         y: cBBox.y,
     }
 
-    s = "M " + start.x + " " + start.y + ", ";
-    s += "L " + botLeft.x + " " + (botLeft.y-5) + ", ";
-    s += "L " + botRight.x + " " + (botRight.y-5) + ", ";
-    s += "L " + start.x + " " + start.y + ", ";
+    s = 'M ' + start.x + ' ' + start.y + ', ';
+    s += 'L ' + botLeft.x + ' ' + (botLeft.y-5) + ', ';
+    s += 'L ' + botRight.x + ' ' + (botRight.y-5) + ', ';
+    s += 'L ' + start.x + ' ' + start.y + ', ';
     return s;
 }

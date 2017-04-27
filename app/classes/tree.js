@@ -96,16 +96,16 @@ Syntree.Tree.prototype._getPath = function(which) {
 
     if (Right) {
         var rX = rootPos.x - (rootBBox.w/2);
-        var rPathString = "M" + rX + "," + Y;
-        rPathString += "H" + (rootPos.x + (rootBBox.w/2));
+        var rPathString = 'M' + rX + ',' + Y;
+        rPathString += 'H' + (rootPos.x + (rootBBox.w/2));
         var rX = rootPos.x + (rootBBox.w/2);
         var rBound = rX;
     }
 
     if (Left) {
         var lX = rootPos.x + (rootBBox.w/2);
-        var lPathString = "M" + lX + "," + Y;
-        lPathString += "H" + (rootPos.x - (rootBBox.w/2));
+        var lPathString = 'M' + lX + ',' + Y;
+        lPathString += 'H' + (rootPos.x - (rootBBox.w/2));
         var lX = rootPos.x - (rootBBox.w/2);
         var lBound = lX;
     }
@@ -127,11 +127,11 @@ Syntree.Tree.prototype._getPath = function(which) {
             var newRX = rPos.x + (rBBox.w/2);
 
             if (newRX < rX) {
-                rPathString += "V" + (rPos.y - (rBBox.h/2));
-                rPathString += "H" + (rPos.x + (rBBox.w/2));
+                rPathString += 'V' + (rPos.y - (rBBox.h/2));
+                rPathString += 'H' + (rPos.x + (rBBox.w/2));
             } else {
-                rPathString += "H" + (rPos.x + (rBBox.w/2));
-                rPathString += "V" + (rPos.y - (rBBox.h/2));
+                rPathString += 'H' + (rPos.x + (rBBox.w/2));
+                rPathString += 'V' + (rPos.y - (rBBox.h/2));
             }
 
             rX = newRX;
@@ -148,11 +148,11 @@ Syntree.Tree.prototype._getPath = function(which) {
             var newLX = lPos.x - (lBBox.w/2);
 
             if (newLX > lX) {
-                lPathString += "V" + (lPos.y - (lBBox.h/2));
-                lPathString += "H" + (lPos.x - (lBBox.w/2));
+                lPathString += 'V' + (lPos.y - (lBBox.h/2));
+                lPathString += 'H' + (lPos.x - (lBBox.w/2));
             } else {
-                lPathString += "H" + (lPos.x - (lBBox.w/2));
-                lPathString += "V" + (lPos.y - (lBBox.h/2));
+                lPathString += 'H' + (lPos.x - (lBBox.w/2));
+                lPathString += 'V' + (lPos.y - (lBBox.h/2));
             }
 
             lX = newLX;
@@ -173,12 +173,12 @@ Syntree.Tree.prototype._getPath = function(which) {
     var rBBox = rNode.getLabelBBox();
 
     if (Right) {
-        rPathString += "V" + (rPos.y + (rBBox.h/2));
-        rPathString += "H" + (lPos.x - (lBBox.w/2));
+        rPathString += 'V' + (rPos.y + (rBBox.h/2));
+        rPathString += 'H' + (lPos.x - (lBBox.w/2));
     }
     if (Left) {
-        lPathString += "V" + (lPos.y + (lBBox.h/2));
-        lPathString += "H" + (rPos.x + (rBBox.w/2));
+        lPathString += 'V' + (lPos.y + (lBBox.h/2));
+        lPathString += 'H' + (rPos.x + (rBBox.w/2));
     }
 
     if (Left && Right) {
@@ -208,22 +208,22 @@ Syntree.Tree.prototype.getDescendantsOf = function(node,attr,inclusive,flat) {
     var getAttr;
     switch (attr) {
         case 'id':
-            getAttr = ".getId()";
+            getAttr = '.getId()';
             break;
         case 'labelContent':
-            getAttr = ".getLabelContent()";
+            getAttr = '.getLabelContent()';
             break;
         case 'editing':
         case 'selected':
         case 'real':
-            getAttr = ".getState('" + attr + "')";
+            getAttr = '.getState("' + attr + '")';
             break;
         case 'x':
         case 'y':
-            getAttr = ".getPosition()." + attr;
+            getAttr = '.getPosition().' + attr;
             break;
         default:
-            getAttr = "";
+            getAttr = '';
     }
 
     var result = [];
@@ -234,10 +234,10 @@ Syntree.Tree.prototype.getDescendantsOf = function(node,attr,inclusive,flat) {
         var thisChild = node.getChildren()[i];
         if (!flat) {
             var toAdd = {};
-            toAdd[eval("thisChild"+getAttr)] = this.getDescendantsOf(thisChild,attr,false);
+            toAdd[eval('thisChild'+getAttr)] = this.getDescendantsOf(thisChild,attr,false);
             result.push(toAdd);
         } else {
-            var toAdd = [eval("thisChild"+getAttr)];
+            var toAdd = [eval('thisChild'+getAttr)];
             toAdd = toAdd.concat(this.getDescendantsOf(thisChild,attr,false,true));
             result = result.concat(toAdd);
         }
@@ -246,12 +246,12 @@ Syntree.Tree.prototype.getDescendantsOf = function(node,attr,inclusive,flat) {
 
     if (inclusive) {
         if(!flat) {
-            var t = eval("node"+getAttr);
+            var t = eval('node'+getAttr);
             temp = {};
             temp[t] = result;
             result = [temp];
         } else {
-            result.unshift(eval("node"+getAttr));
+            result.unshift(eval('node'+getAttr));
         }
     }
 
@@ -307,16 +307,16 @@ Syntree.Tree.prototype.getNodesByOffset = function(node,off) {
 }
 
 Syntree.Tree.prototype.getTreeString = function() {
-    var s = "";
+    var s = '';
     var nodes = this.getDescendantsOf(this.root,'',true,true);
     var i = 0;
     while (i < nodes.length) {
         var node = nodes[i];
         for (p in this.node_properties_to_save) {
             s += p;
-            s += ":";
+            s += ':';
             s += this.node_properties_to_save[p](node);
-            s += "|";
+            s += '|';
         }
         s += ';';
         i++;
@@ -328,23 +328,23 @@ Syntree.Tree.prototype.getBracketNotation = function(node) {
     node = Syntree.Lib.checkArg(node, 'node', this.root);
     node = Syntree.Lib.checkArg(node, 'node');
 
-    var string = "[." + node.getLabelContent();
+    var string = '[.' + node.getLabelContent();
     var children = node.getChildren();
     if (children.length > 0) {
         var c = 0;
         while (c < children.length) {
             var thisChild = children[c];
             var add = this.getBracketNotation(thisChild);
-            string += " " + add;
+            string += ' ' + add;
             c++;
         }
     }
-    string += " ]";
+    string += ' ]';
     return string;
 }
 
 Syntree.Tree.prototype.getSVGString = function(offsetX,offsetY) {
-    var s = "";
+    var s = '';
     var nodes = this.getDescendantsOf(this.root,'',true,true);
     var i = 0;
     while (i<nodes.length) {
@@ -449,7 +449,7 @@ Syntree.Tree.prototype.distribute = function(angle,force_check_all) {
 }
 
 Syntree.Tree.prototype.delete = function() {
-    var nodes = this.getDescendantsOf(this.root,"",true,true);
+    var nodes = this.getDescendantsOf(this.root,'',true,true);
     var i = 0;
     while (i < nodes.length) {
         nodes[i].delete();
@@ -459,7 +459,7 @@ Syntree.Tree.prototype.delete = function() {
 
 
 Syntree.Tree.prototype.toString = function() {
-return "[object Tree]"
+return '[object Tree]'
 }
 
 Syntree.Tree.prototype._buildFromTreestring = function(treestring) {

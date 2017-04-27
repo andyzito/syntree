@@ -3,12 +3,25 @@
  * @classdesc Manages and stores [Actions]{@link Syntree.Action}
  */
 Syntree.History = {
-    // Actions is stored as a queue with the most recent action at the end (index length-1)
-    // To outsiders, it is returned as an array with the most recent action at the front (index 0)
+    /**
+     * Actions is stored as a queue with the most recent action at the end (index length-1).
+     * Note that it is returned as an array with the most recent action at the front (index 0).
+     *
+     * @see Syntree.History.getAll()
+     */
     actions: [],
 
-    silent: false, //while silent, no actions can be added
+    /**
+     * While this is set to true, no [Actions]{@link Syntree.Action} are added to the history.
+     * This is used so that we don't have to worry about creating new [Actions]{@link Syntree.Action} while undoing old ones.
+     */
+    silent: false,
 
+    /**
+     * Add an action to the history.
+     *
+     * @see Syntree.History.actions
+     */
     addAction: function(action) {
         action = Syntree.Lib.checkArg(action, 'action');
 
@@ -17,18 +30,37 @@ Syntree.History = {
         }
     },
 
-    popAction: function() {
-        return this.actions.pop();
-    },
-
+    /**
+     * Get the most recent [Action]{@link Syntree.Action}.
+     *
+     * @see Syntree.History.actions
+     * @returns {Syntree.Action} - the most recent action.
+     */
     getLast: function() {
         return this.actions[this.actions.length-1];
     },
 
+    /**
+     * Get all [Actions]{@link Syntree.Action}, reversed so that the most recent is at the front.
+     *
+     * @returns {Syntree.Action[]} - all actions in the history.
+     *
+     * @see Syntree.History.actions
+     */
     getAll: function() {
         return this.actions.slice().reverse();
     },
 
+    /**
+     * Get all [Actions]{@link Syntree.Action}, reversed so that the most recent is at the front.
+     * Filter by given type.
+     *
+     * @param {string} - type of action to filter by, e.g. 'select'
+     * @returns {Syntree.Action[]} - all actions matching the given type
+     *
+     * @see Syntree.History.getAll
+     * @see Syntree.History.actions
+     */
     getAllByType: function(type) {
         type = Syntree.Lib.checkArg(type, 'string');
 
@@ -84,6 +116,6 @@ Syntree.History = {
     },
 
     toString: function() {
-        return "[object History]";
+        return '[object History]';
     }
 }

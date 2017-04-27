@@ -7,8 +7,8 @@ Syntree.Page = function() {
     /**
      * The <rect> which is the background of the page.
      */
-    var wWidth = $("#workspace").width();
-    var wHeight = $("#workspace").height();
+    var wWidth = $('#workspace').width();
+    var wHeight = $('#workspace').height();
     this.background = Syntree.snap.rect(
         -1 * (wWidth),
         -1 * (wHeight),
@@ -154,14 +154,14 @@ Syntree.Page.prototype.addTree = function(tree,parent,index) {
     if (!Syntree.Lib.checkType(tree, 'tree')) {
         // Default tree
         var root = new Syntree.Node({
-            x: $("#workspace").width()/2,
-            y: $("#toolbar").height()+20,
-            labelContent: "S",
+            x: $('#workspace').width()/2,
+            y: $('#toolbar').height()+20,
+            labelContent: 'S',
         });
         this.tree = new Syntree.Tree({
-            // build_treestring: "id:612|children:40,266|parent:undefined|labelContent:S|;id:40|children:undefined|parent:612|labelContent:Q|;id:266|children:460,170|parent:612|labelContent:Q|;id:460|children:911,884|parent:266|labelContent:Qlsfdksdfasdf|;id:911|children:undefined|parent:460|labelContent:Q|;id:884|children:undefined|parent:460|labelContent:Q|;id:170|children:undefined|parent:266|labelContent:Q|;",
-            build_treestring: "id:47|children:336,250|parent:undefined|labelContent:S|;id:336|children:570,175|parent:47|labelContent:Q|;id:570|children:838,146|parent:336|labelContent:O|;id:838|children:126,716|parent:570|labelContent:C|;id:126|children:538|parent:838|labelContent:E|;id:538|children:undefined|parent:126|labelContent:B|;id:716|children:undefined|parent:838|labelContent:X|;id:146|children:911,337|parent:570|labelContent:V|;id:911|children:undefined|parent:146|labelContent:G|;id:337|children:undefined|parent:146|labelContent:H|;id:175|children:883,866|parent:336|labelContent:A|;id:883|children:956,748|parent:175|labelContent:R|;id:956|children:undefined|parent:883|labelContent:S|;id:748|children:undefined|parent:883|labelContent:U|;id:866|children:391,578|parent:175|labelContent:T|;id:391|children:undefined|parent:866|labelContent:K|;id:578|children:undefined|parent:866|labelContent:N|;id:250|children:8,863|parent:47|labelContent:Z|;id:8|children:483,514|parent:250|labelContent:x|;id:483|children:109,271|parent:8|labelContent:Z|;id:109|children:undefined|parent:483|labelContent:Y|;id:271|children:undefined|parent:483|labelContent:I|;id:514|children:378,168|parent:8|labelContent:P|;id:378|children:undefined|parent:514|labelContent:B|;id:168|children:undefined|parent:514|labelContent:V|;id:863|children:564,746|parent:250|labelContent:L|;id:564|children:300,349|parent:863|labelContent:K|;id:300|children:undefined|parent:564|labelContent:J|;id:349|children:undefined|parent:564|labelContent:F|;id:746|children:766,805|parent:863|labelContent:M|;id:766|children:undefined|parent:746|labelContent:W|;id:805|children:undefined|parent:746|labelContent:Q|;",
-            // build_treestring: "id:432|children:67,741|parent:undefined|labelContent:S|;id:67|children:undefined|parent:432|labelContent:Q|;id:741|children:578|parent:432|labelContent:Q|;id:578|children:737|parent:741|labelContent:Q|;id:737|children:0|parent:578|labelContent:Q|;id:0|children:61|parent:737|labelContent:Q|;id:61|children:134|parent:0|labelContent:Q|;id:134|children:undefined|parent:61|labelContent:[OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO]|;",
+            // build_treestring: 'id:612|children:40,266|parent:undefined|labelContent:S|;id:40|children:undefined|parent:612|labelContent:Q|;id:266|children:460,170|parent:612|labelContent:Q|;id:460|children:911,884|parent:266|labelContent:Qlsfdksdfasdf|;id:911|children:undefined|parent:460|labelContent:Q|;id:884|children:undefined|parent:460|labelContent:Q|;id:170|children:undefined|parent:266|labelContent:Q|;',
+            build_treestring: 'id:47|children:336,250|parent:undefined|labelContent:S|;id:336|children:570,175|parent:47|labelContent:Q|;id:570|children:838,146|parent:336|labelContent:O|;id:838|children:126,716|parent:570|labelContent:C|;id:126|children:538|parent:838|labelContent:E|;id:538|children:undefined|parent:126|labelContent:B|;id:716|children:undefined|parent:838|labelContent:X|;id:146|children:911,337|parent:570|labelContent:V|;id:911|children:undefined|parent:146|labelContent:G|;id:337|children:undefined|parent:146|labelContent:H|;id:175|children:883,866|parent:336|labelContent:A|;id:883|children:956,748|parent:175|labelContent:R|;id:956|children:undefined|parent:883|labelContent:S|;id:748|children:undefined|parent:883|labelContent:U|;id:866|children:391,578|parent:175|labelContent:T|;id:391|children:undefined|parent:866|labelContent:K|;id:578|children:undefined|parent:866|labelContent:N|;id:250|children:8,863|parent:47|labelContent:Z|;id:8|children:483,514|parent:250|labelContent:x|;id:483|children:109,271|parent:8|labelContent:Z|;id:109|children:undefined|parent:483|labelContent:Y|;id:271|children:undefined|parent:483|labelContent:I|;id:514|children:378,168|parent:8|labelContent:P|;id:378|children:undefined|parent:514|labelContent:B|;id:168|children:undefined|parent:514|labelContent:V|;id:863|children:564,746|parent:250|labelContent:L|;id:564|children:300,349|parent:863|labelContent:K|;id:300|children:undefined|parent:564|labelContent:J|;id:349|children:undefined|parent:564|labelContent:F|;id:746|children:766,805|parent:863|labelContent:M|;id:766|children:undefined|parent:746|labelContent:W|;id:805|children:undefined|parent:746|labelContent:Q|;',
+            // build_treestring: 'id:432|children:67,741|parent:undefined|labelContent:S|;id:67|children:undefined|parent:432|labelContent:Q|;id:741|children:578|parent:432|labelContent:Q|;id:578|children:737|parent:741|labelContent:Q|;id:737|children:0|parent:578|labelContent:Q|;id:0|children:61|parent:737|labelContent:Q|;id:61|children:134|parent:0|labelContent:Q|;id:134|children:undefined|parent:61|labelContent:[OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO]|;',
             // root: root,
         });
         this.tree.root.editingAction('save');
@@ -224,7 +224,7 @@ Syntree.Page.prototype.getSVGString = function(offsetX,offsetY) {
     this.deselect();
     var bgsvg = this.background.node.outerHTML;
     // var treesvg = this.tree.getSVGString(offsetX,offsetY);
-    var elementssvg = "";
+    var elementssvg = '';
     var elements = this.allElements;
     for (id in elements) {
         elementssvg += elements[id].graphic.getSVGString();
@@ -384,7 +384,7 @@ Syntree.Page.prototype.navigateDown = function(fcreate) {
             var newNode = new Syntree.Node({
                 x:0,
                 y:0,
-                labelContent:""});
+                labelContent:''});
             this.getSelected().addChild(newNode);
             var tree = new Syntree.Tree({root:this.getSelected()});
             tree.distribute();
@@ -443,7 +443,7 @@ Syntree.Page.prototype.nodeEditing = function(type,node, silent) {
     }
 }
 Syntree.Page.prototype.toString = function() {
-    return "[object Page]"
+    return '[object Page]'
 }
 
 Syntree.Page.prototype.pan = function(dx,dy) {
@@ -456,11 +456,11 @@ Syntree.Page.prototype._enablePanning = function() {
     this._move = function(dx,dy) {
 
         this.attr({
-                    transform: this.data('origTransform') + (this.data('origTransform') ? "T" : "t") + [dx, dy]
+                    transform: this.data('origTransform') + (this.data('origTransform') ? 'T' : 't') + [dx, dy]
                 });
         // This allows us to make page elements pan as well, but still make panning happen only on background click
         Syntree.Workspace.page.group.attr({
-                    transform: this.data('origTransform') + (this.data('origTransform') ? "T" : "t") + [dx, dy]
+                    transform: this.data('origTransform') + (this.data('origTransform') ? 'T' : 't') + [dx, dy]
                 });
 
         this.data('oldDX', dx);
@@ -474,8 +474,8 @@ Syntree.Page.prototype._enablePanning = function() {
         var top = $('.editor_container').position().top;
         var left = $('.editor_container').position().left;
         $('.editor_container').css({
-            'top': dy + "px",
-            'left': dx + "px",
+            'top': dy + 'px',
+            'left': dx + 'px',
         });
     }
 

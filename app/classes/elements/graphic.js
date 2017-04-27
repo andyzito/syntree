@@ -40,7 +40,7 @@ Syntree.Graphic.prototype.addElement = function(name, element) {
 }
 
 Syntree.Graphic.prototype.getSVGString = function() {
-    var s = "";
+    var s = '';
     for (name in this.elements) {
         if (this.elements[name].include_in_svg_string) {
             s += this.getEl(name).node.outerHTML;
@@ -97,7 +97,7 @@ Syntree.Graphic.prototype.delete = function() {
 
 Syntree.Graphic.prototype.recreate = function() {
     for (name in this.elements) {
-        $("#workspace").append(this.elements[name].node);
+        $('#workspace').append(this.elements[name].node);
     }
 }
 
@@ -118,5 +118,5 @@ Syntree.Graphic.prototype._handlerBoolean = function(state_obj) {
 }
 
 Syntree.Graphic.prototype.toString = function() {
-    return "[object Graphic]"
+    return '[object Graphic]'
 }
