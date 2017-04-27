@@ -388,13 +388,13 @@ Syntree.Workspace = {
      * @see Syntree.Page#navigateHorizontal
      */
     _eventLeft: function(e) {
-        if ($(document.activeElement).hasClass('editor') && $(document.activeElement).val() !== '') {
-            return;
-        }
-        if (Syntree.Lib.checkType(e, 'object') && !e.ctrlKey) {
-            this.page.navigateHorizontal('left');
-        } else {
+        if (e.shiftKey && e.ctrlKey) {
             this.page.navigateHorizontal('left', true);
+        } else {
+            if ($(document.activeElement).hasClass('editor') && $(document.activeElement).val() !== '') {
+                return;
+            }
+            this.page.navigateHorizontal('left');
         }
     },
 
@@ -404,13 +404,13 @@ Syntree.Workspace = {
      * @see Syntree.Page#navigateHorizontal
      */
     _eventRight: function(e) {
-        if ($(document.activeElement).hasClass('editor') && $(document.activeElement).val() !== '') {
-            return;
-        }
-        if (Syntree.Lib.checkType(e, 'object') && !e.ctrlKey) {
-            this.page.navigateHorizontal('right');
-        } else {
+        if (e.shiftKey && e.ctrlKey) {
             this.page.navigateHorizontal('right', true);
+        } else {
+            if ($(document.activeElement).hasClass('editor') && $(document.activeElement).val() !== '') {
+                return;
+            }
+            this.page.navigateHorizontal('right');
         }
     },
 
@@ -429,11 +429,7 @@ Syntree.Workspace = {
      * @see Syntree.Page#navigateDown
      */
     _eventDown: function(e) {
-        if (Syntree.Lib.checkType(e, 'object') && Syntree.Lib.checkType(e.ctrlKey, 'boolean') && e.ctrlKey) {
-            this.page.navigateDown(true);
-        } else {
-            this.page.navigateDown();
-        }
+        this.page.navigateDown();
     },
 
     /**
