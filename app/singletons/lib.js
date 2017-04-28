@@ -73,7 +73,8 @@ Syntree.Lib = {
      * @param {jQuery_Object} elem - A page element to scroll to
      */
     focusNoScroll: function(elem) {
-      var x = window.scrollX, y = window.scrollY;
+      var x = window.scrollX;
+      var y = window.scrollY;
       elem.focus();
       window.scrollTo(x, y);
     },
@@ -100,11 +101,11 @@ Syntree.Lib = {
      * @returns {number} a session-unique id
      */
     genId: function() {
-        if (this.allIds.length === this.idN/2) {
+        if (this.allIds.length === this.idN / 2) {
             this.idN += 1000;
         }
         while (true) {
-            var x = Math.floor(Math.random()*this.idN);
+            var x = Math.floor(Math.random() * this.idN);
             if (this.allIds.indexOf(x) === -1) {
                 this.allIds.push(x)
                 return x;
@@ -115,6 +116,7 @@ Syntree.Lib = {
     /**
      * Get the type of anything, taking into account all kinds of JS type weirdness.
      * Returns undefined for NaN and null. Returns specific object type if available, 'object' otherwise.
+     *
      * @param {} a - any value
      * @returns {string} the type of the passed value
      */
@@ -123,8 +125,10 @@ Syntree.Lib = {
         var type = ({}).toString.call(a).match(/\s(\w+)/)[1].toLowerCase();
         if (type === 'object') {
             var t = a.toString().match(/\s(\w+)/)[1].toLowerCase();
+            // If object's toString returns a valid custom type string, return it
             if (a.toString().match(/\[\w+\s\w+\]/)) {
                 return t;
+            // Otherwise, return the default type string
             } else {
                 return type;
             }
@@ -137,6 +141,7 @@ Syntree.Lib = {
 
     /**
      * Check a value against any given type(s).
+     *
      * @param {} a - any value
      * @param {string|string[]} required_type - a string representing the required type, or an array of such strings
      * @returns {boolean} whether the passed value matched the required type(s)
@@ -191,24 +196,6 @@ Syntree.Lib = {
                     throw new TypeError('Argument is required to be type ' + String(require).replace(',', ' or ') + ', was type ' + this.typeOf(a));
                 }
             }
-        // } else if (this.checkType(require, 'function')) {
-        //     if (Syntree.Lib.checkType(, 'boolean')) {
-        //         if (r) {
-        //             return a;
-        //         } else {
-        //             if (!this.checkType(default_value, 'undefined')) {
-        //                 if (default_value === '#undefined') {
-        //                     return;
-        //                 } else {
-        //                     return default_value;
-        //                 }
-        //             } else {
-        //                 throw new TypeError('Argument is the wrong type, per ' + require);
-        //             }
-        //         }
-        //     } else {
-        //         throw new Error('Require function must return true or false, returned ' + require());
-        //     }
         } else {
             throw new TypeError('Please pass checkArg a type string, array of type strings, or a function that returns true/false (for the second argument)');
         }
@@ -247,7 +234,7 @@ Syntree.Lib = {
      * @returns {string} the passed string, with the first letter capitalized
      */
     capitalize: function(string) {
-        return string[0].toUpperCase() + string.slice(1,string.length);
+        return string[0].toUpperCase() + string.slice(1, string.length);
     },
 
     /**
@@ -273,8 +260,8 @@ Syntree.Lib = {
         }
 
         return {
-            x: (x1 + x2)/2,
-            y: (y1 + y2)/2,
+            x: (x1 + x2) / 2,
+            y: (y1 + y2) / 2,
         }
     },
 
@@ -307,7 +294,14 @@ Syntree.Lib = {
         }
     },
 
-    extend: function(parentConstructor,subConstructor,instance) {
+    /**
+     * Extend parent class onto sub class, for instance.
+     *
+     * @param {function} parentConstructor - constructor function for the parent class
+     * @param {function} subConstructor - constructor function for the sub class
+     * @param {object} instance - the object instance being produced by subConstructor
+     */
+    extend: function(parentConstructor, subConstructor, instance) {
         subConstructor.prototype.__proto__ = parentConstructor.prototype;
         parentConstructor.call(instance);
     }

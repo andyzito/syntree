@@ -8,23 +8,17 @@ For more information on how Syntree *works*, read through the READMEs here, and 
 
 *Note: the READMEs have basic information about the directory structure of this project, and some of the entities that are outside the actual JavaScript app itself. In depth information on the classes, methods, and structure of the app itself are in the aforementioned code docs.*
 
-Export Tree
---------------------------------------------------
-`./export-tree.php <./export-tree.php>`_
-
-This is a script which takes a string identifying the type of file to export, and a filename to use. It returns a link to the generated file.
-
 Splash Page
 --------------------------------------------------
 `./index.php <./index.php>`_
 
 The splash page of the Syntree website
 
-Head
+Export Tree
 --------------------------------------------------
-`./head.php <./head.php>`_
+`./export-tree.php <./export-tree.php>`_
 
-Included on every page. Imports external libraries, all app scripts, and styles.
+This is a script which takes a string identifying the type of file to export, and a filename to use. It returns a link to the generated file.
 
 `Pages <./pages/README.rst>`_
 --------------------------------------------------
@@ -32,11 +26,11 @@ Included on every page. Imports external libraries, all app scripts, and styles.
 
 All pages of the Syntree website.
 
-`Style <./style/README.rst>`_
+Resources
 --------------------------------------------------
-`./style <./style>`_
+`./resources <./resources>`_
 
-Contains SCSS, gulpfile for generating CSS.
+Images or any other media resource required by Syntree.
 
 `App <./app/README.rst>`_
 --------------------------------------------------
@@ -44,9 +38,15 @@ Contains SCSS, gulpfile for generating CSS.
 
 This directory contains the JavaScript code for the application itself (as opposed to the website that hosts it).
 
-Resources
+`Style <./style/README.rst>`_
 --------------------------------------------------
-`./resources <./resources>`_
+`./style <./style>`_
 
-Images or any other media resource required by Syntree.
+Contains SCSS, gulpfile for generating CSS.
+
+Head
+--------------------------------------------------
+`./head.php <./head.php>`_
+
+Included on every page. Imports external libraries, all app scripts, and styles.
 
