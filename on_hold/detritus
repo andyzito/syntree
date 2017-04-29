@@ -1,0 +1,42 @@
+// Page:
+
+Syntree.Page.prototype.pan = function(dx, dy) {
+    this._start.call(this.background);
+    this._move.call(this.background, dx, dy);
+    this._end.call(this.background, dx, dy);
+}
+
+// Tree:
+Syntree.Tree.prototype.getSVGString = function(offsetX,offsetY) {
+    var s = '';
+    var nodes = this.getDescendantsOf(this.root,'',true,true);
+    var i = 0;
+    while (i<nodes.length) {
+        s += nodes[i].getSVGString(offsetX,offsetY);
+        i++;
+    }
+    return s;
+}
+
+
+Syntree.Tree.prototype.getLeftMostNode = function() {
+    var node = this.root;
+    while (true) {
+        if (node.getChildren().length === 0) {
+            return node;
+        } else {
+            node = node.getChildren()[0];
+        }
+    }
+}
+
+Syntree.Tree.prototype.getRightMostNode = function() {
+    var node = this.root;
+    while (true) {
+        if (node.getChildren().length === 0) {
+            return node;
+        } else {
+            node = node.getChildren()[node.getChildren().length-1];
+        }
+    }
+}

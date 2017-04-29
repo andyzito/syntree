@@ -4,28 +4,56 @@
  */
 Syntree.Page = function() {
 
+    var wWidth = $('#workspace').width();
+    var wHeight = $('#workspace').height();
     /**
      * The <rect> which is the background of the page.
      */
-    var wWidth = $('#workspace').width();
-    var wHeight = $('#workspace').height();
     this.background = Syntree.snap.rect(
-        -1 * (wWidth),
-        -1 * (wHeight),
-        wWidth*4,
-        wHeight*4
+        -1 * wWidth,
+        -1 * wHeight,
+        wWidth * 4,
+        wHeight * 4
     );
     this.background.attr({
         fill:'white',
         id:'page-background',
     });
 
+    /**
+     * An SVG group of all elements on the page. Used for panning.
+     *
+     * @type {object}
+     *
+     * @see Syntree.Page#_enablePanning
+     */
     this.group = Syntree.snap.g();
+
+    /**
+     * All [Elements]{@link Syntree.Element} on the page, referenced by id.
+     *
+     * @type {object}
+     */
     this.allElements = {};
+
+    /**
+     * The currently selected [SelectableElement]{@link Syntree.SelectableElement}.
+     *
+     * @type {Syntree.SelectableElement}
+     */
     this.selectedElement = undefined;
+
     this._enablePanning();
 }
 
+/**
+ * Get the panning transform matrix.
+ *
+ * @returns {object} - deltax, deltay, and the global transform matrix
+ *
+ * @see Syntree.Page#_enablePanning
+ * @see Syntree.Page#pan
+ */
 Syntree.Page.prototype.getTransform = function() {
     var t = this.group.transform().globalMatrix;
     var dx = t.e;
@@ -37,23 +65,45 @@ Syntree.Page.prototype.getTransform = function() {
     }
 }
 
+/**
+ * Add an Element to the list of all elements.
+ *
+ * @param {Syntree.Element} element - the element to register
+ *
+ * @see Syntree.Page#allElements
+ */
 Syntree.Page.prototype.register = function(element) {
     element = Syntree.Lib.checkArg(element, element.isElement);
+
     this.allElements[element.getId()] = element;
-    for (l in element.graphic.elements) {
-        var el = element.graphic.elements[l];
+    for (l in element.graphic.getAllEls()) {
+        var el = element.graphic.getAllEls[l];
         var el_obj = el.el_obj;
-        if (typeof el_obj.paper !== 'undefined') {
+        if (typeof el_obj.paper !== 'undefined') { // Ensure is a Snap Element
             this.group.add(el_obj);
         }
     }
 }
 
+/**
+ * Remove the specified Element from the list of all elements.
+ *
+ * @param {Syntree.Element} element - the element to deregister
+ *
+ * @see Syntree.Page#register
+ */
 Syntree.Page.prototype.deregister = function(element) {
     element = Syntree.Lib.checkArg(element, element.isElement);
     delete this.allElements[element.getId()];
 }
 
+/**
+ * Select the given Element. (And deselect the previous Element.)
+ *
+ * @param {Syntree.Element} element - the element to select
+ *
+ * @see Syntree.Page#selectedElement
+ */
 Syntree.Page.prototype.select = function(element) {
     element = Syntree.Lib.checkArg(element, element.isSelectable);
 
@@ -69,6 +119,11 @@ Syntree.Page.prototype.select = function(element) {
     });
 }
 
+/**
+ * Deselect the currently selected Element.
+ *
+ * @see Syntree.Page#select
+ */
 Syntree.Page.prototype.deselect = function() {
     if (Syntree.Lib.checkType(this.selectedElement, this.selectedElement.isSelectable)) {
         this.selectedElement.deselect();
@@ -76,21 +131,26 @@ Syntree.Page.prototype.deselect = function() {
     }
 }
 
+/**
+ * A wrapper function around Node.delete, allowing us to easily delete a whole subtree.
+ *
+ * @see Syntree.Element#delete
+ */
 Syntree.Page.prototype.deleteTree = function(tree) {
     tree = Syntree.Lib.checkArg(tree, ['tree', 'node']);
     if (Syntree.Lib.checkType(tree, 'node')) {
         tree = new Syntree.Tree({
-            root: this.allElements[tee.id],
+            root: this.allElements[tree.id],
         });
     }
 
-    var treestring = tree.getTreeString();
-    var parent = tree.root.getParent();
-    var index = parent.getChildren().indexOf(tree.root);
+    var treestring = tree.getTreestring();
+    var parent = tree.getRoot().getParent();
+    var index = parent.getChildren().indexOf(tree.getRoot());
     tree.delete();
     if (Syntree.Lib.checkType(parent, 'node')) {
         temptree = new Syntree.Tree({
-            root:parent
+            root: parent,
         });
         temptree.distribute();
     }
@@ -102,15 +162,34 @@ Syntree.Page.prototype.deleteTree = function(tree) {
     });
 }
 
+/**
+ * Check if given Element is registered with Page.
+ *
+ * @param {Syntree.Element} element - the element to check
+ *
+ * @returns {boolean} - whether or not the element is registered
+ */
 Syntree.Page.prototype.isRegistered = function(element) {
     element = Syntree.Lib.checkArg(element, element.isElement);
     return !Syntree.Lib.checkType(this.allElements[element.getId()], 'undefined');
 }
 
+/**
+ * Accessor function for Page.selectedElement.
+ *
+ * @see Syntree.Page#selectedElement
+ */
 Syntree.Page.prototype.getSelected = function() {
     return this.selectedElement;
 }
 
+/**
+ * Get all Elements, filtered by given type.
+ *
+ * @param {string} type - a string representing the Element type to filter by
+ *
+ * @returns {object} - all matching Elements, referenced by id
+ */
 Syntree.Page.prototype.getElementsByType = function(type) {
     type = Syntree.Lib.checkArg(type,'string');
 
@@ -127,6 +206,8 @@ Syntree.Page.prototype.getElementsByType = function(type) {
  * Create a movement arrow from the selected [Node]{@link Syntree.Node} to the clicked [Node]{@link Syntree.Node}.
  *
  * @param {Syntree.Node} node - the node that was clicked
+ *
+ * @returns {Syntree.Arrow} - the new Arrow
  */
 Syntree.Page.prototype.createMovementArrow = function(node) {
     if (Syntree.Lib.checkType(this.getSelected(), 'node')) {
@@ -142,9 +223,9 @@ Syntree.Page.prototype.createMovementArrow = function(node) {
  * Add a tree to the page.
  * If you do not provide a parent [Node]{@link Syntree.Node}, the main tree will be replaced.
  *
- * @param {Syntree.Tree} tree - the Tree object to add.
+ * @param {Syntree.Tree} [tree] - the Tree object to add.
  * @param {Syntree.Node} [parent] - the Node to which the root of the Tree will be added
- * @param {number} [index] - the index at which to add the root of Tree
+ * @param {number} [index=0] - the index at which to add the root of Tree
  */
 Syntree.Page.prototype.addTree = function(tree,parent,index) {
     tree = Syntree.Lib.checkArg(tree, 'tree', '#undefined');
@@ -154,27 +235,28 @@ Syntree.Page.prototype.addTree = function(tree,parent,index) {
     if (!Syntree.Lib.checkType(tree, 'tree')) {
         // Default tree
         var root = new Syntree.Node({
-            x: $('#workspace').width()/2,
-            y: $('#toolbar').height()+20,
+            x: $('#workspace').width() / 2,
+            y: $('#toolbar').height() + 20,
             labelContent: 'S',
         });
         this.tree = new Syntree.Tree({
             // build_treestring: 'id:612|children:40,266|parent:undefined|labelContent:S|;id:40|children:undefined|parent:612|labelContent:Q|;id:266|children:460,170|parent:612|labelContent:Q|;id:460|children:911,884|parent:266|labelContent:Qlsfdksdfasdf|;id:911|children:undefined|parent:460|labelContent:Q|;id:884|children:undefined|parent:460|labelContent:Q|;id:170|children:undefined|parent:266|labelContent:Q|;',
-            build_treestring: 'id:47|children:336,250|parent:undefined|labelContent:S|;id:336|children:570,175|parent:47|labelContent:Q|;id:570|children:838,146|parent:336|labelContent:O|;id:838|children:126,716|parent:570|labelContent:C|;id:126|children:538|parent:838|labelContent:E|;id:538|children:undefined|parent:126|labelContent:B|;id:716|children:undefined|parent:838|labelContent:X|;id:146|children:911,337|parent:570|labelContent:V|;id:911|children:undefined|parent:146|labelContent:G|;id:337|children:undefined|parent:146|labelContent:H|;id:175|children:883,866|parent:336|labelContent:A|;id:883|children:956,748|parent:175|labelContent:R|;id:956|children:undefined|parent:883|labelContent:S|;id:748|children:undefined|parent:883|labelContent:U|;id:866|children:391,578|parent:175|labelContent:T|;id:391|children:undefined|parent:866|labelContent:K|;id:578|children:undefined|parent:866|labelContent:N|;id:250|children:8,863|parent:47|labelContent:Z|;id:8|children:483,514|parent:250|labelContent:x|;id:483|children:109,271|parent:8|labelContent:Z|;id:109|children:undefined|parent:483|labelContent:Y|;id:271|children:undefined|parent:483|labelContent:I|;id:514|children:378,168|parent:8|labelContent:P|;id:378|children:undefined|parent:514|labelContent:B|;id:168|children:undefined|parent:514|labelContent:V|;id:863|children:564,746|parent:250|labelContent:L|;id:564|children:300,349|parent:863|labelContent:K|;id:300|children:undefined|parent:564|labelContent:J|;id:349|children:undefined|parent:564|labelContent:F|;id:746|children:766,805|parent:863|labelContent:M|;id:766|children:undefined|parent:746|labelContent:W|;id:805|children:undefined|parent:746|labelContent:Q|;',
+            // build_treestring: 'id:47|children:336,250|parent:undefined|labelContent:S|;id:336|children:570,175|parent:47|labelContent:Q|;id:570|children:838,146|parent:336|labelContent:O|;id:838|children:126,716|parent:570|labelContent:C|;id:126|children:538|parent:838|labelContent:E|;id:538|children:undefined|parent:126|labelContent:B|;id:716|children:undefined|parent:838|labelContent:X|;id:146|children:911,337|parent:570|labelContent:V|;id:911|children:undefined|parent:146|labelContent:G|;id:337|children:undefined|parent:146|labelContent:H|;id:175|children:883,866|parent:336|labelContent:A|;id:883|children:956,748|parent:175|labelContent:R|;id:956|children:undefined|parent:883|labelContent:S|;id:748|children:undefined|parent:883|labelContent:U|;id:866|children:391,578|parent:175|labelContent:T|;id:391|children:undefined|parent:866|labelContent:K|;id:578|children:undefined|parent:866|labelContent:N|;id:250|children:8,863|parent:47|labelContent:Z|;id:8|children:483,514|parent:250|labelContent:x|;id:483|children:109,271|parent:8|labelContent:Z|;id:109|children:undefined|parent:483|labelContent:Y|;id:271|children:undefined|parent:483|labelContent:I|;id:514|children:378,168|parent:8|labelContent:P|;id:378|children:undefined|parent:514|labelContent:B|;id:168|children:undefined|parent:514|labelContent:V|;id:863|children:564,746|parent:250|labelContent:L|;id:564|children:300,349|parent:863|labelContent:K|;id:300|children:undefined|parent:564|labelContent:J|;id:349|children:undefined|parent:564|labelContent:F|;id:746|children:766,805|parent:863|labelContent:M|;id:766|children:undefined|parent:746|labelContent:W|;id:805|children:undefined|parent:746|labelContent:Q|;',
             // build_treestring: 'id:432|children:67,741|parent:undefined|labelContent:S|;id:67|children:undefined|parent:432|labelContent:Q|;id:741|children:578|parent:432|labelContent:Q|;id:578|children:737|parent:741|labelContent:Q|;id:737|children:0|parent:578|labelContent:Q|;id:0|children:61|parent:737|labelContent:Q|;id:61|children:134|parent:0|labelContent:Q|;id:134|children:undefined|parent:61|labelContent:[OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO]|;',
-            // root: root,
+            root: root,
         });
         this.tree.root.editingAction('save');
     } else {
-        // parent = this.allElements[parent.id];
         if (!Syntree.Lib.checkType(parent, 'node')) {
             this.tree.delete();
             this.tree = tree;
             tree.distribute();
         } else {
             index = Syntree.Lib.checkArg(index, 'number', 0);
-            parent.addChild(tree.root,index);
-            var temp = new Syntree.Tree({root:parent});
+            parent.addChild(tree.root, index);
+            var temp = new Syntree.Tree({
+                root: parent,
+            });
             temp.distribute();
         }
     }
@@ -186,7 +268,7 @@ Syntree.Page.prototype.addTree = function(tree,parent,index) {
  *
  * @param {Syntree.Tree} treestring - the treestring which the Tree will build from
  * @param {Syntree.Node} [parent] - the Node to which the root of the Tree will be added
- * @param {number} [index] - the index at which to add the root of Tree
+ * @param {number} [index=0] - the index at which to add the root of Tree
  */
 Syntree.Page.prototype.openTree = function(treestring,parent,index) {
     treestring = Syntree.Lib.checkArg(treestring, 'string');
@@ -199,31 +281,15 @@ Syntree.Page.prototype.openTree = function(treestring,parent,index) {
     this.addTree(newTree,parent,index);
 }
 
-Syntree.Page.prototype.getGroup = function() {
-    var g = Syntree.snap.g();
-    for (L in this.allElements) {
-        var graphic_elements = this.allElements[L].graphic.elements;
-        for (l in graphic_elements) {
-            var el = graphic_elements[l];
-            var el_obj = el.el_obj;
-            if (typeof el_obj.paper !== 'undefined') {
-                g.add(el_obj);
-            }
-        }
-    }
-    return g;
-}
-
 /**
  * Get a string of SVG markup representing all marked objects on the page.
  *
- * @returns {string}
+ * @returns {string} - the SVG string
  */
-Syntree.Page.prototype.getSVGString = function(offsetX,offsetY) {
+Syntree.Page.prototype.getSVGString = function() {
     var selected = this.getSelected();
     this.deselect();
     var bgsvg = this.background.node.outerHTML;
-    // var treesvg = this.tree.getSVGString(offsetX,offsetY);
     var elementssvg = '';
     var elements = this.allElements;
     for (id in elements) {
@@ -231,14 +297,21 @@ Syntree.Page.prototype.getSVGString = function(offsetX,offsetY) {
     }
     var style = '<style type="text/css">text{font-family:sans-serif;font-size:14px;}</style>';
     var marker = $('marker')[0].outerHTML;
-    // console.log(marker);
     this.select(selected);
-    return style+marker+bgsvg+elementssvg;
-    // return style+treesvg;
+    return style + marker + bgsvg + elementssvg;
 }
 
+/**
+ * Get the Node nearest to the given coordinates or Element.
+ *
+ * @param {number|Syntree.Element} a - x coordinate or Element to search from
+ * @param {number} [b] - if a is a an x coordinate, the corresponding y coordinate
+ * @param {function} [condition] - function that must return true for a Node to be considered in the search
+ *
+ * @returns {object|boolean} - data object on success, false on failure
+ */
 Syntree.Page.prototype.getNearestNode = function(a,b,condition) {
-    condition = Syntree.Lib.checkArg(condition, 'function', function(){return true});
+    condition = Syntree.Lib.checkArg(condition, 'function', function(){return true;});
 
     if (Syntree.Lib.checkType(a, 'number')) {
         var x = a;
@@ -259,14 +332,13 @@ Syntree.Page.prototype.getNearestNode = function(a,b,condition) {
             continue;
         }
         var pos = node.getPosition();
-        // var distance = Math.sqrt(Math.pow((pos.x - x),2) + Math.pow((pos.y - y),2));
         var distance = Syntree.Lib.distance({
             x1: pos.x,
             y1: pos.y,
             x2: x,
             y2: y,
         })
-        if (distance < leastDist && condition(x,y,node)) {
+        if (distance < leastDist && condition(x, y, node)) {
             leastDist = distance;
             nearestNode = node;
         }
@@ -283,45 +355,50 @@ Syntree.Page.prototype.getNearestNode = function(a,b,condition) {
     }
 }
 
-Syntree.Page.prototype.navigateHorizontal = function(direction,fcreate) {
-    direct = Syntree.Lib.checkArg(direction, 'string');
+/**
+ * Select the node in the specified direction, or create a node there if one does not exist.
+ *
+ * @param {string} direction - 'left' or 'right'
+ * @param {boolean} [fcreate=false] - force create instead of navigate
+ *
+ * @see Syntree.Workspace._eventRight
+ * @see Syntree.Workspace._eventLeft
+ */
+Syntree.Page.prototype.navigateHorizontal = function(direction, fcreate) {
+    direction = Syntree.Lib.checkArg(direction, 'string');
     fcreate = Syntree.Lib.checkArg(fcreate, 'boolean', false);
 
     if (direction === 'left') {
         var left = true;
         var right = false;
         var n = 0;
-        // var x = 0;
-        // var y = -1;
     } else if (direction === 'right') {
         var right = true;
         var left = false;
         var n = 1;
-        // var y = 1;
     } else {
         return;
     }
 
     if (!Syntree.Lib.checkType(this.getSelected(), 'node')) {
-        this.select(this.tree.root);
+        this.select(this.tree.getRoot);
     }
 
     if (Syntree.Lib.checkType(this.getSelected(), 'node') && Syntree.Lib.checkType(this.getSelected().getParent(), 'node')) {
-        // if (this.getSelected().getState('editing') && this.getSelected().getState('real')) {
-        //     return;
-        // }
-        var off = this.tree.getNodeOffset(this.tree.getRoot(),this.getSelected());
-        var rowNodes = this.tree.getNodesByOffset(this.tree.getRoot(),off);
+        var off = this.tree.getNodeOffset(this.tree.getRoot(), this.getSelected());
+        var rowNodes = this.tree.getNodesByOffset(off);
         var selectedIndex = rowNodes.indexOf(this.getSelected());
         var real = this.getSelected().getState('real');
 
         if (right) {
-            if (selectedIndex === rowNodes.length-1 || fcreate) {
+            if (selectedIndex === rowNodes.length - 1 || fcreate) {
                 if (real) {
                     var siblingIndex = this.getSelected().getParent().getChildren().indexOf(this.getSelected());
                     var newNode = new Syntree.Node({});
-                    this.getSelected().getParent().addChild(newNode,siblingIndex+1);
-                    var tree = new Syntree.Tree({root:this.getSelected().getParent()});
+                    this.getSelected().getParent().addChild(newNode,siblingIndex + 1);
+                    var tree = new Syntree.Tree({
+                        root:this.getSelected().getParent(),
+                    });
                     tree.distribute();
                     this.select(newNode);
                     this.nodeEditing('init');
@@ -329,15 +406,17 @@ Syntree.Page.prototype.navigateHorizontal = function(direction,fcreate) {
                     return;
                 }
             } else {
-                this.select(rowNodes[selectedIndex+1]);
+                this.select(rowNodes[selectedIndex + 1]);
             }
         } else {
             if (selectedIndex === 0 || fcreate) {
                 if (real) {
                     var siblingIndex = this.getSelected().getParent().getChildren().indexOf(this.getSelected());
                     var newNode = new Syntree.Node({});
-                    this.getSelected().getParent().addChild(newNode,siblingIndex);
-                    var tree = new Syntree.Tree({root:this.getSelected().getParent()});
+                    this.getSelected().getParent().addChild(newNode, siblingIndex);
+                    var tree = new Syntree.Tree({
+                        root:this.getSelected().getParent(),
+                    });
                     tree.distribute();
                     this.select(newNode);
                     this.nodeEditing('init');
@@ -345,16 +424,19 @@ Syntree.Page.prototype.navigateHorizontal = function(direction,fcreate) {
                     return;
                 }
             } else {
-                this.select(rowNodes[selectedIndex-1]);
+                this.select(rowNodes[selectedIndex - 1]);
             }
         }
 
     }
 }
 
+/**
+ * Select the parent of the currently selected Node
+ */
 Syntree.Page.prototype.navigateUp = function() {
     if (!Syntree.Lib.checkType(this.getSelected(), 'node')) {
-        this.select(this.tree.root);
+        this.select(this.tree.getRoot);
     }
 
     if (Syntree.Lib.checkType(this.getSelected(), 'node') && Syntree.Lib.checkType(this.getSelected().getParent(), 'node')) {
@@ -362,18 +444,24 @@ Syntree.Page.prototype.navigateUp = function() {
     }
 }
 
+/**
+ * Select the most recently selected child of the currently selected node, or creates a child if one does not exist.
+ * Defaults to the left-most child if no most recently selected.
+ *
+ * @param {boolean} [fcreate=false] - force creation instead of navigation
+ */
 Syntree.Page.prototype.navigateDown = function(fcreate) {
     fcreate = Syntree.Lib.checkArg(fcreate, 'boolean', false);
 
     if (!Syntree.Lib.checkType(this.getSelected(), 'node')) {
-        this.select(this.tree.root);
+        this.select(this.tree.getRoot());
     }
 
     if (Syntree.Lib.checkType(this.getSelected(), 'node')) {
         if (this.getSelected().getChildren().length > 0 && !fcreate) {
             var possibleSelects = this.getSelected().getChildren();
             var selectHistory = Syntree.History.getNodeSelects();
-            for (i=0; i<selectHistory.length; i++) {
+            for (i = 0; i < selectHistory.length; i++) {
                 if (possibleSelects.indexOf(selectHistory[i].selected_obj) >= 0) {
                     this.select(this.allElements[selectHistory[i].selected_obj.id]);
                     return;
@@ -382,11 +470,14 @@ Syntree.Page.prototype.navigateDown = function(fcreate) {
             this.select(this.getSelected().getChildren()[0]);
         } else if (this.getSelected().getState('real')) {
             var newNode = new Syntree.Node({
-                x:0,
-                y:0,
-                labelContent:''});
+                x: 0,
+                y: 0,
+                labelContent: '',
+            });
             this.getSelected().addChild(newNode);
-            var tree = new Syntree.Tree({root:this.getSelected()});
+            var tree = new Syntree.Tree({
+                root: this.getSelected(),
+            });
             tree.distribute();
             this.select(newNode);
             this.nodeEditing('init');
@@ -394,11 +485,17 @@ Syntree.Page.prototype.navigateDown = function(fcreate) {
     }
 }
 
-Syntree.Page.prototype.nodeEditing = function(type,node, silent) {
+/**
+ * Execute an editing action on given Node.
+ *
+ * @param {string} type - 'init', 'update', 'toggle', 'save', 'cancel'
+ * @param {Syntree.Node} [node=Syntree.Page.selectedNode] - the node to target
+ * @param
+ */
+Syntree.Page.prototype.nodeEditing = function(type, node) {
     type = Syntree.Lib.checkArg(type, 'string');
     node = Syntree.Lib.checkArg(node, 'node', this.getSelected());
     node = Syntree.Lib.checkArg(node, 'node');
-    silent = Syntree.Lib.checkArg(silent, 'boolean', false);
 
     if (type === 'init') {
         node.editingAction('init');
@@ -418,19 +515,19 @@ Syntree.Page.prototype.nodeEditing = function(type,node, silent) {
                 new Syntree.Action('save', {
                     node: node,
                     pre: pre,
-                    post: post
+                    post: post,
                 });
             }
         } else {
-            if (!silent) {
-                new Syntree.Action('create', {
-                    created_obj: node,
-                });
-            }
+            new Syntree.Action('create', {
+                created_obj: node,
+            });
         }
         node.editingAction('save');
         if (this.getSelected().getParent()) {
-            var tree = new Syntree.Tree({root:this.getSelected().getParent()});
+            var tree = new Syntree.Tree({
+                root:this.getSelected().getParent(),
+            });
             tree.distribute();
         }
     } else if (type === 'cancel') {
@@ -442,25 +539,23 @@ Syntree.Page.prototype.nodeEditing = function(type,node, silent) {
         }
     }
 }
+
 Syntree.Page.prototype.toString = function() {
     return '[object Page]'
 }
 
-Syntree.Page.prototype.pan = function(dx,dy) {
-    this._start.call(this.background);
-    this._move.call(this.background,dx,dy);
-    this._end.call(this.background,dx,dy);
-}
-
+/**
+ * Make custom handlers and attach them for panning functionality.
+ */
 Syntree.Page.prototype._enablePanning = function() {
     this._move = function(dx,dy) {
 
         this.attr({
-                    transform: this.data('origTransform') + (this.data('origTransform') ? 'T' : 't') + [dx, dy]
+                    transform: this.data('origTransform') + (this.data('origTransform') ? 'T' : 't') + [dx, dy],
                 });
-        // This allows us to make page elements pan as well, but still make panning happen only on background click
+        // This allows us to make page elements pan as well, but still make panning happen only on background click.
         Syntree.Workspace.page.group.attr({
-                    transform: this.data('origTransform') + (this.data('origTransform') ? 'T' : 't') + [dx, dy]
+                    transform: this.data('origTransform') + (this.data('origTransform') ? 'T' : 't') + [dx, dy],
                 });
 
         this.data('oldDX', dx);
@@ -468,14 +563,12 @@ Syntree.Page.prototype._enablePanning = function() {
     }
 
     this._end = function(dx,dy) {
-        var t = Syntree.Workspace.page.group.transform().globalMatrix;
-        var dx = t.e;
-        var dy = t.f;
+        var t = this.getTransform();
         var top = $('.editor_container').position().top;
         var left = $('.editor_container').position().left;
         $('.editor_container').css({
-            'top': dy + 'px',
-            'left': dx + 'px',
+            'top': t.dy + 'px',
+            'left': t.dx + 'px',
         });
     }
 
@@ -483,5 +576,5 @@ Syntree.Page.prototype._enablePanning = function() {
         this.data('origTransform', this.transform().local);
     }
 
-    this.background.drag(this._move,this._start,this._end);
+    this.background.drag(this._move, this._start, this._end);
 }

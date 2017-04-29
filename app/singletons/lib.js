@@ -159,7 +159,7 @@ Syntree.Lib = {
             }
             return false;
         } else if (this.typeOf(require) === 'function') {
-            // We assume that a require function is a method of the argument, because otherwise what would be the point?
+            // Call require function in context of passed object, because it is probably a method
             var r = require.call(a);
             if (this.typeOf(r) === 'boolean') {
                 return r;

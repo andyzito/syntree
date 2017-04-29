@@ -53,6 +53,10 @@ Syntree.Graphic.prototype._defaultAttrHandler = function(element, attrs) {
     element.attr(attrs);
 }
 
+Syntree.Graphic.prototype.getAllEls = function() {
+    return this.elements;
+}
+
 Syntree.Graphic.prototype.getEl = function(name) {
     return this.elements[name].el_obj;
 }

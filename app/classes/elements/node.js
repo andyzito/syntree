@@ -1,18 +1,52 @@
 Syntree.config_maps.node = {};
 Syntree.config_maps.node.accept_unmapped_config = false;
 Syntree.config_maps.node.map = {
+    /**
+     * Session-unique identifier.
+     *
+     * @type {number}
+     *
+     * @see Syntree.Lib.genId
+     *
+     * @memberof Syntree.Node
+     * @instance
+     */
     id: {
         require: 'number',
         default_value: '#undefined',
     },
+    /**
+     * Starting x coordinate.
+     *
+     * @type {number}
+     *
+     * @memberof Syntree.Node
+     * @instance
+     */
     x: {
         require: 'number',
         default_value: 0,
     },
+    /**
+     * Starting y coordinate.
+     *
+     * @type {number}
+     *
+     * @memberof Syntree.Node
+     * @instance
+     */
     y: {
         require: 'number',
         default_value: 0,
     },
+    /**
+     * Label content.
+     *
+     * @type {string}
+     *
+     * @memberof Syntree.Node
+     * @instance
+     */
     labelContent: {
         require: 'string',
         default_value: '',
@@ -21,48 +55,97 @@ Syntree.config_maps.node.map = {
 
 /**
  * @class
- * @classdesc Nodes are the meat of Syntree.
+ * @classdesc Nodes are the meat of Syntree. They act like items in a linked list, containing references to their parents and children.
  * @extends Syntree.Element
  * @extends Syntree.SelectableElement
  */
 Syntree.Node = function(config_matrix) {
     Syntree.Lib.config(config_matrix,this);
-    // Syntree.SelectableElement.call(this); // Extend
-    Syntree.Lib.extend(Syntree.SelectableElement,Syntree.Node,this);
+    Syntree.Lib.extend(Syntree.SelectableElement, Syntree.Node, this);
 
+    /**
+     * The last position that was updated to the visual display.
+     *
+     * @type {object}
+     */
     this.lastSyncedPosition = undefined;
 
     // Relationships
+    /**
+     * This Node's parent Node.
+     *
+     * @type {Syntree.Node}
+     */
     this.parent = undefined;
+
+    /**
+     * This Node's child Nodes.
+     *
+     * @type {Syntree.Node[]}
+     */
     this.children = [];
 
     // Branches
+    /**
+     * Branch connecting to this Node's parent.
+     *
+     * @type {Syntree.Branch}
+     */
     this.parentBranch = undefined;
+
+    /**
+     * Branches connecting to this Node's children.
+     *
+     * @type {Syntree.Branch[]}
+     */
     this.childBranches = [];
 
     // States
+    /**
+     * Is this Node being edited?
+     *
+     * @type {Boolean}
+     */
     this.editing = false;
+
+    /**
+     * Has this Node been saved at least once?
+     * Used so we can autodelete Nodes on reverse navigation.
+     *
+     * @type {Boolean}
+     */
     this.real = false;
 
+    /**
+     * This Node's cached label BBox.
+     *
+     * @type {object}
+     */
     this._labelbbox;
 
     this.updateGraphics();
 }
 
+/**
+ * Build needed graphical objects and compile them into a new instance of Graphic.
+ *
+ * @see Syntree.Graphic
+ */
 Syntree.Node.prototype.createGraphic = function() {
+    // Editor
     var editorid = 'editor-' + this.id;
     $('.editor_container').append('<input id="' + editorid + '" class="editor">');
     var editor = $('#' + editorid);
     editor.hide();
 
     // Highlight
-    var highlight = Syntree.snap.rect(this.x,this.y,0,0);
+    var highlight = Syntree.snap.rect(this.x, this.y, 0, 0);
     highlight.attr({
         class: 'highlight highlight-' + this.id,
     });
 
     // Delete button
-    var deleteButton = Syntree.snap.image('/resources/delete_button.png',this.x,this.y,10,10);
+    var deleteButton = Syntree.snap.image('/resources/delete_button.png', this.x, this.y, 10, 10);
     deleteButton.attr({
         class: 'delete_button delete_button-' + this.id,
     });

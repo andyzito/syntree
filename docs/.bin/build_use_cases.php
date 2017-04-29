@@ -13,11 +13,11 @@ function strip_html($html) {
 $o = '';
 $dir = new DirectoryIterator("./docs/.source/use_cases/");
 foreach ($dir as $fileinfo) {
-	if (!$fileinfo->isDot()) {
+	if (!$fileinfo->isDot() && strpos($fileinfo->getFilename(), '.rst') !== FALSE) {
 		$html = shell_exec("sudo rst2html.py --no-generator --no-xml-declaration --stylesheet=\"\" " . $fileinfo->getPathname());
 		$o .= strip_html($html);
 	}
 }
 
-$f = fopen("./docs/use_cases.php", "w");
+$f = fopen("./docs/.source/use_cases_source.html", "w");
 fwrite($f, $o);

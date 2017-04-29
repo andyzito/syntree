@@ -156,7 +156,7 @@ function build_readme($path) {
 	    		if (preg_match("/\S/", $summary)) { // Only use if the summary is not empty
 	    			$s .= $summary;
 	    			$s .= "\n\n";
-	    			echo "Added summary for " . $p . "\n";
+	    			// echo "Added summary for " . $p . "\n";
 	    		}
 	    	}
 	    }
@@ -167,7 +167,7 @@ function build_readme($path) {
 	if (!has_own_docs($path) || !preg_match("/\S/", file_get_contents($path . "/README.rst"))) {
 		unlink($path . "/README.rst");
 	} else {
-		echo "Built README for " . $path . "\n";
+		// echo "Built README for " . $path . "\n";
 	}
 
 	// And now recurse:

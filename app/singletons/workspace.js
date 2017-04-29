@@ -531,7 +531,7 @@ Syntree.Workspace = {
      */
     _eventExportTreeFile: function() {
         var fname = $('.modal_option__fname input').val();
-        var treestring = this.page.tree.getTreeString();
+        var treestring = this.page.tree.getTreestring();
         if (Syntree.Lib.checkType(this.export_tree_script, 'string')) {
             $.post(this.export_tree_script, {fname: fname, type: 'tree-file', treestring: treestring}, function(link){
                 $('body').append(link);
@@ -638,7 +638,7 @@ Syntree.Workspace = {
     },
 
     _eventSave: function() {
-        var treestring = this.page.tree.getTreeString();
+        var treestring = this.page.tree.getTreestring();
         var W = this;
         if (Syntree.Lib.checkType(this.save_tree_script, 'string')) {
             $.post(this.save_tree_script,{treestring:treestring,treeid:this.page.tree.getId()},function(result){
