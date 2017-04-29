@@ -499,7 +499,7 @@ Syntree.Tree.prototype.distribute = function(angle) {
         if (intersect) {
             var newAngle = 2 * ((180 / Math.PI) * (Math.atan(newWidth / (2 * this.rowHeight))));
             var oldAngle = 2 * ((180 / Math.PI) * (Math.atan(width / (2 * this.rowHeight))));
-            this.distribute(newAngle,force_check_all);
+            this.distribute(newAngle);
         }
     }
 
@@ -510,6 +510,28 @@ Syntree.Tree.prototype.distribute = function(angle) {
         tree.distribute();
     } else {
         this.root.updateGraphics(true);
+    }
+}
+
+Syntree.Tree.prototype.getLeftMostNode = function() {
+    var node = this.root;
+    while (true) {
+        if (node.getChildren().length === 0) {
+            return node;
+        } else {
+            node = node.getChildren()[0];
+        }
+    }
+}
+
+Syntree.Tree.prototype.getRightMostNode = function() {
+    var node = this.root;
+    while (true) {
+        if (node.getChildren().length === 0) {
+            return node;
+        } else {
+            node = node.getChildren()[node.getChildren().length-1];
+        }
     }
 }
 

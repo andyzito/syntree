@@ -65,6 +65,10 @@ input[type=text] {
     to{transform:rotate(360deg);}
 }
 
+.block_menu {
+    @include block_menu();
+}
+
 .option_wrapper_radio {
     display: inline-block;
     border: 1px solid black;

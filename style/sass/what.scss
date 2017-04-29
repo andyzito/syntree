@@ -63,12 +63,16 @@ body.what {
                 text-align: center;
                 padding: 20px 0;
                 margin: 0;
-                font-size: 1.3rem;
+                font-size: 1.2rem;
 
                 &:hover {
                     color: white;
                     background-color: black;
                 }
+            }
+
+            a[href="#section-keys"] li {
+                border-bottom: 1px solid grey;
             }
         }
     }

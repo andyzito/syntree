@@ -1,0 +1,44 @@
+&.page_docs_use_cases {
+
+	ul {
+		list-style: initial;
+	}
+
+	.document {
+		width: 60%;
+		margin-left: 20%;
+		margin-top: 2rem;
+		border-bottom: 1px solid lightgrey;
+
+		h1 {
+			font-size: 2.5rem;
+			margin-bottom: 3rem;
+			text-align: center;
+			font-family: sans-serif;
+		}
+
+		.section {
+			margin-bottom: 3rem;
+
+			h1 {
+				font-size: 1.5rem;
+				margin-bottom: 1rem;
+				text-align: left;
+			}
+		}
+	}
+
+	li {
+		font-size: 1.3rem;
+		margin-left: 2rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.actor_app {
+		color: green;
+	}
+
+	.actor_user {
+		color: blue;
+	}
+}

@@ -16,6 +16,7 @@
                 <a href="#section-faq"><li>FAQ</li></a>
                 <a href="#section-how-to"><li>How to...</li></a>
                 <a href="#section-keys"><li>Keyboard Shortcuts</li></a>
+                <a href="/docs"><li>Code Docs</li></a>
                 <a href="/index.php"><li><< Splash Page</li></a>
                 <a href="/pages/app-page.php"><li>App >></li></a>
             </ul>

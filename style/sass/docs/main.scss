@@ -1,0 +1,31 @@
+.page_docs {
+	@import 'use_cases';
+
+    background-color: #ededed;
+
+    .back {
+    	position: fixed;
+    	@extend .button;
+    	top: 15px;
+    	left: 15px;
+    }
+
+    .download_docs {
+    	position: fixed;
+    	@extend .button;
+    	top: 15px;
+    	right: 15px;
+    }
+}
+
+.page_doc_index {
+
+	.page_title {
+		margin: 5rem 0;
+	}
+
+	.block_menu {
+		width: 50%;
+		margin-left: 25%;
+	}
+}

@@ -77,7 +77,7 @@ Syntree.Page.prototype.register = function(element) {
 
     this.allElements[element.getId()] = element;
     for (l in element.graphic.getAllEls()) {
-        var el = element.graphic.getAllEls[l];
+        var el = element.graphic.getAllEls()[l];
         var el_obj = el.el_obj;
         if (typeof el_obj.paper !== 'undefined') { // Ensure is a Snap Element
             this.group.add(el_obj);
@@ -511,13 +511,11 @@ Syntree.Page.prototype.nodeEditing = function(type, node) {
         if (node.getState('real')) {
             var pre = node.beforeEditLabelContent;
             var post = node.getLabelContent();
-            if (!silent) {
-                new Syntree.Action('save', {
-                    node: node,
-                    pre: pre,
-                    post: post,
-                });
-            }
+            new Syntree.Action('save', {
+                node: node,
+                pre: pre,
+                post: post,
+            });
         } else {
             new Syntree.Action('create', {
                 created_obj: node,

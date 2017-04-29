@@ -1,0 +1,19 @@
+@mixin block_menu() {
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 5px;
+
+    ul {
+        width: 100%;
+
+        li {
+            @extend .button;
+            border-radius: 0 !important;
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+            margin: 0;
+            font-size: 1.3rem;
+        }
+    }
+}

@@ -19,24 +19,3 @@ Syntree.Tree.prototype.getSVGString = function(offsetX,offsetY) {
 }
 
 
-Syntree.Tree.prototype.getLeftMostNode = function() {
-    var node = this.root;
-    while (true) {
-        if (node.getChildren().length === 0) {
-            return node;
-        } else {
-            node = node.getChildren()[0];
-        }
-    }
-}
-
-Syntree.Tree.prototype.getRightMostNode = function() {
-    var node = this.root;
-    while (true) {
-        if (node.getChildren().length === 0) {
-            return node;
-        } else {
-            node = node.getChildren()[node.getChildren().length-1];
-        }
-    }
-}

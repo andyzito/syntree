@@ -102,6 +102,20 @@ input[type=text] {
   to {
     transform: rotate(360deg); } }
 
+.block_menu {
+  border: 1px solid black;
+  background-color: white;
+  border-radius: 5px; }
+  .block_menu ul {
+    width: 100%; }
+    .block_menu ul li {
+      border-radius: 0 !important;
+      width: 100%;
+      text-align: center;
+      padding: 20px 0;
+      margin: 0;
+      font-size: 1.3rem; }
+
 .option_wrapper_radio {
   display: inline-block;
   border: 1px solid black;
@@ -143,7 +157,7 @@ input[type=text] {
       width: 100%;
       z-index: 90; }
 
-.button, #workspace_container #toolbar .toolbar_button {
+.button, .block_menu ul li, #workspace_container #toolbar .toolbar_button, .page_docs .back, .page_docs .download_docs {
   display: inline-block;
   background: white;
   border: 1px solid black;
@@ -151,7 +165,7 @@ input[type=text] {
   padding: 1rem 15px;
   transition: background-color 0.2s, color 0.2s;
   cursor: pointer; }
-  .button:hover, #workspace_container #toolbar .toolbar_button:hover {
+  .button:hover, .block_menu ul li:hover, #workspace_container #toolbar .toolbar_button:hover, .page_docs .back:hover, .page_docs .download_docs:hover {
     background: black;
     color: white; }
   .button_big, .modal_body .modal_section__buttonset button, .modal_body .modal_section__buttonset a {
@@ -160,7 +174,7 @@ input[type=text] {
   .button_small {
     padding: 0.8rem 1rem;
     font-size: 1rem; }
-  .button.loading, #workspace_container #toolbar .loading.toolbar_button {
+  .button.loading, .block_menu ul li.loading, #workspace_container #toolbar .loading.toolbar_button, .page_docs .loading.back, .page_docs .loading.download_docs {
     color: transparent;
     background-image: url("/resources/hourglass.gif");
     background-repeat: no-repeat;
@@ -317,10 +331,12 @@ body.what {
         text-align: center;
         padding: 20px 0;
         margin: 0;
-        font-size: 1.3rem; }
+        font-size: 1.2rem; }
         body.what .contents ul li:hover {
           color: white;
           background-color: black; }
+      body.what .contents ul a[href="#section-keys"] li {
+        border-bottom: 1px solid grey; }
   body.what table {
     width: 70%;
     margin: auto;
@@ -439,7 +455,7 @@ body.page_make {
       background-size: contain;
       background-position: center; }
   #workspace_container #workspace {
-    background-color: white; }
+    background-color: grey; }
   #workspace_container #export-image-canvas {
     display: none;
     width: 100%;
@@ -469,3 +485,47 @@ body.page_make {
       animation-iteration-count: 5;
       -webkit-animation-iteration-count: 5;
       -moz-animation-iteration-count: 5; }
+
+.page_docs {
+  background-color: #ededed; }
+  .page_docs.page_docs_use_cases ul {
+    list-style: initial; }
+  .page_docs.page_docs_use_cases .document {
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 2rem;
+    border-bottom: 1px solid lightgrey; }
+    .page_docs.page_docs_use_cases .document h1 {
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      text-align: center;
+      font-family: sans-serif; }
+    .page_docs.page_docs_use_cases .document .section {
+      margin-bottom: 3rem; }
+      .page_docs.page_docs_use_cases .document .section h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        text-align: left; }
+  .page_docs.page_docs_use_cases li {
+    font-size: 1.3rem;
+    margin-left: 2rem;
+    margin-bottom: 0.5rem; }
+  .page_docs.page_docs_use_cases .actor_app {
+    color: green; }
+  .page_docs.page_docs_use_cases .actor_user {
+    color: blue; }
+  .page_docs .back {
+    position: fixed;
+    top: 15px;
+    left: 15px; }
+  .page_docs .download_docs {
+    position: fixed;
+    top: 15px;
+    right: 15px; }
+
+.page_doc_index .page_title {
+  margin: 5rem 0; }
+
+.page_doc_index .block_menu {
+  width: 50%;
+  margin-left: 25%; }
