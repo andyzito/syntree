@@ -16,9 +16,10 @@ Steps
 #. User: clicks "Export" button in the toolbar
 
 #. App: displays modal dialog containing:
-	- a list of radio inputs labeled with different file types
-	- a text input with content "myfile .txt"
-	- buttons labelled "Export" and "Cancel"
+
+   - a list of radio inputs labeled with different file types
+   - a text input with content "myfile .txt"
+   - buttons labelled "Export" and "Cancel"
 
 #. User: clicks radio input for desired file type
 

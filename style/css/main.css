@@ -488,32 +488,9 @@ body.page_make {
 
 .page_docs {
   background-color: #ededed; }
-  .page_docs.page_docs_use_cases ul {
-    list-style: initial; }
-  .page_docs.page_docs_use_cases .document {
-    width: 60%;
-    margin-left: 20%;
-    margin-top: 2rem;
-    border-bottom: 1px solid lightgrey; }
-    .page_docs.page_docs_use_cases .document h1 {
-      font-size: 2.5rem;
-      margin-bottom: 3rem;
-      text-align: center;
-      font-family: sans-serif; }
-    .page_docs.page_docs_use_cases .document .section {
-      margin-bottom: 3rem; }
-      .page_docs.page_docs_use_cases .document .section h1 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        text-align: left; }
-  .page_docs.page_docs_use_cases li {
-    font-size: 1.3rem;
-    margin-left: 2rem;
-    margin-bottom: 0.5rem; }
-  .page_docs.page_docs_use_cases .actor_app {
-    color: green; }
-  .page_docs.page_docs_use_cases .actor_user {
-    color: blue; }
+  .page_docs .historical_warning {
+    color: red;
+    font-style: italic; }
   .page_docs .back {
     position: fixed;
     top: 15px;
@@ -522,6 +499,42 @@ body.page_make {
     position: fixed;
     top: 15px;
     right: 15px; }
+  .page_docs ul {
+    list-style: initial; }
+  .page_docs li > ul {
+    margin-top: 0.5rem;
+    list-style-type: circle; }
+  .page_docs .document {
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 2rem;
+    border-bottom: 1px solid lightgrey; }
+    .page_docs .document h1 {
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      text-align: center;
+      font-family: sans-serif; }
+    .page_docs .document .section {
+      margin-bottom: 3rem; }
+      .page_docs .document .section h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        text-align: left; }
+  .page_docs li, .page_docs .section p {
+    font-size: 1.3rem;
+    margin-left: 2rem;
+    margin-bottom: 0.5rem; }
+  .page_docs .actor_app {
+    color: green; }
+  .page_docs .actor_user {
+    color: #4a91e8; }
+  .page_docs.page_docs_requirements_list .document > p, .page_docs.page_docs_class_analyses .document > p {
+    font-style: italic;
+    margin-bottom: 3rem; }
+  .page_docs.page_docs_requirements_list .own_requirement, .page_docs.page_docs_class_analyses .own_requirement {
+    color: #4a91e8; }
+  .page_docs.page_docs_requirements_list li .own_requirement, .page_docs.page_docs_class_analyses li .own_requirement {
+    color: #4a91e8; }
 
 .page_doc_index .page_title {
   margin: 5rem 0; }

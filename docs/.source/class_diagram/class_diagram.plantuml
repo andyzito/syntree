@@ -1,0 +1,191 @@
+@startuml 
+class Action {
+}
+class Arrow {
+    isDeleted()
+    isSelectable()
+    delete()
+    updateGraphics()
+    isElement()
+    isDeletable()
+    getId()
+    select()
+    deselect()
+    id
+    selectable
+    deleted
+    selected
+}
+class Branch {
+    isDeleted()
+    isSelectable()
+    delete()
+    updateGraphics()
+    isElement()
+    isDeletable()
+    getId()
+    select()
+    deselect()
+    id
+    selectable
+    deleted
+    selected
+}
+class Element {
+    isDeleted()
+    isSelectable()
+    delete()
+    updateGraphics()
+    isElement()
+    isDeletable()
+    getId()
+    id
+    selectable
+    deleted
+}
+class Graphic {
+}
+class Node {
+    createGraphic()
+    isDeleted()
+    isSelectable()
+    delete()
+    updateGraphics()
+    isElement()
+    isDeletable()
+    getId()
+    select()
+    deselect()
+    id
+    x
+    y
+    labelContent
+    lastSyncedPosition
+    parent
+    children
+    parentBranch
+    childBranches
+    editing
+    real
+    _labelbbox
+    selectable
+    deleted
+    selected
+}
+class SelectableElement {
+    select()
+    deselect()
+    isDeleted()
+    isSelectable()
+    delete()
+    updateGraphics()
+    isElement()
+    isDeletable()
+    getId()
+    selected
+    id
+    selectable
+    deleted
+}
+class Page {
+    getTransform()
+    register()
+    deregister()
+    select()
+    deselect()
+    deleteTree()
+    isRegistered()
+    getSelected()
+    getElementsByType()
+    createMovementArrow()
+    addTree()
+    openTree()
+    getSVGString()
+    getNearestNode()
+    navigateHorizontal()
+    navigateUp()
+    navigateDown()
+    nodeEditing()
+    _enablePanning()
+    background
+    group
+    allElements
+    selectedElement
+}
+class Tree {
+    getId()
+    setId()
+    getRoot()
+    _getPath()
+    getDescendantsOf()
+    getNodeOffset()
+    getNodesByOffset()
+    getTreestring()
+    getBracketNotation()
+    distribute()
+    delete()
+    _buildFromTreestring()
+    id
+    rowHeight
+    root
+    build_treestring
+    node_properties_to_save
+}
+class History {
+    addAction()
+    getLast()
+    getAll()
+    getAllByType()
+    getLastOfType()
+    undo()
+    removeAction()
+    getNodeSelects()
+    actions
+    silent
+}
+class Lib {
+    config()
+    focusNoScroll()
+    genId()
+    typeOf()
+    checkType()
+    checkArg()
+    distance()
+    capitalize()
+    getMidPoint()
+    visualToActualCoordinates()
+    extend()
+    allIds
+    idN
+}
+class Tutorial {
+}
+class Workspace {
+    _attachEventListeners()
+    _eventTriangleButtonClick()
+    _eventBranchClick()
+    _eventArrowClick()
+    _eventRewatchTutorial()
+    _eventUndo()
+    _eventNodeClick()
+    _eventLeft()
+    _eventRight()
+    _eventUp()
+    _eventDown()
+    _eventDel()
+    _eventEsc()
+    _eventEditorTyping()
+    _eventFiletypeLabelClick()
+    _eventExportImage()
+    _eventExportTreeFile()
+    _eventExportBrackets()
+    _eventEnter()
+}
+SelectableElement <|-- Node
+SelectableElement <|-- Branch
+SelectableElement <|-- Arrow
+Element <|-- SelectableElement
+Tree o-- Node
+History *-- Action
+Workspace --> Page
+@enduml

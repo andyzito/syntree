@@ -1,5 +1,5 @@
-Use Case #1: Creating a Syntax Tree with the Keyboard
-=====================================================
+Use Case #1: Creating a Syntax Tree
+===================================
 
 Actors
 ------
