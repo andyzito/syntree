@@ -13,13 +13,17 @@ body.what {
 
     .faq-list, .how-to-list {
         margin: auto;
-        width: 75%;
+        width: 90%;
     }
 
     .help_section {
         margin-top: 2.5rem;
         padding-top: 2.5rem;
         border-top: 1px solid darkgrey;
+        width: 60%;
+        margin: auto;
+        font-size: 1.3rem;
+        line-height: 1.6rem;
 
         a {
             text-decoration: underline;
@@ -32,47 +36,49 @@ body.what {
 
         li {
             margin-bottom: 1.5rem;
-            line-height: 1.4rem;
 
             span.faq-q, span.how-to-title {
-                font-size: 1.1rem;
+                font-size: 1.5rem;
                 font-weight: bold;
                 letter-spacing: 0.05rem;
+                margin-bottom: 2.5rem;
             }
 
             p {
                 white-space: pre-line;
+                line-height: 1.5rem;
+                margin-top: 10px;
             }
         }
     }
 
-    .contents {
+    .block_menu {
         position: fixed;
-        border: 1px solid black;
-        background-color: white;
         width: 11%;
         top: 5px;
         left: 5px;
-        border-radius: 3px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
 
-        ul {
-            width: 100%;
-
+        span.contents  {
             li {
-                width: 100%;
-                text-align: center;
-                padding: 20px 0;
-                margin: 0;
-                font-size: 1.2rem;
+                padding: 0.5rem;
+                border-radius: 0;
+                background-color: lightgrey;
+                position: relative;
 
                 &:hover {
-                    color: white;
-                    background-color: black;
+                    background-color: #666666;
                 }
-            }
 
-            a[href="#section-keys"] li {
-                border-bottom: 1px solid grey;
+                &:after {
+                    content: ">";
+                    position: absolute;
+                    right: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    margin-right: 10px;
+                }
             }
         }
     }

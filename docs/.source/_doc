@@ -1,0 +1,3 @@
+@title Source
+
+@description Source code/notation for (non-JSDoc) documentation. Usually starts as a .rst or other file, compiled into HTML by a script in .bin, and then <included> in a php file in the main folder.

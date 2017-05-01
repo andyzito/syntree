@@ -1,7 +1,20 @@
 @startuml 
+title Syntree Class Diagram 
 class Action {
+    id : number
+    type : string
 }
 class Arrow {
+    getStartPoint()
+    setStartPoint()
+    setEndPoint()
+    getEndPoint()
+    __updateGraphics()
+    __delete()
+    getStartCtrlPoint()
+    setStartCtrlPoint()
+    setEndCtrlPoint()
+    getEndCtrlPoint()
     isDeleted()
     isSelectable()
     delete()
@@ -11,10 +24,13 @@ class Arrow {
     getId()
     select()
     deselect()
-    id
+    fromNode : Syntree.Node
+    toNode : Syntree.Node
+    path : string
+    id : number
     selectable
-    deleted
-    selected
+    deleted : boolean
+    selected : boolean
 }
 class Branch {
     isDeleted()
@@ -26,10 +42,10 @@ class Branch {
     getId()
     select()
     deselect()
-    id
+    id : number
     selectable
-    deleted
-    selected
+    deleted : boolean
+    selected : boolean
 }
 class Element {
     isDeleted()
@@ -39,14 +55,44 @@ class Element {
     isElement()
     isDeletable()
     getId()
-    id
+    id : number
     selectable
-    deleted
+    deleted : boolean
 }
 class Graphic {
+    Syntree.Arrow#createGraphic()
+    addElement()
+    getSVGString()
+    _defaultAttrHandler()
+    getAllEls()
+    getEl()
+    unsync()
+    sync()
+    update()
+    delete()
+    _handlerBoolean()
+    elements_to_add : object
+    states_synced : object
+    update_map : object
+    data_object : Syntree.Element
+    elements : object
 }
 class Node {
     createGraphic()
+    getPosition()
+    getLabelContent()
+    setLabelContent()
+    getLabelBBox()
+    getParent()
+    getChildren()
+    getPath()
+    getState()
+    move()
+    __delete()
+    __deselect()
+    editingAction()
+    __updateGraphics()
+    addChild()
     isDeleted()
     isSelectable()
     delete()
@@ -56,21 +102,21 @@ class Node {
     getId()
     select()
     deselect()
-    id
-    x
-    y
-    labelContent
-    lastSyncedPosition
-    parent
-    children
-    parentBranch
-    childBranches
-    editing
-    real
-    _labelbbox
+    id : number
+    x : number
+    y : number
+    labelContent : string
+    lastSyncedPosition : object
+    parent : Syntree.Node
+    children : Array.<Syntree.Node>
+    parentBranch : Syntree.Branch
+    childBranches : Array.<Syntree.Branch>
+    editing : Boolean
+    real : Boolean
+    _labelbbox : object
     selectable
-    deleted
-    selected
+    deleted : boolean
+    selected : boolean
 }
 class SelectableElement {
     select()
@@ -82,10 +128,10 @@ class SelectableElement {
     isElement()
     isDeletable()
     getId()
-    selected
-    id
+    selected : boolean
+    id : number
     selectable
-    deleted
+    deleted : boolean
 }
 class Page {
     getTransform()
@@ -108,9 +154,9 @@ class Page {
     nodeEditing()
     _enablePanning()
     background
-    group
-    allElements
-    selectedElement
+    group : object
+    allElements : object
+    selectedElement : Syntree.SelectableElement
 }
 class Tree {
     getId()
@@ -125,11 +171,11 @@ class Tree {
     distribute()
     delete()
     _buildFromTreestring()
-    id
-    rowHeight
-    root
-    build_treestring
-    node_properties_to_save
+    id : number
+    rowHeight : number
+    root : Syntree.Node
+    build_treestring : string
+    node_properties_to_save : object
 }
 class History {
     addAction()
@@ -159,6 +205,16 @@ class Lib {
     idN
 }
 class Tutorial {
+    continue()
+    start()
+    quit()
+    frame()
+    instruction()
+    data : object
+    standard_message_interval
+    frames : object
+    index : number
+    running : boolean
 }
 class Workspace {
     _attachEventListeners()
@@ -180,7 +236,15 @@ class Workspace {
     _eventExportTreeFile()
     _eventExportBrackets()
     _eventEnter()
+    tutorial_enabled : boolean
+    upload_enabled : boolean
+    export_tree_script : string
+    focus_checking_enabled : boolean
 }
+class Workspace << (S,#FF7700) Singleton >>
+class Lib << (S,#FF7700) Singleton >>
+class History << (S,#FF7700) Singleton >>
+class Tutorial << (S,#FF7700) Singleton >>
 SelectableElement <|-- Node
 SelectableElement <|-- Branch
 SelectableElement <|-- Arrow
@@ -188,4 +252,10 @@ Element <|-- SelectableElement
 Tree o-- Node
 History *-- Action
 Workspace --> Page
+Page --> Tree
+Page --> Element
+Element *-- Graphic
+skinparam monochrome true
+skinparam shadowing false
+skinparam dpi 150
 @enduml

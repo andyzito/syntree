@@ -5,12 +5,33 @@ Syntree.config_maps.arrow.map = {
         require: 'number',
         default_value: '#undefined',
     },
+    /**
+     * Node the arrow starts at.
+     *
+     * @type {Syntree.Node}
+     *
+     * @memberof Syntree.Arrow
+     */
     fromNode: {
         require: 'node',
     },
+    /**
+     * Node the arrow ends at.
+     *
+     * @type {Syntree.Node}
+     *
+     * @memberof Syntree.Arrow
+     */
     toNode: {
         require: 'node',
     },
+    /**
+     * Path string of the arrow line.
+     *
+     * @type {string}
+     *
+     * @memberof Syntree.Arrow
+     */
     path: {
         require: 'string',
         default_value: '#undefined',
@@ -39,10 +60,11 @@ Syntree.Arrow = function(config_matrix) {
     });
 }
 
-Syntree.Arrow.prototype.__recreate = function() {
-
-}
-
+/**
+ * Create graphical elements and compile them into a new instance of Syntree.Graphic.
+ *
+ * @memberof Syntree.Graphic
+ */
 Syntree.Arrow.prototype.createGraphic = function() {
     var startPoint = this.fromNode.getPosition();
     var endPoint = this.toNode.getPosition();
@@ -190,24 +212,8 @@ Syntree.Arrow.prototype.createGraphic = function() {
         arrow.updateGraphics();
     }
 
-    var customEnd1 = function() {
-        // var id = this.attr('id')
-        // id = id.substr(id.lastIndexOf('-')+1, id.length);
-        // var arrow = Syntree.Workspace.page.allElements[id];
-        // arrow.setStartCtrlPoint(this.attr('cx'), this.attr('cy'));
-        // arrow.updateGraphics();
-    }
-
-    var customEnd2 = function() {
-        // var id = this.attr('id')
-        // id = id.substr(id.lastIndexOf('-')+1, id.length);
-        // var arrow = Syntree.Workspace.page.allElements[id];
-        // arrow.setEndCtrlPoint(this.attr('cx'), this.attr('cy'));
-        // arrow.updateGraphics();
-    }
-
-    handle1.drag(customDrag1,undefined,customEnd1);
-    handle2.drag(customDrag2,undefined,customEnd2);
+    handle1.drag(customDrag1);
+    handle2.drag(customDrag2);
 
     this.graphic.addElement('handle1', {
         el_obj: handle1,
@@ -231,12 +237,13 @@ Syntree.Arrow.prototype.createGraphic = function() {
     }
 }
 
-Syntree.Arrow.prototype.select = function() {
-    this.selected = true;
-    this.graphic.unsync('selected');
-    this.updateGraphics();
-}
-
+/**
+ * Get start point of path.
+ *
+ * @returns {object} - x and y coordinates
+ *
+ * @see Syntree.Arrow#path
+ */
 Syntree.Arrow.prototype.getStartPoint = function() {
     var path = this.graphic.getEl('line').attr('path');
     path = path.split(',');
@@ -249,7 +256,15 @@ Syntree.Arrow.prototype.getStartPoint = function() {
     return start;
 }
 
-Syntree.Arrow.prototype.setStartPoint = function(x,y) {
+/**
+ * Set start point of path.
+ *
+ * @param {number} - x coordinate
+ * @param {number} - y coordinate
+ *
+ * @see Syntree.Arrow#path
+ */
+Syntree.Arrow.prototype.setStartPoint = function(x, y) {
     var newStart = 'M ' + x + ' ' + y + ',';
     var path = this.graphic.getEl('line').attr('path');
     path = path.substr(path.indexOf(',')+1, path.length);
@@ -257,6 +272,14 @@ Syntree.Arrow.prototype.setStartPoint = function(x,y) {
     this.graphic.getEl('line').attr('path', path);
 }
 
+/**
+ * Set end point of path.
+ *
+ * @param {number} - x coordinate
+ * @param {number} - y coordinate
+ *
+ * @see Syntree.Arrow#path
+ */
 Syntree.Arrow.prototype.setEndPoint = function(x,y) {
     var newEnd = ', ' + x + ' ' + y;
     var path = this.graphic.getEl('line').attr('path');
@@ -265,6 +288,13 @@ Syntree.Arrow.prototype.setEndPoint = function(x,y) {
     this.graphic.getEl('line').attr('path', path);
 }
 
+/**
+ * Get end point of path.
+ *
+ * @returns {object} - x and y coordinates
+ *
+ * @see Syntree.Arrow#path
+ */
 Syntree.Arrow.prototype.getEndPoint = function() {
     var path = this.graphic.getEl('line').attr('path');
     path = path.split(',');
@@ -281,6 +311,11 @@ Syntree.Arrow.prototype.toString = function() {
     return '[object Arrow]'
 }
 
+/**
+ * Custom addition to Syntree.Element#updateGraphics.
+ *
+ * @see Syntree.Element#updateGraphics
+ */
 Syntree.Arrow.prototype.__updateGraphics = function() {
     var fBBox = this.fromNode.getLabelBBox();
     var tBBox = this.toNode.getLabelBBox();
@@ -325,30 +360,18 @@ Syntree.Arrow.prototype.__updateGraphics = function() {
             this.setEndPoint(tInter.x, tInter.y);
         }
     }
-    // this.setStartPoint(fInter.x, fInter.y);
-    // this.setEndPoint(tInter.x, tInter.y);
 
     this.graphic.getEl('shadowLine').attr({
         path: this.graphic.getEl('line').attr('path'),
     })
-
-    // var cS = Syntree.Lib.getClosestSides(
-    //     fBBox,
-    //     tBBox
-    // );
-    // var p1 = cS.s1.includes('2') ? 5 : -5;
-    // var p2 = cS.s2.includes('2') ? 5 : -5;
-    // var endPoints = {
-    //     x1: cS.s1.includes('x') ? fBBox[cS.s1]+p1 : fBBox.cx,
-    //     y1: cS.s1.includes('y') ? fBBox[cS.s1]+p1 : fBBox.cy,
-    //     x2: cS.s2.includes('x') ? tBBox[cS.s2]+p2 : tBBox.cx,
-    //     y2: cS.s2.includes('y') ? tBBox[cS.s2]+p2 : tBBox.cy,
-    // };
-    // this.setStartPoint(endPoints.x1, endPoints.y1);
-    // this.setEndPoint(endPoints.x2, endPoints.y2);
 }
 
-Syntree.Arrow.prototype.__delete = function(silent) {
+/**
+ * Custom addition to Syntree.Element#delete.
+ *
+ * @see Syntree.Element#delete
+ */
+Syntree.Arrow.prototype.__delete = function() {
     silent = Syntree.Lib.checkArg(silent, 'boolean', false);
     console.log('deleting arrow');
 
@@ -363,6 +386,13 @@ Syntree.Arrow.prototype.__delete = function(silent) {
     });
 }
 
+/**
+ * Get control point for start of path.
+ *
+ * @returns {object} - x and y coordinates
+ *
+ * @see Syntree.Arrow#path
+ */
 Syntree.Arrow.prototype.getStartCtrlPoint = function() {
     var path = this.graphic.getEl('line').attr('path');
     path = path.split('C')[1];
@@ -373,7 +403,15 @@ Syntree.Arrow.prototype.getStartCtrlPoint = function() {
     }
 }
 
-Syntree.Arrow.prototype.setStartCtrlPoint = function(x,y) {
+/**
+ * Set control point for start of path.
+ *
+ * @param {number} - x coordinate
+ * @param {number} - y coordinate
+ *
+ * @see Syntree.Arrow#path
+ */
+Syntree.Arrow.prototype.setStartCtrlPoint = function(x, y) {
     var path = this.graphic.getEl('line').attr('path');
     var half1 = path.substr(0, path.indexOf('C') + 2);
     var half2 = path.substr(path.lastIndexOf(',', path.lastIndexOf(',')-1));
@@ -381,6 +419,14 @@ Syntree.Arrow.prototype.setStartCtrlPoint = function(x,y) {
     this.graphic.getEl('line').attr('path', half1 + newPoint + half2);
 }
 
+/**
+ * Set control point for end of path.
+ *
+ * @param {number} - x coordinate
+ * @param {number} - y coordinate
+ *
+ * @see Syntree.Arrow#path
+ */
 Syntree.Arrow.prototype.setEndCtrlPoint = function(x,y) {
     var path = this.graphic.getEl('line').attr('path');
     var half1 = path.substr(0, path.indexOf(',', path.indexOf('C'))+2);
@@ -389,6 +435,13 @@ Syntree.Arrow.prototype.setEndCtrlPoint = function(x,y) {
     this.graphic.getEl('line').attr('path', half1 + newPoint + half2);
 }
 
+/**
+ * Get control point for end of path.
+ *
+ * @returns {object} - x and y coordinates
+ *
+ * @see Syntree.Arrow#path
+ */
 Syntree.Arrow.prototype.getEndCtrlPoint = function() {
     var path = this.graphic.getEl('line').attr('path');
     path = path.split('C')[1];

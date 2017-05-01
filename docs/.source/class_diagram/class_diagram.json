@@ -5,7 +5,7 @@
       "meta": {
         "range": [
           86,
-          499
+          683
         ],
         "filename": "action.js",
         "lineno": 5,
@@ -39,14 +39,174 @@
       "___s": true
     },
     {
+      "comment": "/**\n     * Session-unique id.\n     *\n     * @type {number}\n     * @see Syntree.Lib.genId\n     */",
+      "meta": {
+        "range": [
+          344,
+          373
+        ],
+        "filename": "action.js",
+        "lineno": 15,
+        "path": "/var/www/html/syntree/app/classes",
+        "code": {
+          "id": "astnode100000034",
+          "name": "this.id",
+          "type": "CallExpression",
+          "value": "",
+          "paramnames": []
+        }
+      },
+      "description": "Session-unique id.",
+      "type": {
+        "names": [
+          "number"
+        ]
+      },
+      "see": [
+        "Syntree.Lib.genId"
+      ],
+      "name": "id",
+      "longname": "Syntree.Action#id",
+      "kind": "member",
+      "memberof": "Syntree.Action",
+      "scope": "instance",
+      "___id": "T000002R000005",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * What type of action is this?\n     *\n     * @type {string}\n     */",
+      "meta": {
+        "range": [
+          461,
+          477
+        ],
+        "filename": "action.js",
+        "lineno": 22,
+        "path": "/var/www/html/syntree/app/classes",
+        "code": {
+          "id": "astnode100000045",
+          "name": "this.type",
+          "type": "Identifier",
+          "value": "type",
+          "paramnames": []
+        }
+      },
+      "description": "What type of action is this?",
+      "type": {
+        "names": [
+          "string"
+        ]
+      },
+      "name": "type",
+      "longname": "Syntree.Action#type",
+      "kind": "member",
+      "memberof": "Syntree.Action",
+      "scope": "instance",
+      "___id": "T000002R000006",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Node the arrow starts at.\n     *\n     * @type {Syntree.Node}\n     *\n     * @memberof Syntree.Arrow\n     */",
+      "meta": {
+        "range": [
+          331,
+          373
+        ],
+        "filename": "arrow.js",
+        "lineno": 15,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100000628",
+          "name": "fromNode",
+          "type": "ObjectExpression",
+          "value": "{\"require\":\"node\"}"
+        }
+      },
+      "description": "Node the arrow starts at.",
+      "type": {
+        "names": [
+          "Syntree.Node"
+        ]
+      },
+      "memberof": "Syntree.Arrow",
+      "name": "fromNode",
+      "longname": "Syntree.Arrow.fromNode",
+      "kind": "member",
+      "scope": "static",
+      "___id": "T000002R000047",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Node the arrow ends at.\n     *\n     * @type {Syntree.Node}\n     *\n     * @memberof Syntree.Arrow\n     */",
+      "meta": {
+        "range": [
+          499,
+          539
+        ],
+        "filename": "arrow.js",
+        "lineno": 25,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100000632",
+          "name": "toNode",
+          "type": "ObjectExpression",
+          "value": "{\"require\":\"node\"}"
+        }
+      },
+      "description": "Node the arrow ends at.",
+      "type": {
+        "names": [
+          "Syntree.Node"
+        ]
+      },
+      "memberof": "Syntree.Arrow",
+      "name": "toNode",
+      "longname": "Syntree.Arrow.toNode",
+      "kind": "member",
+      "scope": "static",
+      "___id": "T000002R000049",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Path string of the arrow line.\n     *\n     * @type {string}\n     *\n     * @memberof Syntree.Arrow\n     */",
+      "meta": {
+        "range": [
+          666,
+          743
+        ],
+        "filename": "arrow.js",
+        "lineno": 35,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100000636",
+          "name": "path",
+          "type": "ObjectExpression",
+          "value": "{\"require\":\"string\",\"default_value\":\"#undefined\"}"
+        }
+      },
+      "description": "Path string of the arrow line.",
+      "type": {
+        "names": [
+          "string"
+        ]
+      },
+      "memberof": "Syntree.Arrow",
+      "name": "path",
+      "longname": "Syntree.Arrow.path",
+      "kind": "member",
+      "scope": "static",
+      "___id": "T000002R000051",
+      "___s": true
+    },
+    {
       "comment": "/**\n * @class\n * @classdesc Represents a movement arrow.\n * @extends Syntree.Element\n * @extends Syntree.SelectableElement\n */",
       "meta": {
         "range": [
-          512,
-          925
+          875,
+          1288
         ],
         "filename": "arrow.js",
-        "lineno": 26,
+        "lineno": 47,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
           "id": "astnode100000643",
@@ -76,6 +236,525 @@
       "___s": true
     },
     {
+      "comment": "/**\n * Create graphical elements and compile them into a new instance of Syntree.Graphic.\n *\n * @memberof Syntree.Graphic\n */",
+      "meta": {
+        "range": [
+          1416,
+          6530
+        ],
+        "filename": "arrow.js",
+        "lineno": 68,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100000712",
+          "name": "Syntree.Arrow.prototype.createGraphic",
+          "type": "FunctionExpression",
+          "paramnames": []
+        },
+        "vars": {
+          "startPoint": "Syntree.Graphic.Syntree.Arrow#createGraphic~startPoint",
+          "endPoint": "Syntree.Graphic.Syntree.Arrow#createGraphic~endPoint",
+          "path": "Syntree.Graphic.Syntree.Arrow#createGraphic~path",
+          "shadowLine": "Syntree.Graphic.Syntree.Arrow#createGraphic~shadowLine",
+          "line": "Syntree.Graphic.Syntree.Arrow#createGraphic~line",
+          "mid": "Syntree.Graphic.Syntree.Arrow#createGraphic~mid",
+          "config_matrix": "Syntree.Graphic.Syntree.Arrow#createGraphic~config_matrix",
+          "this.graphic": "Syntree.Graphic.Syntree.Arrow#createGraphic#graphic",
+          "scp": "Syntree.Graphic.Syntree.Arrow#createGraphic~scp",
+          "ecp": "Syntree.Graphic.Syntree.Arrow#createGraphic~ecp",
+          "handle1": "Syntree.Graphic.Syntree.Arrow#createGraphic~handle1",
+          "handle2": "Syntree.Graphic.Syntree.Arrow#createGraphic~handle2",
+          "customDrag1": "Syntree.Graphic.Syntree.Arrow#createGraphic~customDrag1",
+          "": null,
+          "customDrag2": "Syntree.Graphic.Syntree.Arrow#createGraphic~customDrag2",
+          "fInter": "Syntree.Graphic.Syntree.Arrow#createGraphic~fInter",
+          "tInter": "Syntree.Graphic.Syntree.Arrow#createGraphic~tInter",
+          "xsmooth1": "Syntree.Graphic.Syntree.Arrow#createGraphic~xsmooth1",
+          "xsmooth2": "Syntree.Graphic.Syntree.Arrow#createGraphic~xsmooth2"
+        }
+      },
+      "description": "Create graphical elements and compile them into a new instance of Syntree.Graphic.",
+      "memberof": "Syntree.Graphic",
+      "name": "Syntree.Arrow#createGraphic",
+      "longname": "Syntree.Graphic.Syntree.Arrow#createGraphic",
+      "kind": "function",
+      "scope": "static",
+      "___id": "T000002R000059",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Get start point of path.\n *\n * @returns {object} - x and y coordinates\n *\n * @see Syntree.Arrow#path\n */",
+      "meta": {
+        "range": [
+          6644,
+          6947
+        ],
+        "filename": "arrow.js",
+        "lineno": 247,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100001444",
+          "name": "Syntree.Arrow.prototype.getStartPoint",
+          "type": "FunctionExpression",
+          "paramnames": []
+        },
+        "vars": {
+          "path": "Syntree.Arrow#getStartPoint~path",
+          "start": "Syntree.Arrow#getStartPoint~start"
+        }
+      },
+      "description": "Get start point of path.",
+      "returns": [
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "- x and y coordinates"
+        }
+      ],
+      "see": [
+        "Syntree.Arrow#path"
+      ],
+      "name": "getStartPoint",
+      "longname": "Syntree.Arrow#getStartPoint",
+      "kind": "function",
+      "memberof": "Syntree.Arrow",
+      "scope": "instance",
+      "___id": "T000002R000147",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Set start point of path.\n *\n * @param {number} - x coordinate\n * @param {number} - y coordinate\n *\n * @see Syntree.Arrow#path\n */",
+      "meta": {
+        "range": [
+          7086,
+          7382
+        ],
+        "filename": "arrow.js",
+        "lineno": 267,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100001515",
+          "name": "Syntree.Arrow.prototype.setStartPoint",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "x",
+            "y"
+          ]
+        },
+        "vars": {
+          "newStart": "Syntree.Arrow#setStartPoint~newStart",
+          "path": "Syntree.Arrow#setStartPoint~path"
+        }
+      },
+      "description": "Set start point of path.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "number"
+            ]
+          },
+          "description": "x coordinate",
+          "name": "x"
+        },
+        {
+          "type": {
+            "names": [
+              "number"
+            ]
+          },
+          "description": "y coordinate",
+          "name": "y"
+        }
+      ],
+      "see": [
+        "Syntree.Arrow#path"
+      ],
+      "name": "setStartPoint",
+      "longname": "Syntree.Arrow#setStartPoint",
+      "kind": "function",
+      "memberof": "Syntree.Arrow",
+      "scope": "instance",
+      "___id": "T000002R000155",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Set end point of path.\n *\n * @param {number} - x coordinate\n * @param {number} - y coordinate\n *\n * @see Syntree.Arrow#path\n */",
+      "meta": {
+        "range": [
+          7519,
+          7794
+        ],
+        "filename": "arrow.js",
+        "lineno": 283,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100001590",
+          "name": "Syntree.Arrow.prototype.setEndPoint",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "x",
+            "y"
+          ]
+        },
+        "vars": {
+          "newEnd": "Syntree.Arrow#setEndPoint~newEnd",
+          "path": "Syntree.Arrow#setEndPoint~path"
+        }
+      },
+      "description": "Set end point of path.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "number"
+            ]
+          },
+          "description": "x coordinate",
+          "name": "x"
+        },
+        {
+          "type": {
+            "names": [
+              "number"
+            ]
+          },
+          "description": "y coordinate",
+          "name": "y"
+        }
+      ],
+      "see": [
+        "Syntree.Arrow#path"
+      ],
+      "name": "setEndPoint",
+      "longname": "Syntree.Arrow#setEndPoint",
+      "kind": "function",
+      "memberof": "Syntree.Arrow",
+      "scope": "instance",
+      "___id": "T000002R000160",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Get end point of path.\n *\n * @returns {object} - x and y coordinates\n *\n * @see Syntree.Arrow#path\n */",
+      "meta": {
+        "range": [
+          7906,
+          8205
+        ],
+        "filename": "arrow.js",
+        "lineno": 298,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100001659",
+          "name": "Syntree.Arrow.prototype.getEndPoint",
+          "type": "FunctionExpression",
+          "paramnames": []
+        },
+        "vars": {
+          "path": "Syntree.Arrow#getEndPoint~path",
+          "end": "Syntree.Arrow#getEndPoint~end"
+        }
+      },
+      "description": "Get end point of path.",
+      "returns": [
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "- x and y coordinates"
+        }
+      ],
+      "see": [
+        "Syntree.Arrow#path"
+      ],
+      "name": "getEndPoint",
+      "longname": "Syntree.Arrow#getEndPoint",
+      "kind": "function",
+      "memberof": "Syntree.Arrow",
+      "scope": "instance",
+      "___id": "T000002R000165",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Custom addition to Syntree.Element#updateGraphics.\n *\n * @see Syntree.Element#updateGraphics\n */",
+      "meta": {
+        "range": [
+          8390,
+          9934
+        ],
+        "filename": "arrow.js",
+        "lineno": 319,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100001747",
+          "name": "Syntree.Arrow.prototype.__updateGraphics",
+          "type": "FunctionExpression",
+          "paramnames": []
+        },
+        "vars": {
+          "fBBox": "Syntree.Arrow#__updateGraphics~fBBox",
+          "tBBox": "Syntree.Arrow#__updateGraphics~tBBox",
+          "scp": "Syntree.Arrow#__updateGraphics~scp",
+          "ecp": "Syntree.Arrow#__updateGraphics~ecp",
+          "path": "Syntree.Arrow#__updateGraphics~path",
+          "tInter": "Syntree.Arrow#__updateGraphics~tInter",
+          "pos": "Syntree.Arrow#__updateGraphics~pos",
+          "fInter": "Syntree.Arrow#__updateGraphics~fInter",
+          "": null
+        }
+      },
+      "description": "Custom addition to Syntree.Element#updateGraphics.",
+      "see": [
+        "Syntree.Element#updateGraphics"
+      ],
+      "name": "__updateGraphics",
+      "longname": "Syntree.Arrow#__updateGraphics",
+      "kind": "function",
+      "memberof": "Syntree.Arrow",
+      "scope": "instance",
+      "___id": "T000002R000174",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Custom addition to Syntree.Element#delete.\n *\n * @see Syntree.Element#delete\n */",
+      "meta": {
+        "range": [
+          10024,
+          10436
+        ],
+        "filename": "arrow.js",
+        "lineno": 374,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100002068",
+          "name": "Syntree.Arrow.prototype.__delete",
+          "type": "FunctionExpression",
+          "paramnames": []
+        },
+        "vars": {
+          "silent": "Syntree.Arrow#__delete~silent",
+          "this.fromNode.fromArrow": "Syntree.Arrow#fromNode.fromArrow",
+          "this.toNode.toArrow": "Syntree.Arrow#toNode.toArrow"
+        }
+      },
+      "description": "Custom addition to Syntree.Element#delete.",
+      "see": [
+        "Syntree.Element#delete"
+      ],
+      "name": "__delete",
+      "longname": "Syntree.Arrow#__delete",
+      "kind": "function",
+      "memberof": "Syntree.Arrow",
+      "scope": "instance",
+      "___id": "T000002R000191",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Get control point for start of path.\n *\n * @returns {object} - x and y coordinates\n *\n * @see Syntree.Arrow#path\n */",
+      "meta": {
+        "range": [
+          10562,
+          10827
+        ],
+        "filename": "arrow.js",
+        "lineno": 396,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100002142",
+          "name": "Syntree.Arrow.prototype.getStartCtrlPoint",
+          "type": "FunctionExpression",
+          "paramnames": []
+        },
+        "vars": {
+          "path": "Syntree.Arrow#getStartCtrlPoint~path"
+        }
+      },
+      "description": "Get control point for start of path.",
+      "returns": [
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "- x and y coordinates"
+        }
+      ],
+      "see": [
+        "Syntree.Arrow#path"
+      ],
+      "name": "getStartCtrlPoint",
+      "longname": "Syntree.Arrow#getStartCtrlPoint",
+      "kind": "function",
+      "memberof": "Syntree.Arrow",
+      "scope": "instance",
+      "___id": "T000002R000199",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Set control point for start of path.\n *\n * @param {number} - x coordinate\n * @param {number} - y coordinate\n *\n * @see Syntree.Arrow#path\n */",
+      "meta": {
+        "range": [
+          10978,
+          11331
+        ],
+        "filename": "arrow.js",
+        "lineno": 414,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100002208",
+          "name": "Syntree.Arrow.prototype.setStartCtrlPoint",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "x",
+            "y"
+          ]
+        },
+        "vars": {
+          "path": "Syntree.Arrow#setStartCtrlPoint~path",
+          "half1": "Syntree.Arrow#setStartCtrlPoint~half1",
+          "half2": "Syntree.Arrow#setStartCtrlPoint~half2",
+          "newPoint": "Syntree.Arrow#setStartCtrlPoint~newPoint"
+        }
+      },
+      "description": "Set control point for start of path.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "number"
+            ]
+          },
+          "description": "x coordinate",
+          "name": "x"
+        },
+        {
+          "type": {
+            "names": [
+              "number"
+            ]
+          },
+          "description": "y coordinate",
+          "name": "y"
+        }
+      ],
+      "see": [
+        "Syntree.Arrow#path"
+      ],
+      "name": "setStartCtrlPoint",
+      "longname": "Syntree.Arrow#setStartCtrlPoint",
+      "kind": "function",
+      "memberof": "Syntree.Arrow",
+      "scope": "instance",
+      "___id": "T000002R000205",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Set control point for end of path.\n *\n * @param {number} - x coordinate\n * @param {number} - y coordinate\n *\n * @see Syntree.Arrow#path\n */",
+      "meta": {
+        "range": [
+          11480,
+          11835
+        ],
+        "filename": "arrow.js",
+        "lineno": 430,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100002294",
+          "name": "Syntree.Arrow.prototype.setEndCtrlPoint",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "x",
+            "y"
+          ]
+        },
+        "vars": {
+          "path": "Syntree.Arrow#setEndCtrlPoint~path",
+          "half1": "Syntree.Arrow#setEndCtrlPoint~half1",
+          "half2": "Syntree.Arrow#setEndCtrlPoint~half2",
+          "newPoint": "Syntree.Arrow#setEndCtrlPoint~newPoint"
+        }
+      },
+      "description": "Set control point for end of path.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "number"
+            ]
+          },
+          "description": "x coordinate",
+          "name": "x"
+        },
+        {
+          "type": {
+            "names": [
+              "number"
+            ]
+          },
+          "description": "y coordinate",
+          "name": "y"
+        }
+      ],
+      "see": [
+        "Syntree.Arrow#path"
+      ],
+      "name": "setEndCtrlPoint",
+      "longname": "Syntree.Arrow#setEndCtrlPoint",
+      "kind": "function",
+      "memberof": "Syntree.Arrow",
+      "scope": "instance",
+      "___id": "T000002R000210",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Get control point for end of path.\n *\n * @returns {object} - x and y coordinates\n *\n * @see Syntree.Arrow#path\n */",
+      "meta": {
+        "range": [
+          11959,
+          12222
+        ],
+        "filename": "arrow.js",
+        "lineno": 445,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100002381",
+          "name": "Syntree.Arrow.prototype.getEndCtrlPoint",
+          "type": "FunctionExpression",
+          "paramnames": []
+        },
+        "vars": {
+          "path": "Syntree.Arrow#getEndCtrlPoint~path"
+        }
+      },
+      "description": "Get control point for end of path.",
+      "returns": [
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "- x and y coordinates"
+        }
+      ],
+      "see": [
+        "Syntree.Arrow#path"
+      ],
+      "name": "getEndCtrlPoint",
+      "longname": "Syntree.Arrow#getEndCtrlPoint",
+      "kind": "function",
+      "memberof": "Syntree.Arrow",
+      "scope": "instance",
+      "___id": "T000002R000215",
+      "___s": true
+    },
+    {
       "comment": "/**\n * @class\n * @classdesc Represents the line connecting two nodes.\n * @extends Syntree.Element\n * @extends Syntree.SelectableElement\n */",
       "meta": {
         "range": [
@@ -86,7 +765,7 @@
         "lineno": 7,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100002504",
+          "id": "astnode100002448",
           "name": "Syntree.Branch",
           "type": "FunctionExpression",
           "paramnames": [
@@ -113,7 +792,7 @@
       "longname": "Syntree.Branch",
       "memberof": "Syntree",
       "scope": "static",
-      "___id": "T000002R000226",
+      "___id": "T000002R000221",
       "___s": true
     },
     {
@@ -127,7 +806,7 @@
         "lineno": 5,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003517",
+          "id": "astnode100003461",
           "name": "Syntree.Element",
           "type": "FunctionExpression",
           "paramnames": []
@@ -144,7 +823,7 @@
       "longname": "Syntree.Element",
       "memberof": "Syntree",
       "scope": "static",
-      "___id": "T000002R000356",
+      "___id": "T000002R000351",
       "___s": true
     },
     {
@@ -158,7 +837,7 @@
         "lineno": 13,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003537",
+          "id": "astnode100003481",
           "name": "this.id",
           "type": "CallExpression",
           "value": "",
@@ -176,7 +855,7 @@
       "kind": "member",
       "memberof": "Syntree.Element",
       "scope": "instance",
-      "___id": "T000002R000357",
+      "___id": "T000002R000352",
       "___s": true
     },
     {
@@ -190,7 +869,7 @@
         "lineno": 22,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003548",
+          "id": "astnode100003492",
           "name": "this.selectable",
           "type": "Literal",
           "value": false,
@@ -206,7 +885,7 @@
       "kind": "member",
       "memberof": "Syntree.Element",
       "scope": "instance",
-      "___id": "T000002R000358",
+      "___id": "T000002R000353",
       "___s": true
     },
     {
@@ -220,7 +899,7 @@
         "lineno": 30,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003554",
+          "id": "astnode100003498",
           "name": "this.deleted",
           "type": "Literal",
           "value": false,
@@ -238,7 +917,7 @@
       "kind": "member",
       "memberof": "Syntree.Element",
       "scope": "instance",
-      "___id": "T000002R000359",
+      "___id": "T000002R000354",
       "___s": true
     },
     {
@@ -252,7 +931,7 @@
         "lineno": 45,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003575",
+          "id": "astnode100003519",
           "name": "Syntree.Element.prototype.isDeleted",
           "type": "FunctionExpression",
           "paramnames": []
@@ -277,7 +956,7 @@
       "kind": "function",
       "memberof": "Syntree.Element",
       "scope": "instance",
-      "___id": "T000002R000360",
+      "___id": "T000002R000355",
       "___s": true
     },
     {
@@ -291,7 +970,7 @@
         "lineno": 55,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003590",
+          "id": "astnode100003534",
           "name": "Syntree.Element.prototype.isSelectable",
           "type": "FunctionExpression",
           "paramnames": []
@@ -316,7 +995,7 @@
       "kind": "function",
       "memberof": "Syntree.Element",
       "scope": "instance",
-      "___id": "T000002R000361",
+      "___id": "T000002R000356",
       "___s": true
     },
     {
@@ -330,7 +1009,7 @@
         "lineno": 68,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003605",
+          "id": "astnode100003549",
           "name": "Syntree.Element.prototype.delete",
           "type": "FunctionExpression",
           "paramnames": []
@@ -349,7 +1028,7 @@
       "kind": "function",
       "memberof": "Syntree.Element",
       "scope": "instance",
-      "___id": "T000002R000362",
+      "___id": "T000002R000357",
       "___s": true
     },
     {
@@ -363,7 +1042,7 @@
         "lineno": 87,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003662",
+          "id": "astnode100003606",
           "name": "Syntree.Element.prototype.updateGraphics",
           "type": "FunctionExpression",
           "paramnames": []
@@ -378,7 +1057,7 @@
       "kind": "function",
       "memberof": "Syntree.Element",
       "scope": "instance",
-      "___id": "T000002R000364",
+      "___id": "T000002R000359",
       "___s": true
     },
     {
@@ -392,7 +1071,7 @@
         "lineno": 100,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003698",
+          "id": "astnode100003642",
           "name": "Syntree.Element.prototype.isElement",
           "type": "FunctionExpression",
           "paramnames": []
@@ -413,7 +1092,7 @@
       "kind": "function",
       "memberof": "Syntree.Element",
       "scope": "instance",
-      "___id": "T000002R000365",
+      "___id": "T000002R000360",
       "___s": true
     },
     {
@@ -427,7 +1106,7 @@
         "lineno": 113,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003711",
+          "id": "astnode100003655",
           "name": "Syntree.Element.prototype.isDeletable",
           "type": "FunctionExpression",
           "paramnames": []
@@ -451,7 +1130,7 @@
       "kind": "function",
       "memberof": "Syntree.Element",
       "scope": "instance",
-      "___id": "T000002R000366",
+      "___id": "T000002R000361",
       "___s": true
     },
     {
@@ -465,7 +1144,7 @@
         "lineno": 122,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003724",
+          "id": "astnode100003668",
           "name": "Syntree.Element.prototype.getId",
           "type": "FunctionExpression",
           "paramnames": []
@@ -490,21 +1169,145 @@
       "kind": "function",
       "memberof": "Syntree.Element",
       "scope": "instance",
-      "___id": "T000002R000367",
+      "___id": "T000002R000362",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Elements to add to Graphic.\n     * Initialization property only.\n     *\n     * @type {object}\n     * @memberof Syntree.Graphic\n     * @instance\n     */",
+      "meta": {
+        "range": [
+          301,
+          379
+        ],
+        "filename": "graphic.js",
+        "lineno": 12,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100003711",
+          "name": "elements_to_add",
+          "type": "ObjectExpression",
+          "value": "{\"require\":\"object\",\"default_value\":\"\"}"
+        }
+      },
+      "description": "Elements to add to Graphic.\nInitialization property only.",
+      "type": {
+        "names": [
+          "object"
+        ]
+      },
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "name": "elements_to_add",
+      "longname": "Syntree.Graphic#elements_to_add",
+      "kind": "member",
+      "___id": "T000002R000366",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * States of this instance's data object that need to be mapped to graphical updates.\n     *\n     * @type {object}\n     * @memberof Syntree.Graphic\n     * @instance\n     */",
+      "meta": {
+        "range": [
+          570,
+          646
+        ],
+        "filename": "graphic.js",
+        "lineno": 23,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100003717",
+          "name": "states_synced",
+          "type": "ObjectExpression",
+          "value": "{\"require\":\"object\",\"default_value\":\"\"}"
+        }
+      },
+      "description": "States of this instance's data object that need to be mapped to graphical updates.",
+      "type": {
+        "names": [
+          "object"
+        ]
+      },
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "name": "states_synced",
+      "longname": "Syntree.Graphic#states_synced",
+      "kind": "member",
+      "___id": "T000002R000369",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Information about how to update graphical elements based on state changes.\n     *\n     * @type {object}\n     * @memberof Syntree.Graphic\n     * @instance\n     */",
+      "meta": {
+        "range": [
+          829,
+          912
+        ],
+        "filename": "graphic.js",
+        "lineno": 34,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100003723",
+          "name": "update_map",
+          "type": "ObjectExpression",
+          "value": "{\"require\":\"object\",\"default_value\":\"#undefined\"}"
+        }
+      },
+      "description": "Information about how to update graphical elements based on state changes.",
+      "type": {
+        "names": [
+          "object"
+        ]
+      },
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "name": "update_map",
+      "longname": "Syntree.Graphic#update_map",
+      "kind": "member",
+      "___id": "T000002R000372",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * The Element that this Graphic is a member of.\n     *\n     * @type {Syntree.Element}\n     * @memberof Syntree.Graphic\n     * @instance\n     */",
+      "meta": {
+        "range": [
+          1075,
+          1141
+        ],
+        "filename": "graphic.js",
+        "lineno": 45,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100003729",
+          "name": "data_object",
+          "type": "ObjectExpression",
+          "value": "{\"require\":\"\"}"
+        }
+      },
+      "description": "The Element that this Graphic is a member of.",
+      "type": {
+        "names": [
+          "Syntree.Element"
+        ]
+      },
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "name": "data_object",
+      "longname": "Syntree.Graphic#data_object",
+      "kind": "member",
+      "___id": "T000002R000375",
       "___s": true
     },
     {
       "comment": "/**\n * @class\n * @classdesc Instantiated for each new [Element]{@link Syntree.Element}. Manages all graphical representation.\n */",
       "meta": {
         "range": [
-          590,
-          844
+          1276,
+          1889
         ],
         "filename": "graphic.js",
-        "lineno": 25,
+        "lineno": 54,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003793",
+          "id": "astnode100003737",
           "name": "Syntree.Graphic",
           "type": "FunctionExpression",
           "paramnames": [
@@ -521,7 +1324,498 @@
       "longname": "Syntree.Graphic",
       "memberof": "Syntree",
       "scope": "static",
-      "___id": "T000002R000382",
+      "___id": "T000002R000377",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * All the graphical elements.\n     *\n     * @type {object}\n     * @prop {object} element.el_obj - the actual Snap Element or jQuery Object\n     * @prop {function} element.attr_handler - a function to handle attribute updating\n     * @prop {boolean} element.include_in_svg_string - whether or not to include this element in the SVG string\n     */",
+      "meta": {
+        "range": [
+          1683,
+          1701
+        ],
+        "filename": "graphic.js",
+        "lineno": 63,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100003745",
+          "name": "this.elements",
+          "type": "ObjectExpression",
+          "value": "{}",
+          "paramnames": []
+        }
+      },
+      "description": "All the graphical elements.",
+      "type": {
+        "names": [
+          "object"
+        ]
+      },
+      "properties": [
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "the actual Snap Element or jQuery Object",
+          "name": "element.el_obj"
+        },
+        {
+          "type": {
+            "names": [
+              "function"
+            ]
+          },
+          "description": "a function to handle attribute updating",
+          "name": "element.attr_handler"
+        },
+        {
+          "type": {
+            "names": [
+              "boolean"
+            ]
+          },
+          "description": "whether or not to include this element in the SVG string",
+          "name": "element.include_in_svg_string"
+        }
+      ],
+      "name": "elements",
+      "longname": "Syntree.Graphic#elements",
+      "kind": "member",
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "___id": "T000002R000378",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Add a graphical element.\n *\n * @param {string} name - the name of the element\n * @param {object} element - data about the element\n * @param {object} element.el_obj - the actual Snap Element or jQuery Object\n * @param {function} [element.attr_handler=Syntree.Graphic._defaultAttrHandler] - a function to handle attribute updating\n * @param {boolean} [element.include_in_svg_string=false] - whether or not to include this element in the SVG string\n */",
+      "meta": {
+        "range": [
+          2348,
+          2765
+        ],
+        "filename": "graphic.js",
+        "lineno": 81,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100003782",
+          "name": "Syntree.Graphic.prototype.addElement",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "name",
+            "element"
+          ]
+        },
+        "vars": {
+          "this.elements[undefined]": "Syntree.Graphic#elements[undefined]",
+          "this.elements[undefined].el_obj": "Syntree.Graphic#elements[undefined].el_obj",
+          "this.elements[undefined].attr_handler": "Syntree.Graphic#elements[undefined].attr_handler",
+          "this.elements[undefined].include_in_svg_string": "Syntree.Graphic#elements[undefined].include_in_svg_string"
+        }
+      },
+      "description": "Add a graphical element.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "string"
+            ]
+          },
+          "description": "the name of the element",
+          "name": "name"
+        },
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "data about the element",
+          "name": "element"
+        },
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "the actual Snap Element or jQuery Object",
+          "name": "element.el_obj"
+        },
+        {
+          "type": {
+            "names": [
+              "function"
+            ]
+          },
+          "optional": true,
+          "defaultvalue": "Syntree.Graphic._defaultAttrHandler",
+          "description": "a function to handle attribute updating",
+          "name": "element.attr_handler"
+        },
+        {
+          "type": {
+            "names": [
+              "boolean"
+            ]
+          },
+          "optional": true,
+          "defaultvalue": false,
+          "description": "whether or not to include this element in the SVG string",
+          "name": "element.include_in_svg_string"
+        }
+      ],
+      "name": "addElement",
+      "longname": "Syntree.Graphic#addElement",
+      "kind": "function",
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "___id": "T000002R000379",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Get an SVG string represnting all elements marked with include_in_svg_string.\n *\n * @returns {string} - string of SVG markup\n *\n * @see Syntree.Graphic#addElement\n */",
+      "meta": {
+        "range": [
+          2941,
+          3183
+        ],
+        "filename": "graphic.js",
+        "lineno": 95,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100003864",
+          "name": "Syntree.Graphic.prototype.getSVGString",
+          "type": "FunctionExpression",
+          "paramnames": []
+        },
+        "vars": {
+          "s": "Syntree.Graphic#getSVGString~s"
+        }
+      },
+      "description": "Get an SVG string represnting all elements marked with include_in_svg_string.",
+      "returns": [
+        {
+          "type": {
+            "names": [
+              "string"
+            ]
+          },
+          "description": "- string of SVG markup"
+        }
+      ],
+      "see": [
+        "Syntree.Graphic#addElement"
+      ],
+      "name": "getSVGString",
+      "longname": "Syntree.Graphic#getSVGString",
+      "kind": "function",
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "___id": "T000002R000384",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * The default attr handler for graphical elements.\n *\n * @param {object} element - a Snap Element (or other graphical element)\n * @param {object} attrs - attrs to set\n *\n * @see Syntree.Graphic#elements\n */",
+      "meta": {
+        "range": [
+          3397,
+          3498
+        ],
+        "filename": "graphic.js",
+        "lineno": 113,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100003908",
+          "name": "Syntree.Graphic.prototype._defaultAttrHandler",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "element",
+            "attrs"
+          ]
+        }
+      },
+      "description": "The default attr handler for graphical elements.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "a Snap Element (or other graphical element)",
+          "name": "element"
+        },
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "attrs to set",
+          "name": "attrs"
+        }
+      ],
+      "see": [
+        "Syntree.Graphic#elements"
+      ],
+      "name": "_defaultAttrHandler",
+      "longname": "Syntree.Graphic#_defaultAttrHandler",
+      "kind": "function",
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "___id": "T000002R000387",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Get all graphical elements.\n *\n * @returns {object} - all elements\n *\n * @see Syntree.Graphic#elements\n */",
+      "meta": {
+        "range": [
+          3614,
+          3692
+        ],
+        "filename": "graphic.js",
+        "lineno": 124,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100003927",
+          "name": "Syntree.Graphic.prototype.getAllEls",
+          "type": "FunctionExpression",
+          "paramnames": []
+        }
+      },
+      "description": "Get all graphical elements.",
+      "returns": [
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "- all elements"
+        }
+      ],
+      "see": [
+        "Syntree.Graphic#elements"
+      ],
+      "name": "getAllEls",
+      "longname": "Syntree.Graphic#getAllEls",
+      "kind": "function",
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "___id": "T000002R000388",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Get an element by name.\n *\n * @param {string} name - name of the element\n *\n * @see Syntree.Graphic#elements\n */",
+      "meta": {
+        "range": [
+          3814,
+          3905
+        ],
+        "filename": "graphic.js",
+        "lineno": 135,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100003942",
+          "name": "Syntree.Graphic.prototype.getEl",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "name"
+          ]
+        }
+      },
+      "description": "Get an element by name.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "string"
+            ]
+          },
+          "description": "name of the element",
+          "name": "name"
+        }
+      ],
+      "see": [
+        "Syntree.Graphic#elements"
+      ],
+      "name": "getEl",
+      "longname": "Syntree.Graphic#getEl",
+      "kind": "function",
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "___id": "T000002R000389",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Tell this Graphic instance that the state with state_name has been changed in the data object.\n *\n * @param {string} state_name - state name\n *\n * @see Syntree.Graphic#states_synced\n * @see Syntree.Graphic#data_object\n */",
+      "meta": {
+        "range": [
+          4136,
+          4239
+        ],
+        "filename": "graphic.js",
+        "lineno": 147,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100003962",
+          "name": "Syntree.Graphic.prototype.unsync",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "state_name"
+          ]
+        },
+        "vars": {
+          "this.states_synced[undefined]": "Syntree.Graphic#states_synced[undefined]"
+        }
+      },
+      "description": "Tell this Graphic instance that the state with state_name has been changed in the data object.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "string"
+            ]
+          },
+          "description": "state name",
+          "name": "state_name"
+        }
+      ],
+      "see": [
+        "Syntree.Graphic#states_synced",
+        "Syntree.Graphic#data_object"
+      ],
+      "name": "unsync",
+      "longname": "Syntree.Graphic#unsync",
+      "kind": "function",
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "___id": "T000002R000390",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Tell this Graphic instance that the state with state_name is correctly represented in the graphical layer.\n *\n * @see Syntree.Graphic#unsync\n */",
+      "meta": {
+        "range": [
+          4393,
+          4493
+        ],
+        "filename": "graphic.js",
+        "lineno": 156,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100003982",
+          "name": "Syntree.Graphic.prototype.sync",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "state_name"
+          ]
+        },
+        "vars": {
+          "this.states_synced[undefined]": "Syntree.Graphic#states_synced[undefined]"
+        }
+      },
+      "description": "Tell this Graphic instance that the state with state_name is correctly represented in the graphical layer.",
+      "see": [
+        "Syntree.Graphic#unsync"
+      ],
+      "name": "sync",
+      "longname": "Syntree.Graphic#sync",
+      "kind": "function",
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "___id": "T000002R000392",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Update all graphical elements.\n */",
+      "meta": {
+        "range": [
+          4537,
+          5238
+        ],
+        "filename": "graphic.js",
+        "lineno": 163,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100004002",
+          "name": "Syntree.Graphic.prototype.update",
+          "type": "FunctionExpression",
+          "paramnames": []
+        },
+        "vars": {
+          "state_obj": "Syntree.Graphic#update~state_obj",
+          "this.states_synced[undefined]": "Syntree.Graphic#states_synced[undefined]"
+        }
+      },
+      "description": "Update all graphical elements.",
+      "name": "update",
+      "longname": "Syntree.Graphic#update",
+      "kind": "function",
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "___id": "T000002R000394",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Delete all graphical elements.\n */",
+      "meta": {
+        "range": [
+          5282,
+          5551
+        ],
+        "filename": "graphic.js",
+        "lineno": 183,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100004115",
+          "name": "Syntree.Graphic.prototype.delete",
+          "type": "FunctionExpression",
+          "paramnames": []
+        }
+      },
+      "description": "Delete all graphical elements.",
+      "name": "delete",
+      "longname": "Syntree.Graphic#delete",
+      "kind": "function",
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "___id": "T000002R000397",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Handler for data states of type boolean -- for example, Syntree.SelectableElement#selected.\n */",
+      "meta": {
+        "range": [
+          5656,
+          6098
+        ],
+        "filename": "graphic.js",
+        "lineno": 196,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100004169",
+          "name": "Syntree.Graphic.prototype._handlerBoolean",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "state_obj"
+          ]
+        },
+        "vars": {
+          "d": "Syntree.Graphic#_handlerBoolean~d",
+          "el": "Syntree.Graphic#_handlerBoolean~el",
+          "state_el_data": "Syntree.Graphic#_handlerBoolean~state_el_data"
+        }
+      },
+      "description": "Handler for data states of type boolean -- for example, Syntree.SelectableElement#selected.",
+      "name": "_handlerBoolean",
+      "longname": "Syntree.Graphic#_handlerBoolean",
+      "kind": "function",
+      "memberof": "Syntree.Graphic",
+      "scope": "instance",
+      "___id": "T000002R000398",
       "___s": true
     },
     {
@@ -535,7 +1829,7 @@
         "lineno": 14,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004367",
+          "id": "astnode100004280",
           "name": "id",
           "type": "ObjectExpression",
           "value": "{\"require\":\"number\",\"default_value\":\"#undefined\"}"
@@ -556,27 +1850,27 @@
       "longname": "Syntree.Node#id",
       "kind": "member",
       "overrides": "Syntree.SelectableElement#id",
-      "___id": "T000002R000412",
+      "___id": "T000002R000406",
       "___s": true
     },
     {
-      "comment": "/**\n     * Starting x coordinate.\n     *\n     * @type {number}\n     *\n     * @memberof Syntree.Node\n     * @instance\n     */",
+      "comment": "/**\n     * This Node's x coordinate.\n     *\n     * @type {number}\n     *\n     * @memberof Syntree.Node\n     * @instance\n     */",
       "meta": {
         "range": [
-          505,
-          568
+          508,
+          571
         ],
         "filename": "node.js",
         "lineno": 26,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004373",
+          "id": "astnode100004286",
           "name": "x",
           "type": "ObjectExpression",
           "value": "{\"require\":\"number\",\"default_value\":0}"
         }
       },
-      "description": "Starting x coordinate.",
+      "description": "This Node's x coordinate.",
       "type": {
         "names": [
           "number"
@@ -587,27 +1881,27 @@
       "name": "x",
       "longname": "Syntree.Node#x",
       "kind": "member",
-      "___id": "T000002R000415",
+      "___id": "T000002R000409",
       "___s": true
     },
     {
-      "comment": "/**\n     * Starting y coordinate.\n     *\n     * @type {number}\n     *\n     * @memberof Syntree.Node\n     * @instance\n     */",
+      "comment": "/**\n     * This Node's y coordinate.\n     *\n     * @type {number}\n     *\n     * @memberof Syntree.Node\n     * @instance\n     */",
       "meta": {
         "range": [
-          703,
-          766
+          709,
+          772
         ],
         "filename": "node.js",
         "lineno": 38,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004379",
+          "id": "astnode100004292",
           "name": "y",
           "type": "ObjectExpression",
           "value": "{\"require\":\"number\",\"default_value\":0}"
         }
       },
-      "description": "Starting y coordinate.",
+      "description": "This Node's y coordinate.",
       "type": {
         "names": [
           "number"
@@ -618,21 +1912,21 @@
       "name": "y",
       "longname": "Syntree.Node#y",
       "kind": "member",
-      "___id": "T000002R000418",
+      "___id": "T000002R000412",
       "___s": true
     },
     {
       "comment": "/**\n     * Label content.\n     *\n     * @type {string}\n     *\n     * @memberof Syntree.Node\n     * @instance\n     */",
       "meta": {
         "range": [
-          893,
-          968
+          899,
+          974
         ],
         "filename": "node.js",
         "lineno": 50,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004385",
+          "id": "astnode100004298",
           "name": "labelContent",
           "type": "ObjectExpression",
           "value": "{\"require\":\"string\",\"default_value\":\"\"}"
@@ -649,21 +1943,21 @@
       "name": "labelContent",
       "longname": "Syntree.Node#labelContent",
       "kind": "member",
-      "___id": "T000002R000421",
+      "___id": "T000002R000415",
       "___s": true
     },
     {
       "comment": "/**\n * @class\n * @classdesc Nodes are the meat of Syntree. They act like items in a linked list, containing references to their parents and children.\n * @extends Syntree.Element\n * @extends Syntree.SelectableElement\n */",
       "meta": {
         "range": [
-          1193,
-          2469
+          1199,
+          2475
         ],
         "filename": "node.js",
         "lineno": 62,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004392",
+          "id": "astnode100004305",
           "name": "Syntree.Node",
           "type": "FunctionExpression",
           "paramnames": [
@@ -690,21 +1984,21 @@
       "longname": "Syntree.Node",
       "memberof": "Syntree",
       "scope": "static",
-      "___id": "T000002R000424",
+      "___id": "T000002R000418",
       "___s": true
     },
     {
       "comment": "/**\n     * The last position that was updated to the visual display.\n     *\n     * @type {object}\n     */",
       "meta": {
         "range": [
-          1464,
-          1499
+          1470,
+          1505
         ],
         "filename": "node.js",
         "lineno": 71,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004423",
+          "id": "astnode100004336",
           "name": "this.lastSyncedPosition",
           "type": "Identifier",
           "value": "undefined",
@@ -722,21 +2016,21 @@
       "kind": "member",
       "memberof": "Syntree.Node",
       "scope": "instance",
-      "___id": "T000002R000425",
+      "___id": "T000002R000419",
       "___s": true
     },
     {
       "comment": "/**\n     * This Node's parent Node.\n     *\n     * @type {Syntree.Node}\n     */",
       "meta": {
         "range": [
-          1610,
-          1633
+          1616,
+          1639
         ],
         "filename": "node.js",
         "lineno": 79,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004429",
+          "id": "astnode100004342",
           "name": "this.parent",
           "type": "Identifier",
           "value": "undefined",
@@ -754,21 +2048,21 @@
       "kind": "member",
       "memberof": "Syntree.Node",
       "scope": "instance",
-      "___id": "T000002R000426",
+      "___id": "T000002R000420",
       "___s": true
     },
     {
       "comment": "/**\n     * This Node's child Nodes.\n     *\n     * @type {Syntree.Node[]}\n     */",
       "meta": {
         "range": [
-          1725,
-          1743
+          1731,
+          1749
         ],
         "filename": "node.js",
         "lineno": 86,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004435",
+          "id": "astnode100004348",
           "name": "this.children",
           "type": "ArrayExpression",
           "value": "[]",
@@ -786,21 +2080,21 @@
       "kind": "member",
       "memberof": "Syntree.Node",
       "scope": "instance",
-      "___id": "T000002R000427",
+      "___id": "T000002R000421",
       "___s": true
     },
     {
       "comment": "/**\n     * Branch connecting to this Node's parent.\n     *\n     * @type {Syntree.Branch}\n     */",
       "meta": {
         "range": [
-          1867,
-          1896
+          1873,
+          1902
         ],
         "filename": "node.js",
         "lineno": 94,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004441",
+          "id": "astnode100004354",
           "name": "this.parentBranch",
           "type": "Identifier",
           "value": "undefined",
@@ -818,21 +2112,21 @@
       "kind": "member",
       "memberof": "Syntree.Node",
       "scope": "instance",
-      "___id": "T000002R000428",
+      "___id": "T000002R000422",
       "___s": true
     },
     {
       "comment": "/**\n     * Branches connecting to this Node's children.\n     *\n     * @type {Syntree.Branch[]}\n     */",
       "meta": {
         "range": [
-          2010,
-          2033
+          2016,
+          2039
         ],
         "filename": "node.js",
         "lineno": 101,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004447",
+          "id": "astnode100004360",
           "name": "this.childBranches",
           "type": "ArrayExpression",
           "value": "[]",
@@ -850,21 +2144,21 @@
       "kind": "member",
       "memberof": "Syntree.Node",
       "scope": "instance",
-      "___id": "T000002R000429",
+      "___id": "T000002R000423",
       "___s": true
     },
     {
       "comment": "/**\n     * Is this Node being edited?\n     *\n     * @type {Boolean}\n     */",
       "meta": {
         "range": [
-          2134,
-          2154
+          2140,
+          2160
         ],
         "filename": "node.js",
         "lineno": 109,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004453",
+          "id": "astnode100004366",
           "name": "this.editing",
           "type": "Literal",
           "value": false,
@@ -882,21 +2176,21 @@
       "kind": "member",
       "memberof": "Syntree.Node",
       "scope": "instance",
-      "___id": "T000002R000430",
+      "___id": "T000002R000424",
       "___s": true
     },
     {
       "comment": "/**\n     * Has this Node been saved at least once?\n     * Used so we can autodelete Nodes on reverse navigation.\n     *\n     * @type {Boolean}\n     */",
       "meta": {
         "range": [
-          2316,
-          2333
+          2322,
+          2339
         ],
         "filename": "node.js",
         "lineno": 117,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004459",
+          "id": "astnode100004372",
           "name": "this.real",
           "type": "Literal",
           "value": false,
@@ -914,21 +2208,21 @@
       "kind": "member",
       "memberof": "Syntree.Node",
       "scope": "instance",
-      "___id": "T000002R000431",
+      "___id": "T000002R000425",
       "___s": true
     },
     {
       "comment": "/**\n     * This Node's cached label BBox.\n     *\n     * @type {object}\n     */",
       "meta": {
         "range": [
-          2423,
-          2438
+          2429,
+          2444
         ],
         "filename": "node.js",
         "lineno": 124,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004465",
+          "id": "astnode100004378",
           "name": "this._labelbbox",
           "type": "MemberExpression"
         }
@@ -944,21 +2238,21 @@
       "kind": "member",
       "memberof": "Syntree.Node",
       "scope": "instance",
-      "___id": "T000002R000432",
+      "___id": "T000002R000426",
       "___s": true
     },
     {
       "comment": "/**\n * Build needed graphical objects and compile them into a new instance of Graphic.\n *\n * @see Syntree.Graphic\n */",
       "meta": {
         "range": [
-          2589,
-          8906
+          2595,
+          6596
         ],
         "filename": "node.js",
         "lineno": 134,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100004474",
+          "id": "astnode100004387",
           "name": "Syntree.Node.prototype.createGraphic",
           "type": "FunctionExpression",
           "paramnames": []
@@ -971,9 +2265,6 @@
           "label": "Syntree.Node#createGraphic~label",
           "config_matrix": "Syntree.Node#createGraphic~config_matrix",
           "": null,
-          "customDrag": "Syntree.Node#createGraphic~customDrag",
-          "customStart": "Syntree.Node#createGraphic~customStart",
-          "customEnd": "Syntree.Node#createGraphic~customEnd",
           "this.graphic": "Syntree.Node#graphic"
         }
       },
@@ -986,7 +2277,612 @@
       "kind": "function",
       "memberof": "Syntree.Node",
       "scope": "instance",
-      "___id": "T000002R000433",
+      "___id": "T000002R000427",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Get the position of this Node.\n * Does not include panning transform.\n *\n * @returns {object} - x and y coordinates\n *\n * @see Syntree.Node#x\n * @see Syntree.Node#y\n */",
+      "meta": {
+        "range": [
+          6774,
+          6882
+        ],
+        "filename": "node.js",
+        "lineno": 268,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100004832",
+          "name": "Syntree.Node.prototype.getPosition",
+          "type": "FunctionExpression",
+          "paramnames": []
+        }
+      },
+      "description": "Get the position of this Node.\nDoes not include panning transform.",
+      "returns": [
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "- x and y coordinates"
+        }
+      ],
+      "see": [
+        "Syntree.Node#x",
+        "Syntree.Node#y"
+      ],
+      "name": "getPosition",
+      "longname": "Syntree.Node#getPosition",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000495",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Accessor function for Syntree.Node#labelContent.\n *\n * @see Syntree.Node#labelContent\n */",
+      "meta": {
+        "range": [
+          6982,
+          7067
+        ],
+        "filename": "node.js",
+        "lineno": 281,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100004853",
+          "name": "Syntree.Node.prototype.getLabelContent",
+          "type": "FunctionExpression",
+          "paramnames": []
+        }
+      },
+      "description": "Accessor function for Syntree.Node#labelContent.",
+      "see": [
+        "Syntree.Node#labelContent"
+      ],
+      "name": "getLabelContent",
+      "longname": "Syntree.Node#getLabelContent",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000498",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Setter function for Syntree.Node#labelContent.\n *\n * @see Syntree.Node#labelContent\n */",
+      "meta": {
+        "range": [
+          7164,
+          7300
+        ],
+        "filename": "node.js",
+        "lineno": 290,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100004868",
+          "name": "Syntree.Node.prototype.setLabelContent",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "content"
+          ]
+        },
+        "vars": {
+          "this.labelContent": "Syntree.Node#labelContent"
+        }
+      },
+      "description": "Setter function for Syntree.Node#labelContent.",
+      "see": [
+        "Syntree.Node#labelContent"
+      ],
+      "name": "setLabelContent",
+      "longname": "Syntree.Node#setLabelContent",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000499",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Get this Node label's BBox.\n * Returns cached BBox if exists.\n *\n * @returns {object} - border box\n *\n * @see Syntree.Node#_labelbbox\n */",
+      "meta": {
+        "range": [
+          7447,
+          8171
+        ],
+        "filename": "node.js",
+        "lineno": 303,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100004894",
+          "name": "Syntree.Node.prototype.getLabelBBox",
+          "type": "FunctionExpression",
+          "paramnames": []
+        },
+        "vars": {
+          "fakeHeight": "Syntree.Node#getLabelBBox~fakeHeight",
+          "fakeWidth": "Syntree.Node#getLabelBBox~fakeWidth",
+          "this._labelbbox": "Syntree.Node#_labelbbox"
+        }
+      },
+      "description": "Get this Node label's BBox.\nReturns cached BBox if exists.",
+      "returns": [
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "- border box"
+        }
+      ],
+      "see": [
+        "Syntree.Node#_labelbbox"
+      ],
+      "name": "getLabelBBox",
+      "longname": "Syntree.Node#getLabelBBox",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000501",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Accessor function for Syntree.Node#parent.\n *\n * @see Syntree.Node#parent\n */",
+      "meta": {
+        "range": [
+          8259,
+          8332
+        ],
+        "filename": "node.js",
+        "lineno": 331,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100005023",
+          "name": "Syntree.Node.prototype.getParent",
+          "type": "FunctionExpression",
+          "paramnames": []
+        }
+      },
+      "description": "Accessor function for Syntree.Node#parent.",
+      "see": [
+        "Syntree.Node#parent"
+      ],
+      "name": "getParent",
+      "longname": "Syntree.Node#getParent",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000513",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Accessor function for Syntree.Node#children.\n *\n * @see Syntree.Node#children\n */",
+      "meta": {
+        "range": [
+          8423,
+          8500
+        ],
+        "filename": "node.js",
+        "lineno": 340,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100005038",
+          "name": "Syntree.Node.prototype.getChildren",
+          "type": "FunctionExpression",
+          "paramnames": []
+        }
+      },
+      "description": "Accessor function for Syntree.Node#children.",
+      "see": [
+        "Syntree.Node#children"
+      ],
+      "name": "getChildren",
+      "longname": "Syntree.Node#getChildren",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000514",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Get a path that acts like a border box for this Node's label.\n * Used to get intersections for movement arrows.\n *\n * @returns {string} - path string\n *\n * @see Syntree.Arrow\n */",
+      "meta": {
+        "range": [
+          8688,
+          9000
+        ],
+        "filename": "node.js",
+        "lineno": 352,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100005053",
+          "name": "Syntree.Node.prototype.getPath",
+          "type": "FunctionExpression",
+          "paramnames": []
+        },
+        "vars": {
+          "bbox": "Syntree.Node#getPath~bbox",
+          "p": "Syntree.Node#getPath~p",
+          "s": "Syntree.Node#getPath~s"
+        }
+      },
+      "description": "Get a path that acts like a border box for this Node's label.\nUsed to get intersections for movement arrows.",
+      "returns": [
+        {
+          "type": {
+            "names": [
+              "string"
+            ]
+          },
+          "description": "- path string"
+        }
+      ],
+      "see": [
+        "Syntree.Arrow"
+      ],
+      "name": "getPath",
+      "longname": "Syntree.Node#getPath",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000515",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Grouped accessor function for selected, editing, real, and deleted.\n * Mostly a leftover from when I didn't know what I was doing.\n * Should probably turn this into something tht makes more sense, someday.\n *\n * @param {string} [which] - which state to return\n *\n * @returns {boolean|object} - either the boolean value of the state, or an object of state names mapped to booleans (if no state name provided)\n *\n * @see Syntree.Node#selected\n * @see Syntree.Node#editing\n * @see Syntree.Node#real\n * @see Syntree.Node#deleted\n */",
+      "meta": {
+        "range": [
+          9538,
+          10122
+        ],
+        "filename": "node.js",
+        "lineno": 377,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100005145",
+          "name": "Syntree.Node.prototype.getState",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "which"
+          ]
+        }
+      },
+      "description": "Grouped accessor function for selected, editing, real, and deleted.\nMostly a leftover from when I didn't know what I was doing.\nShould probably turn this into something tht makes more sense, someday.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "string"
+            ]
+          },
+          "optional": true,
+          "description": "which state to return",
+          "name": "which"
+        }
+      ],
+      "returns": [
+        {
+          "type": {
+            "names": [
+              "boolean",
+              "object"
+            ]
+          },
+          "description": "- either the boolean value of the state, or an object of state names mapped to booleans (if no state name provided)"
+        }
+      ],
+      "see": [
+        "Syntree.Node#selected",
+        "Syntree.Node#editing",
+        "Syntree.Node#real",
+        "Syntree.Node#deleted"
+      ],
+      "name": "getState",
+      "longname": "Syntree.Node#getState",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000523",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Set this Node's x and y coordinates.\n *\n * @param {number} x - x coordinate\n * @param {number} y - y coordinate\n * @param {boolean} [propogate=true] - set coordinates of descendant Nodes as well\n *\n * @returns {object} - new x and y coordinates\n *\n * @see Syntree.Node#x\n * @see Syntree.Node#y\n */",
+      "meta": {
+        "range": [
+          10429,
+          11943
+        ],
+        "filename": "node.js",
+        "lineno": 413,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100005206",
+          "name": "Syntree.Node.prototype.move",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "x",
+            "y",
+            "propagate"
+          ]
+        },
+        "vars": {
+          "x": "Syntree.Node#move~x",
+          "y": "Syntree.Node#move~y",
+          "propagate": "Syntree.Node#move~propagate",
+          "oldX": "Syntree.Node#move~oldX",
+          "oldY": "Syntree.Node#move~oldY",
+          "this.x": "Syntree.Node#x",
+          "this.y": "Syntree.Node#y",
+          "": null,
+          "this._labelbbox": "Syntree.Node#_labelbbox",
+          "c": "Syntree.Node#move~c",
+          "deltaX": "Syntree.Node#move~deltaX",
+          "deltaY": "Syntree.Node#move~deltaY",
+          "thisChild": "Syntree.Node#move~thisChild",
+          "pos": "Syntree.Node#move~pos"
+        }
+      },
+      "description": "Set this Node's x and y coordinates.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "number"
+            ]
+          },
+          "description": "x coordinate",
+          "name": "x"
+        },
+        {
+          "type": {
+            "names": [
+              "number"
+            ]
+          },
+          "description": "y coordinate",
+          "name": "y"
+        },
+        {
+          "type": {
+            "names": [
+              "boolean"
+            ]
+          },
+          "optional": true,
+          "defaultvalue": true,
+          "description": "set coordinates of descendant Nodes as well",
+          "name": "propogate"
+        }
+      ],
+      "returns": [
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "- new x and y coordinates"
+        }
+      ],
+      "see": [
+        "Syntree.Node#x",
+        "Syntree.Node#y"
+      ],
+      "name": "move",
+      "longname": "Syntree.Node#move",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000528",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Custom addition to Syntree.Element#delete.\n * Deletes connected Branches and Arrows as well.\n *\n * @see Syntree.Element#delete\n */",
+      "meta": {
+        "range": [
+          12083,
+          12691
+        ],
+        "filename": "node.js",
+        "lineno": 470,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100005473",
+          "name": "Syntree.Node.prototype.__delete",
+          "type": "FunctionExpression",
+          "paramnames": []
+        },
+        "vars": {
+          "this.real": "Syntree.Node#real",
+          "tree": "Syntree.Node#__delete~tree"
+        }
+      },
+      "description": "Custom addition to Syntree.Element#delete.\nDeletes connected Branches and Arrows as well.",
+      "see": [
+        "Syntree.Element#delete"
+      ],
+      "name": "__delete",
+      "longname": "Syntree.Node#__delete",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000544",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Custom addition to Syntree.SelectElement#deselect.\n * Deletes if is not real.\n *\n * @see Syntree.SelectableElement#deselect\n * @see Syntree.Node#real\n */",
+      "meta": {
+        "range": [
+          12854,
+          12989
+        ],
+        "filename": "node.js",
+        "lineno": 497,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100005595",
+          "name": "Syntree.Node.prototype.__deselect",
+          "type": "FunctionExpression",
+          "paramnames": []
+        }
+      },
+      "description": "Custom addition to Syntree.SelectElement#deselect.\nDeletes if is not real.",
+      "see": [
+        "Syntree.SelectableElement#deselect",
+        "Syntree.Node#real"
+      ],
+      "name": "__deselect",
+      "longname": "Syntree.Node#__deselect",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000548",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Perform an editing action.\n *\n * @param {string} action - type of editing action: init, update, save, or cancel\n *\n * @see Syntree.Page#nodeEditing\n */",
+      "meta": {
+        "range": [
+          13150,
+          14998
+        ],
+        "filename": "node.js",
+        "lineno": 511,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100005623",
+          "name": "Syntree.Node.prototype.editingAction",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "action"
+          ]
+        },
+        "vars": {
+          "this.editing": "Syntree.Node#editing",
+          "this.beforeEditLabelContent": "Syntree.Node#beforeEditLabelContent",
+          "this._labelbbox": "Syntree.Node#_labelbbox",
+          "this.real": "Syntree.Node#real",
+          "this.positionUnsynced": "Syntree.Node#positionUnsynced"
+        }
+      },
+      "description": "Perform an editing action.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "string"
+            ]
+          },
+          "description": "type of editing action: init, update, save, or cancel",
+          "name": "action"
+        }
+      ],
+      "see": [
+        "Syntree.Page#nodeEditing"
+      ],
+      "name": "editingAction",
+      "longname": "Syntree.Node#editingAction",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000549",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Custom addition to Syntree.Element#updateGraphics\n *\n * @see Syntree.Element#updateGraphics\n */",
+      "meta": {
+        "range": [
+          15103,
+          15901
+        ],
+        "filename": "node.js",
+        "lineno": 565,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100005902",
+          "name": "Syntree.Node.prototype.__updateGraphics",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "propagate"
+          ]
+        },
+        "vars": {
+          "propagate": "Syntree.Node#__updateGraphics~propagate",
+          "i": "Syntree.Node#__updateGraphics~i",
+          "c": "Syntree.Node#__updateGraphics~c"
+        }
+      },
+      "description": "Custom addition to Syntree.Element#updateGraphics",
+      "see": [
+        "Syntree.Element#updateGraphics"
+      ],
+      "name": "__updateGraphics",
+      "longname": "Syntree.Node#__updateGraphics",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000562",
+      "___s": true
+    },
+    {
+      "comment": "/**\n * Add a child at the specified index.\n *\n * @param {Syntree.Node} newNode - the Node to attach\n * @param {number} [index=Syntree.Node#children.length] - index at which to attach\n *\n * @see Syntree.Node#children\n */",
+      "meta": {
+        "range": [
+          16123,
+          16530
+        ],
+        "filename": "node.js",
+        "lineno": 602,
+        "path": "/var/www/html/syntree/app/classes/elements",
+        "code": {
+          "id": "astnode100006043",
+          "name": "Syntree.Node.prototype.addChild",
+          "type": "FunctionExpression",
+          "paramnames": [
+            "newNode",
+            "index"
+          ]
+        },
+        "vars": {
+          "newNode": "Syntree.Node#addChild~newNode",
+          "index": "Syntree.Node#addChild~index",
+          "newNode.parent": "Syntree.Node#addChild~newNode.parent",
+          "branch": "Syntree.Node#addChild~branch"
+        }
+      },
+      "description": "Add a child at the specified index.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "Syntree.Node"
+            ]
+          },
+          "description": "the Node to attach",
+          "name": "newNode"
+        },
+        {
+          "type": {
+            "names": [
+              "number"
+            ]
+          },
+          "optional": true,
+          "defaultvalue": "Syntree.Node#children.length",
+          "description": "index at which to attach",
+          "name": "index"
+        }
+      ],
+      "see": [
+        "Syntree.Node#children"
+      ],
+      "name": "addChild",
+      "longname": "Syntree.Node#addChild",
+      "kind": "function",
+      "memberof": "Syntree.Node",
+      "scope": "instance",
+      "___id": "T000002R000567",
       "___s": true
     },
     {
@@ -1000,7 +2896,7 @@
         "lineno": 6,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100006938",
+          "id": "astnode100006140",
           "name": "Syntree.SelectableElement",
           "type": "FunctionExpression",
           "paramnames": []
@@ -1019,7 +2915,7 @@
       "longname": "Syntree.SelectableElement",
       "memberof": "Syntree",
       "scope": "static",
-      "___id": "T000002R000633",
+      "___id": "T000002R000574",
       "___s": true
     },
     {
@@ -1033,7 +2929,7 @@
         "lineno": 18,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100006965",
+          "id": "astnode100006167",
           "name": "this.selected",
           "type": "Literal",
           "value": false,
@@ -1055,7 +2951,7 @@
       "kind": "member",
       "memberof": "Syntree.SelectableElement",
       "scope": "instance",
-      "___id": "T000002R000635",
+      "___id": "T000002R000576",
       "___s": true
     },
     {
@@ -1069,7 +2965,7 @@
         "lineno": 29,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100006971",
+          "id": "astnode100006173",
           "name": "Syntree.SelectableElement.prototype.select",
           "type": "FunctionExpression",
           "paramnames": []
@@ -1089,7 +2985,7 @@
       "kind": "function",
       "memberof": "Syntree.SelectableElement",
       "scope": "instance",
-      "___id": "T000002R000636",
+      "___id": "T000002R000577",
       "___s": true
     },
     {
@@ -1103,7 +2999,7 @@
         "lineno": 47,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100007019",
+          "id": "astnode100006221",
           "name": "Syntree.SelectableElement.prototype.deselect",
           "type": "FunctionExpression",
           "paramnames": []
@@ -1123,7 +3019,7 @@
       "kind": "function",
       "memberof": "Syntree.SelectableElement",
       "scope": "instance",
-      "___id": "T000002R000638",
+      "___id": "T000002R000579",
       "___s": true
     },
     {
@@ -1137,7 +3033,7 @@
         "lineno": 5,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007068",
+          "id": "astnode100006270",
           "name": "Syntree.Page",
           "type": "FunctionExpression",
           "paramnames": []
@@ -1157,7 +3053,7 @@
       "longname": "Syntree.Page",
       "memberof": "Syntree",
       "scope": "static",
-      "___id": "T000002R000640",
+      "___id": "T000002R000581",
       "___s": true
     },
     {
@@ -1171,7 +3067,7 @@
         "lineno": 12,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007093",
+          "id": "astnode100006295",
           "name": "this.background",
           "type": "CallExpression",
           "value": "",
@@ -1184,7 +3080,7 @@
       "kind": "member",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000643",
+      "___id": "T000002R000584",
       "___s": true
     },
     {
@@ -1198,7 +3094,7 @@
         "lineno": 30,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007130",
+          "id": "astnode100006332",
           "name": "this.group",
           "type": "CallExpression",
           "value": "",
@@ -1219,7 +3115,7 @@
       "kind": "member",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000646",
+      "___id": "T000002R000587",
       "___s": true
     },
     {
@@ -1233,7 +3129,7 @@
         "lineno": 37,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007141",
+          "id": "astnode100006343",
           "name": "this.allElements",
           "type": "ObjectExpression",
           "value": "{}",
@@ -1251,7 +3147,7 @@
       "kind": "member",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000647",
+      "___id": "T000002R000588",
       "___s": true
     },
     {
@@ -1265,7 +3161,7 @@
         "lineno": 44,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007147",
+          "id": "astnode100006349",
           "name": "this.selectedElement",
           "type": "Identifier",
           "value": "undefined",
@@ -1283,7 +3179,7 @@
       "kind": "member",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000648",
+      "___id": "T000002R000589",
       "___s": true
     },
     {
@@ -1297,7 +3193,7 @@
         "lineno": 57,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007158",
+          "id": "astnode100006360",
           "name": "Syntree.Page.prototype.getTransform",
           "type": "FunctionExpression",
           "paramnames": []
@@ -1328,7 +3224,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000649",
+      "___id": "T000002R000590",
       "___s": true
     },
     {
@@ -1342,7 +3238,7 @@
         "lineno": 75,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007200",
+          "id": "astnode100006402",
           "name": "Syntree.Page.prototype.register",
           "type": "FunctionExpression",
           "paramnames": [
@@ -1376,7 +3272,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000656",
+      "___id": "T000002R000597",
       "___s": true
     },
     {
@@ -1390,7 +3286,7 @@
         "lineno": 95,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007278",
+          "id": "astnode100006480",
           "name": "Syntree.Page.prototype.deregister",
           "type": "FunctionExpression",
           "paramnames": [
@@ -1421,7 +3317,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000661",
+      "___id": "T000002R000602",
       "___s": true
     },
     {
@@ -1435,7 +3331,7 @@
         "lineno": 107,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007313",
+          "id": "astnode100006515",
           "name": "Syntree.Page.prototype.select",
           "type": "FunctionExpression",
           "paramnames": [
@@ -1467,7 +3363,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000663",
+      "___id": "T000002R000604",
       "___s": true
     },
     {
@@ -1481,7 +3377,7 @@
         "lineno": 127,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007376",
+          "id": "astnode100006578",
           "name": "Syntree.Page.prototype.deselect",
           "type": "FunctionExpression",
           "paramnames": []
@@ -1499,7 +3395,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000667",
+      "___id": "T000002R000608",
       "___s": true
     },
     {
@@ -1513,7 +3409,7 @@
         "lineno": 139,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007416",
+          "id": "astnode100006618",
           "name": "Syntree.Page.prototype.deleteTree",
           "type": "FunctionExpression",
           "paramnames": [
@@ -1537,7 +3433,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000669",
+      "___id": "T000002R000610",
       "___s": true
     },
     {
@@ -1551,7 +3447,7 @@
         "lineno": 172,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007543",
+          "id": "astnode100006745",
           "name": "Syntree.Page.prototype.isRegistered",
           "type": "FunctionExpression",
           "paramnames": [
@@ -1589,7 +3485,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000682",
+      "___id": "T000002R000623",
       "___s": true
     },
     {
@@ -1603,7 +3499,7 @@
         "lineno": 182,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007585",
+          "id": "astnode100006787",
           "name": "Syntree.Page.prototype.getSelected",
           "type": "FunctionExpression",
           "paramnames": []
@@ -1618,7 +3514,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000684",
+      "___id": "T000002R000625",
       "___s": true
     },
     {
@@ -1632,7 +3528,7 @@
         "lineno": 193,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007600",
+          "id": "astnode100006802",
           "name": "Syntree.Page.prototype.getElementsByType",
           "type": "FunctionExpression",
           "paramnames": [
@@ -1672,7 +3568,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000685",
+      "___id": "T000002R000626",
       "___s": true
     },
     {
@@ -1686,7 +3582,7 @@
         "lineno": 212,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007659",
+          "id": "astnode100006861",
           "name": "Syntree.Page.prototype.createMovementArrow",
           "type": "FunctionExpression",
           "paramnames": [
@@ -1724,7 +3620,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000689",
+      "___id": "T000002R000630",
       "___s": true
     },
     {
@@ -1738,7 +3634,7 @@
         "lineno": 230,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007701",
+          "id": "astnode100006903",
           "name": "Syntree.Page.prototype.addTree",
           "type": "FunctionExpression",
           "paramnames": [
@@ -1795,7 +3691,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000693",
+      "___id": "T000002R000634",
       "___s": true
     },
     {
@@ -1809,7 +3705,7 @@
         "lineno": 273,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007879",
+          "id": "astnode100007081",
           "name": "Syntree.Page.prototype.openTree",
           "type": "FunctionExpression",
           "paramnames": [
@@ -1863,7 +3759,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000707",
+      "___id": "T000002R000648",
       "___s": true
     },
     {
@@ -1877,7 +3773,7 @@
         "lineno": 289,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100007946",
+          "id": "astnode100007148",
           "name": "Syntree.Page.prototype.getSVGString",
           "type": "FunctionExpression",
           "paramnames": []
@@ -1907,7 +3803,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000713",
+      "___id": "T000002R000654",
       "___s": true
     },
     {
@@ -1921,7 +3817,7 @@
         "lineno": 313,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100008032",
+          "id": "astnode100007234",
           "name": "Syntree.Page.prototype.getNearestNode",
           "type": "FunctionExpression",
           "paramnames": [
@@ -1994,7 +3890,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000721",
+      "___id": "T000002R000662",
       "___s": true
     },
     {
@@ -2008,7 +3904,7 @@
         "lineno": 367,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100008242",
+          "id": "astnode100007444",
           "name": "Syntree.Page.prototype.navigateHorizontal",
           "type": "FunctionExpression",
           "paramnames": [
@@ -2063,7 +3959,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000745",
+      "___id": "T000002R000686",
       "___s": true
     },
     {
@@ -2077,7 +3973,7 @@
         "lineno": 437,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100008621",
+          "id": "astnode100007823",
           "name": "Syntree.Page.prototype.navigateUp",
           "type": "FunctionExpression",
           "paramnames": []
@@ -2089,7 +3985,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000766",
+      "___id": "T000002R000707",
       "___s": true
     },
     {
@@ -2103,7 +3999,7 @@
         "lineno": 453,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100008696",
+          "id": "astnode100007898",
           "name": "Syntree.Page.prototype.navigateDown",
           "type": "FunctionExpression",
           "paramnames": [
@@ -2138,7 +4034,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000767",
+      "___id": "T000002R000708",
       "___s": true
     },
     {
@@ -2152,7 +4048,7 @@
         "lineno": 495,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100008912",
+          "id": "astnode100008114",
           "name": "Syntree.Page.prototype.nodeEditing",
           "type": "FunctionExpression",
           "paramnames": [
@@ -2199,7 +4095,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000778",
+      "___id": "T000002R000719",
       "___s": true
     },
     {
@@ -2207,13 +4103,13 @@
       "meta": {
         "range": [
           19539,
-          20616
+          20634
         ],
         "filename": "page.js",
         "lineno": 548,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100009138",
+          "id": "astnode100008340",
           "name": "Syntree.Page.prototype._enablePanning",
           "type": "FunctionExpression",
           "paramnames": []
@@ -2231,7 +4127,7 @@
       "kind": "function",
       "memberof": "Syntree.Page",
       "scope": "instance",
-      "___id": "T000002R000791",
+      "___id": "T000002R000732",
       "___s": true
     },
     {
@@ -2245,7 +4141,7 @@
         "lineno": 14,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100009349",
+          "id": "astnode100008555",
           "name": "id",
           "type": "ObjectExpression",
           "value": "{\"require\":\"number\",\"default_value\":\"#undefined\"}"
@@ -2265,7 +4161,7 @@
       "name": "id",
       "longname": "Syntree.Tree#id",
       "kind": "member",
-      "___id": "T000002R000805",
+      "___id": "T000002R000746",
       "___s": true
     },
     {
@@ -2279,7 +4175,7 @@
         "lineno": 26,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100009355",
+          "id": "astnode100008561",
           "name": "rowHeight",
           "type": "ObjectExpression",
           "value": "{\"require\":\"number\",\"default_value\":70}"
@@ -2296,7 +4192,7 @@
       "name": "rowHeight",
       "longname": "Syntree.Tree#rowHeight",
       "kind": "member",
-      "___id": "T000002R000808",
+      "___id": "T000002R000749",
       "___s": true
     },
     {
@@ -2310,7 +4206,7 @@
         "lineno": 38,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100009361",
+          "id": "astnode100008567",
           "name": "root",
           "type": "ObjectExpression",
           "value": "{\"require\":\"node\",\"default_value\":\"#undefined\"}"
@@ -2327,7 +4223,7 @@
       "name": "root",
       "longname": "Syntree.Tree#root",
       "kind": "member",
-      "___id": "T000002R000811",
+      "___id": "T000002R000752",
       "___s": true
     },
     {
@@ -2341,7 +4237,7 @@
         "lineno": 52,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100009367",
+          "id": "astnode100008573",
           "name": "build_treestring",
           "type": "ObjectExpression",
           "value": "{\"require\":\"string\",\"default_value\":\"#undefined\"}"
@@ -2361,7 +4257,7 @@
       "name": "build_treestring",
       "longname": "Syntree.Tree#build_treestring",
       "kind": "member",
-      "___id": "T000002R000814",
+      "___id": "T000002R000755",
       "___s": true
     },
     {
@@ -2375,7 +4271,7 @@
         "lineno": 63,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100009374",
+          "id": "astnode100008580",
           "name": "Syntree.Tree",
           "type": "FunctionExpression",
           "paramnames": [
@@ -2393,7 +4289,7 @@
       "longname": "Syntree.Tree",
       "memberof": "Syntree",
       "scope": "static",
-      "___id": "T000002R000817",
+      "___id": "T000002R000758",
       "___s": true
     },
     {
@@ -2407,7 +4303,7 @@
         "lineno": 81,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100009440",
+          "id": "astnode100008646",
           "name": "this.node_properties_to_save",
           "type": "ObjectExpression",
           "value": "{\"id\":\"\",\"children\":\"\",\"parent\":\"\",\"labelContent\":\"\"}",
@@ -2428,7 +4324,7 @@
       "kind": "member",
       "memberof": "Syntree.Tree",
       "scope": "instance",
-      "___id": "T000002R000818",
+      "___id": "T000002R000759",
       "___s": true
     },
     {
@@ -2442,7 +4338,7 @@
         "lineno": 108,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100009519",
+          "id": "astnode100008725",
           "name": "Syntree.Tree.prototype.getId",
           "type": "FunctionExpression",
           "paramnames": []
@@ -2457,7 +4353,7 @@
       "kind": "function",
       "memberof": "Syntree.Tree",
       "scope": "instance",
-      "___id": "T000002R000823",
+      "___id": "T000002R000764",
       "___s": true
     },
     {
@@ -2471,7 +4367,7 @@
         "lineno": 119,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100009534",
+          "id": "astnode100008740",
           "name": "Syntree.Tree.prototype.setId",
           "type": "FunctionExpression",
           "paramnames": [
@@ -2503,7 +4399,7 @@
       "kind": "function",
       "memberof": "Syntree.Tree",
       "scope": "instance",
-      "___id": "T000002R000824",
+      "___id": "T000002R000765",
       "___s": true
     },
     {
@@ -2517,7 +4413,7 @@
         "lineno": 129,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100009563",
+          "id": "astnode100008769",
           "name": "Syntree.Tree.prototype.getRoot",
           "type": "FunctionExpression",
           "paramnames": []
@@ -2532,7 +4428,7 @@
       "kind": "function",
       "memberof": "Syntree.Tree",
       "scope": "instance",
-      "___id": "T000002R000827",
+      "___id": "T000002R000768",
       "___s": true
     },
     {
@@ -2546,7 +4442,7 @@
         "lineno": 140,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100009578",
+          "id": "astnode100008784",
           "name": "Syntree.Tree.prototype._getPath",
           "type": "FunctionExpression",
           "paramnames": [
@@ -2614,7 +4510,7 @@
       "kind": "function",
       "memberof": "Syntree.Tree",
       "scope": "instance",
-      "___id": "T000002R000828",
+      "___id": "T000002R000769",
       "___s": true
     },
     {
@@ -2628,7 +4524,7 @@
         "lineno": 270,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100010254",
+          "id": "astnode100009460",
           "name": "Syntree.Tree.prototype.getDescendantsOf",
           "type": "FunctionExpression",
           "paramnames": [
@@ -2717,7 +4613,7 @@
       "kind": "function",
       "memberof": "Syntree.Tree",
       "scope": "instance",
-      "___id": "T000002R000894",
+      "___id": "T000002R000835",
       "___s": true
     },
     {
@@ -2731,7 +4627,7 @@
         "lineno": 338,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100010523",
+          "id": "astnode100009729",
           "name": "Syntree.Tree.prototype.getNodeOffset",
           "type": "FunctionExpression",
           "paramnames": [
@@ -2783,7 +4679,7 @@
       "kind": "function",
       "memberof": "Syntree.Tree",
       "scope": "instance",
-      "___id": "T000002R000920",
+      "___id": "T000002R000861",
       "___s": true
     },
     {
@@ -2797,7 +4693,7 @@
         "lineno": 366,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100010599",
+          "id": "astnode100009805",
           "name": "Syntree.Tree.prototype.getNodesByOffset",
           "type": "FunctionExpression",
           "paramnames": [
@@ -2841,7 +4737,7 @@
       "kind": "function",
       "memberof": "Syntree.Tree",
       "scope": "instance",
-      "___id": "T000002R000927",
+      "___id": "T000002R000868",
       "___s": true
     },
     {
@@ -2855,7 +4751,7 @@
         "lineno": 399,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100010704",
+          "id": "astnode100009910",
           "name": "Syntree.Tree.prototype.getTreestring",
           "type": "FunctionExpression",
           "paramnames": []
@@ -2887,7 +4783,7 @@
       "kind": "function",
       "memberof": "Syntree.Tree",
       "scope": "instance",
-      "___id": "T000002R000934",
+      "___id": "T000002R000875",
       "___s": true
     },
     {
@@ -2901,7 +4797,7 @@
         "lineno": 424,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100010786",
+          "id": "astnode100009992",
           "name": "Syntree.Tree.prototype.getBracketNotation",
           "type": "FunctionExpression",
           "paramnames": [
@@ -2946,7 +4842,7 @@
       "kind": "function",
       "memberof": "Syntree.Tree",
       "scope": "instance",
-      "___id": "T000002R000944",
+      "___id": "T000002R000885",
       "___s": true
     },
     {
@@ -2960,7 +4856,7 @@
         "lineno": 448,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100010886",
+          "id": "astnode100010092",
           "name": "Syntree.Tree.prototype.distribute",
           "type": "FunctionExpression",
           "paramnames": [
@@ -3014,7 +4910,7 @@
       "kind": "function",
       "memberof": "Syntree.Tree",
       "scope": "instance",
-      "___id": "T000002R000954",
+      "___id": "T000002R000895",
       "___s": true
     },
     {
@@ -3028,7 +4924,7 @@
         "lineno": 541,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100011432",
+          "id": "astnode100010638",
           "name": "Syntree.Tree.prototype.delete",
           "type": "FunctionExpression",
           "paramnames": []
@@ -3044,7 +4940,7 @@
       "kind": "function",
       "memberof": "Syntree.Tree",
       "scope": "instance",
-      "___id": "T000002R000992",
+      "___id": "T000002R000933",
       "___s": true
     },
     {
@@ -3058,7 +4954,7 @@
         "lineno": 563,
         "path": "/var/www/html/syntree/app/classes",
         "code": {
-          "id": "astnode100011490",
+          "id": "astnode100010696",
           "name": "Syntree.Tree.prototype._buildFromTreestring",
           "type": "FunctionExpression",
           "paramnames": [
@@ -3107,7 +5003,7 @@
       "kind": "function",
       "memberof": "Syntree.Tree",
       "scope": "instance",
-      "___id": "T000002R000996",
+      "___id": "T000002R000937",
       "___s": true
     },
     {
@@ -3121,7 +5017,7 @@
         "lineno": 5,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100011821",
+          "id": "astnode100011027",
           "name": "Syntree.History",
           "type": "ObjectExpression",
           "value": "{\"actions\":\"\",\"silent\":false,\"addAction\":\"\",\"getLast\":\"\",\"getAll\":\"\",\"getAllByType\":\"\",\"getLastOfType\":\"\",\"undo\":\"\",\"removeAction\":\"\",\"getNodeSelects\":\"\",\"toString\":\"\"}",
@@ -3134,7 +5030,7 @@
       "longname": "Syntree.History",
       "memberof": "Syntree",
       "scope": "static",
-      "___id": "T000002R001024",
+      "___id": "T000002R000965",
       "___s": true
     },
     {
@@ -3148,7 +5044,7 @@
         "lineno": 12,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100011826",
+          "id": "astnode100011032",
           "name": "actions",
           "type": "ArrayExpression",
           "value": "[]"
@@ -3163,7 +5059,7 @@
       "kind": "member",
       "memberof": "Syntree.History",
       "scope": "static",
-      "___id": "T000002R001025",
+      "___id": "T000002R000966",
       "___s": true
     },
     {
@@ -3177,7 +5073,7 @@
         "lineno": 18,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100011828",
+          "id": "astnode100011034",
           "name": "silent",
           "type": "Literal",
           "value": false
@@ -3189,7 +5085,7 @@
       "kind": "member",
       "memberof": "Syntree.History",
       "scope": "static",
-      "___id": "T000002R001026",
+      "___id": "T000002R000967",
       "___s": true
     },
     {
@@ -3203,7 +5099,7 @@
         "lineno": 25,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100011830",
+          "id": "astnode100011036",
           "name": "addAction",
           "type": "FunctionExpression"
         },
@@ -3220,7 +5116,7 @@
       "kind": "function",
       "memberof": "Syntree.History",
       "scope": "static",
-      "___id": "T000002R001027",
+      "___id": "T000002R000968",
       "___s": true
     },
     {
@@ -3234,7 +5130,7 @@
         "lineno": 39,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100011859",
+          "id": "astnode100011065",
           "name": "getLast",
           "type": "FunctionExpression"
         }
@@ -3258,7 +5154,7 @@
       "kind": "function",
       "memberof": "Syntree.History",
       "scope": "static",
-      "___id": "T000002R001029",
+      "___id": "T000002R000970",
       "___s": true
     },
     {
@@ -3272,7 +5168,7 @@
         "lineno": 50,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100011874",
+          "id": "astnode100011080",
           "name": "getAll",
           "type": "FunctionExpression"
         }
@@ -3296,7 +5192,7 @@
       "kind": "function",
       "memberof": "Syntree.History",
       "scope": "static",
-      "___id": "T000002R001030",
+      "___id": "T000002R000971",
       "___s": true
     },
     {
@@ -3310,7 +5206,7 @@
         "lineno": 64,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100011887",
+          "id": "astnode100011093",
           "name": "getAllByType",
           "type": "FunctionExpression"
         },
@@ -3350,7 +5246,7 @@
       "kind": "function",
       "memberof": "Syntree.History",
       "scope": "static",
-      "___id": "T000002R001031",
+      "___id": "T000002R000972",
       "___s": true
     },
     {
@@ -3364,7 +5260,7 @@
         "lineno": 82,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100011928",
+          "id": "astnode100011134",
           "name": "getLastOfType",
           "type": "FunctionExpression"
         },
@@ -3403,7 +5299,7 @@
       "kind": "function",
       "memberof": "Syntree.History",
       "scope": "static",
-      "___id": "T000002R001034",
+      "___id": "T000002R000975",
       "___s": true
     },
     {
@@ -3417,7 +5313,7 @@
         "lineno": 95,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100011959",
+          "id": "astnode100011165",
           "name": "undo",
           "type": "FunctionExpression"
         },
@@ -3436,7 +5332,7 @@
       "kind": "function",
       "memberof": "Syntree.History",
       "scope": "static",
-      "___id": "T000002R001037",
+      "___id": "T000002R000978",
       "___s": true
     },
     {
@@ -3450,7 +5346,7 @@
         "lineno": 116,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012025",
+          "id": "astnode100011231",
           "name": "removeAction",
           "type": "FunctionExpression"
         },
@@ -3477,7 +5373,7 @@
       "kind": "function",
       "memberof": "Syntree.History",
       "scope": "static",
-      "___id": "T000002R001043",
+      "___id": "T000002R000984",
       "___s": true
     },
     {
@@ -3491,7 +5387,7 @@
         "lineno": 130,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012055",
+          "id": "astnode100011261",
           "name": "getNodeSelects",
           "type": "FunctionExpression"
         },
@@ -3519,7 +5415,7 @@
       "kind": "function",
       "memberof": "Syntree.History",
       "scope": "static",
-      "___id": "T000002R001045",
+      "___id": "T000002R000986",
       "___s": true
     },
     {
@@ -3533,7 +5429,7 @@
         "lineno": 2,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012096",
+          "id": "astnode100011302",
           "name": "Syntree",
           "type": "ObjectExpression",
           "value": "{}",
@@ -3544,7 +5440,7 @@
       "name": "Syntree",
       "longname": "Syntree",
       "scope": "global",
-      "___id": "T000002R001049",
+      "___id": "T000002R000990",
       "___s": true
     },
     {
@@ -3558,7 +5454,7 @@
         "lineno": 13,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012100",
+          "id": "astnode100011306",
           "name": "Syntree.config_maps",
           "type": "ObjectExpression",
           "value": "{}",
@@ -3608,7 +5504,7 @@
       "kind": "member",
       "memberof": "Syntree",
       "scope": "static",
-      "___id": "T000002R001050",
+      "___id": "T000002R000991",
       "___s": true
     },
     {
@@ -3622,7 +5518,7 @@
         "lineno": 21,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012114",
+          "id": "astnode100011320",
           "name": "Syntree.snap",
           "type": "CallExpression",
           "value": "",
@@ -3635,7 +5531,7 @@
       "longname": "Syntree.snap",
       "kind": "member",
       "scope": "static",
-      "___id": "T000002R001052",
+      "___id": "T000002R000993",
       "___s": true
     },
     {
@@ -3649,7 +5545,7 @@
         "lineno": 28,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012130",
+          "id": "astnode100011336",
           "name": "Syntree.Lib",
           "type": "ObjectExpression",
           "value": "{\"config\":\"\",\"focusNoScroll\":\"\",\"allIds\":\"\",\"idN\":1000,\"genId\":\"\",\"typeOf\":\"\",\"checkType\":\"\",\"checkArg\":\"\",\"distance\":\"\",\"capitalize\":\"\",\"getMidPoint\":\"\",\"visualToActualCoordinates\":\"\",\"extend\":\"\"}",
@@ -3662,7 +5558,7 @@
       "longname": "Syntree.Lib",
       "memberof": "Syntree",
       "scope": "static",
-      "___id": "T000002R001053",
+      "___id": "T000002R000994",
       "___s": true
     },
     {
@@ -3676,7 +5572,7 @@
         "lineno": 35,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012135",
+          "id": "astnode100011341",
           "name": "config",
           "type": "FunctionExpression"
         },
@@ -3715,7 +5611,7 @@
       "kind": "function",
       "memberof": "Syntree.Lib",
       "scope": "static",
-      "___id": "T000002R001054",
+      "___id": "T000002R000995",
       "___s": true
     },
     {
@@ -3729,7 +5625,7 @@
         "lineno": 75,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012266",
+          "id": "astnode100011472",
           "name": "focusNoScroll",
           "type": "FunctionExpression"
         },
@@ -3755,7 +5651,7 @@
       "kind": "function",
       "memberof": "Syntree.Lib",
       "scope": "static",
-      "___id": "T000002R001063",
+      "___id": "T000002R001004",
       "___s": true
     },
     {
@@ -3769,7 +5665,7 @@
         "lineno": 86,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012294",
+          "id": "astnode100011500",
           "name": "allIds",
           "type": "ArrayExpression",
           "value": "[]"
@@ -3784,7 +5680,7 @@
       "kind": "member",
       "memberof": "Syntree.Lib",
       "scope": "static",
-      "___id": "T000002R001066",
+      "___id": "T000002R001007",
       "___s": true
     },
     {
@@ -3798,7 +5694,7 @@
         "lineno": 94,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012296",
+          "id": "astnode100011502",
           "name": "idN",
           "type": "Literal",
           "value": 1000
@@ -3813,7 +5709,7 @@
       "kind": "member",
       "memberof": "Syntree.Lib",
       "scope": "static",
-      "___id": "T000002R001067",
+      "___id": "T000002R001008",
       "___s": true
     },
     {
@@ -3827,7 +5723,7 @@
         "lineno": 103,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012298",
+          "id": "astnode100011504",
           "name": "genId",
           "type": "FunctionExpression"
         },
@@ -3856,7 +5752,7 @@
       "kind": "function",
       "memberof": "Syntree.Lib",
       "scope": "static",
-      "___id": "T000002R001068",
+      "___id": "T000002R001009",
       "___s": true
     },
     {
@@ -3870,7 +5766,7 @@
         "lineno": 123,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012360",
+          "id": "astnode100011566",
           "name": "typeOf",
           "type": "FunctionExpression"
         },
@@ -3901,7 +5797,7 @@
       "kind": "function",
       "memberof": "Syntree.Lib",
       "scope": "static",
-      "___id": "T000002R001071",
+      "___id": "T000002R001012",
       "___s": true
     },
     {
@@ -3915,7 +5811,7 @@
         "lineno": 149,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012433",
+          "id": "astnode100011639",
           "name": "checkType",
           "type": "FunctionExpression"
         },
@@ -3956,7 +5852,7 @@
       "kind": "function",
       "memberof": "Syntree.Lib",
       "scope": "static",
-      "___id": "T000002R001074",
+      "___id": "T000002R001015",
       "___s": true
     },
     {
@@ -3970,7 +5866,7 @@
         "lineno": 184,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012531",
+          "id": "astnode100011737",
           "name": "checkArg",
           "type": "FunctionExpression"
         }
@@ -4002,7 +5898,7 @@
       "kind": "function",
       "memberof": "Syntree.Lib",
       "scope": "static",
-      "___id": "T000002R001077",
+      "___id": "T000002R001018",
       "___s": true
     },
     {
@@ -4016,7 +5912,7 @@
         "lineno": 213,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012604",
+          "id": "astnode100011810",
           "name": "distance",
           "type": "FunctionExpression"
         },
@@ -4085,7 +5981,7 @@
       "kind": "function",
       "memberof": "Syntree.Lib",
       "scope": "static",
-      "___id": "T000002R001078",
+      "___id": "T000002R001019",
       "___s": true
     },
     {
@@ -4099,7 +5995,7 @@
         "lineno": 236,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012738",
+          "id": "astnode100011944",
           "name": "capitalize",
           "type": "FunctionExpression"
         }
@@ -4131,7 +6027,7 @@
       "kind": "function",
       "memberof": "Syntree.Lib",
       "scope": "static",
-      "___id": "T000002R001087",
+      "___id": "T000002R001028",
       "___s": true
     },
     {
@@ -4145,7 +6041,7 @@
         "lineno": 249,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012758",
+          "id": "astnode100011964",
           "name": "getMidPoint",
           "type": "FunctionExpression"
         },
@@ -4214,7 +6110,7 @@
       "kind": "function",
       "memberof": "Syntree.Lib",
       "scope": "static",
-      "___id": "T000002R001088",
+      "___id": "T000002R001029",
       "___s": true
     },
     {
@@ -4228,7 +6124,7 @@
         "lineno": 278,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012884",
+          "id": "astnode100012090",
           "name": "visualToActualCoordinates",
           "type": "FunctionExpression"
         },
@@ -4276,7 +6172,7 @@
       "kind": "function",
       "memberof": "Syntree.Lib",
       "scope": "static",
-      "___id": "T000002R001099",
+      "___id": "T000002R001040",
       "___s": true
     },
     {
@@ -4290,7 +6186,7 @@
         "lineno": 304,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012979",
+          "id": "astnode100012185",
           "name": "extend",
           "type": "FunctionExpression"
         },
@@ -4333,7 +6229,7 @@
       "kind": "function",
       "memberof": "Syntree.Lib",
       "scope": "static",
-      "___id": "T000002R001109",
+      "___id": "T000002R001050",
       "___s": true
     },
     {
@@ -4341,16 +6237,16 @@
       "meta": {
         "range": [
           107,
-          8486
+          8698
         ],
         "filename": "tutorial.js",
         "lineno": 5,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100013273",
+          "id": "astnode100012479",
           "name": "Syntree.Tutorial",
           "type": "ObjectExpression",
-          "value": "{\"data\":\"\",\"standard_message_interval\":2000,\"frames\":\"\",\"index\":\"\",\"running\":false,\"continue\":\"\",\"start\":\"\",\"quit\":\"\",\"frame\":\"\",\"instruction\":\"\"}",
+          "value": "{\"data\":\"\",\"standard_message_interval\":2000,\"frames\":\"\",\"index\":10,\"running\":false,\"continue\":\"\",\"start\":\"\",\"quit\":\"\",\"frame\":\"\",\"instruction\":\"\"}",
           "paramnames": []
         }
       },
@@ -4360,21 +6256,497 @@
       "longname": "Syntree.Tutorial",
       "memberof": "Syntree",
       "scope": "static",
-      "___id": "T000002R001128",
+      "___id": "T000002R001069",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Any data that might need stored for the Tutorial.\n     * For example, the number of key presses when typing a node name.\n     *\n     * @type {object}\n     */",
+      "meta": {
+        "range": [
+          305,
+          344
+        ],
+        "filename": "tutorial.js",
+        "lineno": 12,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100012484",
+          "name": "data",
+          "type": "ObjectExpression",
+          "value": "{\"node_naming_1\":0}"
+        }
+      },
+      "description": "Any data that might need stored for the Tutorial.\nFor example, the number of key presses when typing a node name.",
+      "type": {
+        "names": [
+          "object"
+        ]
+      },
+      "name": "data",
+      "longname": "Syntree.Tutorial.data",
+      "kind": "member",
+      "memberof": "Syntree.Tutorial",
+      "scope": "static",
+      "___id": "T000002R001070",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Standard time interval between messages, in milliseconds.\n     *\n     * type {number}\n     */",
+      "meta": {
+        "range": [
+          460,
+          491
+        ],
+        "filename": "tutorial.js",
+        "lineno": 21,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100012488",
+          "name": "standard_message_interval",
+          "type": "Literal",
+          "value": 2000
+        }
+      },
+      "description": "Standard time interval between messages, in milliseconds.\n\ntype {number}",
+      "name": "standard_message_interval",
+      "longname": "Syntree.Tutorial.standard_message_interval",
+      "kind": "member",
+      "memberof": "Syntree.Tutorial",
+      "scope": "static",
+      "___id": "T000002R001072",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Data for each frame of the tutorial.\n     *\n     * @type {object}\n     * @property {string} message - the text to display on screen for this frame\n     * @property {number|object} gateway - either milliseconds to stay on screen for, or an object containing event data that describes an event on which to continue to the next frame\n     */",
+      "meta": {
+        "range": [
+          852,
+          5715
+        ],
+        "filename": "tutorial.js",
+        "lineno": 30,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100012490",
+          "name": "frames",
+          "type": "ArrayExpression",
+          "value": "[\"{\\\"message\\\":\\\"Hello! Welcome to Syntree\\\"}\",\"{\\\"message\\\":\\\"Right now there is one node, called S\\\"}\",\"{\\\"message\\\":\\\"You can tell it is selected because it is highlighted in gray\\\"}\",\"{\\\"message\\\":\\\"Press the down arrow key to create a child node of S\\\",\\\"gateway\\\":\\\"\\\"}\",\"{\\\"message\\\":\\\"Good job!\\\"}\",\"{\\\"message\\\":\\\"Now give this new node a name (just type!)\\\",\\\"gateway\\\":\\\"\\\"}\",\"{\\\"message\\\":\\\"And press Enter to make the new node permanent!\\\",\\\"gateway\\\":\\\"\\\"}\",\"{\\\"message\\\":\\\"Well done!\\\"}\",\"{\\\"message\\\":\\\"Press left or right to create a sibling node\\\",\\\"gateway\\\":\\\"\\\"}\",\"{\\\"message\\\":\\\"Name it and press Enter\\\",\\\"gateway\\\":\\\"\\\"}\",\"{\\\"message\\\":\\\"Woohoo! You've got a tiny tree!\\\"}\",\"{\\\"message\\\":\\\"The arrow keys can also be used to navigate to existing nodes\\\"}\",\"{\\\"message\\\":\\\"Navigate back to the root node\\\",\\\"gateway\\\":\\\"\\\"}\",\"{\\\"message\\\":\\\"Ok! You can press Enter, or double click, to edit the node\\\",\\\"gateway\\\":\\\"\\\"}\",\"{\\\"message\\\":\\\"You can edit it like regular text, and press Enter to save\\\",\\\"gateway\\\":\\\"\\\"}\",\"{\\\"message\\\":\\\"Remember, if you navigate away from a node without saving, your change will be lost!\\\",\\\"gateway\\\":5000}\",\"{\\\"message\\\":\\\"Similarly, if you navigate away from a new node that hasn't been saved, it will disappear.\\\",\\\"gateway\\\":5000}\",\"{\\\"message\\\":\\\"This makes it easy to fix accidental node creation -- if you press down and make a node you didn't want, just press up!\\\",\\\"gateway\\\":5000}\",\"{\\\"message\\\":\\\"Ok. Moving on.\\\"}\",\"{\\\"message\\\":\\\"You can delete subtrees by selecting a Node and either pressing DEL or clicking the small (x) button\\\"}\",\"{\\\"message\\\":\\\"Give it a try! Delete a subtree.\\\",\\\"gateway\\\":\\\"\\\"}\",\"{\\\"message\\\":\\\"You can press CTRL + Z to undo most actions\\\"}\",\"{\\\"message\\\":\\\"Try it now -- undo your actions until you're back to where you started!\\\",\\\"gateway\\\":\\\"\\\"}\",\"{\\\"message\\\":\\\"Great!\\\"}\",\"{\\\"message\\\":\\\"That's all for now. For more help, click 'Help' in the upper lefthand corner.\\\"}\"]"
+        }
+      },
+      "description": "Data for each frame of the tutorial.",
+      "type": {
+        "names": [
+          "object"
+        ]
+      },
+      "properties": [
+        {
+          "type": {
+            "names": [
+              "string"
+            ]
+          },
+          "description": "the text to display on screen for this frame",
+          "name": "message"
+        },
+        {
+          "type": {
+            "names": [
+              "number",
+              "object"
+            ]
+          },
+          "description": "either milliseconds to stay on screen for, or an object containing event data that describes an event on which to continue to the next frame",
+          "name": "gateway"
+        }
+      ],
+      "name": "frames",
+      "longname": "Syntree.Tutorial.frames",
+      "kind": "member",
+      "memberof": "Syntree.Tutorial",
+      "scope": "static",
+      "___id": "T000002R001073",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Index of the current frame.\n     *\n     * @type {number}\n     */",
+      "meta": {
+        "range": [
+          5802,
+          5811
+        ],
+        "filename": "tutorial.js",
+        "lineno": 188,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100012783",
+          "name": "index",
+          "type": "Literal",
+          "value": 10
+        }
+      },
+      "description": "Index of the current frame.",
+      "type": {
+        "names": [
+          "number"
+        ]
+      },
+      "name": "index",
+      "longname": "Syntree.Tutorial.index",
+      "kind": "member",
+      "memberof": "Syntree.Tutorial",
+      "scope": "static",
+      "___id": "T000002R001133",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Is the tutorial currently running?\n     *\n     * @type {boolean}\n     */",
+      "meta": {
+        "range": [
+          5906,
+          5920
+        ],
+        "filename": "tutorial.js",
+        "lineno": 195,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100012785",
+          "name": "running",
+          "type": "Literal",
+          "value": false
+        }
+      },
+      "description": "Is the tutorial currently running?",
+      "type": {
+        "names": [
+          "boolean"
+        ]
+      },
+      "name": "running",
+      "longname": "Syntree.Tutorial.running",
+      "kind": "member",
+      "memberof": "Syntree.Tutorial",
+      "scope": "static",
+      "___id": "T000002R001134",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Continue to the next frame.\n     */",
+      "meta": {
+        "range": [
+          5978,
+          6388
+        ],
+        "filename": "tutorial.js",
+        "lineno": 200,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100012787",
+          "name": "continue",
+          "type": "FunctionExpression"
+        },
+        "vars": {
+          "this.index": "Syntree.Tutorial.continue#index",
+          "frame": "Syntree.Tutorial.continue~frame",
+          "": null
+        }
+      },
+      "description": "Continue to the next frame.",
+      "name": "continue",
+      "longname": "Syntree.Tutorial.continue",
+      "kind": "function",
+      "memberof": "Syntree.Tutorial",
+      "scope": "static",
+      "___id": "T000002R001135",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Start the tutorial.\n     */",
+      "meta": {
+        "range": [
+          6438,
+          6693
+        ],
+        "filename": "tutorial.js",
+        "lineno": 218,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100012857",
+          "name": "start",
+          "type": "FunctionExpression"
+        },
+        "vars": {
+          "this.index": "Syntree.Tutorial.start#index",
+          "this.running": "Syntree.Tutorial.start#running"
+        }
+      },
+      "description": "Start the tutorial.",
+      "name": "start",
+      "longname": "Syntree.Tutorial.start",
+      "kind": "function",
+      "memberof": "Syntree.Tutorial",
+      "scope": "static",
+      "___id": "T000002R001138",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Quit the tutorial.\n     */",
+      "meta": {
+        "range": [
+          6742,
+          7021
+        ],
+        "filename": "tutorial.js",
+        "lineno": 234,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100012897",
+          "name": "quit",
+          "type": "FunctionExpression"
+        },
+        "vars": {
+          "this.index": "Syntree.Tutorial.quit#index",
+          "this.running": "Syntree.Tutorial.quit#running",
+          "this.timer": "Syntree.Tutorial.quit#timer",
+          "this.data.node_naming_1": "Syntree.Tutorial.quit#data.node_naming_1"
+        }
+      },
+      "description": "Quit the tutorial.",
+      "name": "quit",
+      "longname": "Syntree.Tutorial.quit",
+      "kind": "function",
+      "memberof": "Syntree.Tutorial",
+      "scope": "static",
+      "___id": "T000002R001141",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Run a single frame of the tutorial.\n     *\n     * @param {object} frame - one of Syntree.Tutorial.frames\n     */",
+      "meta": {
+        "range": [
+          7156,
+          8027
+        ],
+        "filename": "tutorial.js",
+        "lineno": 249,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100012947",
+          "name": "frame",
+          "type": "FunctionExpression"
+        },
+        "vars": {
+          "message": "Syntree.Tutorial.frame~message",
+          "gateway": "Syntree.Tutorial.frame~gateway",
+          "this.timer": "Syntree.Tutorial.frame#timer",
+          "": null,
+          "event_string": "Syntree.Tutorial.frame~event_string"
+        }
+      },
+      "description": "Run a single frame of the tutorial.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "object"
+            ]
+          },
+          "description": "one of Syntree.Tutorial.frames",
+          "name": "frame"
+        }
+      ],
+      "name": "frame",
+      "longname": "Syntree.Tutorial.frame",
+      "kind": "function",
+      "memberof": "Syntree.Tutorial",
+      "scope": "static",
+      "___id": "T000002R001146",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Display a new message to the screen.\n     *\n     * @param {string} text - the text to display.\n     */",
+      "meta": {
+        "range": [
+          8152,
+          8695
+        ],
+        "filename": "tutorial.js",
+        "lineno": 276,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100013077",
+          "name": "instruction",
+          "type": "FunctionExpression"
+        },
+        "vars": {
+          "": null
+        }
+      },
+      "description": "Display a new message to the screen.",
+      "params": [
+        {
+          "type": {
+            "names": [
+              "string"
+            ]
+          },
+          "description": "the text to display.",
+          "name": "text"
+        }
+      ],
+      "name": "instruction",
+      "longname": "Syntree.Tutorial.instruction",
+      "kind": "function",
+      "memberof": "Syntree.Tutorial",
+      "scope": "static",
+      "___id": "T000002R001151",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Is the tutorial enabled?\n     *\n     * @type {boolean}\n     *\n     * @see Syntree.Tutorial\n     *\n     * @memberof Syntree.Workspace\n     */",
+      "meta": {
+        "range": [
+          296,
+          379
+        ],
+        "filename": "workspace.js",
+        "lineno": 13,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100013173",
+          "name": "tutorial_enabled",
+          "type": "ObjectExpression",
+          "value": "{\"require\":\"boolean\",\"default_value\":false}"
+        }
+      },
+      "description": "Is the tutorial enabled?",
+      "type": {
+        "names": [
+          "boolean"
+        ]
+      },
+      "see": [
+        "Syntree.Tutorial"
+      ],
+      "memberof": "Syntree.Workspace",
+      "name": "tutorial_enabled",
+      "longname": "Syntree.Workspace.tutorial_enabled",
+      "kind": "member",
+      "scope": "static",
+      "___id": "T000002R001155",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Is uploading enabled?\n     *\n     * @type {boolean}\n     *\n     * @see Syntree.Tutorial\n     *\n     * @memberof Syntree.Workspace\n     */",
+      "meta": {
+        "range": [
+          538,
+          618
+        ],
+        "filename": "workspace.js",
+        "lineno": 26,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100013179",
+          "name": "upload_enabled",
+          "type": "ObjectExpression",
+          "value": "{\"require\":\"boolean\",\"default_value\":true}"
+        }
+      },
+      "description": "Is uploading enabled?",
+      "type": {
+        "names": [
+          "boolean"
+        ]
+      },
+      "see": [
+        "Syntree.Tutorial"
+      ],
+      "memberof": "Syntree.Workspace",
+      "name": "upload_enabled",
+      "longname": "Syntree.Workspace.upload_enabled",
+      "kind": "member",
+      "scope": "static",
+      "___id": "T000002R001158",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Path to a PHP script for exporting a tree.\n     * Script should return a download link for an export file on success, or false on failure.\n     *\n     * @type {string}\n     *\n     * @see Syntree.Workspace._eventExprt\n     *\n     * @memberof Syntree.Workspace\n     */",
+      "meta": {
+        "range": [
+          906,
+          997
+        ],
+        "filename": "workspace.js",
+        "lineno": 40,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100013185",
+          "name": "export_tree_script",
+          "type": "ObjectExpression",
+          "value": "{\"require\":\"string\",\"default_value\":\"#undefined\"}"
+        }
+      },
+      "description": "Path to a PHP script for exporting a tree.\nScript should return a download link for an export file on success, or false on failure.",
+      "type": {
+        "names": [
+          "string"
+        ]
+      },
+      "see": [
+        "Syntree.Workspace._eventExprt"
+      ],
+      "memberof": "Syntree.Workspace",
+      "name": "export_tree_script",
+      "longname": "Syntree.Workspace.export_tree_script",
+      "kind": "member",
+      "scope": "static",
+      "___id": "T000002R001161",
+      "___s": true
+    },
+    {
+      "comment": "/**\n     * Is focus checking enabled?\n     * Focus checking is for if the app is embedded within a larger page.\n     * It prevents confusion about whether or not the app has focus.\n     *\n     * @type {boolean}\n     *\n     * @memberof Syntree.Workspace\n     */",
+      "meta": {
+        "range": [
+          1268,
+          1357
+        ],
+        "filename": "workspace.js",
+        "lineno": 53,
+        "path": "/var/www/html/syntree/app/singletons",
+        "code": {
+          "id": "astnode100013191",
+          "name": "focus_checking_enabled",
+          "type": "ObjectExpression",
+          "value": "{\"require\":\"boolean\",\"default_value\":false}"
+        }
+      },
+      "description": "Is focus checking enabled?\nFocus checking is for if the app is embedded within a larger page.\nIt prevents confusion about whether or not the app has focus.",
+      "type": {
+        "names": [
+          "boolean"
+        ]
+      },
+      "memberof": "Syntree.Workspace",
+      "name": "focus_checking_enabled",
+      "longname": "Syntree.Workspace.focus_checking_enabled",
+      "kind": "member",
+      "scope": "static",
+      "___id": "T000002R001164",
       "___s": true
     },
     {
       "comment": "/**\n * @class\n * @classdesc Workspace is in charge of taking user input, sanitizing it, and sending it to the appropriate lower-level control structure.\n */",
       "meta": {
         "range": [
-          1525,
-          22604
+          1521,
+          22247
         ],
         "filename": "workspace.js",
-        "lineno": 46,
+        "lineno": 64,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100013980",
+          "id": "astnode100013198",
           "name": "Syntree.Workspace",
           "type": "ObjectExpression",
           "value": "{\"initialize\":\"\",\"_attachEventListeners\":\"\",\"_eventTriangleButtonClick\":\"\",\"_eventBranchClick\":\"\",\"_eventArrowClick\":\"\",\"_eventRewatchTutorial\":\"\",\"_eventUndo\":\"\",\"_eventNodeClick\":\"\",\"_eventLeft\":\"\",\"_eventRight\":\"\",\"_eventUp\":\"\",\"_eventDown\":\"\",\"_eventDel\":\"\",\"_eventEsc\":\"\",\"_eventEditorTyping\":\"\",\"_eventFiletypeLabelClick\":\"\",\"_eventExportImage\":\"\",\"_eventExportTreeFile\":\"\",\"_eventExportBrackets\":\"\",\"_eventEnter\":\"\",\"toString\":\"\",\"_eventFocus\":\"\",\"_eventUnfocus\":\"\",\"_eventBGClick\":\"\",\"_eventUpload\":\"\",\"_eventSave\":\"\"}",
@@ -4387,21 +6759,21 @@
       "longname": "Syntree.Workspace",
       "memberof": "Syntree",
       "scope": "static",
-      "___id": "T000002R001232",
+      "___id": "T000002R001167",
       "___s": true
     },
     {
       "comment": "/**\n     * Attach various event listeners needed for processing user input. This function is a convenience only, used so that [initialize()]{@link Workspace.initialize}) is a bit less cluttered.\n     */",
       "meta": {
         "range": [
-          3897,
-          10586
+          3528,
+          10229
         ],
         "filename": "workspace.js",
-        "lineno": 117,
+        "lineno": 126,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014206",
+          "id": "astnode100013379",
           "name": "_attachEventListeners",
           "type": "FunctionExpression"
         },
@@ -4416,21 +6788,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001236",
+      "___id": "T000002R001171",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when a branch's triangle button is clicked.\n     *\n     * @see Syntree.Branch\n     */",
       "meta": {
         "range": [
-          10706,
-          10996
+          10349,
+          10639
         ],
         "filename": "workspace.js",
-        "lineno": 304,
+        "lineno": 313,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014787",
+          "id": "astnode100013960",
           "name": "_eventTriangleButtonClick",
           "type": "FunctionExpression"
         },
@@ -4449,21 +6821,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001242",
+      "___id": "T000002R001177",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when a branch is clicked.\n     *\n     * @see Syntree.Branch\n     * @see Syntree.Page.select\n     */",
       "meta": {
         "range": [
-          11130,
-          11426
+          10773,
+          11069
         ],
         "filename": "workspace.js",
-        "lineno": 317,
+        "lineno": 326,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014839",
+          "id": "astnode100014012",
           "name": "_eventBranchClick",
           "type": "FunctionExpression"
         },
@@ -4483,21 +6855,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001246",
+      "___id": "T000002R001181",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when an arrow is clicked.\n     *\n     * @see Syntree.Arrow\n     * @see Syntree.Page.select\n     */",
       "meta": {
         "range": [
-          11559,
-          11854
+          11202,
+          11497
         ],
         "filename": "workspace.js",
-        "lineno": 330,
+        "lineno": 339,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014896",
+          "id": "astnode100014069",
           "name": "_eventArrowClick",
           "type": "FunctionExpression"
         },
@@ -4517,21 +6889,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001250",
+      "___id": "T000002R001185",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when a user requests a tutorial restart/rewatch.\n     *\n     * @see Syntree.Tutorial\n     */",
       "meta": {
         "range": [
-          11981,
-          12501
+          11624,
+          12144
         ],
         "filename": "workspace.js",
-        "lineno": 342,
+        "lineno": 351,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014953",
+          "id": "astnode100014126",
           "name": "_eventRewatchTutorial",
           "type": "FunctionExpression"
         },
@@ -4548,21 +6920,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001254",
+      "___id": "T000002R001189",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when a user attempts to undo an action.\n     *\n     * @see Syntree.History.undo\n     * @see Syntree.Action\n     */",
       "meta": {
         "range": [
-          12650,
-          12712
+          12293,
+          12355
         ],
         "filename": "workspace.js",
-        "lineno": 363,
+        "lineno": 372,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015028",
+          "id": "astnode100014201",
           "name": "_eventUndo",
           "type": "FunctionExpression"
         }
@@ -4577,21 +6949,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001258",
+      "___id": "T000002R001193",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when a Node is clicked.\n     *\n     * @see Syntree.Node\n     */",
       "meta": {
         "range": [
-          12810,
-          13308
+          12453,
+          12951
         ],
         "filename": "workspace.js",
-        "lineno": 372,
+        "lineno": 381,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015038",
+          "id": "astnode100014211",
           "name": "_eventNodeClick",
           "type": "FunctionExpression"
         },
@@ -4609,21 +6981,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001259",
+      "___id": "T000002R001194",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when the user presses the left arrow key.\n     *\n     * @see Syntree.Page#navigateHorizontal\n     */",
       "meta": {
         "range": [
-          13443,
-          13790
+          13086,
+          13433
         ],
         "filename": "workspace.js",
-        "lineno": 390,
+        "lineno": 399,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015115",
+          "id": "astnode100014288",
           "name": "_eventLeft",
           "type": "FunctionExpression"
         }
@@ -4637,21 +7009,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001262",
+      "___id": "T000002R001197",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when the user presses the right arrow key.\n     *\n     * @see Syntree.Page#navigateHorizontal\n     */",
       "meta": {
         "range": [
-          13926,
-          14276
+          13569,
+          13919
         ],
         "filename": "workspace.js",
-        "lineno": 406,
+        "lineno": 415,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015169",
+          "id": "astnode100014342",
           "name": "_eventRight",
           "type": "FunctionExpression"
         }
@@ -4665,21 +7037,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001263",
+      "___id": "T000002R001198",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when the user presses the up arrow key.\n     *\n     * @see Syntree.Page#navigateUp\n     */",
       "meta": {
         "range": [
-          14401,
-          14461
+          14044,
+          14104
         ],
         "filename": "workspace.js",
-        "lineno": 422,
+        "lineno": 431,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015223",
+          "id": "astnode100014396",
           "name": "_eventUp",
           "type": "FunctionExpression"
         }
@@ -4693,21 +7065,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001264",
+      "___id": "T000002R001199",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when the user presses the down arrow key.\n     *\n     * @see Syntree.Page#navigateDown\n     */",
       "meta": {
         "range": [
-          14590,
-          14655
+          14233,
+          14298
         ],
         "filename": "workspace.js",
-        "lineno": 431,
+        "lineno": 440,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015233",
+          "id": "astnode100014406",
           "name": "_eventDown",
           "type": "FunctionExpression"
         }
@@ -4721,21 +7093,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001265",
+      "___id": "T000002R001200",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when the user tries to delete an [Element]{@link Syntree.Element}.\n     */",
       "meta": {
         "range": [
-          14764,
-          15840
+          14407,
+          15483
         ],
         "filename": "workspace.js",
-        "lineno": 438,
+        "lineno": 447,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015244",
+          "id": "astnode100014417",
           "name": "_eventDel",
           "type": "FunctionExpression"
         },
@@ -4752,21 +7124,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001266",
+      "___id": "T000002R001201",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when the user presses the ESC key.\n     */",
       "meta": {
         "range": [
-          15917,
-          15987
+          15560,
+          15630
         ],
         "filename": "workspace.js",
-        "lineno": 469,
+        "lineno": 478,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015408",
+          "id": "astnode100014581",
           "name": "_eventEsc",
           "type": "FunctionExpression"
         }
@@ -4777,21 +7149,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001274",
+      "___id": "T000002R001209",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when the user types in a [Node]{@link Syntree.Node} editor.\n     */",
       "meta": {
         "range": [
-          16089,
-          16168
+          15732,
+          15811
         ],
         "filename": "workspace.js",
-        "lineno": 476,
+        "lineno": 485,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015419",
+          "id": "astnode100014592",
           "name": "_eventEditorTyping",
           "type": "FunctionExpression"
         }
@@ -4802,21 +7174,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001275",
+      "___id": "T000002R001210",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when the user clicks a file type option in the export modal.\n     * Updates the displayed file suffix.\n     */",
       "meta": {
         "range": [
-          16313,
-          16752
+          15956,
+          16395
         ],
         "filename": "workspace.js",
-        "lineno": 484,
+        "lineno": 493,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015430",
+          "id": "astnode100014603",
           "name": "_eventFiletypeLabelClick",
           "type": "FunctionExpression"
         },
@@ -4830,21 +7202,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001276",
+      "___id": "T000002R001211",
       "___s": true
     },
     {
       "comment": "/**\n     * Code for exporting the current tree as an image (png).\n     */",
       "meta": {
         "range": [
-          16837,
-          18004
+          16480,
+          17647
         ],
         "filename": "workspace.js",
-        "lineno": 498,
+        "lineno": 507,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015500",
+          "id": "astnode100014673",
           "name": "_eventExportImage",
           "type": "FunctionExpression"
         },
@@ -4866,21 +7238,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001278",
+      "___id": "T000002R001213",
       "___s": true
     },
     {
       "comment": "/**\n     * Code for exporting the current tree as a tree file.\n     */",
       "meta": {
         "range": [
-          18086,
-          18603
+          17729,
+          18246
         ],
         "filename": "workspace.js",
-        "lineno": 532,
+        "lineno": 541,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015658",
+          "id": "astnode100014831",
           "name": "_eventExportTreeFile",
           "type": "FunctionExpression"
         },
@@ -4896,21 +7268,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001290",
+      "___id": "T000002R001225",
       "___s": true
     },
     {
       "comment": "/**\n     * Code for exporting the current tree as bracket notation (.txt file).\n     */",
       "meta": {
         "range": [
-          18702,
-          19364
+          18345,
+          19007
         ],
         "filename": "workspace.js",
-        "lineno": 548,
+        "lineno": 557,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015735",
+          "id": "astnode100014908",
           "name": "_eventExportBrackets",
           "type": "FunctionExpression"
         },
@@ -4926,21 +7298,21 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001296",
+      "___id": "T000002R001231",
       "___s": true
     },
     {
       "comment": "/**\n     * Code to run when the user presses Enter.\n     */",
       "meta": {
         "range": [
-          19435,
-          19507
+          19078,
+          19150
         ],
         "filename": "workspace.js",
-        "lineno": 568,
+        "lineno": 577,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100015826",
+          "id": "astnode100014999",
           "name": "_eventEnter",
           "type": "FunctionExpression"
         }
@@ -4951,7 +7323,7 @@
       "kind": "function",
       "memberof": "Syntree.Workspace",
       "scope": "static",
-      "___id": "T000002R001302",
+      "___id": "T000002R001237",
       "___s": true
     },
     {
@@ -4973,7 +7345,7 @@
         "/var/www/html/syntree/app/singletons/tutorial.js",
         "/var/www/html/syntree/app/singletons/workspace.js"
       ],
-      "___id": "T000002R001325",
+      "___id": "T000002R001260",
       "___s": true
     },
     {
@@ -4987,7 +7359,7 @@
         "lineno": 13,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003537",
+          "id": "astnode100003481",
           "name": "this.id",
           "type": "CallExpression",
           "value": "",
@@ -5007,7 +7379,7 @@
       "scope": "instance",
       "inherits": "Syntree.Element#id",
       "inherited": true,
-      "___id": "T000002R001326",
+      "___id": "T000002R001261",
       "___s": true
     },
     {
@@ -5021,7 +7393,7 @@
         "lineno": 22,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003548",
+          "id": "astnode100003492",
           "name": "this.selectable",
           "type": "Literal",
           "value": false,
@@ -5040,7 +7412,7 @@
       "inherits": "Syntree.Element#selectable",
       "inherited": true,
       "overrides": "Syntree.Element#selectable",
-      "___id": "T000002R001327",
+      "___id": "T000002R001262",
       "___s": true
     },
     {
@@ -5054,7 +7426,7 @@
         "lineno": 30,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003554",
+          "id": "astnode100003498",
           "name": "this.deleted",
           "type": "Literal",
           "value": false,
@@ -5074,7 +7446,7 @@
       "scope": "instance",
       "inherits": "Syntree.Element#deleted",
       "inherited": true,
-      "___id": "T000002R001328",
+      "___id": "T000002R001263",
       "___s": true
     },
     {
@@ -5088,7 +7460,7 @@
         "lineno": 45,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003575",
+          "id": "astnode100003519",
           "name": "Syntree.Element.prototype.isDeleted",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5115,7 +7487,7 @@
       "scope": "instance",
       "inherits": "Syntree.Element#isDeleted",
       "inherited": true,
-      "___id": "T000002R001329",
+      "___id": "T000002R001264",
       "___s": true
     },
     {
@@ -5129,7 +7501,7 @@
         "lineno": 55,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003590",
+          "id": "astnode100003534",
           "name": "Syntree.Element.prototype.isSelectable",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5156,7 +7528,7 @@
       "scope": "instance",
       "inherits": "Syntree.Element#isSelectable",
       "inherited": true,
-      "___id": "T000002R001330",
+      "___id": "T000002R001265",
       "___s": true
     },
     {
@@ -5170,7 +7542,7 @@
         "lineno": 68,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003605",
+          "id": "astnode100003549",
           "name": "Syntree.Element.prototype.delete",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5191,7 +7563,7 @@
       "scope": "instance",
       "inherits": "Syntree.Element#delete",
       "inherited": true,
-      "___id": "T000002R001331",
+      "___id": "T000002R001266",
       "___s": true
     },
     {
@@ -5205,7 +7577,7 @@
         "lineno": 87,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003662",
+          "id": "astnode100003606",
           "name": "Syntree.Element.prototype.updateGraphics",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5222,7 +7594,7 @@
       "scope": "instance",
       "inherits": "Syntree.Element#updateGraphics",
       "inherited": true,
-      "___id": "T000002R001332",
+      "___id": "T000002R001267",
       "___s": true
     },
     {
@@ -5236,7 +7608,7 @@
         "lineno": 100,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003698",
+          "id": "astnode100003642",
           "name": "Syntree.Element.prototype.isElement",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5259,7 +7631,7 @@
       "scope": "instance",
       "inherits": "Syntree.Element#isElement",
       "inherited": true,
-      "___id": "T000002R001333",
+      "___id": "T000002R001268",
       "___s": true
     },
     {
@@ -5273,7 +7645,7 @@
         "lineno": 113,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003711",
+          "id": "astnode100003655",
           "name": "Syntree.Element.prototype.isDeletable",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5299,7 +7671,7 @@
       "scope": "instance",
       "inherits": "Syntree.Element#isDeletable",
       "inherited": true,
-      "___id": "T000002R001334",
+      "___id": "T000002R001269",
       "___s": true
     },
     {
@@ -5313,7 +7685,7 @@
         "lineno": 122,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003724",
+          "id": "astnode100003668",
           "name": "Syntree.Element.prototype.getId",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5340,7 +7712,7 @@
       "scope": "instance",
       "inherits": "Syntree.Element#getId",
       "inherited": true,
-      "___id": "T000002R001335",
+      "___id": "T000002R001270",
       "___s": true
     },
     {
@@ -5354,7 +7726,7 @@
         "lineno": 13,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003537",
+          "id": "astnode100003481",
           "name": "this.id",
           "type": "CallExpression",
           "value": "",
@@ -5375,7 +7747,7 @@
       "inherits": "Syntree.Element#id",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#id",
-      "___id": "T000002R001336",
+      "___id": "T000002R001271",
       "___s": true
     },
     {
@@ -5389,7 +7761,7 @@
         "lineno": 22,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003548",
+          "id": "astnode100003492",
           "name": "this.selectable",
           "type": "Literal",
           "value": false,
@@ -5408,7 +7780,7 @@
       "inherits": "Syntree.Element#selectable",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#selectable",
-      "___id": "T000002R001337",
+      "___id": "T000002R001272",
       "___s": true
     },
     {
@@ -5422,7 +7794,7 @@
         "lineno": 30,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003554",
+          "id": "astnode100003498",
           "name": "this.deleted",
           "type": "Literal",
           "value": false,
@@ -5443,7 +7815,7 @@
       "inherits": "Syntree.Element#deleted",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#deleted",
-      "___id": "T000002R001338",
+      "___id": "T000002R001273",
       "___s": true
     },
     {
@@ -5457,7 +7829,7 @@
         "lineno": 45,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003575",
+          "id": "astnode100003519",
           "name": "Syntree.Element.prototype.isDeleted",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5485,7 +7857,7 @@
       "inherits": "Syntree.Element#isDeleted",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#isDeleted",
-      "___id": "T000002R001339",
+      "___id": "T000002R001274",
       "___s": true
     },
     {
@@ -5499,7 +7871,7 @@
         "lineno": 55,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003590",
+          "id": "astnode100003534",
           "name": "Syntree.Element.prototype.isSelectable",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5527,7 +7899,7 @@
       "inherits": "Syntree.Element#isSelectable",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#isSelectable",
-      "___id": "T000002R001340",
+      "___id": "T000002R001275",
       "___s": true
     },
     {
@@ -5541,7 +7913,7 @@
         "lineno": 68,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003605",
+          "id": "astnode100003549",
           "name": "Syntree.Element.prototype.delete",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5563,7 +7935,7 @@
       "inherits": "Syntree.Element#delete",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#delete",
-      "___id": "T000002R001341",
+      "___id": "T000002R001276",
       "___s": true
     },
     {
@@ -5577,7 +7949,7 @@
         "lineno": 87,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003662",
+          "id": "astnode100003606",
           "name": "Syntree.Element.prototype.updateGraphics",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5595,7 +7967,7 @@
       "inherits": "Syntree.Element#updateGraphics",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#updateGraphics",
-      "___id": "T000002R001342",
+      "___id": "T000002R001277",
       "___s": true
     },
     {
@@ -5609,7 +7981,7 @@
         "lineno": 100,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003698",
+          "id": "astnode100003642",
           "name": "Syntree.Element.prototype.isElement",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5633,7 +8005,7 @@
       "inherits": "Syntree.Element#isElement",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#isElement",
-      "___id": "T000002R001343",
+      "___id": "T000002R001278",
       "___s": true
     },
     {
@@ -5647,7 +8019,7 @@
         "lineno": 113,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003711",
+          "id": "astnode100003655",
           "name": "Syntree.Element.prototype.isDeletable",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5674,7 +8046,7 @@
       "inherits": "Syntree.Element#isDeletable",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#isDeletable",
-      "___id": "T000002R001344",
+      "___id": "T000002R001279",
       "___s": true
     },
     {
@@ -5688,7 +8060,7 @@
         "lineno": 122,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003724",
+          "id": "astnode100003668",
           "name": "Syntree.Element.prototype.getId",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5716,7 +8088,7 @@
       "inherits": "Syntree.Element#getId",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#getId",
-      "___id": "T000002R001345",
+      "___id": "T000002R001280",
       "___s": true
     },
     {
@@ -5730,7 +8102,7 @@
         "lineno": 18,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100006965",
+          "id": "astnode100006167",
           "name": "this.selected",
           "type": "Literal",
           "value": false,
@@ -5754,8 +8126,7 @@
       "scope": "instance",
       "inherits": "Syntree.SelectableElement#selected",
       "inherited": true,
-      "overrides": "Syntree.SelectableElement#selected",
-      "___id": "T000002R001346",
+      "___id": "T000002R001281",
       "___s": true
     },
     {
@@ -5769,7 +8140,7 @@
         "lineno": 29,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100006971",
+          "id": "astnode100006173",
           "name": "Syntree.SelectableElement.prototype.select",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5791,8 +8162,7 @@
       "scope": "instance",
       "inherits": "Syntree.SelectableElement#select",
       "inherited": true,
-      "overrides": "Syntree.SelectableElement#select",
-      "___id": "T000002R001347",
+      "___id": "T000002R001282",
       "___s": true
     },
     {
@@ -5806,7 +8176,7 @@
         "lineno": 47,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100007019",
+          "id": "astnode100006221",
           "name": "Syntree.SelectableElement.prototype.deselect",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5828,7 +8198,7 @@
       "scope": "instance",
       "inherits": "Syntree.SelectableElement#deselect",
       "inherited": true,
-      "___id": "T000002R001348",
+      "___id": "T000002R001283",
       "___s": true
     },
     {
@@ -5842,7 +8212,7 @@
         "lineno": 13,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003537",
+          "id": "astnode100003481",
           "name": "this.id",
           "type": "CallExpression",
           "value": "",
@@ -5863,7 +8233,7 @@
       "inherits": "Syntree.Element#id",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#id",
-      "___id": "T000002R001349",
+      "___id": "T000002R001284",
       "___s": true
     },
     {
@@ -5877,7 +8247,7 @@
         "lineno": 22,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003548",
+          "id": "astnode100003492",
           "name": "this.selectable",
           "type": "Literal",
           "value": false,
@@ -5896,7 +8266,7 @@
       "inherits": "Syntree.Element#selectable",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#selectable",
-      "___id": "T000002R001350",
+      "___id": "T000002R001285",
       "___s": true
     },
     {
@@ -5910,7 +8280,7 @@
         "lineno": 30,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003554",
+          "id": "astnode100003498",
           "name": "this.deleted",
           "type": "Literal",
           "value": false,
@@ -5931,7 +8301,7 @@
       "inherits": "Syntree.Element#deleted",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#deleted",
-      "___id": "T000002R001351",
+      "___id": "T000002R001286",
       "___s": true
     },
     {
@@ -5945,7 +8315,7 @@
         "lineno": 45,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003575",
+          "id": "astnode100003519",
           "name": "Syntree.Element.prototype.isDeleted",
           "type": "FunctionExpression",
           "paramnames": []
@@ -5973,7 +8343,7 @@
       "inherits": "Syntree.Element#isDeleted",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#isDeleted",
-      "___id": "T000002R001352",
+      "___id": "T000002R001287",
       "___s": true
     },
     {
@@ -5987,7 +8357,7 @@
         "lineno": 55,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003590",
+          "id": "astnode100003534",
           "name": "Syntree.Element.prototype.isSelectable",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6015,7 +8385,7 @@
       "inherits": "Syntree.Element#isSelectable",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#isSelectable",
-      "___id": "T000002R001353",
+      "___id": "T000002R001288",
       "___s": true
     },
     {
@@ -6029,7 +8399,7 @@
         "lineno": 68,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003605",
+          "id": "astnode100003549",
           "name": "Syntree.Element.prototype.delete",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6051,7 +8421,7 @@
       "inherits": "Syntree.Element#delete",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#delete",
-      "___id": "T000002R001354",
+      "___id": "T000002R001289",
       "___s": true
     },
     {
@@ -6065,7 +8435,7 @@
         "lineno": 87,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003662",
+          "id": "astnode100003606",
           "name": "Syntree.Element.prototype.updateGraphics",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6083,7 +8453,7 @@
       "inherits": "Syntree.Element#updateGraphics",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#updateGraphics",
-      "___id": "T000002R001355",
+      "___id": "T000002R001290",
       "___s": true
     },
     {
@@ -6097,7 +8467,7 @@
         "lineno": 100,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003698",
+          "id": "astnode100003642",
           "name": "Syntree.Element.prototype.isElement",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6121,7 +8491,7 @@
       "inherits": "Syntree.Element#isElement",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#isElement",
-      "___id": "T000002R001356",
+      "___id": "T000002R001291",
       "___s": true
     },
     {
@@ -6135,7 +8505,7 @@
         "lineno": 113,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003711",
+          "id": "astnode100003655",
           "name": "Syntree.Element.prototype.isDeletable",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6162,7 +8532,7 @@
       "inherits": "Syntree.Element#isDeletable",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#isDeletable",
-      "___id": "T000002R001357",
+      "___id": "T000002R001292",
       "___s": true
     },
     {
@@ -6176,7 +8546,7 @@
         "lineno": 122,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003724",
+          "id": "astnode100003668",
           "name": "Syntree.Element.prototype.getId",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6204,7 +8574,7 @@
       "inherits": "Syntree.Element#getId",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#getId",
-      "___id": "T000002R001358",
+      "___id": "T000002R001293",
       "___s": true
     },
     {
@@ -6218,7 +8588,7 @@
         "lineno": 18,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100006965",
+          "id": "astnode100006167",
           "name": "this.selected",
           "type": "Literal",
           "value": false,
@@ -6242,7 +8612,7 @@
       "scope": "instance",
       "inherits": "Syntree.SelectableElement#selected",
       "inherited": true,
-      "___id": "T000002R001359",
+      "___id": "T000002R001294",
       "___s": true
     },
     {
@@ -6256,7 +8626,7 @@
         "lineno": 29,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100006971",
+          "id": "astnode100006173",
           "name": "Syntree.SelectableElement.prototype.select",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6278,7 +8648,7 @@
       "scope": "instance",
       "inherits": "Syntree.SelectableElement#select",
       "inherited": true,
-      "___id": "T000002R001360",
+      "___id": "T000002R001295",
       "___s": true
     },
     {
@@ -6292,7 +8662,7 @@
         "lineno": 47,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100007019",
+          "id": "astnode100006221",
           "name": "Syntree.SelectableElement.prototype.deselect",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6314,7 +8684,7 @@
       "scope": "instance",
       "inherits": "Syntree.SelectableElement#deselect",
       "inherited": true,
-      "___id": "T000002R001361",
+      "___id": "T000002R001296",
       "___s": true
     },
     {
@@ -6328,7 +8698,7 @@
         "lineno": 22,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003548",
+          "id": "astnode100003492",
           "name": "this.selectable",
           "type": "Literal",
           "value": false,
@@ -6347,7 +8717,7 @@
       "inherits": "Syntree.Element#selectable",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#selectable",
-      "___id": "T000002R001362",
+      "___id": "T000002R001297",
       "___s": true
     },
     {
@@ -6361,7 +8731,7 @@
         "lineno": 30,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003554",
+          "id": "astnode100003498",
           "name": "this.deleted",
           "type": "Literal",
           "value": false,
@@ -6382,7 +8752,7 @@
       "inherits": "Syntree.Element#deleted",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#deleted",
-      "___id": "T000002R001363",
+      "___id": "T000002R001298",
       "___s": true
     },
     {
@@ -6396,7 +8766,7 @@
         "lineno": 45,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003575",
+          "id": "astnode100003519",
           "name": "Syntree.Element.prototype.isDeleted",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6424,7 +8794,7 @@
       "inherits": "Syntree.Element#isDeleted",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#isDeleted",
-      "___id": "T000002R001364",
+      "___id": "T000002R001299",
       "___s": true
     },
     {
@@ -6438,7 +8808,7 @@
         "lineno": 55,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003590",
+          "id": "astnode100003534",
           "name": "Syntree.Element.prototype.isSelectable",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6466,7 +8836,7 @@
       "inherits": "Syntree.Element#isSelectable",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#isSelectable",
-      "___id": "T000002R001365",
+      "___id": "T000002R001300",
       "___s": true
     },
     {
@@ -6480,7 +8850,7 @@
         "lineno": 68,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003605",
+          "id": "astnode100003549",
           "name": "Syntree.Element.prototype.delete",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6502,7 +8872,7 @@
       "inherits": "Syntree.Element#delete",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#delete",
-      "___id": "T000002R001366",
+      "___id": "T000002R001301",
       "___s": true
     },
     {
@@ -6516,7 +8886,7 @@
         "lineno": 87,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003662",
+          "id": "astnode100003606",
           "name": "Syntree.Element.prototype.updateGraphics",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6534,7 +8904,7 @@
       "inherits": "Syntree.Element#updateGraphics",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#updateGraphics",
-      "___id": "T000002R001367",
+      "___id": "T000002R001302",
       "___s": true
     },
     {
@@ -6548,7 +8918,7 @@
         "lineno": 100,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003698",
+          "id": "astnode100003642",
           "name": "Syntree.Element.prototype.isElement",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6572,7 +8942,7 @@
       "inherits": "Syntree.Element#isElement",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#isElement",
-      "___id": "T000002R001368",
+      "___id": "T000002R001303",
       "___s": true
     },
     {
@@ -6586,7 +8956,7 @@
         "lineno": 113,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003711",
+          "id": "astnode100003655",
           "name": "Syntree.Element.prototype.isDeletable",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6613,7 +8983,7 @@
       "inherits": "Syntree.Element#isDeletable",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#isDeletable",
-      "___id": "T000002R001369",
+      "___id": "T000002R001304",
       "___s": true
     },
     {
@@ -6627,7 +8997,7 @@
         "lineno": 122,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100003724",
+          "id": "astnode100003668",
           "name": "Syntree.Element.prototype.getId",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6655,7 +9025,7 @@
       "inherits": "Syntree.Element#getId",
       "inherited": true,
       "overrides": "Syntree.SelectableElement#getId",
-      "___id": "T000002R001370",
+      "___id": "T000002R001305",
       "___s": true
     },
     {
@@ -6669,7 +9039,7 @@
         "lineno": 18,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100006965",
+          "id": "astnode100006167",
           "name": "this.selected",
           "type": "Literal",
           "value": false,
@@ -6693,7 +9063,7 @@
       "scope": "instance",
       "inherits": "Syntree.SelectableElement#selected",
       "inherited": true,
-      "___id": "T000002R001371",
+      "___id": "T000002R001306",
       "___s": true
     },
     {
@@ -6707,7 +9077,7 @@
         "lineno": 29,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100006971",
+          "id": "astnode100006173",
           "name": "Syntree.SelectableElement.prototype.select",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6729,7 +9099,7 @@
       "scope": "instance",
       "inherits": "Syntree.SelectableElement#select",
       "inherited": true,
-      "___id": "T000002R001372",
+      "___id": "T000002R001307",
       "___s": true
     },
     {
@@ -6743,7 +9113,7 @@
         "lineno": 47,
         "path": "/var/www/html/syntree/app/classes/elements",
         "code": {
-          "id": "astnode100007019",
+          "id": "astnode100006221",
           "name": "Syntree.SelectableElement.prototype.deselect",
           "type": "FunctionExpression",
           "paramnames": []
@@ -6765,7 +9135,7 @@
       "scope": "instance",
       "inherits": "Syntree.SelectableElement#deselect",
       "inherited": true,
-      "___id": "T000002R001373",
+      "___id": "T000002R001308",
       "___s": true
     }
   ]

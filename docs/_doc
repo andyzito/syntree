@@ -1,0 +1,12 @@
+@has_own_docs
+
+@title Docs
+
+@description All documentation besides the READMEs and the end user help page.
+
+@more
+This folder contains developer targeted asynchronous reference documentation, as well as software engineering UML diagrams and documents.
+
+For more information on what Syntree *is* in the big picture sense, `see the FAQ and Help page <http://syntree.stdnt.hampshire.edu/pages/what.php>`_.
+
+For more information on how Syntree *works*, read through the READMEs here, and `see the code documentation <http://syntree.stdnt.hampshire.edu/docs>`_.

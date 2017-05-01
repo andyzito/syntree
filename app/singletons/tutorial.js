@@ -3,30 +3,36 @@
  * @classdesc The tutorial object, containing data and methods for running the tutorial.
  */
 Syntree.Tutorial = {
+    /**
+     * Any data that might need stored for the Tutorial.
+     * For example, the number of key presses when typing a node name.
+     *
+     * @type {object}
+     */
     data: {
         node_naming_1: 0,
     },
 
+    /**
+     * Standard time interval between messages, in milliseconds.
+     *
+     * type {number}
+     */
     standard_message_interval: 2000,
 
+    /**
+     * Data for each frame of the tutorial.
+     *
+     * @type {object}
+     * @property {string} message - the text to display on screen for this frame
+     * @property {number|object} gateway - either milliseconds to stay on screen for, or an object containing event data that describes an event on which to continue to the next frame
+     */
     frames: [
         {
             message: 'Hello! Welcome to Syntree',
         },
         {
             message: 'Right now there is one node, called S',
-            // arrows: [
-            //     (function() {
-            //         var id = Syntree.Workspace.page.tree.getRoot().getId();
-            //         var pos = $('#label-' + id).position();
-            //         var bbox = Syntree.Workspace.page.tree.getRoot().getLabelBBox();
-            //         return {
-            //             x: pos.left + 30,
-            //             y: pos.top + (bbox.h / 2),
-            //             from_direction: 'right',
-            //         }
-            //     }),
-            // ]
         },
         {
             message: 'You can tell it is selected because it is highlighted in gray',
@@ -39,7 +45,6 @@ Syntree.Tutorial = {
                     return e.keyCode === 40;
                 },
             },
-            // arrows: false,
         },
         {
             message: 'Good job!',
@@ -105,10 +110,6 @@ Syntree.Tutorial = {
             },
         },
         {
-            message: 'Note: to force node creation, instead of navigation, hold down CTRL + SHIFT',
-            gateway: 5000,
-        },
-        {
             message: 'Ok! You can press Enter, or double click, to edit the node',
             gateway: {
                 event_type: [
@@ -145,6 +146,21 @@ Syntree.Tutorial = {
             message: 'Ok. Moving on.',
         },
         {
+            message: 'You can delete subtrees by selecting a Node and either pressing DEL or clicking the small (x) button',
+        },
+        {
+            message: 'Give it a try! Delete a subtree.',
+            gateway: {
+                event_type: [
+                    'keydown',
+                    'click',
+                ],
+                condition: function() {
+                    return Syntree.History.getAll()[1].type === 'delete';
+                },
+            },
+        },
+        {
             message: 'You can press CTRL + Z to undo most actions',
         },
         {
@@ -163,11 +179,29 @@ Syntree.Tutorial = {
             message: 'That\'s all for now. For more help, click \'Help\' in the upper lefthand corner.'
         },
     ],
-    index: -1,
+
+    /**
+     * Index of the current frame.
+     *
+     * @type {number}
+     */
+    index: 10,
+
+    /**
+     * Is the tutorial currently running?
+     *
+     * @type {boolean}
+     */
     running: false,
 
+    /**
+     * Continue to the next frame.
+     */
     continue: function() {
         this.index += 1;
+        $(document).off('.syntree_tutorial');
+        clearTimeout(this.timer);
+
         if (this.index < this.frames.length && this.running) {
             frame = this.frames[this.index];
             this.frame(frame);
@@ -178,19 +212,25 @@ Syntree.Tutorial = {
         }
     },
 
+    /**
+     * Start the tutorial.
+     */
     start: function() {
-        $('.tutorial_instruction').remove();
+
         if (this.running) {
             this.quit();
             this.start();
         } else {
-            this.index = -1;
+            this.index = 15;
             modal_close('app');
             this.running = true;
             this.continue();
         }
     },
 
+    /**
+     * Quit the tutorial.
+     */
     quit: function() {
         this.index = Infinity;
         this.running = false;
@@ -201,28 +241,17 @@ Syntree.Tutorial = {
         $('.tutorial_instruction').remove();
     },
 
+    /**
+     * Run a single frame of the tutorial.
+     *
+     * @param {object} frame - one of Syntree.Tutorial.frames
+     */
     frame: function(frame) {
         var message = Syntree.Lib.checkArg(frame.message, 'string');
-        var gateway = Syntree.Lib.checkArg(frame.gateway, ['object', 'number'], 2700);
+        var gateway = Syntree.Lib.checkArg(frame.gateway, ['object', 'number'], this.standard_message_interval);
 
         this.instruction(message);
-        // if (Syntree.Lib.checkType(frame.arrows, 'array')) {
-        //     var i = 0;
-        //     while (i < frame.arrows.length) {
-        //         if (Syntree.Lib.checkType(frame.arrows[i], 'function')) {
-        //             var arrow = frame.arrows[i]();
-        //             $('#workspace_container').append('<div class='tutorial_arrow from_' + arrow.from_direction + ''></div>');
-        //             $('.tutorial_arrow').css({
-        //                 'top': arrow.y,
-        //                 'left': arrow.x,
-        //             });
-        //             $('.tutorial_arrow').fadeIn(1500);
-        //         }
-        //         i++;
-        //     }
-        // } else if (Syntree.Lib.checkType(frame.arrows, 'boolean') && !frame.arrows) {
-        //     $('.tutorial_arrow').remove();
-        // }
+
         if (Syntree.Lib.checkType(gateway, 'number')) {
             this.timer = setTimeout(
                 (function() {
@@ -239,6 +268,11 @@ Syntree.Tutorial = {
         }
     },
 
+    /**
+     * Display a new message to the screen.
+     *
+     * @param {string} text - the text to display.
+     */
     instruction: function(text) {
         if ($('.tutorial_instruction:not(.primary)').length > 0) {
             $('.tutorial_instruction:not(.primary)').fadeOut(1000, function() {

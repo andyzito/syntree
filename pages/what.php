@@ -11,14 +11,16 @@
 <html>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/head.php' ?>
     <body class="what">
-        <div class="contents">
+        <div class="block_menu">
             <ul>
-                <a href="#section-faq"><li>FAQ</li></a>
-                <a href="#section-how-to"><li>How to...</li></a>
-                <a href="#section-keys"><li>Keyboard Shortcuts</li></a>
-                <a href="/docs"><li>Code Docs</li></a>
-                <a href="/index.php"><li><< Splash Page</li></a>
-                <a href="/pages/app-page.php"><li>App >></li></a>
+                <a href="/"><li>Home</li></a>
+                <a href="/pages/app-page.php"><li>Make A Tree</li></a>
+                <a href="/docs"><li>Documentation</li></a>
+                <span class="contents">
+                    <a href="#section-faq"><li>FAQ</li></a>
+                    <a href="#section-how-to"><li>How to...</li></a>
+                    <a href="#section-keys"><li>Keyboard Shortcuts</li></a>
+                </span>
             </ul>
         </div>
         <h2 class="page_title">Syntree Help</h4>
@@ -40,13 +42,13 @@
                 <li><span class="faq-q">Can Syntree take a sentence and make a syntrax tree <em>for</em> me?</span>
                     <p class="faq-a">No. Do your own homework.</p></li>
 
-                <li><span class="faq-q">Why are some of the keyboard shortcuts so weird? <span class="key key-ctrl"></span><span class="key key-comma"></span>? Like, what?</span>
-                    <p class="faq-a">Unfortunately, many common/simple keyboard shortcuts (for example, CTRL + Arrow Key) are used by operating systems and/or browsers as default shortcuts. For example, in Google Chrome on Mac computers, <span class="key key-ctrl"></span><span class="key key-left"></span> is the default shortcut for "Back".
+ <!--                <li><span class="faq-q">Why are some of the keyboard shortcuts so weird? <span class="key key-ctrl"></span><span class="key key-comma"></span>? Like, what?</span>
+                    <p class="faq-a">Unfortunately, many common/simple keyboard shortcuts (for example, CTRL + Arrow Key) are used by operating systems and/or browsers as default shortcuts. For example, in Google Chrome on Mac computers, CTRL + Left is the default shortcut for "Back".
 
                     Therefore, I've opted to use shortcuts unlikely to already be in use (even if this makes them slightly exotic), rather than leave some users unable to use the keyboard interface.
 
                     <span class="note">Coming eventually: customizable keyboard shortcuts</span></p></li>
-
+ -->
                 <li><span class="faq-q">I think this is awesomesauce/think this sucks. How can I let the creator know?</span>
                     <p class="faq-a">You can use the <a href="https://docs.google.com/forms/d/e/1FAIpQLScOwQnMioOwo0dfZXEo0DQPK-TdmMnRfYzuYS_Zf9sg-jbnkw/viewform">feedback form.</a></p></li>
             </ul>
@@ -65,11 +67,15 @@
                 <li><span class="how-to-title">Force node creation instead of navigation:</span>
                     <p>Hold down CTRL + SHIFT and press left or right. Even if there is a node in that direction already, a new node will be created (directly adjacent to the selected node).
 
-                    <span cass="note">Coming eventually: use with the down arrow key to insert a node in between the selected node and its children</span></p></li>
+                    <span cass="note">In the works: use with the down arrow key to insert a node in between the selected node and its children</span></p></li>
+                <li><span class="how-to-title">Pan my view of the tree:</span>
+                    <p>To pan, simply click and drag anywhere on the background.
+
+                    <span cass="note">In the works: zooming!</span></p></li>
                 <li><span class="how-to-title">Edit nodes:</span>
                     <p>Pressing Enter will begin editing mode on the selected node. You can also double-click on any node to edit it. You will be provided with a text-box, in which you can input any node label you would like. Press Enter to save the change. If you navigate away from the node (by pressing an arrow key or clicking on another node) the node label will revert to its pre-editing state.
 
-                    <span class="note">Coming soon: a setting to change this behavior so that label changes will automatically be saved if you navigate away</span></p></li>
+                    <span class="note">In the works: a setting to change this behavior so that label changes will automatically be saved if you navigate away</span></p></li>
                 <li><span class="how-to-title">Delete nodes:</span>
                     <p>Select a node and either press the Delete key or click the small (x) button above and to the right of the selected node. This node and all of its descendants will be removed from the tree.
 

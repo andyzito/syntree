@@ -1,6 +1,8 @@
 Use Case #2: Forcing Node Creation
 ==================================
 
+.. This use case was selected from the original pool of use cases, and updated to match the current version of Syntree. You can view all the original, unaltered use cases at https://drive.google.com/open?id=0ByxFokfIIBmXbzRSdTBIWThfeTg
+
 Actors
 ------
 - User (User)

@@ -20,11 +20,23 @@ Export Tree
 
 This is a script which takes a string identifying the type of file to export, and a filename to use. It returns a link to the generated file.
 
+`Docs <./docs/README.rst>`_
+--------------------------------------------------
+`./docs <./docs>`_
+
+All documentation besides the READMEs and the end user help page.
+
 `Pages <./pages/README.rst>`_
 --------------------------------------------------
 `./pages <./pages>`_
 
 All pages of the Syntree website.
+
+On Hold
+--------------------------------------------------
+`./on_hold <./on_hold>`_
+
+This is all functionality (and the code related to it) that is on hold. Please do not look at, touch, or think too hard about _anything_ in this folder.
 
 Resources
 --------------------------------------------------

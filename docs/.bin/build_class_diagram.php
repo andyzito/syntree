@@ -24,7 +24,7 @@ foreach ($data->docs as $k => $d) {
 	if ($kind === 'function' && array_key_exists($d->memberof, $classes)) {
 		$classes[$d->memberof]['methods'][] = $d->name;
 	} else if ($kind === 'member' && array_key_exists($d->memberof, $classes)) {
-		$classes[$d->memberof]['members'][] = $d->name;
+		$classes[$d->memberof]['members'][] = $d;
 	}
 }
 
@@ -40,17 +40,27 @@ function class_def($class) {
 		$o .= '    ' . $m . "()\n";
 	}
 	foreach ($class['members'] as $m) {
-		$o .= '    ' . $m . "\n";
+		$type = "";
+		if (property_exists($m, 'type')) {
+			$type = " : " . $m->type->names[0];
+		}
+		$o .= '    ' . $m->name . $type . "\n";
 	}
 	$o .= '}' . "\n";
 	return $o;
 }
 
 $o = "@startuml \n";
+$o .= "title Syntree Class Diagram \n";
 
 foreach ($classes as $class) {
 	$o .= class_def($class);
 }
+
+$o .= "class Workspace << (S,#FF7700) Singleton >>" . "\n";
+$o .= "class Lib << (S,#FF7700) Singleton >>" . "\n";
+$o .= "class History << (S,#FF7700) Singleton >>" . "\n";
+$o .= "class Tutorial << (S,#FF7700) Singleton >>" . "\n";
 
 $o .= "SelectableElement <|-- Node" . "\n";
 $o .= "SelectableElement <|-- Branch" . "\n";
@@ -59,6 +69,14 @@ $o .= "Element <|-- SelectableElement" . "\n";
 $o .= "Tree o-- Node" . "\n";
 $o .= "History *-- Action" . "\n";
 $o .= "Workspace --> Page" . "\n";
+$o .= "Page --> Tree" . "\n";
+$o .= "Page --> Element" . "\n";
+$o .= "Element *-- Graphic" . "\n";
+
+$o .= "skinparam monochrome true" . "\n";
+$o .= "skinparam shadowing false" . "\n";
+$o .= "skinparam dpi 150" . "\n";
+
 $o .= "@enduml";
 
 $f = fopen("./docs/.source/class_diagram/class_diagram.plantuml", "w");

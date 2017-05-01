@@ -19,13 +19,14 @@ php ./docs/.bin/build_readmes.php
 echo "READMEs: built"
 
 echo "Code reference section: building with JSDoc"
-# jsdoc -r ./app --readme ./docs/.source/home.mkd -d ./docs/coderef
+jsdoc -r ./app --readme ./docs/.source/home.mkd -d ./docs/coderef
 echo "Code reference section: built"
 
-echo "Class diagram: building with jsdoc-parse and PlantUML"
+echo "Class diagram: building with jsdoc-json and PlantUML"
 jsdoc --template jsdoc-json --destination ./docs/.source/class_diagram/class_diagram.json app/classes/* app/singletons/*
-# jsdoc2md --json --files app/classes/* app/singletons/* > ./docs/.source/class_diagram/class_diagram.json
 php ./docs/.bin/build_class_diagram.php
+java -jar ./docs/.bin/plantuml.jar ./docs/.source/class_diagram/class_diagram.plantuml
+cp ./docs/.source/class_diagram/class_diagram.png ./docs/download/class_diagram.png
 echo "Class diagram: built"
 
 echo "Use cases: building"

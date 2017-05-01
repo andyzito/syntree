@@ -32,8 +32,8 @@ ul {
     padding: 0;
 }
 
-span.note {
-    font-size: 0.95rem;
+.note {
+    font-size: 0.9em;
     font-style: italic;
 }
 
@@ -46,6 +46,23 @@ span.note {
     &_secondary {
         font-size: 2.5rem;
         letter-spacing: initial;
+    }
+}
+
+.blurb {
+    font-size: 1.3rem;
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 1rem;
+    background-color: lightgrey;
+
+    .title {
+        text-align: center;
+    }
+
+    p {
+        white-space: pre-wrap;
+        line-height: 1.5rem;
     }
 }
 

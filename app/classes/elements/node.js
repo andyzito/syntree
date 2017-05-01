@@ -16,7 +16,7 @@ Syntree.config_maps.node.map = {
         default_value: '#undefined',
     },
     /**
-     * Starting x coordinate.
+     * This Node's x coordinate.
      *
      * @type {number}
      *
@@ -28,7 +28,7 @@ Syntree.config_maps.node.map = {
         default_value: 0,
     },
     /**
-     * Starting y coordinate.
+     * This Node's y coordinate.
      *
      * @type {number}
      *
@@ -253,86 +253,18 @@ Syntree.Node.prototype.createGraphic = function() {
         }
     }
 
-    var customDrag = function(dx, dy, posx, posy) {
-        if (Syntree.Workspace.rightClick) {
-            return false;
-        }
-        var id = this.attr('id');
-        id = id.substr(id.lastIndexOf('-')+1, id.length);
-        var node = Syntree.Workspace.page.allElements[id];
-        node.move(posx, posy);
-
-        nearestNode = Syntree.Workspace.page.getNearestNode(node,undefined,function(x,y,n) {
-            return y > n.getPosition().y;
-        });
-        if (nearestNode.dist < 100 && nearestNode.node.getChildren().indexOf(node) < 0 && nearestNode.deltaY > 10) {
-            if (node.parent !== undefined) {
-                var parent = node.parent;
-                parent.detachChild(node);
-                var tree = new Syntree.Tree({
-                    root: parent,
-                });
-                tree.distribute();
-            }
-            nearestNode.node.addChild(node);
-            var tree = new Syntree.Tree({
-                root: nearestNode.node,
-            });
-            // tree.distribute();
-        } else if (node.parent !== undefined) {
-            var parent = node.parent;
-            var ppos = parent.getPosition();
-            var distance = Syntree.Lib.distance({
-                x1: ppos.x,
-                y1: ppos.y,
-                x2: posx,
-                y2: posy,
-            })
-            if (distance > 70 || ppos.y > posy) {
-                parent.detachChild(node);
-                var tree = new Syntree.Tree({
-                    root: parent,
-                });
-                tree.distribute();
-            }
-        }
-
-        nearestNode.node.updateGraphics();
-        node.updateGraphics(true);
-    }
-
-    var customStart = function() {
-        if (Syntree.Workspace.rightClick) {
-            return false;
-        }
-    }
-
-    var customEnd = function(dx,dy,posx,posy) {
-        if (dx < 2 && dy < 2) {
-            return;
-        }
-        var id = this.attr('id');
-        id = id.substr(id.lastIndexOf('-')+1, id.length);
-        var node = Syntree.Workspace.page.allElements[id];
-
-        var parent = node.parent;
-        if (parent) {
-            var tree = new Syntree.Tree({
-                root: parent,
-            });
-            tree.distribute(undefined,true);
-        }
-    }
-
-    label.drag(customDrag,customStart,customEnd);
-
     this.graphic = new Syntree.Graphic(config_matrix)
 }
 
-// Syntree.Node.prototype.getId = function() {
-//     return this.id;
-// }
-
+/**
+ * Get the position of this Node.
+ * Does not include panning transform.
+ *
+ * @returns {object} - x and y coordinates
+ *
+ * @see Syntree.Node#x
+ * @see Syntree.Node#y
+ */
 Syntree.Node.prototype.getPosition = function() {
     return {
         x: this.x,
@@ -340,33 +272,34 @@ Syntree.Node.prototype.getPosition = function() {
     };
 }
 
+
+/**
+ * Accessor function for Syntree.Node#labelContent.
+ *
+ * @see Syntree.Node#labelContent
+ */
 Syntree.Node.prototype.getLabelContent = function() {
     return this.labelContent;
 }
 
+/**
+ * Setter function for Syntree.Node#labelContent.
+ *
+ * @see Syntree.Node#labelContent
+ */
 Syntree.Node.prototype.setLabelContent = function(content) {
     this.graphic.unsync('labelContent');
     this.labelContent = content;
 }
 
-Syntree.Node.prototype.getLabelBBox2 = function() {
-    if (this.graphic.getEl('label').node.textContent === '' || $('#' + this.graphic.getEl('label').attr('id')).length === 0) {
-        var fakeHeight = 15;
-        var fakeWidth = 10;
-        return {
-            x: this.x - fakeWidth/2,
-            x2: this.x + fakeWidth/2,
-            y: this.y - fakeHeight/2,
-            y2: this.y + fakeHeight/2,
-            w: fakeWidth,
-            width: fakeWidth,
-            height: fakeHeight,
-            h: fakeHeight
-        }
-    }
-    return this.graphic.getEl('label').getBBox();
-}
-
+/**
+ * Get this Node label's BBox.
+ * Returns cached BBox if exists.
+ *
+ * @returns {object} - border box
+ *
+ * @see Syntree.Node#_labelbbox
+ */
 Syntree.Node.prototype.getLabelBBox = function() {
     if (this.graphic.getEl('label').node.textContent === '' || $('#' + this.graphic.getEl('label').attr('id')).length === 0) {
         var fakeHeight = 15;
@@ -390,14 +323,32 @@ Syntree.Node.prototype.getLabelBBox = function() {
 }
 
 
+/**
+ * Accessor function for Syntree.Node#parent.
+ *
+ * @see Syntree.Node#parent
+ */
 Syntree.Node.prototype.getParent = function() {
     return this.parent;
 }
 
+/**
+ * Accessor function for Syntree.Node#children.
+ *
+ * @see Syntree.Node#children
+ */
 Syntree.Node.prototype.getChildren = function() {
     return this.children;
 }
 
+/**
+ * Get a path that acts like a border box for this Node's label.
+ * Used to get intersections for movement arrows.
+ *
+ * @returns {string} - path string
+ *
+ * @see Syntree.Arrow
+ */
 Syntree.Node.prototype.getPath = function() {
     var bbox = this.getLabelBBox();
     var p = 10;
@@ -409,6 +360,20 @@ Syntree.Node.prototype.getPath = function() {
     return s;
 }
 
+/**
+ * Grouped accessor function for selected, editing, real, and deleted.
+ * Mostly a leftover from when I didn't know what I was doing.
+ * Should probably turn this into something tht makes more sense, someday.
+ *
+ * @param {string} [which] - which state to return
+ *
+ * @returns {boolean|object} - either the boolean value of the state, or an object of state names mapped to booleans (if no state name provided)
+ *
+ * @see Syntree.Node#selected
+ * @see Syntree.Node#editing
+ * @see Syntree.Node#real
+ * @see Syntree.Node#deleted
+ */
 Syntree.Node.prototype.getState = function(which) {
     switch (which) {
         case 'selected':
@@ -433,30 +398,18 @@ Syntree.Node.prototype.getState = function(which) {
     }
 }
 
-Syntree.Node.prototype.getSVGString = function(offsetX,offsetY) {
-    offsetX = Syntree.Lib.checkArg(offsetX, 'number', 0);
-    offsety = Syntree.Lib.checkArg(offsetY, 'number', 0);
-
-    var label = this.graphic.getEl('label').node.outerHTML;
-    label = $(label).attr('x', Number($(label).attr('x')) + offsetX);
-    s = label[0].outerHTML;
-    if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
-        if (!this.parentBranch.triangle) {
-            s += this.parentBranch.graphic.getEl('line').node.outerHTML;
-        } else {
-            s += this.parentBranch.graphic.getEl('triangle').node.outerHTML;
-        }
-    }
-    if (Syntree.Lib.checkType(this.fromArrow, 'arrow')) {
-        var arrow = this.fromArrow.graphic.getEl('line').node.outerHTML;
-        arrow = $(arrow).attr('marker-end','');
-        console.log(arrow[0].outerHTML)
-        s += arrow[0].outerHTML;
-    }
-    // console.log(s);
-    return s;
-}
-
+/**
+ * Set this Node's x and y coordinates.
+ *
+ * @param {number} x - x coordinate
+ * @param {number} y - y coordinate
+ * @param {boolean} [propogate=true] - set coordinates of descendant Nodes as well
+ *
+ * @returns {object} - new x and y coordinates
+ *
+ * @see Syntree.Node#x
+ * @see Syntree.Node#y
+ */
 Syntree.Node.prototype.move = function(x,y,propagate) {
     x = Syntree.Lib.checkArg(x, 'number');
     y = Syntree.Lib.checkArg(y, 'number');
@@ -508,6 +461,12 @@ Syntree.Node.prototype.move = function(x,y,propagate) {
     }
 }
 
+/**
+ * Custom addition to Syntree.Element#delete.
+ * Deletes connected Branches and Arrows as well.
+ *
+ * @see Syntree.Element#delete
+ */
 Syntree.Node.prototype.__delete = function() {
     this.real = false;
     if (Syntree.Lib.checkType(this.parentBranch, 'branch')) {
@@ -528,16 +487,13 @@ Syntree.Node.prototype.__delete = function() {
     }
 }
 
-// Syntree.Node.prototype.__select = function() {
-//     // var nodeToDeselect = Syntree.Workspace.page.getSelected();
-//     // Syntree.Workspace.page.select(node);
-//     // this.nodeDeselect(nodeToDeselect);
-
-//     // if (!silent) {
-//     //     new Syntree.ActionSelect(node);
-//     // }
-// }
-
+/**
+ * Custom addition to Syntree.SelectElement#deselect.
+ * Deletes if is not real.
+ *
+ * @see Syntree.SelectableElement#deselect
+ * @see Syntree.Node#real
+ */
 Syntree.Node.prototype.__deselect = function() {
     this.editingAction('cancel');
     if (!this.real) {
@@ -545,6 +501,13 @@ Syntree.Node.prototype.__deselect = function() {
     }
 }
 
+/**
+ * Perform an editing action.
+ *
+ * @param {string} action - type of editing action: init, update, save, or cancel
+ *
+ * @see Syntree.Page#nodeEditing
+ */
 Syntree.Node.prototype.editingAction = function(action) {
     switch(action) {
         case 'init':
@@ -594,6 +557,11 @@ Syntree.Node.prototype.editingAction = function(action) {
     }
 }
 
+/**
+ * Custom addition to Syntree.Element#updateGraphics
+ *
+ * @see Syntree.Element#updateGraphics
+ */
 Syntree.Node.prototype.__updateGraphics = function(propagate) {
     propagate = Syntree.Lib.checkArg(propagate, 'boolean', false);
     if (this.positionUnsynced) {
@@ -623,7 +591,15 @@ Syntree.Node.prototype.__updateGraphics = function(propagate) {
     }
 }
 
-Syntree.Node.prototype.addChild = function(newNode,index) {
+/**
+ * Add a child at the specified index.
+ *
+ * @param {Syntree.Node} newNode - the Node to attach
+ * @param {number} [index=Syntree.Node#children.length] - index at which to attach
+ *
+ * @see Syntree.Node#children
+ */
+Syntree.Node.prototype.addChild = function(newNode, index) {
     newNode = Syntree.Lib.checkArg(newNode, 'node');
     index = Syntree.Lib.checkArg(index, 'number', this.children.length);
     index = Syntree.Lib.checkArg(index, 'number');
@@ -636,14 +612,6 @@ Syntree.Node.prototype.addChild = function(newNode,index) {
     this.children.splice(index,0,newNode);
 
     var branch = new Syntree.Branch(this,newNode);
-}
-
-Syntree.Node.prototype.detachChild = function(node) {
-    var childIndex = this.children.indexOf(node);
-    var child = this.children[childIndex];
-    child.parentBranch.delete();
-    child.parent = undefined;
-    this.children.splice(childIndex, 1);
 }
 
 Syntree.Node.prototype.toString = function() {

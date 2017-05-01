@@ -3,26 +3,19 @@ body.splash {
     font-family: sans-serif;
 
     .page_title {
-        margin-top: 2rem;
+        font-size: 7rem;
+        margin-top: 8rem;
 
         &_secondary {
-            margin-top: 10rem;
-        }
-
-        span {
             font-size: 3rem;
+            margin-top: 2rem;
         }
     }
 
-    p {
-        font-size: 1.3rem;
-        border: 1px solid grey;
-        border-radius: 5px;
+    .block_menu {
         width: 50%;
         margin: auto;
-        padding: 1rem;
-        margin-top: 4rem;
-        background-color: lightgrey;
+        margin-top: 5rem;
     }
 
     .wrapper {

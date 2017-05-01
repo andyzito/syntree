@@ -2,11 +2,23 @@
  * @class
  * @classdesc Represents a (usually undo-able) discrete user event.
  */
-Syntree.Action = function(type,data) {
+Syntree.Action = function(type, data) {
     type = Syntree.Lib.checkArg(type, 'string');
     data = Syntree.Lib.checkArg(data, 'object', '#undefined');
 
+    /**
+     * Session-unique id.
+     *
+     * @type {number}
+     * @see Syntree.Lib.genId
+     */
     this.id = Syntree.Lib.genId();
+
+    /**
+     * What type of action is this?
+     *
+     * @type {string}
+     */
     this.type = type;
 
     this.toString = function() {

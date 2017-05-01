@@ -561,7 +561,7 @@ Syntree.Page.prototype._enablePanning = function() {
     }
 
     this._end = function(dx,dy) {
-        var t = this.getTransform();
+        var t = Syntree.Workspace.page.getTransform();
         var top = $('.editor_container').position().top;
         var left = $('.editor_container').position().left;
         $('.editor_container').css({

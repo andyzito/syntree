@@ -59,8 +59,8 @@ ul {
   margin: 0;
   padding: 0; }
 
-span.note {
-  font-size: 0.95rem;
+.note {
+  font-size: 0.9em;
   font-style: italic; }
 
 .page_title {
@@ -71,6 +71,18 @@ span.note {
   .page_title_secondary {
     font-size: 2.5rem;
     letter-spacing: initial; }
+
+.blurb {
+  font-size: 1.3rem;
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 1rem;
+  background-color: lightgrey; }
+  .blurb .title {
+    text-align: center; }
+  .blurb p {
+    white-space: pre-wrap;
+    line-height: 1.5rem; }
 
 .clearfix:after {
   content: "";
@@ -191,7 +203,6 @@ input[type=text] {
   padding: 1rem; }
   .modal_body.modal_export, .modal_body.modal_open {
     width: 45%;
-    height: 65%;
     top: 17.5%;
     left: 27.5%; }
   .modal_body.modal_tutorial {
@@ -261,20 +272,15 @@ body.splash {
   background-color: #ededed;
   font-family: sans-serif; }
   body.splash .page_title {
-    margin-top: 2rem; }
+    font-size: 7rem;
+    margin-top: 8rem; }
     body.splash .page_title_secondary {
-      margin-top: 10rem; }
-    body.splash .page_title span {
-      font-size: 3rem; }
-  body.splash p {
-    font-size: 1.3rem;
-    border: 1px solid grey;
-    border-radius: 5px;
+      font-size: 3rem;
+      margin-top: 2rem; }
+  body.splash .block_menu {
     width: 50%;
     margin: auto;
-    padding: 1rem;
-    margin-top: 4rem;
-    background-color: lightgrey; }
+    margin-top: 5rem; }
   body.splash .wrapper {
     display: block;
     margin: auto;
@@ -297,46 +303,52 @@ body.what {
     text-align: center; }
   body.what .faq-list, body.what .how-to-list {
     margin: auto;
-    width: 75%; }
+    width: 90%; }
   body.what .help_section {
     margin-top: 2.5rem;
     padding-top: 2.5rem;
-    border-top: 1px solid darkgrey; }
+    border-top: 1px solid darkgrey;
+    width: 60%;
+    margin: auto;
+    font-size: 1.3rem;
+    line-height: 1.6rem; }
     body.what .help_section a {
       text-decoration: underline;
       color: blue; }
       body.what .help_section a:hover {
         color: darkblue; }
     body.what .help_section li {
-      margin-bottom: 1.5rem;
-      line-height: 1.4rem; }
+      margin-bottom: 1.5rem; }
       body.what .help_section li span.faq-q, body.what .help_section li span.how-to-title {
-        font-size: 1.1rem;
+        font-size: 1.5rem;
         font-weight: bold;
-        letter-spacing: 0.05rem; }
+        letter-spacing: 0.05rem;
+        margin-bottom: 2.5rem; }
       body.what .help_section li p {
-        white-space: pre-line; }
-  body.what .contents {
+        white-space: pre-line;
+        line-height: 1.5rem;
+        margin-top: 10px; }
+  body.what .block_menu {
     position: fixed;
-    border: 1px solid black;
-    background-color: white;
     width: 11%;
     top: 5px;
     left: 5px;
-    border-radius: 3px; }
-    body.what .contents ul {
-      width: 100%; }
-      body.what .contents ul li {
-        width: 100%;
-        text-align: center;
-        padding: 20px 0;
-        margin: 0;
-        font-size: 1.2rem; }
-        body.what .contents ul li:hover {
-          color: white;
-          background-color: black; }
-      body.what .contents ul a[href="#section-keys"] li {
-        border-bottom: 1px solid grey; }
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0; }
+    body.what .block_menu span.contents li {
+      padding: 0.5rem;
+      border-radius: 0;
+      background-color: lightgrey;
+      position: relative; }
+      body.what .block_menu span.contents li:hover {
+        background-color: #666666; }
+      body.what .block_menu span.contents li:after {
+        content: ">";
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-right: 10px; }
   body.what table {
     width: 70%;
     margin: auto;
@@ -488,6 +500,23 @@ body.page_make {
 
 .page_docs {
   background-color: #ededed; }
+  .page_docs .note {
+    text-align: center;
+    margin: 1rem; }
+    .page_docs .note a {
+      text-decoration: underline;
+      color: blue; }
+  .page_docs.page_doc_index .page_title {
+    margin: 5rem 0; }
+  .page_docs.page_doc_index .block_menu {
+    float: left;
+    display: inline-block;
+    width: 30%;
+    margin-left: 5%; }
+  .page_docs .blurb {
+    width: 55%;
+    float: right;
+    margin-right: 5%; }
   .page_docs .historical_warning {
     color: red;
     font-style: italic; }
@@ -535,10 +564,13 @@ body.page_make {
     color: #4a91e8; }
   .page_docs.page_docs_requirements_list li .own_requirement, .page_docs.page_docs_class_analyses li .own_requirement {
     color: #4a91e8; }
-
-.page_doc_index .page_title {
-  margin: 5rem 0; }
-
-.page_doc_index .block_menu {
-  width: 50%;
-  margin-left: 25%; }
+  .page_docs.page_docs_class_diagram img {
+    width: 80%;
+    margin-left: 10%;
+    max-width: 1500px; }
+  .page_docs.page_docs_writeup {
+    height: 100%;
+    overflow: hidden; }
+    .page_docs.page_docs_writeup iframe {
+      width: 100%;
+      height: 100%; }
