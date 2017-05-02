@@ -1,0 +1,42 @@
+@startuml
+
+!include style.plantuml
+
+title __**    Exporting Tree    **__ \n (bracket notation) \n //*updated from an earlier diagram//
+
+actor User as U
+participant Browser as B
+participant Modal.js as M
+participant Workspace as W
+participant Tree as T
+participant "receive-export.php" as R
+
+
+U -> B: click "Export" in toolbar
+activate U
+activate B
+B -> M: click event
+activate M
+M -> M: openModal('export')
+M -> B: display export modal
+deactivate M
+U -> B: select "Bracket notation" and click "Export" button in modal
+B -> W: ._eventExport()
+activate W
+W -> B: get filetype and name info
+B --> W: [user selected bracket notation]
+W -> T: Tree.getBracketNotation()
+activate T
+T -> W: [bracket notation string]
+deactivate T
+W -> R: POST filetype,name,brackets
+activate R
+R -> R: create text file
+R -> W: [download link]
+deactivate R
+W -> B: append link
+W -> B: click link
+deactivate W
+B -> U: [file download]
+
+@enduml

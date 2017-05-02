@@ -127,6 +127,41 @@ input[type=text] {
       padding: 20px 0;
       margin: 0;
       font-size: 1.3rem; }
+  .block_menu .sub_menu {
+    padding-left: 0;
+    padding-right: 0;
+    position: relative; }
+    .block_menu .sub_menu:after {
+      content: ">";
+      position: absolute;
+      right: 0;
+      margin-right: 20px;
+      font-family: sans-serif;
+      font-size: 1.3rem; }
+    .block_menu .sub_menu.expanded {
+      padding-bottom: 0;
+      background-color: black;
+      color: white; }
+      .block_menu .sub_menu.expanded:after {
+        content: "v";
+        top: 1rem; }
+      .block_menu .sub_menu.expanded ul {
+        display: block; }
+    .block_menu .sub_menu ul {
+      display: none;
+      margin-top: 1rem; }
+      .block_menu .sub_menu ul li {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        background-color: lightgrey;
+        border-bottom: none;
+        border-right: none;
+        border-left: 6px solid black;
+        transition: border-left 0.3s; }
+        .block_menu .sub_menu ul li:hover {
+          background-color: darkgrey;
+          color: black;
+          border-left: 13px solid black; }
 
 .option_wrapper_radio {
   display: inline-block;
@@ -523,7 +558,11 @@ body.page_make {
   .page_docs .back {
     position: fixed;
     top: 15px;
-    left: 15px; }
+    left: 15px;
+    font-family: sans-serif;
+    font-size: 1.5rem; }
+    .page_docs .back:after {
+      content: "<<"; }
   .page_docs .download_docs {
     position: fixed;
     top: 15px;
@@ -568,6 +607,12 @@ body.page_make {
     width: 80%;
     margin-left: 10%;
     max-width: 1500px; }
+  .page_docs.page_docs_sequence_diagrams img {
+    width: 80%;
+    display: block;
+    margin: auto;
+    border: 1px solid grey;
+    margin-bottom: 3rem; }
   .page_docs.page_docs_writeup {
     height: 100%;
     overflow: hidden; }

@@ -41,6 +41,12 @@
     	@extend .button;
     	top: 15px;
     	left: 15px;
+        font-family: sans-serif;
+        font-size: 1.5rem;
+
+        &:after {
+            content: "<<";
+        }
     }
 
     .download_docs {
@@ -120,6 +126,16 @@
             width: 80%;
             margin-left: 10%;
             max-width: 1500px;
+        }
+    }
+
+    &.page_docs_sequence_diagrams {
+        img {
+            width: 80%;
+            display: block;
+            margin: auto;
+            border: 1px solid grey;
+            margin-bottom: 3rem;
         }
     }
 

@@ -1,0 +1,30 @@
+@startuml
+
+!include style.plantuml
+
+title __**    Down Arrow Key    **__ \n (selected node does not have child) \n //*updated from an earlier diagram//
+
+actor User as U
+participant Workspace as W
+participant Page as P
+participant Tree as T
+participant "Selected Node" as SN
+participant "Node B" as NB
+
+U -> W: ._eventDown()
+activate U
+deactivate U
+activate W
+W -> P: Page.navigateDown()
+deactivate W
+activate P
+P -> SN: Node.getChildren().length
+activate SN
+SN --> P: returns 0
+deactivate SN
+create NB
+P -> NB: new Node()
+P -> SN: Node.addChild(Node B)
+deactivate P
+
+@enduml

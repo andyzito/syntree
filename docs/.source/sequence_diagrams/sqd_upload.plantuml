@@ -1,0 +1,41 @@
+@startuml
+
+!include style.plantuml
+
+title __**    Uploading Tree    **__ \n (a .tree file) \n //*updated from an earlier diagram//
+
+participant User as U
+participant Browser as B
+participant Workspace as W
+participant Page as P
+participant Node as N
+participant "Uploaded Tree" as UT
+participant "Old Tree" as T
+
+U -> B: click 'Upload'
+activate U
+activate B
+B -> W: ._eventUpload()
+activate W
+W -> B: append file <input>
+W -> B: click file <input>
+B -> U: display file dialog
+U -> B: select file and click 'Open'
+B --> W: [file info]
+W -> P: Page.openTree(file)
+deactivate W
+activate P
+create UT
+P -> UT: new Tree({build_tree_string})
+activate UT
+UT --> P: [Tree instance]
+deactivate UT
+P -> P: Page.addTree(Uploaded Tree)
+P -> T: Page.tree.delete()
+activate T
+deactivate T
+P -> P: Page.tree = Uploaded Tree
+P -> UT: Tree.distribute()
+deactivate P
+
+@enduml

@@ -2,6 +2,13 @@
 
 <html>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/head.php' ?>
+    <script>
+    jQuery(document).ready(function(){
+        jQuery(document).on('click', '.sub_menu', function(){
+            jQuery(this).toggleClass('expanded');
+        });
+    });
+    </script>
 
     <body class="page_docs page_doc_index">
 
@@ -12,9 +19,14 @@
         <a href="/"><li>Home</li></a>
         <a href="/pages/app-page.php"><li>Make A Tree</li></a>
         <a href="/docs/coderef"><li>Code Reference</li></a>
-        <a href="/docs/requirements_list.php"><li>Requirements List</li></a>
-        <a href="/docs/use_cases.php"><li>Use Cases</li></a>
-        <a href="/docs/class_diagram.php"><li>Class Diagram</li></a>
+        <li class="sub_menu" tabindex="1">Software Engineering
+            <ul>
+            <a href="/docs/requirements_list.php"><li>Requirements List</li></a>
+            <a href="/docs/use_cases.php"><li>Use Cases</li></a>
+            <a href="/docs/class_diagram.php"><li>Class Diagram</li></a>
+            <a href="/docs/sequence_diagrams.php"><li>Sequence Diagrams</li></a>
+            </ul>
+        </li>
         <a href="/pages/what.php"><li>End User Help</li></a>
         <a href="https://docs.google.com/document/d/1abIMp6Gu2lyyBcFk5mZkK9pgUukrXH86ZqzLBI4HuRc/edit?usp=sharing"><li>Write Up & Retrospective</li></a>
         </ul>

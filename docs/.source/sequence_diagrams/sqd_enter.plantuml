@@ -1,0 +1,26 @@
+@startuml
+
+!include style.plantuml
+
+title __**    Enter    **__ \n //*updated from an earlier diagram//
+
+actor User as U
+participant Workspace as W
+participant Page as P
+participant Tree as T
+participant "Selected Node" as SN
+
+U -> W: ._eventEnter()
+activate W
+W -> P: Page.nodeEditing('toggle')
+deactivate W
+activate P
+P -> SN: Node.editingAction('save') or Node.editingAction('init')
+activate SN
+deactivate SN
+P -> T: Tree.spread(selectedNode.parent)
+deactivate P
+activate T
+deactivate T
+
+@enduml

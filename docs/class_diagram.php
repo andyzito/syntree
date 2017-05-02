@@ -5,7 +5,7 @@
 
     <body class="page_docs page_docs_class_diagram">
     	<a class="download download_docs" href="/docs/download/class_diagram.png">Download</a>
-    	<a class="back" href="/docs"><---</a>
+    	<a class="back" href="/docs"></a>
 
     	<p class="note">Made with JSDoc, jsdoc-json, and PlantUML</p>
 
