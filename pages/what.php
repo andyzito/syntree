@@ -13,9 +13,9 @@
     <body class="what">
         <div class="block_menu">
             <ul>
-                <a href="/"><li>Home</li></a>
-                <a href="/pages/app-page.php"><li>Make A Tree</li></a>
-                <a href="/docs"><li>Documentation</li></a>
+                <a href="/"><li><i class="fa fa-home" aria-hidden="true"></i>Home</li></a>
+                <a href="/pages/app-page.php"><li><i class="fa fa-tree" aria-hidden="true"></i>Make a Tree</li></a>
+                <a href="/docs/"><li><i class="fa fa-book" aria-hidden="true"></i>Documentation</li></a>
                 <span class="contents">
                     <a href="#section-faq"><li>FAQ</li></a>
                     <a href="#section-how-to"><li>How to...</li></a>

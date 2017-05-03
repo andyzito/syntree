@@ -54,11 +54,13 @@ body.what {
 
     .block_menu {
         position: fixed;
-        width: 11%;
+        width: 15%;
         top: 5px;
         left: 5px;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
+
+
 
         span.contents  {
             li {
@@ -69,15 +71,24 @@ body.what {
 
                 &:hover {
                     background-color: #666666;
+
+                    &:after {
+                        background-color: white;
+                        width: 10px;
+                    }
                 }
 
                 &:after {
-                    content: ">";
+                    content: "";
+                    height: 2px;
+                    width: 5px;
+                    background-color: black;
                     position: absolute;
                     right: 0;
                     top: 50%;
                     transform: translateY(-50%);
                     margin-right: 10px;
+                    transition: width 0.3s;
                 }
             }
         }

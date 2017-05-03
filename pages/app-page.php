@@ -13,8 +13,9 @@
     <script>
     $(document).ready(function(){
         init = {
-            upload_enabled: false,
+            upload_enabled: true,
             tutorial_enabled: true,
+            export_tree_script: '/export-tree.php',
         }
         new Syntree.initialize(init);
     });

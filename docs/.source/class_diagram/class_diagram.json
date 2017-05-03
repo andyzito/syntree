@@ -6246,7 +6246,7 @@
           "id": "astnode100012479",
           "name": "Syntree.Tutorial",
           "type": "ObjectExpression",
-          "value": "{\"data\":\"\",\"standard_message_interval\":2000,\"frames\":\"\",\"index\":10,\"running\":false,\"continue\":\"\",\"start\":\"\",\"quit\":\"\",\"frame\":\"\",\"instruction\":\"\"}",
+          "value": "{\"data\":\"\",\"standard_message_interval\":2000,\"frames\":\"\",\"index\":\"\",\"running\":false,\"continue\":\"\",\"start\":\"\",\"quit\":\"\",\"frame\":\"\",\"instruction\":\"\"}",
           "paramnames": []
         }
       },
@@ -6381,8 +6381,8 @@
         "code": {
           "id": "astnode100012783",
           "name": "index",
-          "type": "Literal",
-          "value": 10
+          "type": "UnaryExpression",
+          "value": -1
         }
       },
       "description": "Index of the current frame.",
@@ -6410,7 +6410,7 @@
         "lineno": 195,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012785",
+          "id": "astnode100012786",
           "name": "running",
           "type": "Literal",
           "value": false
@@ -6441,7 +6441,7 @@
         "lineno": 200,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012787",
+          "id": "astnode100012788",
           "name": "continue",
           "type": "FunctionExpression"
         },
@@ -6471,7 +6471,7 @@
         "lineno": 218,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012857",
+          "id": "astnode100012858",
           "name": "start",
           "type": "FunctionExpression"
         },
@@ -6500,7 +6500,7 @@
         "lineno": 234,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012897",
+          "id": "astnode100012899",
           "name": "quit",
           "type": "FunctionExpression"
         },
@@ -6531,7 +6531,7 @@
         "lineno": 249,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100012947",
+          "id": "astnode100012949",
           "name": "frame",
           "type": "FunctionExpression"
         },
@@ -6574,7 +6574,7 @@
         "lineno": 276,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100013077",
+          "id": "astnode100013079",
           "name": "instruction",
           "type": "FunctionExpression"
         },
@@ -6613,7 +6613,7 @@
         "lineno": 13,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100013173",
+          "id": "astnode100013175",
           "name": "tutorial_enabled",
           "type": "ObjectExpression",
           "value": "{\"require\":\"boolean\",\"default_value\":false}"
@@ -6647,7 +6647,7 @@
         "lineno": 26,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100013179",
+          "id": "astnode100013181",
           "name": "upload_enabled",
           "type": "ObjectExpression",
           "value": "{\"require\":\"boolean\",\"default_value\":true}"
@@ -6681,7 +6681,7 @@
         "lineno": 40,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100013185",
+          "id": "astnode100013187",
           "name": "export_tree_script",
           "type": "ObjectExpression",
           "value": "{\"require\":\"string\",\"default_value\":\"#undefined\"}"
@@ -6715,7 +6715,7 @@
         "lineno": 53,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100013191",
+          "id": "astnode100013193",
           "name": "focus_checking_enabled",
           "type": "ObjectExpression",
           "value": "{\"require\":\"boolean\",\"default_value\":false}"
@@ -6746,7 +6746,7 @@
         "lineno": 64,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100013198",
+          "id": "astnode100013200",
           "name": "Syntree.Workspace",
           "type": "ObjectExpression",
           "value": "{\"initialize\":\"\",\"_attachEventListeners\":\"\",\"_eventTriangleButtonClick\":\"\",\"_eventBranchClick\":\"\",\"_eventArrowClick\":\"\",\"_eventRewatchTutorial\":\"\",\"_eventUndo\":\"\",\"_eventNodeClick\":\"\",\"_eventLeft\":\"\",\"_eventRight\":\"\",\"_eventUp\":\"\",\"_eventDown\":\"\",\"_eventDel\":\"\",\"_eventEsc\":\"\",\"_eventEditorTyping\":\"\",\"_eventFiletypeLabelClick\":\"\",\"_eventExportImage\":\"\",\"_eventExportTreeFile\":\"\",\"_eventExportBrackets\":\"\",\"_eventEnter\":\"\",\"toString\":\"\",\"_eventFocus\":\"\",\"_eventUnfocus\":\"\",\"_eventBGClick\":\"\",\"_eventUpload\":\"\",\"_eventSave\":\"\"}",
@@ -6773,7 +6773,7 @@
         "lineno": 126,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100013379",
+          "id": "astnode100013381",
           "name": "_attachEventListeners",
           "type": "FunctionExpression"
         },
@@ -6802,7 +6802,7 @@
         "lineno": 313,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100013960",
+          "id": "astnode100013962",
           "name": "_eventTriangleButtonClick",
           "type": "FunctionExpression"
         },
@@ -6835,7 +6835,7 @@
         "lineno": 326,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014012",
+          "id": "astnode100014014",
           "name": "_eventBranchClick",
           "type": "FunctionExpression"
         },
@@ -6869,7 +6869,7 @@
         "lineno": 339,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014069",
+          "id": "astnode100014071",
           "name": "_eventArrowClick",
           "type": "FunctionExpression"
         },
@@ -6903,7 +6903,7 @@
         "lineno": 351,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014126",
+          "id": "astnode100014128",
           "name": "_eventRewatchTutorial",
           "type": "FunctionExpression"
         },
@@ -6934,7 +6934,7 @@
         "lineno": 372,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014201",
+          "id": "astnode100014203",
           "name": "_eventUndo",
           "type": "FunctionExpression"
         }
@@ -6963,7 +6963,7 @@
         "lineno": 381,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014211",
+          "id": "astnode100014213",
           "name": "_eventNodeClick",
           "type": "FunctionExpression"
         },
@@ -6995,7 +6995,7 @@
         "lineno": 399,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014288",
+          "id": "astnode100014290",
           "name": "_eventLeft",
           "type": "FunctionExpression"
         }
@@ -7023,7 +7023,7 @@
         "lineno": 415,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014342",
+          "id": "astnode100014344",
           "name": "_eventRight",
           "type": "FunctionExpression"
         }
@@ -7051,7 +7051,7 @@
         "lineno": 431,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014396",
+          "id": "astnode100014398",
           "name": "_eventUp",
           "type": "FunctionExpression"
         }
@@ -7079,7 +7079,7 @@
         "lineno": 440,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014406",
+          "id": "astnode100014408",
           "name": "_eventDown",
           "type": "FunctionExpression"
         }
@@ -7107,7 +7107,7 @@
         "lineno": 447,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014417",
+          "id": "astnode100014419",
           "name": "_eventDel",
           "type": "FunctionExpression"
         },
@@ -7138,7 +7138,7 @@
         "lineno": 478,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014581",
+          "id": "astnode100014583",
           "name": "_eventEsc",
           "type": "FunctionExpression"
         }
@@ -7163,7 +7163,7 @@
         "lineno": 485,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014592",
+          "id": "astnode100014594",
           "name": "_eventEditorTyping",
           "type": "FunctionExpression"
         }
@@ -7188,7 +7188,7 @@
         "lineno": 493,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014603",
+          "id": "astnode100014605",
           "name": "_eventFiletypeLabelClick",
           "type": "FunctionExpression"
         },
@@ -7216,7 +7216,7 @@
         "lineno": 507,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014673",
+          "id": "astnode100014675",
           "name": "_eventExportImage",
           "type": "FunctionExpression"
         },
@@ -7252,7 +7252,7 @@
         "lineno": 541,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014831",
+          "id": "astnode100014833",
           "name": "_eventExportTreeFile",
           "type": "FunctionExpression"
         },
@@ -7282,7 +7282,7 @@
         "lineno": 557,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014908",
+          "id": "astnode100014910",
           "name": "_eventExportBrackets",
           "type": "FunctionExpression"
         },
@@ -7312,7 +7312,7 @@
         "lineno": 577,
         "path": "/var/www/html/syntree/app/singletons",
         "code": {
-          "id": "astnode100014999",
+          "id": "astnode100015001",
           "name": "_eventEnter",
           "type": "FunctionExpression"
         }

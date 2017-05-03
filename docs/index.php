@@ -16,8 +16,9 @@
 
     <div class="block_menu">
         <ul>
-        <a href="/"><li>Home</li></a>
-        <a href="/pages/app-page.php"><li>Make A Tree</li></a>
+        <a href="/"><li><i class="fa fa-home" aria-hidden="true"></i>Home</li></a>
+        <a href="/pages/app-page.php"><li><i class="fa fa-tree" aria-hidden="true"></i>Make A Tree</li></a>
+        <a href="/pages/what.php"><li><i class="fa fa-question-circle" aria-hidden="true"></i>End User Help</li></a>
         <a href="/docs/coderef"><li>Code Reference</li></a>
         <li class="sub_menu" tabindex="1">Software Engineering
             <ul>
@@ -27,7 +28,6 @@
             <a href="/docs/sequence_diagrams.php"><li>Sequence Diagrams</li></a>
             </ul>
         </li>
-        <a href="/pages/what.php"><li>End User Help</li></a>
         <a href="https://docs.google.com/document/d/1abIMp6Gu2lyyBcFk5mZkK9pgUukrXH86ZqzLBI4HuRc/edit?usp=sharing"><li>Write Up & Retrospective</li></a>
         </ul>
     </div>

@@ -59,6 +59,15 @@ ul {
   margin: 0;
   padding: 0; }
 
+li:hover i {
+  margin-right: 1.5rem;
+  margin-left: -1.5rem; }
+
+li i {
+  margin-right: 2rem;
+  margin-left: -2rem;
+  transition: margin 0.3s; }
+
 .note {
   font-size: 0.9em;
   font-style: italic; }
@@ -132,18 +141,18 @@ input[type=text] {
     padding-right: 0;
     position: relative; }
     .block_menu .sub_menu:after {
-      content: ">";
+      content: "\f0da";
       position: absolute;
       right: 0;
+      top: 1rem;
       margin-right: 20px;
-      font-family: sans-serif;
-      font-size: 1.3rem; }
+      font-family: FontAwesome; }
     .block_menu .sub_menu.expanded {
       padding-bottom: 0;
       background-color: black;
       color: white; }
       .block_menu .sub_menu.expanded:after {
-        content: "v";
+        content: "\f0d7";
         top: 1rem; }
       .block_menu .sub_menu.expanded ul {
         display: block; }
@@ -156,12 +165,12 @@ input[type=text] {
         background-color: lightgrey;
         border-bottom: none;
         border-right: none;
-        border-left: 6px solid black;
+        border-left: 10px solid grey;
         transition: border-left 0.3s; }
         .block_menu .sub_menu ul li:hover {
           background-color: darkgrey;
           color: black;
-          border-left: 13px solid black; }
+          border-left-width: 20px; }
 
 .option_wrapper_radio {
   display: inline-block;
@@ -365,7 +374,7 @@ body.what {
         margin-top: 10px; }
   body.what .block_menu {
     position: fixed;
-    width: 11%;
+    width: 15%;
     top: 5px;
     left: 5px;
     border-bottom-left-radius: 0;
@@ -377,13 +386,20 @@ body.what {
       position: relative; }
       body.what .block_menu span.contents li:hover {
         background-color: #666666; }
+        body.what .block_menu span.contents li:hover:after {
+          background-color: white;
+          width: 10px; }
       body.what .block_menu span.contents li:after {
-        content: ">";
+        content: "";
+        height: 2px;
+        width: 5px;
+        background-color: black;
         position: absolute;
         right: 0;
         top: 50%;
         transform: translateY(-50%);
-        margin-right: 10px; }
+        margin-right: 10px;
+        transition: width 0.3s; }
   body.what table {
     width: 70%;
     margin: auto;
@@ -559,10 +575,10 @@ body.page_make {
     position: fixed;
     top: 15px;
     left: 15px;
-    font-family: sans-serif;
-    font-size: 1.5rem; }
+    font-family: sans-serif; }
     .page_docs .back:after {
-      content: "<<"; }
+      font-family: FontAwesome;
+      content: "\f053"; }
   .page_docs .download_docs {
     position: fixed;
     top: 15px;

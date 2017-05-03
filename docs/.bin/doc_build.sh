@@ -16,6 +16,21 @@ then
 	if [ "$1" = "sqd" ]
 	then
 		SQD=1
+	elif [ "$1" = "readme" ]
+		then
+		README=1
+	elif [ "$1" = "coderef" ]
+		then
+		CODEREF=1
+	elif [ "$1" = "class" ]
+		then
+		CLASS=1
+	elif [ "$1" = "req" ]
+		then
+		REQ=1
+	elif [ "$1" = "use" ]
+		then
+		USE=1
 	fi
 else
 	README=1

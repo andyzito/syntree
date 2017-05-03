@@ -19,9 +19,9 @@
 
         <div class="block_menu">
             <ul>
-                <a href="/pages/app-page.php"><li>Check it out! (Make a Tree)</li></a>
-                <a href="/pages/what.php"><li>What is this? (FAQ & Help)</li></a>
-                <a href="/docs/"><li>Documentation</li></a>
+                <a href="/pages/app-page.php"><li><i class="fa fa-tree" aria-hidden="true"></i>Check it out! (Make a Tree)</li></a>
+                <a href="/pages/what.php"><li><i class="fa fa-question-circle" aria-hidden="true"></i>What is this? (FAQ & Help)</li></a>
+                <a href="/docs/"><li><i class="fa fa-book" aria-hidden="true"></i>Documentation</li></a>
             </ul>
         </div>
 

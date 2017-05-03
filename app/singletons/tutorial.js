@@ -185,7 +185,7 @@ Syntree.Tutorial = {
      *
      * @type {number}
      */
-    index: 10,
+    index: -1,
 
     /**
      * Is the tutorial currently running?
@@ -221,7 +221,7 @@ Syntree.Tutorial = {
             this.quit();
             this.start();
         } else {
-            this.index = 15;
+            this.index = -1;
             modal_close('app');
             this.running = true;
             this.continue();

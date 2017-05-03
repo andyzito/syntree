@@ -145,7 +145,7 @@ Syntree.Node.prototype.createGraphic = function() {
     });
 
     // Delete button
-    var deleteButton = Syntree.snap.image('/resources/delete_button.png', this.x, this.y, 10, 10);
+    var deleteButton = Syntree.snap.image('/resources/delete_button.svg', this.x, this.y, 10, 10);
     deleteButton.attr({
         class: 'delete_button delete_button-' + this.id,
     });
