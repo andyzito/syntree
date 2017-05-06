@@ -8,15 +8,21 @@ For more information on what Syntree *is* in the big picture sense, `see the FAQ
 
 For more information on how Syntree *works*, read through the READMEs here, and `see the code documentation <http://syntree.stdnt.hampshire.edu/docs>`_.
 
+Source
+--------------------------------------------------
+`./docs/source <./docs/source>`_
+
+Source code/notation for (non-JSDoc) documentation. Usually starts as a .rst or other file, compiled into HTML by a script in .bin, and then <included> in a php file in the main folder.
+
 Download
 --------------------------------------------------
 `./docs/download <./docs/download>`_
 
 Anything piece of documentation that we want to make downloadable.
 
-Code Reference
+Bin
 --------------------------------------------------
-`./docs/coderef <./docs/coderef>`_
+`./docs/bin <./docs/bin>`_
 
-Class, method, member reference generated from code comments by JSDoc. Also has some longform information about the application in general, which is also viewable in the write up.
+Various scripts that build all the documentation in docs/. Main script is doc_build.sh.
 

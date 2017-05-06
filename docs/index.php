@@ -19,13 +19,14 @@
         <a href="/"><li><i class="fa fa-home" aria-hidden="true"></i>Home</li></a>
         <a href="/pages/app-page.php"><li><i class="fa fa-tree" aria-hidden="true"></i>Make A Tree</li></a>
         <a href="/pages/what.php"><li><i class="fa fa-question-circle" aria-hidden="true"></i>End User Help</li></a>
-        <a href="/docs/coderef"><li>Code Reference</li></a>
+        <a href="/docs/pages/coderef"><li>Code Reference</li></a>
         <li class="sub_menu" tabindex="1">Software Engineering
             <ul>
-            <a href="/docs/requirements_list.php"><li>Requirements List</li></a>
-            <a href="/docs/use_cases.php"><li>Use Cases</li></a>
-            <a href="/docs/class_diagram.php"><li>Class Diagram</li></a>
-            <a href="/docs/sequence_diagrams.php"><li>Sequence Diagrams</li></a>
+            <a href="/docs/pages/requirements_list.php"><li>Requirements List</li></a>
+            <a href="/docs/pages/use_cases.php"><li>Use Cases</li></a>
+            <a href="/docs/pages/class_analyses.php"><li>Class/method analyses</li></a>
+            <a href="/docs/pages/class_diagram.php"><li>Class Diagram</li></a>
+            <a href="/docs/pages/sequence_diagrams.php"><li>Sequence Diagrams</li></a>
             </ul>
         </li>
         <a href="https://docs.google.com/document/d/1abIMp6Gu2lyyBcFk5mZkK9pgUukrXH86ZqzLBI4HuRc/edit?usp=sharing"><li>Write Up & Retrospective</li></a>
