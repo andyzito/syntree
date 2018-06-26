@@ -9,9 +9,7 @@
 <!DOCTYPE html>
 
 <html>
-    <?php define('WEBROOT', '/syntree'); ?>
-    <?php define('DOCROOT', '/var/www/html/syntree'); ?>
-    <?php include DOCROOT . '/head.php'; ?>
+    <?php include './head.php'; ?>
 
     <body class="splash">
 <!--         <h4 class="page_title page_title_secondary">Hello! Welcome to Andy Zito's Division III Project!</h4> -->
