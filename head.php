@@ -12,7 +12,7 @@
 
 <head>
 <script src="https://use.fontawesome.com/4d36999296.js"></script>
-<?php include DOCROOT . '/app/scripts.html'; ?>
+<?php include DOCROOT . '/app/scripts.php'; ?>
 <?php include DOCROOT . '/classes/render.php' ?>
 <link rel="stylesheet" href="<?php echo WEBROOT?>/style/css/main.css">
 </head>

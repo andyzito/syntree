@@ -6,7 +6,7 @@ For the most part, the application itself is separable from the website instance
 
 Scripts
 --------------------------------------------------
-`./app/scripts.html <./app/scripts.html>`_
+`./app/scripts.php <./app/scripts.php>`_
 
 All the scripts for the app, imported in the right order.
 
@@ -21,4 +21,3 @@ Workspace Container
 `./app/workspace-div.html <./app/workspace-div.html>`_
 
 This html file is the markup on which the app hangs. All the JavaScript classes and objects rely on this markup. It contains things like the SVG element, the <canvas> used for image exporting, and many of the modals.
-
