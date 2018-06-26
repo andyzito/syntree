@@ -9,7 +9,7 @@
 
 <div id='workspace_container'>
     <div class='loading_screen'>
-        <img src='/resources/hourglass.gif'>
+        <img src='<?php echo WEBROOT ?>/resources/hourglass.gif'>
     </div>
     <div class='modal_body modal_export' modal-id='export' with-overlay='app'>
         <p class='modal_title modal_title__main'>Export</p>

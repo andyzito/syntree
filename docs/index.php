@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-    <?php include DOCROOT . '/head.php' ?>
+    <?php include '../head.php' ?>
     <script>
     jQuery(document).ready(function(){
         jQuery(document).on('click', '.sub_menu', function(){

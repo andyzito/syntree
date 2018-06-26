@@ -54,7 +54,7 @@ Syntree.Branch.prototype.createGraphic = function() {
 
     var mid = this.getMidPoint();
     var triangleButton = Syntree.snap.image(
-        '/resources/triangle_button_triangle.png',
+        '../resources/triangle_button_triangle.png',
         mid.x,
         mid.y,
         15,
