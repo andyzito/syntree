@@ -7,8 +7,6 @@
 ##end
 -->
 
-<?php define('DOCROOT', '/var/www/html/syntree'); ?>
-
 <head>
 <script src="https://use.fontawesome.com/4d36999296.js"></script>
 <?php include DOCROOT . '/app/scripts.html'; ?>

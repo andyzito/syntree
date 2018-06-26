@@ -9,6 +9,7 @@
 <!DOCTYPE html>
 
 <html>
+  <?php define('DOCROOT', '/var/www/html/syntree'); ?>
     <?php include DOCROOT . '/head.php' ?>
 
     <body class="splash">
