@@ -18,6 +18,6 @@ External libraries required by Syntree.
 
 Workspace Container
 --------------------------------------------------
-`./app/workspace-div.html <./app/workspace-div.html>`_
+`./app/workspace-div.php <./app/workspace-div.php>`_
 
 This html file is the markup on which the app hangs. All the JavaScript classes and objects rely on this markup. It contains things like the SVG element, the <canvas> used for image exporting, and many of the modals.

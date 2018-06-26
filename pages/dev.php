@@ -28,7 +28,7 @@
             </div>
         </a> -->
 
-        <?php include DOCROOT . '/app/workspace-div.html' ?>
+        <?php include DOCROOT . '/app/workspace-div.php' ?>
 
     </body>
 </html>

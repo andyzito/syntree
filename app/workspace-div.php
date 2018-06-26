@@ -6,11 +6,6 @@
 
 ##end
 -->
-<?php
-ob_start();
-require "./head.php";
-ob_end_clean();
-?>
 
 <div id='workspace_container'>
     <div class='loading_screen'>
