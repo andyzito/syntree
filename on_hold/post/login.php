@@ -1,7 +1,7 @@
 <?php
 session_set_cookie_params(0);
 session_start();
-include $_SERVER['DOCUMENT_ROOT'] . '/lib.php';
+include DOCROOT . '/lib.php';
 
 $uname = $_POST['username'];
 $pass = $_POST['password'];

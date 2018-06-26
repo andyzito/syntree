@@ -3,7 +3,7 @@
 // It receives a tree string and saves it to the database
 // It returns the tree id on success and false on failure
 
-include $_SERVER['DOCUMENT_ROOT'] . '/lib.php';
+include DOCROOT . '/lib.php';
 
 if (!isset($_SESSION['username'])) {
     echo "Please log in to save your work";

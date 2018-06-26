@@ -1,5 +1,5 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . '/lib.php';
+include DOCROOT . '/lib.php';
 
 if (!isset($_SESSION['id'])) {
     echo '<p>Please log in to see saved trees</p>';

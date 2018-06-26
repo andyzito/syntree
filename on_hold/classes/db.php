@@ -1,5 +1,5 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . '/db/db-config.php';
+include DOCROOT . '/db/db-config.php';
 
 if (!class_exists('DB')) {
     class DB {

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/head.php' ?>
+    <?php include DOCROOT . '/head.php' ?>
 
     <body class="page_docs page_docs_sequence_diagrams">
     	<?php print($R->back_button()); ?>
@@ -9,7 +9,7 @@
 
     	<p class='note'>Made with PlantUML</p>
 
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/docs/source/html/sequence_diagrams_source.html' ?>
+        <?php include DOCROOT . '/docs/source/html/sequence_diagrams_source.html' ?>
 
     </body>
 </html>

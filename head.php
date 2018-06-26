@@ -6,9 +6,12 @@
 
 ##end
 -->
+
+<?php define('DOCROOT', '/var/www/html/syntree'); ?>
+
 <head>
 <script src="https://use.fontawesome.com/4d36999296.js"></script>
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/app/scripts.html'; ?>
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/classes/render.php' ?>
+<?php include DOCROOT . '/app/scripts.html'; ?>
+<?php include DOCROOT . '/classes/render.php' ?>
 <link rel="stylesheet" href="/style/css/main.css">
 </head>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/head.php' ?>
+    <?php include DOCROOT . '/head.php' ?>
 
     <body class="page_docs page_docs_class_diagram">
     	<?php print($R->back_button()); ?>

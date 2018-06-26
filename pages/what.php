@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 
 <html>
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/head.php' ?>
+    <?php include DOCROOT . '/head.php' ?>
     <body class="what">
         <div class="block_menu">
             <ul>

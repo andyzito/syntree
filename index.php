@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 
 <html>
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/head.php' ?>
+    <?php include DOCROOT . '/head.php' ?>
 
     <body class="splash">
 <!--         <h4 class="page_title page_title_secondary">Hello! Welcome to Andy Zito's Division III Project!</h4> -->

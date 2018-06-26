@@ -1,12 +1,12 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . '/classes/db.php';
-include $_SERVER['DOCUMENT_ROOT'] . '/classes/render.php';
+include DOCROOT . '/classes/db.php';
+include DOCROOT . '/classes/render.php';
 if (!isset($_SESSION)) {
     session_start();
 }
 
 function gen_id($n=1) {
-    include $_SERVER['DOCUMENT_ROOT'] . '/classes/db.php';
+    include DOCROOT . '/classes/db.php';
     
     if ($n === 0) {
         return;

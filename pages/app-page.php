@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 
 <html>
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/head.php' ?>
+    <?php include DOCROOT . '/head.php' ?>
     <script>
     $(document).ready(function(){
         init = {
@@ -23,7 +23,7 @@
 
     <body class="page_make">
 
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/app/workspace-div.html' ?>
+        <?php include DOCROOT . '/app/workspace-div.html' ?>
 
     </body>
 </html>
