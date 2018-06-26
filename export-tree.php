@@ -1,13 +1,18 @@
-<?php
-
-/**
+<!--
 ##file_doc
 
 @title Export Tree
 @description This is a script which takes a string identifying the type of file to export, and a filename to use. It returns a link to the generated file.
 
 ##end
-**/
+-->
+
+<?php
+
+ob_start();
+require "./head.php";
+ob_end_clean();
+
 $type = $_POST['type'];
 $fname = $_POST['fname'];
 

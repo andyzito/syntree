@@ -9,13 +9,13 @@
 <!DOCTYPE html>
 
 <html>
-    <?php include DOCROOT . '/head.php' ?>
+    <?php include '../head.php' ?>
     <script>
     $(document).ready(function(){
         init = {
             upload_enabled: true,
             tutorial_enabled: true,
-            export_tree_script: '/export-tree.php',
+            export_tree_script: '<?php echo WEBROOT ?>/export-tree.php',
         }
         new Syntree.initialize(init);
     });

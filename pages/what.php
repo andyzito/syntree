@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 
 <html>
-    <?php include DOCROOT . '/head.php' ?>
+    <?php include '../head.php' ?>
     <body class="what">
         <div class="block_menu">
             <ul>

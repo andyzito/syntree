@@ -9,11 +9,11 @@
 <!DOCTYPE html>
 
 <html>
-    <?php include DOCROOT . '/head.php' ?>
+    <?php include '../head.php' ?>
     <script>
     $(document).ready(function(){
         init = {
-            export_tree_script: '/export-tree.php',
+            export_tree_script: '<?php echo WEBROOT ?>/export-tree.php',
             tutorial_enabled: false,
         }
         Syntree.initialize(init);
