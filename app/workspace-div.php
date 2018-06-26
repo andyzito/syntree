@@ -63,7 +63,7 @@
         <li class='toolbar_button toolbar_button__export modal_trigger' for-modal='export'>Export</li>
         <li class='toolbar_button toolbar_button__upload'>Upload</li>
         <span class='toolbar_area toolbar_area_right'>
-            <a href="/"><li class='toolbar_button toolbar_button__splash'>Home</li></a>
+            <a href="<?php echo WEBROOT ?>"><li class='toolbar_button toolbar_button__splash'>Home</li></a>
             <a target='_blank' href='what.php'><li class='toolbar_button toolbar_button__help'>Help</li></a>
             <a target='_blank' href='https://docs.google.com/forms/d/e/1FAIpQLScOwQnMioOwo0dfZXEo0DQPK-TdmMnRfYzuYS_Zf9sg-jbnkw/viewform'><li class='toolbar_button toolbar_button__feedback'>Feedback</li></a>
             <li class='toolbar_button toolbar_button__tutorial'>Tutorial</li>

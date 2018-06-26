@@ -23,7 +23,7 @@
 
     <body class="page_make">
 
-        <?php include DOCROOT . '/app/workspace-div.html' ?>
+        <?php include DOCROOT . '/app/workspace-div.php' ?>
 
     </body>
 </html>

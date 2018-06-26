@@ -21,9 +21,9 @@
 
         <div class="block_menu">
             <ul>
-                <a href="/pages/app-page.php"><li><i class="fa fa-tree" aria-hidden="true"></i>Check it out! (Make a Tree)</li></a>
-                <a href="/pages/what.php"><li><i class="fa fa-question-circle" aria-hidden="true"></i>What is this? (FAQ & Help)</li></a>
-                <a href="/docs/"><li><i class="fa fa-book" aria-hidden="true"></i>Documentation</li></a>
+                <a href="<?php echo WEBROOT ?>/pages/app-page.php"><li><i class="fa fa-tree" aria-hidden="true"></i>Check it out! (Make a Tree)</li></a>
+                <a href="<?php echo WEBROOT ?>/pages/what.php"><li><i class="fa fa-question-circle" aria-hidden="true"></i>What is this? (FAQ & Help)</li></a>
+                <a href="<?php echo WEBROOT ?>/docs/"><li><i class="fa fa-book" aria-hidden="true"></i>Documentation</li></a>
             </ul>
         </div>
 
@@ -35,11 +35,11 @@
 
 <!--         <div class="wrapper wrapper_yah_nah clearfix">
             <a class="nah button button_big" href="http://www.reactiongifs.com/wp-content/uploads/2013/09/sad.gif"><<&nbsp;&nbsp;&nbsp;Nah, I'm good</a>
-            <a class="yah button button_big" href="/pages/app-page.php">Check it out!&nbsp;&nbsp;&nbsp;>></a>
+            <a class="yah button button_big" href="<?php echo WEBROOT ?>/pages/app-page.php">Check it out!&nbsp;&nbsp;&nbsp;>></a>
         </div>
 
         <div class="wrapper wrapper_what">
-            <a class="what button button_small" href="/pages/what.php">Wait... but what is this?</a>
+            <a class="what button button_small" href="<?php echo WEBROOT ?>/pages/what.php">Wait... but what is this?</a>
         </div> -->
 
     </body>

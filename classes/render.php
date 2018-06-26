@@ -9,7 +9,7 @@ if (!class_exists('Render')) {
     		} else {
     			$title = "";
     		}
-    		$o = '<a ' . $title . ' class="download download_docs" href="/docs/download/' . $path . '" download><i class="fa fa-download" aria-hidden="true"></i></a>';
+    		$o = '<a ' . $title . ' class="download download_docs" href="'. WEBROOT . '/docs/download/' . $path . '" download><i class="fa fa-download" aria-hidden="true"></i></a>';
     		return $o;
     	}
 
