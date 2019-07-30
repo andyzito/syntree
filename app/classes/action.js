@@ -51,19 +51,19 @@ Syntree._ActionCreate = function(data) {
     }
 }
 
-// function ActionCreateArrow(arrow) {
-//     arrow = Syntree.Lib.checkArg(arrow, 'arrow');
+function ActionCreateArrow(arrow) {
+    arrow = Syntree.Lib.checkArg(arrow, 'arrow');
 
-//     this.id = Syntree.Lib.genId();
-//     this.type = 'createArrow';
-//     this.arrow = arrow;
+    this.id = Syntree.Lib.genId();
+    this.type = 'createArrow';
+    this.arrow = arrow;
 
-//     this.undo = function() {
-//         this.arrow.delete(true);
-//     }
+    this.undo = function() {
+        this.arrow.delete(true);
+    }
 
-//     Syntree.History.addAction(this);
-// }
+    Syntree.History.addAction(this);
+}
 
 // function ActionDeleteArrow(arrow) {
 //     arrow = Syntree.Lib.checkArg(arrow, 'arrow');
