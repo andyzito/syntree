@@ -38,8 +38,8 @@
 
                     For example, you may have learned in elementary school about the subject, predicate, and/or object of sentences. These are ways of splitting sentences into pieces. Linguists do something similar, only with far more categories. Additionally, these categories are hierarchical and nested, meaning that the "subject", for example, can be split up into sub-categories like "article" (the, a, an) and "noun". That's how you end with a tree diagram -- each category is a node, and it has child nodes representing the categories it can be decomposed into. This process is continued until the category maps directly to the actual word.
 
-                    <span class='note'>Note: "subject" here is just an example category, and not used in actual syntax tree construction under modern theories</p></li>
-                <li><span class="faq-q">Can Syntree take a sentence and make a syntrax tree <em>for</em> me?</span>
+                    <span class='note'>Note: "subject" here is just an example category, and not used in modern syntax theory.</p></li>
+                <li><span class="faq-q">Can Syntree take a sentence and make a syntax tree <em>for</em> me?</span>
                     <p class="faq-a">No. Do your own homework.</p></li>
 
  <!--                <li><span class="faq-q">Why are some of the keyboard shortcuts so weird? <span class="key key-ctrl"></span><span class="key key-comma"></span>? Like, what?</span>
@@ -49,8 +49,8 @@
 
                     <span class="note">Coming eventually: customizable keyboard shortcuts</span></p></li>
  -->
-                <li><span class="faq-q">I think this is awesomesauce/think this sucks. How can I let the creator know?</span>
-                    <p class="faq-a">You can use the <a href="https://docs.google.com/forms/d/e/1FAIpQLScOwQnMioOwo0dfZXEo0DQPK-TdmMnRfYzuYS_Zf9sg-jbnkw/viewform">feedback form.</a></p></li>
+                <li><span class="faq-q">I think this is awesome/think this sucks.</span>
+                    <p class="faq-a">That's not a question. But here is a <a href="https://docs.google.com/forms/d/e/1FAIpQLScOwQnMioOwo0dfZXEo0DQPK-TdmMnRfYzuYS_Zf9sg-jbnkw/viewform">feedback form.</a></p></li>
             </ul>
         </div>
         <div id="section-how-to" class="help_section help_section__how-to">
@@ -64,14 +64,15 @@
                     <span class="note">Currently navigation spans subtrees -- i.e., if you press left and the nearest node to the left is attached to a different parent, you will still navigate to it instead of creating a new node.
 
                     Coming soon: a setting to change this behavior to navigate only within a group of siblings -- i.e., to get to nodes attached to a different parent, you'd have to go up and over.</span></p></li>
-                <li><span class="how-to-title">Force node creation instead of navigation:</span>
-                    <p>Hold down CTRL + SHIFT and press left or right. Even if there is a node in that direction already, a new node will be created (directly adjacent to the selected node).
+                <li><span class="how-to-title"><s>Force node creation instead of navigation:</s></span>
+                    <p><s>Hold down CTRL + SHIFT and press left or right. Even if there is a node in that direction already, a new node will be created (directly adjacent to the selected node).</s>
 
-                    <span cass="note">In the works: use with the down arrow key to insert a node in between the selected node and its children</span></p></li>
+                    <span class="note">UPDATE: 'tis broken :)</span>
+                    <span class="note">But also... In the works: use with the up/down arrow keys to insert a node in between the selected node and its parent/children.</span></p></li>
                 <li><span class="how-to-title">Pan my view of the tree:</span>
                     <p>To pan, simply click and drag anywhere on the background.
 
-                    <span cass="note">In the works: zooming!</span></p></li>
+                    <span class="note">In the works: zooming!</span></p></li>
                 <li><span class="how-to-title">Edit nodes:</span>
                     <p>Pressing Enter will begin editing mode on the selected node. You can also double-click on any node to edit it. You will be provided with a text-box, in which you can input any node label you would like. Press Enter to save the change. If you navigate away from the node (by pressing an arrow key or clicking on another node) the node label will revert to its pre-editing state.
 
