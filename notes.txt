@@ -1,0 +1,17 @@
+arrow handles should have attachment lines
+pressing esc should deselect
+- and, if you are deselected and then press an arrow key, you should start back on the last selected node
+investigate weird delay when clicking triangle button
+deleting with movement arrows is 100% busted
+
+new version:
+- force directed node graph
+- toggle between rigid/bouncy (or slider, even?)
+- ability to vertical lock (as in, each layer of nodes locked to sliding on a horizontal line)
+- ability to autodistribute in different ways:
+-- equalize angles
+-- calculate overlap and adjust
+-- performance is less horrid if you only have to do it at the end
+- ability to draw "from the bottom up"
+- fix keyboard shortcuts, allow configuration
+- configure vertical distance
