@@ -450,17 +450,20 @@ body.page_make {
     #workspace_container .delete_button.invisible {
       cursor: default; }
   #workspace_container #toolbar {
+    display: flex;
     position: absolute;
-    border-bottom: 1px solid black;
+    top: 0;
     width: 100%;
-    background-color: white; }
+    justify-content: space-between;
+    background-color: white;
+    border-bottom: 1px solid black; }
+    #workspace_container #toolbar .toolbar_section {
+      display: flex;
+      margin: 0 1rem; }
     #workspace_container #toolbar .toolbar_button {
       padding: 1rem;
       border: none;
       border-radius: 0; }
-    #workspace_container #toolbar .toolbar_area_right {
-      float: right;
-      margin-right: 2rem; }
     #workspace_container #toolbar .toolbar_button__settings {
       position: relative; }
       #workspace_container #toolbar .toolbar_button__settings:after {
