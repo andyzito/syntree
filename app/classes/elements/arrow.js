@@ -372,8 +372,8 @@ Syntree.Arrow.prototype.__updateGraphics = function() {
  * @see Syntree.Element#delete
  */
 Syntree.Arrow.prototype.__delete = function() {
-    silent = Syntree.Lib.checkArg(silent, 'boolean', false);
-    console.log('deleting arrow');
+    // silent = Syntree.Lib.checkArg(silent, 'boolean', false);
+    // console.log('deleting arrow');
 
     this.fromNode.fromArrow = undefined;
     this.toNode.toArrow = undefined;
