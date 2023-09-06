@@ -220,7 +220,7 @@ Syntree.Workspace = {
                                 Syntree.Workspace._eventDel();
                             } else if (e.keyCode === 27) { // Esc key
                                 Syntree.Workspace._eventEsc();
-                            } else if (e.keyCode === 90 && e.ctrlKey) { // CTRL + Z
+                            } else if (e.keyCode === 90 && (e.ctrlKey || e.metaKey)) { // CTRL + Z
                                 Syntree.Workspace._eventUndo();
                             }
                     }
@@ -381,7 +381,7 @@ Syntree.Workspace = {
     _eventNodeClick: function(e) {
         // clickedNode = Syntree.Lib.checkArg(clickedNode, 'svgtextelement');
         var node = Syntree.Workspace.page.allElements[$(e.currentTarget).attr('id').split('-')[1]];
-        if (e.ctrlKey) {
+        if (e.ctrlKey || e.metaKey) {
             var a = this.page.createMovementArrow(node);
             if (Syntree.Lib.checkType(a, 'arrow')) {
                 Syntree.Workspace.page.select(a);
@@ -397,7 +397,7 @@ Syntree.Workspace = {
      * @see Syntree.Page#navigateHorizontal
      */
     _eventLeft: function(e) {
-        if (e.shiftKey && e.ctrlKey) {
+        if (e.shiftKey && (e.ctrlKey || e.metaKey)) {
             this.page.navigateHorizontal('left', true);
         } else {
             if ($(document.activeElement).hasClass('editor') && $(document.activeElement).val() !== '') {
@@ -413,7 +413,7 @@ Syntree.Workspace = {
      * @see Syntree.Page#navigateHorizontal
      */
     _eventRight: function(e) {
-        if (e.shiftKey && e.ctrlKey) {
+        if (e.shiftKey && (e.ctrlKey || e.metaKey)) {
             this.page.navigateHorizontal('right', true);
         } else {
             if ($(document.activeElement).hasClass('editor') && $(document.activeElement).val() !== '') {
