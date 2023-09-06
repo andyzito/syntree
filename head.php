@@ -12,4 +12,5 @@
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/app/scripts.html'; ?>
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/classes/render.php' ?>
 <link rel="stylesheet" href="/style/css/main.css">
+<link rel="icon" type="image/svg" href="/resources/tree.svg">
 </head>
