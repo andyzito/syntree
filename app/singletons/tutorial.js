@@ -208,7 +208,7 @@ Syntree.Tutorial = {
         } else {
             $('.tutorial_instruction').fadeOut(2000, function(){
                 this.quit();
-            });
+            }.bind(this))
         }
     },
 

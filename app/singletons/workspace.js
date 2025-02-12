@@ -78,13 +78,13 @@ Syntree.Workspace = {
                 .on(
                     'click',
                     '.button_modal__begin-tutorial',
-                    function() {
+                    () => {
                         Syntree.Tutorial.start();
                     })
                 .on(
                     'click',
                     '.toolbar_button__tutorial',
-                    function() {
+                    () => {
                         Syntree.Workspace._eventRewatchTutorial();
                     }
                 );
