@@ -176,7 +176,7 @@ Syntree.Tutorial = {
             message: 'Great!'
         },
         {
-            message: 'That\'s all for now. For more help, click \'Help\' in the upper lefthand corner.'
+            message: "That's all for now. For more help, click 'Help' in the upper right or rerun the tutorial by clicking 'Tutorial'.",
         },
     ],
 
